@@ -139,11 +139,6 @@ const SETTLE_PERIODS := 1
 ## a holder some caller names, and whether the name is real is the resolver's answer,
 ## never a closed list here (ADR 0933).
 const OWNER_KIND := "actor"
-## `CustodyState.SUBJECT_KINDS` ships `npc`, and `player` is a closed value reserved
-## for a `PlayerDef` that does not exist yet. Spelled here rather than read off
-## `CustodyState`, because that is a module INTERIOR and `ui/` may name only a
-## facade.
-const DEFAULT_SUBJECT_KIND := "npc"
 ## The claim status this screen orders and counts by. The same word the row renders,
 ## declared on both sides rather than taken from `CustodyState`, which is an interior.
 const STATUS_RELEASED := "released"
@@ -169,37 +164,15 @@ var _views: Array = []
 ## are different sentences and both reachable.
 var _store_installed: bool = false
 var _resolver_installed: bool = false
-## The staged capture beat. Four fields and no widgets, because `ui/` builds no form
-## controls and a headless driver stages a beat the same way a future combat outcome
-## would.
-var _capture_subject: String = ""
-var _capture_kind: String = ""
-var _capture_term: String = ""
-var _capture_periods: int = 0
-## The staged transfer. `to_holder` is an `OwnerRef` whose kind only a caller can
-## name — the vocabulary is open (ADR 0933) — and the two parties are the wallets
-## the caller agreed, forwarded verbatim and never derived here.
-var _transfer_target: Dictionary = {}
-var _transfer_coins: int = 0
-var _transfer_payer: Actor = null
-var _transfer_receiver: Actor = null
-## The seam that answers "what is capturable here" (ADR 0247). `Callable() -> Array` of
-## `{subject_id, subject_kind, term_id, periods}` primitives, installed by the composition
-## root at the route mount — the shape `ForageScreen.bind_harvest` and `QuestScreen
-## .bind_quests` use, and the reason `ui/` never names `NpcApi` (ADR 0143). It is a READ
-## model, not a verb: it writes nothing and decides nothing.
-var _capture_options: Callable = Callable()
-## What that seam last answered, cached so `summary()` costs one call per refresh however
-## many times it is read. Each entry is the four primitives plus the figure that says
-## whether this hero ALREADY holds a claim on that subject, so the arming can be withheld
-## from a subject this hero has taken rather than armed onto a button that would refuse
-## `already_captive` for a reason the player did not cause.
-var _options: Array = []
+## The staged beats and the capturable list, held for this page (ADR 0247). The state
+## and the verbs that read it live in [CustodyStaging]; every door below is a delegate
+## to it, so a route, a test and a driver all reach the same names they always did.
+var _staging: CustodyStaging = CustodyStaging.new()
 
 
 ## Install the read model of what may be taken. Called at the route mount by the
-## composition root. `Callable() -> Array`, which is `NpcApi.capturable`'s signature
-## verbatim. Safe to call again; the screen repaints either way, and a deliberate
+## composition root. `Callable() -> Array`, which is the cast module's own capturable
+## read verbatim. Safe to call again; the screen repaints either way, and a deliberate
 ## `Callable()` disarms the capture control rather than leaving a stale subject staged —
 ## the rule `ForageScreen.bind_harvest` follows.
 ##
@@ -210,11 +183,11 @@ var _options: Array = []
 ## cannot say whether one particular actor may be taken — ADR 0104's condition stays with
 ## the caller, and `combat` keeps owning a capture threshold (ADR 0247's rejected
 ## alternatives). What it supplies is the subject LIST, which is what made this page's
-## primary verb unpressable before.
+## primary verb unpressable before. The list itself is held by [CustodyStaging]; this
+## door only binds it and repaints.
 func bind_capture_options(options: Callable) -> void:
 	_bind_nodes()
-	_capture_options = options
-	_refresh_options()
+	_staging.bind(options, _held_subject_ids())
 	_render()
 
 
@@ -222,28 +195,7 @@ func bind_capture_options(options: Callable) -> void:
 ## "this cast authors nothing capturable" from "nothing told this page what is capturable",
 ## which are different sentences and both reachable.
 func capture_options_wired() -> bool:
-	return _capture_options.is_valid()
-
-
-## The subjects this page is being told may be taken, as ids in the order the seam
-## published them. A read of the CACHE rather than of the seam, so a caller walking the
-## list costs nothing and cannot disagree with the action bar's live state.
-func available_subject_ids() -> Array:
-	var out: Array = []
-	for entry in _options:
-		out.append(String((entry as Dictionary).get("subject_id", "")))
-	return out
-
-
-## The capturable row for `subject_id`, or `{}` when the seam does not offer it. This is how
-## the page's own pick becomes a capture beat: the row IS the four primitives `stage_capture`
-## forwards, so arming the control needs no id typed anywhere.
-func available_subject(subject_id: String) -> Dictionary:
-	for entry in _options:
-		var row := entry as Dictionary
-		if String(row.get("subject_id", "")) == subject_id:
-			return row.duplicate(true)
-	return {}
+	return _staging.wired()
 
 
 ## Stage the fields [method act_capture] will commit: `subject_id` is a subject DEF
@@ -252,32 +204,15 @@ func available_subject(subject_id: String) -> Dictionary:
 ## Nothing here decides that the capture MAY happen — ADR 0104 leaves that condition
 ## in the caller — and nothing here is stored: a refresh that found no staged subject
 ## reports `no_subject` rather than inventing one, which is what keeps this from
-## being a grab button with no cause. Assigned exactly as given, so staging one
-## subject and staging none are the same shape and a deliberate empty string CLEARS
-## the staging rather than leaving a stale subject for the next press to commit.
+## being a grab button with no cause. A deliberate empty string CLEARS the staging
+## rather than leaving a stale subject for the next press to commit, and an empty
+## `subject_kind` takes the authored default, which [CustodyStaging] owns.
 func stage_capture(
-	subject_id: String,
-	subject_kind: String = DEFAULT_SUBJECT_KIND,
-	term_id: String = "custody",
-	periods: int = 1
+	subject_id: String, subject_kind: String = "", term_id: String = "custody", periods: int = 1
 ) -> void:
 	_bind_nodes()
-	_capture_subject = subject_id
-	_capture_kind = subject_kind if subject_kind != "" else DEFAULT_SUBJECT_KIND
-	_capture_term = term_id
-	_capture_periods = periods
+	_staging.stage_capture(subject_id, subject_kind, term_id, periods)
 	_render()
-
-
-## The staged capture beat as the summary publishes it: four primitives, so a test
-## asserts what a press WOULD commit without reading it back off a widget.
-func staged_capture() -> Dictionary:
-	return {
-		"subject_id": _capture_subject,
-		"subject_kind": _capture_kind,
-		"term_id": _capture_term,
-		"periods": _capture_periods,
-	}
 
 
 ## Stage the transfer [method act_transfer] will commit. `to_holder` is an `OwnerRef`
@@ -286,37 +221,22 @@ func staged_capture() -> Dictionary:
 ## that skips the exchange entirely (ADR 0104), and the module refuses
 ## `no_settlement_party` itself when coins are named and a party is not.
 ##
-## Assigned exactly as given: staging a transfer and clearing it are the same shape,
-## so a deliberate `{}` disarms the button rather than leaving the last target
-## standing for the next press.
+## Staging a transfer and clearing it are the same shape, so a deliberate `{}` disarms
+## the button rather than leaving the last target standing for the next press.
 func stage_transfer(
 	to_holder: Dictionary, coins: int = 0, coin_payer: Actor = null, coin_receiver: Actor = null
 ) -> void:
 	_bind_nodes()
-	_transfer_target = to_holder.duplicate(true)
-	_transfer_coins = coins
-	_transfer_payer = coin_payer
-	_transfer_receiver = coin_receiver
+	_staging.stage_transfer(to_holder, coins, coin_payer, coin_receiver)
 	_render()
-
-
-## The staged transfer, as the summary publishes it. The holder is nested rather than
-## flattened because it is a ref, and a ref with its kind dropped is not a ref.
-func staged_transfer() -> Dictionary:
-	return {
-		"staged": not _transfer_target.is_empty(),
-		"to_kind": String(_transfer_target.get("kind", "")),
-		"to_id": String(_transfer_target.get("id", "")),
-		"coins": _transfer_coins,
-		"payer": String(_transfer_payer.id) if _transfer_payer != null else "",
-		"receiver": String(_transfer_receiver.id) if _transfer_receiver != null else "",
-	}
 
 
 ## Clear the staged capture beat, so the next press refuses `no_subject` rather than
 ## recommitting the last one.
 func clear_capture() -> void:
-	stage_capture("", DEFAULT_SUBJECT_KIND, "", 0)
+	_bind_nodes()
+	_staging.clear_capture()
+	_render()
 
 
 ## ## ## Arm the capture control on a subject this page was TOLD about (ADR 0247)
@@ -331,15 +251,9 @@ func clear_capture() -> void:
 ## seam published with no term arms nothing rather than arming a grab.
 func select_capture_subject(subject_id: String) -> bool:
 	_bind_nodes()
-	var row := available_subject(subject_id)
-	if row.is_empty():
+	if not _staging.select_capture_subject(subject_id):
 		return false
-	stage_capture(
-		String(row.get("subject_id", "")),
-		String(row.get("subject_kind", DEFAULT_SUBJECT_KIND)),
-		String(row.get("term_id", "")),
-		int(row.get("periods", 0))
-	)
+	_render()
 	return true
 
 
@@ -347,17 +261,15 @@ func select_capture_subject(subject_id: String) -> bool:
 ## should offer, as ids. A subject already taken is excluded rather than offered-and-refused,
 ## because `already_captive` is a fact about the ledger and not a reason the player caused.
 func takeable_subject_ids() -> Array:
-	var out: Array = []
-	for entry in _options:
-		if bool((entry as Dictionary).get("takeable", false)):
-			out.append(String((entry as Dictionary).get("subject_id", "")))
-	return out
+	return _staging.takeable_subject_ids()
 
 
 ## Clear the staged transfer, so the transfer button goes dead rather than naming the
 ## last holder the player agreed to.
 func clear_transfer() -> void:
-	stage_transfer({})
+	_bind_nodes()
+	_staging.clear_transfer()
+	_render()
 
 
 func _summary() -> Dictionary:
@@ -407,8 +319,8 @@ func _summary() -> Dictionary:
 		# make a test read a settlement as if it had opened the claim.
 		"last_settled": int(_last_result.get("settled", 0)),
 		"last_periods_left": int(_last_result.get("periods_left", 0)),
-		"staged_capture": staged_capture(),
-		"staged_transfer": staged_transfer(),
+		"staged_capture": _staging.staged_capture(),
+		"staged_transfer": _staging.staged_transfer(),
 		# ## What is capturable HERE, and whether this hero already holds it
 		#
 		# ADR 0247. Four primitives per row and one flag saying whether the term has
@@ -417,10 +329,10 @@ func _summary() -> Dictionary:
 		# is the difference between a live button and a button that refuses for a reason
 		# the player did not cause. `capture_options_wired` separates "nothing is
 		# capturable" from "nothing told this page what is", two different sentences.
-		"capture_options_wired": capture_options_wired(),
-		"available": _available_summaries(),
-		"available_ids": available_subject_ids(),
-		"available_count": _options.size(),
+		"capture_options_wired": _staging.wired(),
+		"available": _staging.available_summaries(),
+		"available_ids": _staging.available_subject_ids(),
+		"available_count": _staging.available_count(),
 		"actions": _action_ids(),
 		"enabled": _enabled_actions(),
 		# Each row's own summary, nested under that row's key so a test reads the claim
@@ -443,18 +355,22 @@ func act_capture() -> Dictionary:
 	_bind_nodes()
 	if _actor == null:
 		return _verdict(NO_ACTOR)
-	if _capture_subject == "":
+	var beat := _staging.staged_capture()
+	var subject := String(beat.get("subject_id", ""))
+	var term := String(beat.get("term_id", ""))
+	var periods := int(beat.get("periods", 0))
+	if subject == "":
 		return _verdict(NO_SUBJECT)
-	if _capture_periods <= 0 or _capture_term == "":
+	if periods <= 0 or term == "":
 		return _verdict(NO_PERIODS)
 	return _settle(
 		CustodyApi.capture(
 			_actor,
-			StringName(_capture_subject),
-			StringName(_capture_kind),
+			StringName(subject),
+			StringName(String(beat.get("subject_kind", ""))),
 			_owner(),
-			StringName(_capture_term),
-			_capture_periods
+			StringName(term),
+			periods
 		)
 	)
 
@@ -471,19 +387,20 @@ func act_transfer() -> Dictionary:
 		return _verdict(NO_ACTOR)
 	if _selected_claim == "":
 		return _verdict(NO_CLAIM_PICKED)
-	if _transfer_target.is_empty():
+	var staged := _staging.staged_transfer()
+	if not bool(staged.get("staged", false)):
 		return _verdict(NO_TRANSFER_TARGET)
-	if _transfer_coins < 0:
+	if int(staged.get("coins", 0)) < 0:
 		return _verdict(NO_COINS)
 	return _settle(
 		CustodyApi.transfer(
 			_actor,
 			StringName(_selected_claim),
 			_owner(),
-			_transfer_target,
-			_transfer_coins,
-			_transfer_payer,
-			_transfer_receiver
+			_staging.transfer_target(),
+			int(staged.get("coins", 0)),
+			_staging.transfer_payer(),
+			_staging.transfer_receiver()
 		)
 	)
 
@@ -619,35 +536,7 @@ func _refresh_view() -> void:
 	# The subject list is re-read AFTER the ledger, because "already held" is a ledger
 	# fact: one facade call per refresh, and one seam call, in that order, whatever the
 	# order of the two structures.
-	_refresh_options()
-
-
-## Ask the seam what may be taken, and cache it with the one ledger fact that changes what a
-## control should offer: whether THIS hero already holds a claim on that subject.
-##
-## ## Read once per refresh, and only when there is something to ask
-##
-## An unbound seam is not called — `Callable.is_valid()` on an empty callable would throw at the
-## call — and the cache is EMPTIED rather than left stale, so unbinding the seam withdraws the
-## arming instead of leaving a subject staged for a button nobody can see the cause of. That is
-## the same rule `stage_capture("")` follows on purpose.
-func _refresh_options() -> void:
-	_options.clear()
-	if not _capture_options.is_valid():
-		return
-	var answered: Variant = _capture_options.call()
-	if not answered is Array:
-		return
-	var held := _held_subject_ids()
-	for entry in answered as Array:
-		if not entry is Dictionary:
-			continue
-		var row := (entry as Dictionary).duplicate(true)
-		if String(row.get("subject_id", "")) == "":
-			continue
-		row["held"] = held.has(String(row.get("subject_id", "")))
-		row["takeable"] = not bool(row["held"])
-		_options.append(row)
+	_staging.refresh_options(_held_subject_ids())
 
 
 ## The subject ids this hero holds a claim on, read off the CACHED ledger rather than a fresh
@@ -659,16 +548,6 @@ func _held_subject_ids() -> Array:
 		if String((view as Dictionary).get("status", "")) == STATUS_RELEASED:
 			continue
 		out.append(String((view as Dictionary).get("subject_id", "")))
-	return out
-
-
-## The subject list as summary rows, each row's own keys plus the two flags. Four primitives and
-## two booleans per row, and no name: the subject is named by the def id the seam published, which
-## is the same rule `CustodyClaimRow` follows for a claim's subject (ADR 0104).
-func _available_summaries() -> Array:
-	var out: Array = []
-	for entry in _options:
-		out.append((entry as Dictionary).duplicate(true))
 	return out
 
 
@@ -828,7 +707,7 @@ func _publish_actions() -> void:
 				"primary":
 				(
 					ACTION_CAPTURE
-					if _capture_is_armed()
+					if _staging.armed()
 					else (ACTION_RELEASE if _holder_is_mine(picked) else ACTION_CAPTURE)
 				),
 			}
@@ -849,18 +728,20 @@ func _action_ids() -> Array:
 
 ## Which of the four is live right now.
 ##
-## `capture` is gated on the ONE named conjunction [method _capture_is_armed] — a staged subject,
-## a term and at least one period — rather than on `_capture_subject != ""` alone. The old gate
-## admitted a staged subject with no term and no periods, published the control as live, and let
-## `act_capture` refuse `no_periods` instead, so a button read as offered while nothing could
-## happen. One conjunction, read by both `_accept` and this table, is what makes the control's
-## published state and the verb that answers it the same fact.
+## `capture` is gated on the ONE named conjunction [method CustodyStaging.armed] — a
+## staged subject, a term and at least one period — rather than on a bare subject
+## check. The old gate admitted a staged subject with no term and no periods, published
+## the control as live, and let `act_capture` refuse `no_periods` instead, so a button
+## read as offered while nothing could happen. One conjunction, read by both `_accept`
+## and this table, is what makes the control's published state and the verb that answers
+## it the same fact.
 func _enabled_actions() -> Dictionary:
 	var picked := _picked_view()
 	var mine := _holder_is_mine(picked)
 	return {
-		String(ACTION_CAPTURE): _actor != null and _capture_is_armed(),
-		String(ACTION_TRANSFER): _actor != null and mine and not _transfer_target.is_empty(),
+		String(ACTION_CAPTURE): _actor != null and _staging.armed(),
+		String(ACTION_TRANSFER):
+		_actor != null and mine and not _staging.transfer_target().is_empty(),
 		String(ACTION_RELEASE): _actor != null and mine,
 		String(ACTION_SETTLE): _actor != null and mine and int(picked.get("periods", 0)) > 0,
 	}
@@ -890,7 +771,7 @@ func _on_action_requested(action: StringName) -> void:
 ## ## The staged subject comes SECOND, and that ordering is ADR 0247
 ##
 ## Capture is the page's PRIMARY verb and before it there was no state in which it could fire:
-## `_capture_subject` was set by nothing, so `ui_accept` had only the release arm. It now has a
+## the staged subject was set by nothing, so `ui_accept` had only the release arm. It now has a
 ## second arm, and it sits BELOW the claim arm on purpose.
 ##
 ## **`act_capture` leaves the beat staged**, deliberately — it forwards what the caller staged and
@@ -905,18 +786,10 @@ func _accept() -> bool:
 	if _holder_is_mine(_picked_view()):
 		act_release()
 		return true
-	if _capture_is_armed():
+	if _staging.armed():
 		act_capture()
 		return true
 	return false
-
-
-## Whether the capture control is live right now — a staged subject, a term and at least one
-## period. One conjunction, named, so `_accept` and `_enabled_actions` cannot disagree about what
-## a press means. It does NOT consult the seam: the seam populated the staging, and re-asking it
-## here would make a button's live state depend on a call that may have been unbound since.
-func _capture_is_armed() -> bool:
-	return _capture_subject != "" and _capture_term != "" and _capture_periods > 0
 
 
 ## Move the pick `step` entries along the shown list, wrapping. Returns false when there

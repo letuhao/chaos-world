@@ -49,14 +49,6 @@ func _ready() -> void:
 	refresh()
 
 
-func on_screen_shown() -> void:
-	refresh()
-
-
-func on_screen_hidden() -> void:
-	pass
-
-
 ## Inject the six seams. Safe to call again; the screen re-reads and repaints.
 func bind_venture(
 	open_call: Callable,
@@ -211,6 +203,16 @@ func act_fate(fate_index: int) -> bool:
 	return true
 
 
+## The two fate buttons, each a fixed index into [method act_fate]. Private because the
+## index is a BUTTON's fact rather than a verb's: a caller answers a fate by index.
+func _fate_first() -> bool:
+	return act_fate(0)
+
+
+func _fate_second() -> bool:
+	return act_fate(1)
+
+
 func act_dismiss() -> bool:
 	_bind_nodes()
 	if _pending_encounter.is_empty():
@@ -256,14 +258,6 @@ func act_south() -> bool:
 
 func act_west() -> bool:
 	return _act_step(-1, 0)
-
-
-func act_fate_first() -> bool:
-	return act_fate(0)
-
-
-func act_fate_second() -> bool:
-	return act_fate(1)
 
 
 func act_east() -> bool:
@@ -549,8 +543,8 @@ func _bind_nodes() -> void:
 	_connect_once("%CloseButton", "pressed", act_close)
 	_connect_once("%ReturnButton", "pressed", act_return)
 	_connect_once("%DebugButton", "pressed", act_debug)
-	_connect_once("%FateFirstButton", "pressed", act_fate_first)
-	_connect_once("%FateSecondButton", "pressed", act_fate_second)
+	_connect_once("%FateFirstButton", "pressed", _fate_first)
+	_connect_once("%FateSecondButton", "pressed", _fate_second)
 	_connect_once("%DismissButton", "pressed", act_dismiss)
 	_connect_once("%StrikeButton", "pressed", act_strike)
 	_connect_once("%TakeButton", "pressed", act_take)
