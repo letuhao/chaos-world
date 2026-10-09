@@ -1,0 +1,154 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_14_cold_pond_white_lotus.dense_thicket_cluster",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_14_cold_pond_white_lotus",
+  "asset_slug": "dense_thicket_cluster",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_14_cold_pond_white_lotus/dense_thicket_cluster/pristine_dormant.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "cut_thicket",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.413,
+        0.439
+      ],
+      [
+        0.633,
+        0.651
+      ]
+    ],
+    "frac_zero": 0.5928,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.06,
+        0.646,
+        0.796,
+        0.103,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.529,
+        0.547,
+        0.669,
+        0.589,
+        0.153,
+        0.0
+      ],
+      [
+        0.313,
+        0.497,
+        0.584,
+        0.526,
+        0.655,
+        0.776,
+        0.312
+      ],
+      [
+        0.441,
+        0.688,
+        0.786,
+        0.783,
+        0.282,
+        0.177,
+        0.0
+      ],
+      [
+        0.016,
+        0.485,
+        0.995,
+        0.905,
+        0.789,
+        0.164,
+        0.0
+      ],
+      [
+        0.352,
+        0.991,
+        1.0,
+        1.0,
+        1.0,
+        0.748,
+        0.044
+      ],
+      [
+        0.232,
+        0.758,
+        0.957,
+        0.978,
+        0.78,
+        0.253,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      29,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 143,
+    "contact_reference_px": 143.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
