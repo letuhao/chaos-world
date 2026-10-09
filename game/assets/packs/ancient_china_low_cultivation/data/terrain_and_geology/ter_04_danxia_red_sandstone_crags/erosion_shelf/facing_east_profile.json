@@ -1,0 +1,84 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_04_danxia_red_sandstone_crags.erosion_shelf",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_04_danxia_red_sandstone_crags",
+  "asset_slug": "erosion_shelf",
+  "variant_slug": "facing_east_profile",
+  "name": "East Facing Profile",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_04_danxia_red_sandstone_crags/erosion_shelf/facing_east_profile.png",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "walk_surface",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.574,
+        0.578
+      ]
+    ],
+    "frac_zero": 0.8925,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.295,
+        0.32
+      ],
+      [
+        0.822,
+        0.857
+      ],
+      [
+        0.675,
+        0.48
+      ]
+    ],
+    "crop_offset": [
+      97,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 40,
+    "contact_reference_px": 40.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

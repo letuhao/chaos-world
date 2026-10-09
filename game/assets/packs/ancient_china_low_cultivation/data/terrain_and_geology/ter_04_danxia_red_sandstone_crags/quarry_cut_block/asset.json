@@ -1,0 +1,778 @@
+{
+  "id": "ancient_china_low_cultivation.terrain_and_geology.ter_04_danxia_red_sandstone_crags.quarry_cut_block",
+  "archetype": "quarry_cut_block_ter_04_danxia_red_sandstone_crags",
+  "name": "Danxia Red Sandstone Crags - Excavated Quarry Stone Block",
+  "vietnamese_name": "Đan Hà Hồng Nham - Khối Đá Khai Thác Đẽo Gọt",
+  "hanzi": "丹霞红岩 · 开采方整石料",
+  "category": "ter_04_danxia_red_sandstone_crags",
+  "category_code": "TER-04",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_04_danxia_red_sandstone_crags",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "quarry_stone",
+  "gameplay_role": "prop_workstation entity supporting Danxia Red Sandstone Crags gameplay",
+  "destructible": true,
+  "material": "stratified pale karst limestone and loose mineral scree",
+  "cultivation_element": "water",
+  "prompt_summary": "Single isolated 2D RPG game prop of danxia red sandstone crags - excavated quarry stone block, authentic danxia red sandstone crags materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Terrains & Geological Formations",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of excavated quarry stone block, stratified pale karst limestone and loose mineral scree, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_04_danxia_red_sandstone_crags/quarry_cut_block/pristine_dormant.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.556,
+            0.478
+          ],
+          [
+            0.711,
+            0.683
+          ]
+        ],
+        "frac_zero": 0.5369,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.134,
+            0.748,
+            0.931,
+            0.31,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.52,
+            1.0,
+            1.0,
+            0.983,
+            0.224,
+            0.0
+          ],
+          [
+            0.0,
+            0.701,
+            1.0,
+            1.0,
+            1.0,
+            0.758,
+            0.0
+          ],
+          [
+            0.159,
+            0.982,
+            1.0,
+            1.0,
+            1.0,
+            0.97,
+            0.066
+          ],
+          [
+            0.661,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.682
+          ],
+          [
+            0.279,
+            0.901,
+            1.0,
+            1.0,
+            1.0,
+            0.82,
+            0.083
+          ],
+          [
+            0.0,
+            0.17,
+            0.73,
+            0.887,
+            0.589,
+            0.227,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          16,
+          20
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4
+        ],
+        "contact_px": 88,
+        "contact_reference_px": 88.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of excavated quarry stone block, stratified pale karst limestone and loose mineral scree, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_04_danxia_red_sandstone_crags/quarry_cut_block/active_operating.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.55,
+            0.474
+          ],
+          [
+            0.655,
+            0.601
+          ]
+        ],
+        "frac_zero": 0.5788,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.136,
+            0.796,
+            0.915,
+            0.291,
+            0.055,
+            0.0
+          ],
+          [
+            0.0,
+            0.502,
+            1.0,
+            1.0,
+            0.838,
+            0.237,
+            0.0
+          ],
+          [
+            0.006,
+            0.74,
+            1.0,
+            1.0,
+            1.0,
+            0.822,
+            0.0
+          ],
+          [
+            0.087,
+            0.989,
+            1.0,
+            1.0,
+            1.0,
+            0.963,
+            0.072
+          ],
+          [
+            0.617,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.547
+          ],
+          [
+            0.095,
+            0.609,
+            0.978,
+            1.0,
+            0.895,
+            0.338,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.296,
+            0.788,
+            0.079,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          16,
+          29
+        ],
+        "trunk_columns": [
+          3
+        ],
+        "contact_px": 59,
+        "contact_reference_px": 59.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of excavated quarry stone block, stratified pale karst limestone and loose mineral scree, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_04_danxia_red_sandstone_crags/quarry_cut_block/damaged_weathered.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.502,
+            0.533
+          ],
+          [
+            0.779,
+            0.775
+          ]
+        ],
+        "frac_zero": 0.5006,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.066,
+            0.569,
+            0.911,
+            0.766,
+            0.147,
+            0.0
+          ],
+          [
+            0.0,
+            0.336,
+            1.0,
+            1.0,
+            1.0,
+            0.354,
+            0.0
+          ],
+          [
+            0.059,
+            0.603,
+            1.0,
+            1.0,
+            1.0,
+            0.446,
+            0.055
+          ],
+          [
+            0.017,
+            0.905,
+            1.0,
+            1.0,
+            1.0,
+            0.87,
+            0.071
+          ],
+          [
+            0.528,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.766
+          ],
+          [
+            0.759,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.43
+          ],
+          [
+            0.057,
+            0.509,
+            0.914,
+            0.979,
+            0.816,
+            0.472,
+            0.032
+          ]
+        ],
+        "crop_offset": [
+          17,
+          20
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 129,
+        "contact_reference_px": 129.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of excavated quarry stone block, stratified pale karst limestone and loose mineral scree, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_04_danxia_red_sandstone_crags/quarry_cut_block/ruined_rubble.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.501,
+            0.462
+          ],
+          [
+            0.707,
+            0.626
+          ]
+        ],
+        "frac_zero": 0.5782,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.049,
+            0.605,
+            0.954,
+            0.535,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.34,
+            1.0,
+            1.0,
+            0.876,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.62,
+            1.0,
+            1.0,
+            0.999,
+            0.665,
+            0.035
+          ],
+          [
+            0.081,
+            0.977,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.183
+          ],
+          [
+            0.674,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.517
+          ],
+          [
+            0.162,
+            0.735,
+            1.0,
+            1.0,
+            0.903,
+            0.409,
+            0.0
+          ],
+          [
+            0.0,
+            0.044,
+            0.638,
+            0.903,
+            0.18,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          16,
+          30
+        ],
+        "trunk_columns": [
+          2,
+          3
+        ],
+        "contact_px": 86,
+        "contact_reference_px": 86.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "TER-04",
+    "domain": "terrain_and_geology",
+    "interaction": "quarry_stone",
+    "collision_behavior": "solid",
+    "element": "water",
+    "tier": 5
+  },
+  "category_id": "ter_04_danxia_red_sandstone_crags",
+  "domain_id": "terrain_and_geology",
+  "pinyin": "Dānxiá Hóngyán · Excavated Quarry Stone Block",
+  "archetype_name": "Excavated Quarry Stone Block",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "ground"
+  },
+  "primary_material": "weathered_karst_limestone",
+  "secondary_material": "crag_scree",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Water affinity (Spirit Transformation (Hóa Thần / 化神))",
+  "elevation_tier": 5,
+  "mortal_realm_tier": "Spirit Transformation (Hóa Thần / 化神)",
+  "asset_slug": "quarry_cut_block"
+}
