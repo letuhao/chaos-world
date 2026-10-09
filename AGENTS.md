@@ -216,6 +216,7 @@ Changing a boundary rule is an architecture change: update the rule, the ADR, an
 - `game/.godot/` is a generated import cache: never commit, edit, or read it for truth. Commit `*.import` and `*.uid` files.
 - `.tscn`/`.tres` are text but editor-owned and order-sensitive: make minimal diffs, never regenerate whole scenes by hand, keep logic in scripts.
 - Use `res://` paths (relative to `game/`) in code and resources, never OS-absolute paths.
+- **This is a 2.5D game, framed closer than Diablo.** The default camera shows **half the world area** a Diablo-style isometric shows at the same resolution: Diablo's sprites are small and this repo's painted art is high quality. Keep the camera zoomable — never fix the world scale to make a number work.
 
 ## Python tooling conventions
 - `tools/` is a real `uv` package. Add dependencies to `pyproject.toml` and commit `uv.lock`; no ad-hoc `pip install`.
