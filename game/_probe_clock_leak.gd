@@ -3,6 +3,7 @@ extends SceneTree
 ## Throwaway probe: does an ADVANCE persist into the next mount? Run:
 ## godot --headless -s res://_probe_clock_leak.gd
 
+
 func _initialize() -> void:
 	var harness_script := load("res://tests/ui/seam_harness.gd")
 	var h1 = harness_script.mount_new()

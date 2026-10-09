@@ -141,7 +141,9 @@ static func normalize(
 	# did so even if the seat they held is no longer authored.
 	var position := InstitutionLedger.text(data.get("position", ""), "")
 	out["position"] = position if _accepts(known, "position", position) else ""
-	out["standing_cap"] = maxi(1, int(data.get("standing_cap", InstitutionClaim.DEFAULT_STANDING_CAP)))
+	out["standing_cap"] = maxi(
+		1, int(data.get("standing_cap", InstitutionClaim.DEFAULT_STANDING_CAP))
+	)
 	out["standing"] = clampi(int(data.get("standing", 0)), 0, int(out["standing_cap"]))
 	out["obligation"] = InstitutionLedger.positive_lines(data.get("obligation", {}) as Dictionary)
 	out["history"] = _history(data.get("history", []))
@@ -152,14 +154,14 @@ static func normalize(
 			continue
 		var spec: Dictionary = row as Dictionary
 		var read_back: Variant = _read_field(spec, data.get(field_name, null), known, out)
-	# ## A shape fault refuses the WHOLE record, never one field
-	#
-	# The shape is the CALLER's own table, so a row naming a kind this
-	# vocabulary does not hold is a programming error rather than a player
-	# state. Nesting the refusal under its field name would hand back a
-	# dictionary that looks like an envelope and carries one inexplicable
-	# value inside it — the "plausible payload" ADR 0184's unknown-family
-	# policy exists to forbid. So the refusal is the ANSWER.
+		# ## A shape fault refuses the WHOLE record, never one field
+		#
+		# The shape is the CALLER's own table, so a row naming a kind this
+		# vocabulary does not hold is a programming error rather than a player
+		# state. Nesting the refusal under its field name would hand back a
+		# dictionary that looks like an envelope and carries one inexplicable
+		# value inside it — the "plausible payload" ADR 0184's unknown-family
+		# policy exists to forbid. So the refusal is the ANSWER.
 		if read_back is Dictionary and (read_back as Dictionary).has("ok"):
 			var verdict: Dictionary = read_back as Dictionary
 			if not bool(verdict.get("ok", true)):

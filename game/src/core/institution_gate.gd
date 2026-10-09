@@ -71,9 +71,9 @@ static func fail(
 	kind: StringName, id: StringName, required: Variant, actual: Variant, label: String
 ) -> Dictionary:
 	return {
-	"ok": false,
-	"reason": R_UNMET,
-	"unmet": [entry(kind, id, required, actual, label)],
+		"ok": false,
+		"reason": R_UNMET,
+		"unmet": [entry(kind, id, required, actual, label)],
 	}
 
 
@@ -83,11 +83,11 @@ static func entry(
 	kind: StringName, id: StringName, required: Variant, actual: Variant, label: String
 ) -> Dictionary:
 	return {
-	"kind": String(kind),
-	"id": String(id),
-	"required": required,
-	"actual": actual,
-	"label": label,
+		"kind": String(kind),
+		"id": String(id),
+		"required": required,
+		"actual": actual,
+		"label": label,
 	}
 
 
@@ -100,9 +100,9 @@ static func entry(
 ## match. `label` is the human sentence.
 static func refuse(reason: String, label: String, verb: String = "") -> Dictionary:
 	return {
-	"ok": false,
-	"reason": reason,
-	"unmet": [entry(&"gate", StringName(verb), "a_readable_requirement", "unreadable", label)],
+		"ok": false,
+		"reason": reason,
+		"unmet": [entry(&"gate", StringName(verb), "a_readable_requirement", "unreadable", label)],
 	}
 
 
@@ -133,9 +133,11 @@ static func composite(
 	var total := (children as Array).size()
 	for child in children as Array:
 		if not (child is Dictionary):
-			return refuse(R_MALFORMED, "A composite gate names a child that is not a map.", "all_of")
+			return refuse(
+				R_MALFORMED, "A composite gate names a child that is not a map.", "all_of"
+			)
 		# The child IS the requirement. Only the two context slots are inherited, so a
-	# child carrying its own `verb` and its own arguments reads as itself.
+		# child carrying its own `verb` and its own arguments reads as itself.
 		var nested := {"actor": actor, "ledger": ledger}
 		for key in (child as Dictionary).keys():
 			nested[String(key)] = (child as Dictionary)[key]

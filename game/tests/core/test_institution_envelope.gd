@@ -43,9 +43,9 @@ func test_an_absent_slot_reads_as_the_empty_envelope() -> void:
 	assert_eq(empty["position"], "", "and no position")
 	assert_eq(empty["standing"], 0, "and no standing")
 	assert_eq(
-	empty["standing_cap"],
-	InstitutionClaim.DEFAULT_STANDING_CAP,
-	"the cap is the published default, never a literal"
+		empty["standing_cap"],
+		InstitutionClaim.DEFAULT_STANDING_CAP,
+		"the cap is the published default, never a literal"
 	)
 	assert_eq(empty["version"], InstitutionEnvelope.LEDGER_VERSION, "stamped at the one version")
 
@@ -77,7 +77,7 @@ func test_a_wrong_typed_claim_field_discards_the_whole_record() -> void:
 ## A `bool` is not a count: `int(true)` would disguise a corrupt field as `1`.
 func test_a_bool_is_not_a_count() -> void:
 	var out := InstitutionEnvelope.normalize(
-	{"institution": "jade_court", "standing": true}, {}, _shape()
+		{"institution": "jade_court", "standing": true}, {}, _shape()
 	)
 	assert_eq(out["institution"], "", "a bool standing is corruption, not a one")
 
@@ -87,7 +87,9 @@ func test_a_bool_is_not_a_count() -> void:
 ## losing standing because an unrelated line went bad is the worse failure.
 func test_an_unreadable_map_keeps_the_earned_standing() -> void:
 	var out := InstitutionEnvelope.normalize(
-	{"institution": "jade_court", "standing": 40, "standing_cap": 120, "fit": [1, 2]}, {}, _shape()
+		{"institution": "jade_court", "standing": 40, "standing_cap": 120, "fit": [1, 2]},
+		{},
+		_shape()
 	)
 	assert_eq(out["institution"], "jade_court", "the membership survives")
 	assert_eq(out["standing"], 40, "and the standing it earned")
@@ -99,12 +101,12 @@ func test_an_unreadable_map_keeps_the_earned_standing() -> void:
 ## institution nobody respects.
 func test_the_cap_is_repaired_and_the_standing_clamped() -> void:
 	var out := InstitutionEnvelope.normalize(
-	{"institution": "jade_court", "standing": 999, "standing_cap": 0}, {}, _shape()
+		{"institution": "jade_court", "standing": 999, "standing_cap": 0}, {}, _shape()
 	)
 	assert_eq(out["standing_cap"], 1, "a zero cap is repaired to one")
 	assert_eq(out["standing"], 1, "and the standing clamps into it")
 	var over := InstitutionEnvelope.normalize(
-	{"institution": "jade_court", "standing": -5, "standing_cap": 100}, {}, _shape()
+		{"institution": "jade_court", "standing": -5, "standing_cap": 100}, {}, _shape()
 	)
 	assert_eq(over["standing"], 0, "a negative standing clamps to zero")
 
@@ -114,20 +116,20 @@ func test_the_cap_is_repaired_and_the_standing_clamped() -> void:
 ## a member who earned standing did so even if the seat is gone.
 func test_an_unshipped_position_is_dropped_and_the_standing_kept() -> void:
 	var out := InstitutionEnvelope.normalize(
-	{"institution": "jade_court", "position": "ghost_elder", "standing": 40},
-	{"position": {"elder": true}},
-	_shape()
+		{"institution": "jade_court", "position": "ghost_elder", "standing": 40},
+		{"position": {"elder": true}},
+		_shape()
 	)
 	assert_eq(out["position"], "", "the unshipped seat is dropped")
 	assert_eq(out["standing"], 40, "the earned standing survives it")
 	var kept := InstitutionEnvelope.normalize(
-	{"institution": "jade_court", "position": "elder", "standing": 40},
-	{"position": {"elder": true}},
-	_shape()
+		{"institution": "jade_court", "position": "elder", "standing": 40},
+		{"position": {"elder": true}},
+		_shape()
 	)
 	assert_eq(kept["position"], "elder", "a shipped seat is kept")
 	var unanswered := InstitutionEnvelope.normalize(
-	{"institution": "jade_court", "position": "anything"}, {}, _shape()
+		{"institution": "jade_court", "position": "anything"}, {}, _shape()
 	)
 	assert_eq(unanswered["position"], "anything", "an EMPTY filter is unanswered, not a denial")
 
@@ -135,20 +137,24 @@ func test_an_unshipped_position_is_dropped_and_the_standing_kept() -> void:
 ## Every shape kind reads what it says it reads. One case per kind, so a new row added
 ## to the vocabulary without a reader fails here rather than at a save load.
 func test_every_shape_kind_reads_its_own_value() -> void:
-	var out := InstitutionEnvelope.normalize(
-	{
-			"institution": "jade_court",
-			"doctrine": "iron_vine",
-			"fit": {"iron_vine": 30, "still_water": 0, "bad": "x"},
-			"founder_id": "hero_1",
-			"applied_standing": 12,
-			"granted_percent": {"poise": 0.04, "will": "bad"},
-			"roster": {"elder": {"ids": ["a", "b"]}},
-			"claims": {"river_march": "hero_1", "bad": 7},
-			"history": [{"verb": "join"}, {"verb": "promote"}, {"verb": "teach"}, {"verb": "x"}],
-	},
-	{"positions": {"river_march": true}},
-	_shape()
+	var out := (
+		InstitutionEnvelope
+		. normalize(
+			{
+				"institution": "jade_court",
+				"doctrine": "iron_vine",
+				"fit": {"iron_vine": 30, "still_water": 0, "bad": "x"},
+				"founder_id": "hero_1",
+				"applied_standing": 12,
+				"granted_percent": {"poise": 0.04, "will": "bad"},
+				"roster": {"elder": {"ids": ["a", "b"]}},
+				"claims": {"river_march": "hero_1", "bad": 7},
+				"history":
+				[{"verb": "join"}, {"verb": "promote"}, {"verb": "teach"}, {"verb": "x"}],
+			},
+			{"positions": {"river_march": true}},
+			_shape()
+		)
 	)
 	assert_eq(out["doctrine"], "iron_vine", "text reads its value")
 	assert_eq(out["fit"], {"iron_vine": 30}, "lines keeps positives and drops a non-number")
@@ -164,14 +170,14 @@ func test_every_shape_kind_reads_its_own_value() -> void:
 func test_a_count_clamps_at_its_cap() -> void:
 	var shape := {"stage": {"kind": "count", "cap": 8}}
 	assert_eq(
-	InstitutionEnvelope.normalize({"institution": "a", "stage": 50}, {}, shape)["stage"],
-	8,
-	"clamped to the authored cap"
+		InstitutionEnvelope.normalize({"institution": "a", "stage": 50}, {}, shape)["stage"],
+		8,
+		"clamped to the authored cap"
 	)
 	assert_eq(
-	InstitutionEnvelope.normalize({"institution": "a", "stage": 3}, {}, shape)["stage"],
-	3,
-	"and left alone below it"
+		InstitutionEnvelope.normalize({"institution": "a", "stage": 3}, {}, shape)["stage"],
+		3,
+		"and left alone below it"
 	)
 
 
@@ -180,7 +186,7 @@ func test_a_count_clamps_at_its_cap() -> void:
 ## stops being normalized with nothing said (ADR 0184's unknown-family policy).
 func test_an_unknown_shape_kind_refuses_by_name() -> void:
 	var out := InstitutionEnvelope.normalize(
-	{"institution": "a"}, {}, {"mystery": {"kind": "not_a_kind"}}
+		{"institution": "a"}, {}, {"mystery": {"kind": "not_a_kind"}}
 	)
 	assert_eq(out.get("ok"), false, "the record refuses")
 	assert_eq(out.get("reason"), InstitutionEnvelope.R_UNKNOWN_FIELD_KIND, "naming the shape fault")
@@ -192,11 +198,11 @@ func test_an_unknown_shape_kind_refuses_by_name() -> void:
 func test_a_save_unsafe_envelope_is_refused() -> void:
 	var safe := InstitutionEnvelope.normalize({"institution": "jade_court"}, {}, _shape())
 	assert_eq(
-	InstitutionEnvelope.save_ready(safe).get("ok"), true, "a primitives-only envelope passes"
+		InstitutionEnvelope.save_ready(safe).get("ok"), true, "a primitives-only envelope passes"
 	)
 	var unsafe := {"institution": "jade_court", &"sn_key": 1}
 	assert_eq(
-	InstitutionEnvelope.save_ready(unsafe).get("ok"),
-	false,
-	"a StringName key is caught where the payload is built"
+		InstitutionEnvelope.save_ready(unsafe).get("ok"),
+		false,
+		"a StringName key is caught where the payload is built"
 	)

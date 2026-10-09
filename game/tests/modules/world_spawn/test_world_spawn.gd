@@ -350,7 +350,6 @@ func test_selected_is_the_explicit_pick() -> void:
 # a duplicate function name, and the whole suite failed to LOAD, taking its
 # dependants with it.
 
-
 # --- internals ---------------------------------------------------------------
 
 
