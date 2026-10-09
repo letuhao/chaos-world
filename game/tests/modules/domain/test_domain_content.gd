@@ -443,11 +443,15 @@ func test_mobs_are_weaker_than_minibosses_which_are_weaker_than_bosses() -> void
 	assert_eq(minibosses.is_empty(), false, "and at least one miniboss")
 	assert_eq(bosses.is_empty(), false, "and at least one boss")
 	assert_eq(
-		max_of(mobs) < min_of(minibosses),
+		DomainContentFixture.max_of(mobs) < DomainContentFixture.min_of(minibosses),
 		true,
 		"a mob's physique tops out below the weakest miniboss's"
 	)
-	assert_eq(max_of(minibosses) < min_of(bosses), true, "and every miniboss below the boss's")
+	assert_eq(
+		DomainContentFixture.max_of(minibosses) < DomainContentFixture.min_of(bosses),
+		true,
+		"and every miniboss below the boss's"
+	)
 
 
 # ── 3. the authored fixtures carry the shared shape ───────────────────────────
@@ -555,7 +559,9 @@ func test_every_trap_telegraphs_then_hurts_through_a_status() -> void:
 			"trap '%s' authors how long the status runs" % fixture_id
 		)
 		assert_eq(
-			_tagged(fixture, &"trap_vein"), true, "trap '%s' is marked trap_vein" % fixture_id
+			DomainContentFixture.tagged(fixture, &"trap_vein"),
+			true,
+			"trap '%s' is marked trap_vein" % fixture_id
 		)
 	assert_eq(traps > 0, true, "at least one trap ships")
 
@@ -582,7 +588,7 @@ func test_every_puzzle_has_an_order_a_player_can_actually_solve() -> void:
 				"puzzle '%s' sequences node '%s', which it places" % [fixture_id, String(node)]
 			)
 		assert_eq(
-			_distinct(sequence).size(),
+			DomainContentFixture.distinct(sequence).size(),
 			sequence.size(),
 			"puzzle '%s' strikes each node once" % fixture_id
 		)
@@ -592,7 +598,7 @@ func test_every_puzzle_has_an_order_a_player_can_actually_solve() -> void:
 			"puzzle '%s' costs a status for a wrong node, never health" % fixture_id
 		)
 		assert_eq(
-			_tagged(fixture, &"puzzle_formation"),
+			DomainContentFixture.tagged(fixture, &"puzzle_formation"),
 			true,
 			"puzzle '%s' is marked puzzle_formation" % fixture_id
 		)
@@ -624,16 +630,16 @@ func test_treasure_is_weighted_by_room_type_and_says_what_gates_it() -> void:
 		if String(fixture.get("key_item_id", "")) != "":
 			keyed += 1
 			assert_eq(
-				_tagged(fixture, &"treasure_keyed"),
+				DomainContentFixture.tagged(fixture, &"treasure_keyed"),
 				true,
 				"treasure '%s' is keyed, so it says so" % fixture_id
 			)
-		elif _tagged(fixture, &"treasure_boss_sealed"):
+		elif DomainContentFixture.tagged(fixture, &"treasure_boss_sealed"):
 			boss_sealed += 1
 		else:
 			unkeyed += 1
 			assert_eq(
-				_tagged(fixture, &"treasure_unkeyed"),
+				DomainContentFixture.tagged(fixture, &"treasure_unkeyed"),
 				true,
 				"treasure '%s' is unkeyed, so it says so" % fixture_id
 			)
@@ -689,7 +695,7 @@ func test_every_authored_fixture_kind_ships_and_is_tagged() -> void:
 	for tag in FIXTURE_TAGS:
 		var found := false
 		for entry in fixtures:
-			if _tagged(entry["fixture"], StringName(tag)):
+			if DomainContentFixture.tagged(entry["fixture"], StringName(tag)):
 				found = true
 		assert_eq(found, true, "a shipped fixture carries the '%s' tag" % tag)
 
@@ -791,7 +797,7 @@ func test_every_template_spawns_every_actor_it_authored() -> void:
 			0,
 			"template '%s' seed %d: %s" % [file_name, CONTENT_SEED, ", ".join(problems)]
 		)
-		var expected := _expected_population(map)
+		var expected := DomainContentFixture.expected_population(map)
 		var spawned := DomainSpawner.spawn_map(map, catalogue, Callable(self, "_position_of"))
 		assert_eq(
 			spawned.size(),
@@ -818,8 +824,8 @@ func test_every_spawned_actor_carries_its_authored_role() -> void:
 		map, _inhabitant_catalogue(), Callable(self, "_position_of")
 	)
 	assert_eq(
-		_roles_of_actors(spawned),
-		_roles_of_refs(map),
+		DomainContentFixture.roles_of_actors(spawned),
+		DomainContentFixture.roles_of_refs(map),
 		"the whole roster, one entry per authored instance, in canonical ref order"
 	)
 	for actor in spawned:
@@ -950,15 +956,6 @@ func _carried_ids(template: DomainTemplateDef) -> Dictionary:
 	return out
 
 
-## The authored def ids a generated map actually built, as the part of each namespaced
-## room id before the `#`.
-func _built_def_ids(map: DomainMap) -> Dictionary:
-	var out: Dictionary = {}
-	for room_id in map.room_ids_sorted():
-		out[String(room_id).split("#", false)[0]] = true
-	return out
-
-
 ## Every authored `room_id`, read from the shipped rooms rather than named. A second
 ## reader of the same tree in this file would be a copy that could drift; this one is
 ## the list both the reachability guard and its dangling-reference check ask.
@@ -976,33 +973,6 @@ func _template(file_name: String) -> DomainTemplateDef:
 	return load("%s/%s" % [TEMPLATE_DIR, file_name]) as DomainTemplateDef
 
 
-## `sum(count)` over the map's refs — what the map AUTHORED, read off the map itself so
-## the assertion cannot be satisfied by the thing under test.
-func _expected_population(map: DomainMap) -> int:
-	var total := 0
-	for ref in map.spawn_refs():
-		total += int(ref.get("count", 1))
-	return total
-
-
-## The roles a map's refs name, one entry per authored INSTANCE, in `spawn_map`'s order.
-func _roles_of_refs(map: DomainMap) -> Array[String]:
-	var out: Array[String] = []
-	for ref in map.spawn_refs():
-		var role := String(ref.get("role", ""))
-		for _instance in int(ref.get("count", 1)):
-			out.append(role)
-	return out
-
-
-## The same shape, read off the minted actors.
-func _roles_of_actors(actors: Array[Actor]) -> Array[String]:
-	var out: Array[String] = []
-	for actor in actors:
-		out.append(String(DomainSpawner.role_of(actor)))
-	return out
-
-
 ## The shared shape's keys `fixture` is missing, plus the puzzle's own when it is one.
 func _missing_shape(fixture: Dictionary) -> Array[String]:
 	var missing: Array[String] = []
@@ -1016,33 +986,3 @@ func _missing_shape(fixture: Dictionary) -> Array[String]:
 	return missing
 
 
-## Whether an authored fixture carries `tag`. A `Dictionary` has no `has_tag` — that is
-## `RoomDef`'s and `InhabitantDef`'s — so the membership question is asked of the
-## `tags` array the shape actually defines.
-func _tagged(fixture: Dictionary, tag: StringName) -> bool:
-	var tags: Array = fixture.get("tags", [])
-	return tags.has(tag) or tags.has(String(tag))
-
-
-## The unique values in `values`, first-seen order. A bounded `for`; there is no
-## `Array.uniq` in this GDScript and hand-rolling it keeps the assertion readable.
-func _distinct(values: Array) -> Array:
-	var out: Array = []
-	for value in values:
-		if not out.has(value):
-			out.append(value)
-	return out
-
-
-func max_of(values: Array[float]) -> float:
-	var out := 0.0
-	for value in values:
-		out = maxf(out, value)
-	return out
-
-
-func min_of(values: Array[float]) -> float:
-	var out := INF
-	for value in values:
-		out = minf(out, value)
-	return out
