@@ -1,0 +1,185 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_03_weathered_karst_peaks.quarry_cut_block",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_03_weathered_karst_peaks",
+  "asset_slug": "quarry_cut_block",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_03_weathered_karst_peaks/quarry_cut_block/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "quarry_stone",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.286,
+        0.562
+      ],
+      [
+        0.785,
+        0.789
+      ]
+    ],
+    "frac_zero": 0.5346,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.001,
+        0.482,
+        0.931,
+        0.169,
+        0.0
+      ],
+      [
+        0.0,
+        0.035,
+        0.456,
+        0.814,
+        1.0,
+        0.382,
+        0.0
+      ],
+      [
+        0.001,
+        0.247,
+        0.858,
+        1.0,
+        1.0,
+        0.703,
+        0.0
+      ],
+      [
+        0.098,
+        0.951,
+        1.0,
+        1.0,
+        1.0,
+        0.935,
+        0.101
+      ],
+      [
+        0.441,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.596
+      ],
+      [
+        0.683,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.656
+      ],
+      [
+        0.09,
+        0.676,
+        0.856,
+        0.966,
+        0.836,
+        0.492,
+        0.035
+      ]
+    ],
+    "crop_offset": [
+      17,
+      21
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 158,
+    "contact_reference_px": 158.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

@@ -1,7 +1,7 @@
 {
-  "asset_id": "ancient_china_low_cultivation.art_02_low_grade_bronze_trigram_cauldron.diagonal_inventory_icon_art_02_low_grade_bronze_trigram_cauldron",
+  "asset_id": "ancient_china_low_cultivation.art_02_low_grade_bronze_trigram_cauldron.diagonal_inventory_icon",
   "variant_slug": "flat_ground_drop_south",
-  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/artifacts_and_paraphernalia/art_02_low_grade_bronze_trigram_cauldron/diagonal_inventory_icon_art_02_low_grade_bronze_trigram_cauldron/flat_ground_drop_south.png",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/artifacts_and_paraphernalia/art_02_low_grade_bronze_trigram_cauldron/diagonal_inventory_icon/flat_ground_drop_south.png",
   "width": 512,
   "height": 512,
   "footprint_cells": [

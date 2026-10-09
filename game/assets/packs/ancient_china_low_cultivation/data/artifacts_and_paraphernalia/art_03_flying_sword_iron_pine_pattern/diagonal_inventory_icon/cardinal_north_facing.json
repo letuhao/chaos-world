@@ -1,7 +1,7 @@
 {
-  "asset_id": "ancient_china_low_cultivation.art_03_flying_sword_iron_pine_pattern.diagonal_inventory_icon_art_03_flying_sword_iron_pine_pattern",
+  "asset_id": "ancient_china_low_cultivation.art_03_flying_sword_iron_pine_pattern.diagonal_inventory_icon",
   "variant_slug": "cardinal_north_facing",
-  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/artifacts_and_paraphernalia/art_03_flying_sword_iron_pine_pattern/diagonal_inventory_icon_art_03_flying_sword_iron_pine_pattern/cardinal_north_facing.png",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/artifacts_and_paraphernalia/art_03_flying_sword_iron_pine_pattern/diagonal_inventory_icon/cardinal_north_facing.png",
   "width": 512,
   "height": 512,
   "footprint_cells": [

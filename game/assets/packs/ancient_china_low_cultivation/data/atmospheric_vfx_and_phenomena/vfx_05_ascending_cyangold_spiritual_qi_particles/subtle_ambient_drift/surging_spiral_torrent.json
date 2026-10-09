@@ -1,7 +1,7 @@
 {
-  "asset_id": "ancient_china_low_cultivation.vfx_05_ascending_cyangold_spiritual_qi_particles.subtle_ambient_drift_vfx_05_ascending_cyangold_spiritual_qi_particles",
+  "asset_id": "ancient_china_low_cultivation.vfx_05_ascending_cyangold_spiritual_qi_particles.subtle_ambient_drift",
   "variant_slug": "surging_spiral_torrent",
-  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/atmospheric_vfx_and_phenomena/vfx_05_ascending_cyangold_spiritual_qi_particles/subtle_ambient_drift_vfx_05_ascending_cyangold_spiritual_qi_particles/surging_spiral_torrent.png",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/atmospheric_vfx_and_phenomena/vfx_05_ascending_cyangold_spiritual_qi_particles/subtle_ambient_drift/surging_spiral_torrent.png",
   "width": 512,
   "height": 512,
   "footprint_cells": [

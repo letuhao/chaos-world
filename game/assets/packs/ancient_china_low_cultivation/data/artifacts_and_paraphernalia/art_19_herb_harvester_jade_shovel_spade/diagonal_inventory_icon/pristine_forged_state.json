@@ -1,7 +1,7 @@
 {
-  "asset_id": "ancient_china_low_cultivation.art_19_herb_harvester_jade_shovel_spade.diagonal_inventory_icon_art_19_herb_harvester_jade_shovel_spade",
+  "asset_id": "ancient_china_low_cultivation.art_19_herb_harvester_jade_shovel_spade.diagonal_inventory_icon",
   "variant_slug": "pristine_forged_state",
-  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/artifacts_and_paraphernalia/art_19_herb_harvester_jade_shovel_spade/diagonal_inventory_icon_art_19_herb_harvester_jade_shovel_spade/pristine_forged_state.png",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/artifacts_and_paraphernalia/art_19_herb_harvester_jade_shovel_spade/diagonal_inventory_icon/pristine_forged_state.png",
   "width": 512,
   "height": 512,
   "footprint_cells": [

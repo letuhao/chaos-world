@@ -1,7 +1,7 @@
 {
-  "asset_id": "ancient_china_low_cultivation.mor_01_thatch_roofed_farmer_cottage.thatched_dwelling_mor_01_thatch_roofed_farmer_cottage",
+  "asset_id": "ancient_china_low_cultivation.mor_01_thatch_roofed_farmer_cottage.thatched_dwelling",
   "variant_slug": "rot_north_rear",
-  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_01_thatch_roofed_farmer_cottage/thatched_dwelling_mor_01_thatch_roofed_farmer_cottage/rot_north_rear.png",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_01_thatch_roofed_farmer_cottage/thatched_dwelling/rot_north_rear.png",
   "width": 512,
   "height": 512,
   "footprint_cells": [

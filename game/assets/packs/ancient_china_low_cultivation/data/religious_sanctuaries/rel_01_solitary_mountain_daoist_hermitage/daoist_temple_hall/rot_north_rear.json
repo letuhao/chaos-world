@@ -1,7 +1,7 @@
 {
-  "asset_id": "ancient_china_low_cultivation.rel_01_solitary_mountain_daoist_hermitage.daoist_temple_hall_rel_01_solitary_mountain_daoist_hermitage",
+  "asset_id": "ancient_china_low_cultivation.rel_01_solitary_mountain_daoist_hermitage.daoist_temple_hall",
   "variant_slug": "rot_north_rear",
-  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_01_solitary_mountain_daoist_hermitage/daoist_temple_hall_rel_01_solitary_mountain_daoist_hermitage/rot_north_rear.png",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_01_solitary_mountain_daoist_hermitage/daoist_temple_hall/rot_north_rear.png",
   "width": 768,
   "height": 768,
   "footprint_cells": [

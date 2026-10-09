@@ -1,7 +1,7 @@
 {
-  "asset_id": "ancient_china_low_cultivation.ter_04_danxia_red_sandstone_crags.flat_surface_tile_ter_04_danxia_red_sandstone_crags",
+  "asset_id": "ancient_china_low_cultivation.ter_04_danxia_red_sandstone_crags.flat_surface_tile",
   "variant_slug": "yin_corrupted",
-  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_04_danxia_red_sandstone_crags/flat_surface_tile_ter_04_danxia_red_sandstone_crags/yin_corrupted.png",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_04_danxia_red_sandstone_crags/flat_surface_tile/yin_corrupted.png",
   "width": 512,
   "height": 512,
   "footprint_cells": [

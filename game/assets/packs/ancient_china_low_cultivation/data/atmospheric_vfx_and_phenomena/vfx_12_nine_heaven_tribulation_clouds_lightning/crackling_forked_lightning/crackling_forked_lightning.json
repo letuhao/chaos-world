@@ -1,7 +1,7 @@
 {
-  "asset_id": "ancient_china_low_cultivation.vfx_12_nine_heaven_tribulation_clouds_lightning.crackling_forked_lightning_vfx_12_nine_heaven_tribulation_clouds_lightning",
+  "asset_id": "ancient_china_low_cultivation.vfx_12_nine_heaven_tribulation_clouds_lightning.crackling_forked_lightning",
   "variant_slug": "crackling_forked_lightning",
-  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/atmospheric_vfx_and_phenomena/vfx_12_nine_heaven_tribulation_clouds_lightning/crackling_forked_lightning_vfx_12_nine_heaven_tribulation_clouds_lightning/crackling_forked_lightning.png",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/atmospheric_vfx_and_phenomena/vfx_12_nine_heaven_tribulation_clouds_lightning/crackling_forked_lightning/crackling_forked_lightning.png",
   "width": 512,
   "height": 512,
   "footprint_cells": [

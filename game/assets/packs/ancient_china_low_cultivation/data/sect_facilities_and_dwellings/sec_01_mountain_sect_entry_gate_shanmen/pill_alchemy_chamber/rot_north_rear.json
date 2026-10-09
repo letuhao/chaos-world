@@ -1,7 +1,7 @@
 {
-  "asset_id": "ancient_china_low_cultivation.sec_01_mountain_sect_entry_gate_shanmen.pill_alchemy_chamber_sec_01_mountain_sect_entry_gate_shanmen",
+  "asset_id": "ancient_china_low_cultivation.sec_01_mountain_sect_entry_gate_shanmen.pill_alchemy_chamber",
   "variant_slug": "rot_north_rear",
-  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_01_mountain_sect_entry_gate_shanmen/pill_alchemy_chamber_sec_01_mountain_sect_entry_gate_shanmen/rot_north_rear.png",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_01_mountain_sect_entry_gate_shanmen/pill_alchemy_chamber/rot_north_rear.png",
   "width": 768,
   "height": 768,
   "footprint_cells": [

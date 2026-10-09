@@ -1,7 +1,7 @@
 {
-  "asset_id": "ancient_china_low_cultivation.sec_01_mountain_sect_entry_gate_shanmen.scripture_library_tower_sec_01_mountain_sect_entry_gate_shanmen",
+  "asset_id": "ancient_china_low_cultivation.sec_01_mountain_sect_entry_gate_shanmen.scripture_library_tower",
   "variant_slug": "active_operating",
-  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_01_mountain_sect_entry_gate_shanmen/scripture_library_tower_sec_01_mountain_sect_entry_gate_shanmen/active_operating.png",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_01_mountain_sect_entry_gate_shanmen/scripture_library_tower/active_operating.png",
   "width": 512,
   "height": 512,
   "footprint_cells": [

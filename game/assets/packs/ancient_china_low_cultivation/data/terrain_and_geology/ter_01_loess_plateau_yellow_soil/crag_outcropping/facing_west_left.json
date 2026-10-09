@@ -1,0 +1,146 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_01_loess_plateau_yellow_soil.crag_outcropping",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_01_loess_plateau_yellow_soil",
+  "asset_slug": "crag_outcropping",
+  "variant_slug": "facing_west_left",
+  "name": "West Facing Profile",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_01_loess_plateau_yellow_soil/crag_outcropping/facing_west_left.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "mine_stone",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.422,
+        0.366
+      ],
+      [
+        0.741,
+        0.794
+      ]
+    ],
+    "frac_zero": 0.6511,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.87,
+        0.044,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.157,
+        1.0,
+        0.284,
+        0.0,
+        0.0
+      ],
+      [
+        0.1,
+        0.652,
+        1.0,
+        0.884,
+        0.312,
+        0.0
+      ],
+      [
+        0.581,
+        1.0,
+        1.0,
+        1.0,
+        0.859,
+        0.18
+      ],
+      [
+        0.867,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.815
+      ],
+      [
+        0.484,
+        0.957,
+        1.0,
+        1.0,
+        0.827,
+        0.016
+      ],
+      [
+        0.0,
+        0.401,
+        0.989,
+        0.882,
+        0.281,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      42,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 91,
+    "contact_reference_px": 91.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

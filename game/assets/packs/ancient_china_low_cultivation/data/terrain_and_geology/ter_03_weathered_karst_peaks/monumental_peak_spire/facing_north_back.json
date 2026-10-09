@@ -1,7 +1,7 @@
 {
-  "asset_id": "ancient_china_low_cultivation.ter_03_weathered_karst_peaks.monumental_peak_spire_ter_03_weathered_karst_peaks",
+  "asset_id": "ancient_china_low_cultivation.ter_03_weathered_karst_peaks.monumental_peak_spire",
   "variant_slug": "facing_north_back",
-  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_03_weathered_karst_peaks/monumental_peak_spire_ter_03_weathered_karst_peaks/facing_north_back.png",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_03_weathered_karst_peaks/monumental_peak_spire/facing_north_back.png",
   "width": 768,
   "height": 768,
   "footprint_cells": [

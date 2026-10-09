@@ -1,0 +1,88 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_03_weathered_karst_peaks.erosion_shelf",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_03_weathered_karst_peaks",
+  "asset_slug": "erosion_shelf",
+  "variant_slug": "facing_west_left",
+  "name": "West Facing Profile",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_03_weathered_karst_peaks/erosion_shelf/facing_west_left.png",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "walk_surface",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.534,
+        0.62
+      ]
+    ],
+    "frac_zero": 0.8679,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.253,
+        0.414,
+        0.0
+      ],
+      [
+        0.795,
+        0.974,
+        0.447
+      ],
+      [
+        0.375,
+        0.897,
+        0.5
+      ]
+    ],
+    "crop_offset": [
+      91,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 54,
+    "contact_reference_px": 54.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

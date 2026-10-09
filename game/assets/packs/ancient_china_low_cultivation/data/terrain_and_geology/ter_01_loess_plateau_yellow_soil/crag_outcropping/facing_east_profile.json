@@ -1,0 +1,133 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_01_loess_plateau_yellow_soil.crag_outcropping",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_01_loess_plateau_yellow_soil",
+  "asset_slug": "crag_outcropping",
+  "variant_slug": "facing_east_profile",
+  "name": "East Facing Profile",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_01_loess_plateau_yellow_soil/crag_outcropping/facing_east_profile.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "mine_stone",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.315,
+        0.618
+      ],
+      [
+        0.704,
+        0.703
+      ]
+    ],
+    "frac_zero": 0.727,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.144,
+        0.807,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.352,
+        0.986,
+        0.197,
+        0.0
+      ],
+      [
+        0.074,
+        0.755,
+        1.0,
+        0.701,
+        0.019
+      ],
+      [
+        0.705,
+        1.0,
+        1.0,
+        0.974,
+        0.469
+      ],
+      [
+        0.718,
+        1.0,
+        1.0,
+        0.884,
+        0.094
+      ],
+      [
+        0.292,
+        1.0,
+        1.0,
+        0.874,
+        0.144
+      ],
+      [
+        0.069,
+        0.847,
+        0.499,
+        0.023,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      61,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 50,
+    "contact_reference_px": 50.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

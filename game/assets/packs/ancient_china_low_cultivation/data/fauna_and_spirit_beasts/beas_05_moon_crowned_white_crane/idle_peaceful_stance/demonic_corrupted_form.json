@@ -1,7 +1,7 @@
 {
-  "asset_id": "ancient_china_low_cultivation.beas_05_moon_crowned_white_crane.idle_peaceful_stance_beas_05_moon_crowned_white_crane",
+  "asset_id": "ancient_china_low_cultivation.beas_05_moon_crowned_white_crane.idle_peaceful_stance",
   "variant_slug": "demonic_corrupted_form",
-  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/fauna_and_spirit_beasts/beas_05_moon_crowned_white_crane/idle_peaceful_stance_beas_05_moon_crowned_white_crane/demonic_corrupted_form.png",
+  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/fauna_and_spirit_beasts/beas_05_moon_crowned_white_crane/idle_peaceful_stance/demonic_corrupted_form.png",
   "width": 512,
   "height": 512,
   "footprint_cells": [
