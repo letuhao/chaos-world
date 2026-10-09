@@ -1,0 +1,184 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_08_iron_wood_bedrock.rich_resource_node",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_08_iron_wood_bedrock",
+  "asset_slug": "rich_resource_node",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_08_iron_wood_bedrock/rich_resource_node/damaged_weathered.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "mine_ore",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.498,
+        0.379
+      ],
+      [
+        0.791,
+        0.795
+      ]
+    ],
+    "frac_zero": 0.5552,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.077,
+        0.819,
+        0.819,
+        0.021,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.335,
+        1.0,
+        1.0,
+        0.139,
+        0.0,
+        0.0
+      ],
+      [
+        0.017,
+        0.618,
+        1.0,
+        1.0,
+        0.609,
+        0.068,
+        0.0
+      ],
+      [
+        0.232,
+        0.938,
+        1.0,
+        1.0,
+        0.996,
+        0.553,
+        0.0
+      ],
+      [
+        0.573,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.956,
+        0.474
+      ],
+      [
+        0.857,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.96,
+        0.523
+      ],
+      [
+        0.145,
+        0.655,
+        0.808,
+        0.91,
+        0.695,
+        0.3,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 134,
+    "contact_reference_px": 134.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}
