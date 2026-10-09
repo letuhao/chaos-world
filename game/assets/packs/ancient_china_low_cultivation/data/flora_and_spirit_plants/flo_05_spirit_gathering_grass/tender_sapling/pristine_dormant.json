@@ -1,0 +1,78 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_05_spirit_gathering_grass.tender_sapling",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_05_spirit_gathering_grass",
+  "asset_slug": "tender_sapling",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_05_spirit_gathering_grass/tender_sapling/pristine_dormant.png",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "none",
+  "interactive_verb": "cultivate_sprout",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.312
+      ]
+    ],
+    "frac_zero": 0.8363,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.27,
+        0.366
+      ],
+      [
+        0.364,
+        0.329
+      ],
+      [
+        0.246,
+        0.298
+      ]
+    ],
+    "crop_offset": [
+      33,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 22,
+    "contact_reference_px": 22.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
