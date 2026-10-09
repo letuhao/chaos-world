@@ -9,7 +9,8 @@ extends RefCounted
 ##
 ## Three files, three jobs, and nothing else:
 ##
-##   - `mod.json`      the manifest: id, version, priority, one module.
+##   - `mod.json`      the manifest: id, version, priority, one module, and the
+##                     `on_load` lifecycle hook that runs [method boot].
 ##   - `stats.json`    the stat rows and the pools they read (ADR 0275). Read by
 ##                     `ModRuntime.finalize` through the sixth seam — see
 ##                     [method boot] for why this facade does not read it.
@@ -45,9 +46,18 @@ const SYSTEMS_FILE := MOD_DIR + "/doctrines.json"
 static var attach_count: int = 0
 static var last_actor_id: StringName = &""
 
+## The report [method boot] answered on its last run. The production firer
+## discards a hook's return value, so a test that drives the real boot reads
+## what the entry point said here — the same observable seam `attach_count` is
+## for `attach`.
+static var last_boot_report: Dictionary = {}
+
 
 ## The mod's entry point, handed the [RegistrationContext] the loader stamped for
-## this mod. It reads ONE file — `doctrines.json` — and admits each System with the
+## this mod. It is wired from `mod.json` as this mod's `on_load` lifecycle hook,
+## so it runs through the REAL boot (`ModBoot.run` → `ModsApi.fire_lifecycle_event`)
+## — a test calling it directly would prove the mod and nothing about the seam.
+## It reads ONE file — `doctrines.json` — and admits each System with the
 ## pools [method RegistrationContext.declared_resource_ids] already holds, so a
 ## System cannot name a pool this mod did not introduce: an undeclared one fails at
 ## [method DoctrineApi.attach] as `UNDECLARED_POOL` rather than earning a silent
@@ -90,12 +100,14 @@ static func boot(ctx: RegistrationContext) -> Dictionary:
 	# A mod whose declaration never reached the context admits Systems with NO
 	# pools, so every priced row is refused as `UNDECLARED_POOL`. That is the
 	# loud direction and it is why the refusal is reported rather than patched over.
-	return {
+	var report := {
 		"ok": refused.is_empty() and not pools.is_empty(),
 		"attached": attached,
 		"refused": refused,
 		"pools": pools,
 	}
+	last_boot_report = report
+	return report
 
 
 ## The mod-module attach verb `AttachPipeline.attach_module` calls with the actor.

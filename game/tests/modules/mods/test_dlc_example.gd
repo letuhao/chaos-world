@@ -173,12 +173,12 @@ func test_dlc_attach_hook_recorded() -> void:
 	var ctx: RegistrationContext = out["contexts"][0]
 	assert_eq(ctx.attach_hooks.size(), 1, "one attach hook recorded")
 	assert_eq(String(ctx.attach_hooks[0]["phase"]), "dlc_example_boot", "hook phase recorded")
-	# The callable is empty: ModLoader._resolve_callable splits on ":" which
-	# breaks res:// paths (the "://" yields 3 parts, not 2). This is the known
-	# callable loading limitation — the hook IS recorded (phase), the callable
-	# binding is a W3+ concern the loader stubs as empty.
+	# The callable RESOLVES: the loader splits the spec at its LAST colon, so a
+	# `res://` path (whose scheme carries its own colon) binds the real function.
 	var callable: Callable = ctx.attach_hooks[0]["hook"]
-	assert_eq(callable.is_valid(), false, "callable is empty (known loader limitation)")
+	assert_eq(callable.is_valid(), true, "callable resolved")
+	callable.call()
+	assert_eq(DlcExampleHook.fired, true, "and it fires")
 
 
 func test_dlc_full_pipeline_runs_without_errors() -> void:

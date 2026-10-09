@@ -1,12 +1,14 @@
 class_name RegistrationContext
 extends RefCounted
 
-## The locked registration surface a mod's entry point calls (ADR 0184 §6).
-## `ModLoader` hands one context per discovered mod to that mod, and the seams
-## are the ONLY way a mod can touch the game: a mod cannot grow this interface
-## and cannot reach a boot phase outside of it.
+## The locked registration surface a mod's code reaches (ADR 0184 §6, ADR 0940).
+## `ModLoader` stamps one context per discovered mod, plays the manifest's
+## declarations through the seams, and the mod's `on_load` hook receives that
+## same context when `ModBoot.run` fires it. The seams are the ONLY way a mod
+## can touch the game: a mod cannot grow this interface and cannot reach a boot
+## phase outside of it.
 ##
-## W3 wiring: each seam now calls the real engine. `add_content_root` stores a
+## Each seam calls the real engine. `add_content_root` stores a
 ## CatalogOverlay-shaped row per family; `register_module` forwards to the
 ## shared ModuleRegistry the loader injects; `register_screen` forwards to the
 ## static ScreenRegistry route table; `add_attach_hook` and `subscribe` store
@@ -351,9 +353,11 @@ func set_config(key: String, value: Variant) -> Dictionary:
 	}
 
 
-## THE EIGHTH SEAM — lifecycle hooks. Register a callable for an event.
-## Events: on_load, on_unload, on_enable, on_disable, on_update, on_save,
-## on_load_save.
+## THE EIGHTH SEAM — lifecycle hooks. Register a callable for an event; the
+## callable is called with THIS context as its single argument. The event list
+## is the DECLARED vocabulary; [constant ModsApi.FIRED_EVENTS] names the subset
+## this build actually fires (today: `on_load`, from `ModBoot.run`). A hook
+## declared for an unfired event is recorded and never called.
 func add_lifecycle_hook(event: String, callable: Callable) -> Array[Dictionary]:
 	lifecycle_hooks.append({"event": event, "callable": callable})
 	return lifecycle_hooks

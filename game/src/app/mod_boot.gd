@@ -15,10 +15,8 @@ extends Node
 ## ## Failure policy
 ##
 ## A loader error is loud, not silent: the named cause is printed and the
-## node refuses to pretend boot worked (`status.ok` false, empty order).
-## First-party code keeps running unchanged because nothing is consumed yet —
-## the seams' collected rows are read by the waves that wire them, not by this
-## node.
+## node refuses to pretend boot worked (`status.ok` false, empty order,
+## empty registrations). No `on_load` hook fires on a failed pass.
 
 ## First-party optional modules (in-repo mods). Their `mod.json` files are
 ## discovered recursively by ContentScan; today there are none, so the empty
@@ -47,11 +45,19 @@ func _ready() -> void:
 	run()
 
 
-## Compute the load order over `roots()` and store it. Returns the loader
-## dictionary: `{ok, order|reason, contexts}`. Public because tests drive it
-## directly; production reaches it through `_ready`.
-func run() -> Dictionary:
-	status = ModsApi.load_order(roots())
+## Compute the load order over `scan_roots`, or over `roots()` when none are
+## passed, and store it. Returns the loader dictionary: `{ok, order|reason,
+## contexts}`. Public because tests drive it directly; production reaches it
+## through `_ready`.
+##
+## A successful pass is also where a mod's load-time code runs: every `on_load`
+## hook fires once, with its own mod's RegistrationContext, AFTER
+## `ModsApi.set_active` publishes the boot — so a hook that reads config or
+## queries its own context finds it already live. A failed pass fires nothing.
+## A second successful pass fires again: a pass is the unit of firing and
+## stamps fresh contexts.
+func run(scan_roots: Array = []) -> Dictionary:
+	status = ModsApi.load_order(scan_roots if not scan_roots.is_empty() else roots())
 	if bool(status.get("ok", false)):
 		order.clear()
 		for row in status["order"]:
@@ -66,6 +72,10 @@ func run() -> Dictionary:
 		# Publish to the facade so mods can query config, fire lifecycle
 		# events, and apply def patches without referencing app/.
 		ModsApi.set_active(contexts, registrations)
+		# The ONE lifecycle event this build fires, and it fires LAST: a hook
+		# reads its config and its declared pools off the published boot.
+		# See `ModsApi.FIRED_EVENTS` for the events this build does not fire.
+		ModsApi.fire_lifecycle_event("on_load")
 	else:
 		order = []
 		contexts = []

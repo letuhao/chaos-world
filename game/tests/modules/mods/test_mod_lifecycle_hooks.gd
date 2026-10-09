@@ -1,12 +1,16 @@
 extends TestCase
 
-## Tests for the mod lifecycle hooks seam (eighth seam).
+## Tests for the mod lifecycle hooks seam (eighth seam, ADR 0940).
 ##
-## A mod declares lifecycle hooks in its manifest's `lifecycle_hooks` field.
-## The RegistrationContext registers them, and the game loop fires them at
-## the appropriate time.
+## A mod declares lifecycle hooks in its manifest's `lifecycle_hooks` field. The
+## RegistrationContext records them and `ModsApi.fire_lifecycle_event` calls each
+## hook with its own context; in production only `on_load` has a firer, and it
+## fires from `ModBoot.run` (see `ModsApi.FIRED_EVENTS`).
 
 const MOD_FIXTURE := "user://w8_lifecycle_mods_%d"
+
+## The probe fixture's `on_load` callable, resolved through a manifest spec.
+const PROBE_SPEC := "res://tests/fixtures/mods/lifecycle_probe.gd:on_load"
 
 var _root: String = ""
 
@@ -14,6 +18,7 @@ var _root: String = ""
 func setup() -> void:
 	_root = MOD_FIXTURE % Time.get_ticks_usec()
 	DirAccess.make_dir_recursive_absolute(_root)
+	W8LifecycleProbe.calls.clear()
 
 
 func teardown() -> void:
@@ -141,11 +146,7 @@ func test_all_valid_lifecycle_events_accepted() -> void:
 
 
 func test_lifecycle_hooks_with_callable_spec() -> void:
-	_write_mod(
-		"hooks",
-		"w8_hooks",
-		[{"event": "on_load", "callable": "res://src/modules/mods/hook_fixture.gd:on_attach"}]
-	)
+	_write_mod("hooks", "w8_hooks", [{"event": "on_load", "callable": PROBE_SPEC}])
 	var out := ModsApi.load_order([_root])
 	assert_eq(out["ok"], true, "loader happy with callable spec")
 	var ctx: RegistrationContext = out["contexts"][0]
@@ -164,3 +165,50 @@ func test_multiple_mods_can_hook_same_event() -> void:
 	assert_eq(hooks.size(), 2, "both hooks recorded")
 	assert_eq(String(hooks[0]["mod_id"]), "w8_first", "first mod's hook first")
 	assert_eq(String(hooks[1]["mod_id"]), "w8_second", "second mod's hook second")
+
+
+## The firing contract: every hook is called with ITS OWN mod's context, never a
+## shared or last-writer one. Two mods in one pass is what proves the difference.
+func test_fire_lifecycle_event_hands_each_hook_its_own_context() -> void:
+	_write_mod("first", "w8_first", [{"event": "on_load", "callable": PROBE_SPEC}])
+	_write_mod("second", "w8_second", [{"event": "on_load", "callable": PROBE_SPEC}])
+	var out := ModsApi.load_order([_root])
+	assert_eq(out["ok"], true, "both mods load")
+	var registrations := ModRuntime.finalize(out["contexts"], out["registry"])
+	ModsApi.set_active(out["contexts"], registrations)
+	ModsApi.fire_lifecycle_event("on_load")
+	assert_eq(W8LifecycleProbe.calls.size(), 2, "both hooks fired")
+	assert_eq(String(W8LifecycleProbe.calls[0]["mod_id"]), "w8_first", "first mod's hook first")
+	assert_eq(String(W8LifecycleProbe.calls[1]["mod_id"]), "w8_second", "second mod's hook second")
+	assert_eq(W8LifecycleProbe.calls[0]["ctx"], out["contexts"][0], "handed its own context")
+	assert_eq(W8LifecycleProbe.calls[1]["ctx"], out["contexts"][1], "and the second its own")
+
+
+## An event with no production firer is recorded and NEVER called: the list says
+## what fires, so a declared-but-unfired hook stays inert rather than half-working.
+func test_an_unfired_event_is_recorded_and_never_called() -> void:
+	_write_mod(
+		"hooks",
+		"w8_hooks",
+		[
+			{"event": "on_save", "callable": PROBE_SPEC},
+			{"event": "on_load", "callable": PROBE_SPEC},
+		]
+	)
+	var out := ModsApi.load_order([_root])
+	assert_eq(out["ok"], true, "the mod loads")
+	var ctx: RegistrationContext = out["contexts"][0]
+	assert_eq(ctx.lifecycle_hooks.size(), 2, "both events were recorded")
+	ModsApi.set_active(out["contexts"], ModRuntime.finalize(out["contexts"], out["registry"]))
+	ModsApi.fire_lifecycle_event("on_load")
+	assert_eq(W8LifecycleProbe.calls.size(), 1, "only the fired event ran")
+	assert_eq(String(W8LifecycleProbe.calls[0]["event"]), "on_load", "and it is on_load")
+
+
+## The event list must SAY what fires. `LIFECYCLE_EVENTS` is the declared
+## vocabulary; `FIRED_EVENTS` is the subset with a production firer. Pinning both
+## means a future firer cannot land without editing the list a mod author reads.
+func test_the_fired_event_list_names_what_this_build_fires() -> void:
+	assert_eq(ModsApi.FIRED_EVENTS, ["on_load"], "this build fires on_load and nothing else")
+	for event in ModsApi.FIRED_EVENTS:
+		assert_eq(ModManifest.LIFECYCLE_EVENTS.has(event), true, "%s is a declared event" % event)

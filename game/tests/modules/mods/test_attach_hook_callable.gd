@@ -78,7 +78,7 @@ func test_attach_hook_callable_fires() -> void:
 			"hook_test",
 			{
 				"phase": "test_phase",
-				"callable": "res://src/modules/mods/registration_context.gd:add_content_root",
+				"callable": "res://src/modules/mods/hook_fixture.gd:on_attach",
 			}
 		)
 	)

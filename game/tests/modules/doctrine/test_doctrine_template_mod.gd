@@ -33,15 +33,28 @@ const EVENT_KIND := &"hunt"
 # --- The load path ---------------------------------------------------------
 
 
-## `finalize` runs BEFORE [method DoctrineTemplateModApi.boot] because it is what
-## reads `stats.json` and puts the declared pools on the context. The other order
-## admits Systems with no pools, and every priced row is refused as `UNDECLARED_POOL`.
+## The PRODUCTION path: `ModBoot.run` computes the order, folds the
+## registrations, publishes the boot and fires `on_load` — which is what calls
+## [method DoctrineTemplateModApi.boot] through the manifest's `callable` spec.
+## A direct `boot(ctx)` call proves the mod's arithmetic and nothing about the
+## seam, so this leg is the one that goes red when the production firing is
+## removed. `finalize` runs before the firing because it is what reads
+## `stats.json` and puts the declared pools on the context; the other order
+## admits Systems with no pools, and every priced row is refused as
+## `UNDECLARED_POOL`.
 func _load_mod() -> Dictionary:
-	var out := ModsApi.load_order([MOD_DIR])
-	var ctx: RegistrationContext = out["contexts"][0]
-	var registrations := ModRuntime.finalize(out["contexts"], out["registry"])
-	var report := DoctrineTemplateModApi.boot(ctx)
-	return {"loaded": out, "context": ctx, "report": report, "registrations": registrations}
+	DoctrineTemplateModApi.last_boot_report = {}
+	var boot := ModBoot.new()
+	var out := boot.run([MOD_DIR])
+	var registrations: Dictionary = boot.registrations
+	boot.free()
+	var contexts: Array = out.get("contexts", [])
+	return {
+		"loaded": out,
+		"context": contexts[0] if not contexts.is_empty() else null,
+		"report": DoctrineTemplateModApi.last_boot_report,
+		"registrations": registrations,
+	}
 
 
 ## Load and admit, for the tests about behaviour rather than about the load path.
@@ -395,3 +408,17 @@ func test_the_template_loads_beside_the_other_fixture_mods() -> void:
 	assert_eq(order.size(), 4, "four fixture mods, one per directory: %s" % str(order))
 	assert_eq(order.has(MOD_ID), true, "and the template is one of them")
 	assert_eq(order.find(MOD_ID), 3, "priority 40 loads after the other three")
+
+
+## The unit leg: `boot(ctx)` answers its own report with no pipeline in the way.
+## The production leg proves the WIRING; this pins the function's contract, so a
+## wiring failure cannot be misread as an arithmetic failure.
+func test_the_entry_point_contract_in_isolation() -> void:
+	var out := ModsApi.load_order([MOD_DIR])
+	var ctx: RegistrationContext = out["contexts"][0]
+	ModRuntime.finalize(out["contexts"], out["registry"])
+	DoctrineTemplateModApi.last_boot_report = {}
+	var report := DoctrineTemplateModApi.boot(ctx)
+	assert_eq(bool(report["ok"]), true, "boot admits its own Systems: %s" % str(report["refused"]))
+	assert_eq((report["attached"] as Array).size(), 2, "both, in declaration order")
+	assert_eq(DoctrineTemplateModApi.last_boot_report, report, "and the report is observable")

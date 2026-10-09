@@ -12,5 +12,11 @@
       "deps": [],
       "provides": ["doctrine_system"]
     }
+  ],
+  "lifecycle_hooks": [
+    {
+      "event": "on_load",
+      "callable": "res://tests/fixtures/mods/doctrine_system/api.gd:boot"
+    }
   ]
 }

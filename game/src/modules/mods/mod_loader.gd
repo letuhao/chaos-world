@@ -40,8 +40,14 @@ static func mount_pcks(roots: Array) -> Dictionary:
 ## Split at the LAST colon, never `split(":")`: every spec here is a `res://` or
 ## `user://` path and both schemes carry their own colon, so a first-colon split
 ## yields three parts and this resolver answered an EMPTY Callable for every
-## manifest callable — attach and lifecycle hooks alike (the bug both callable
-## suites were red on).
+## manifest callable — attach and lifecycle hooks alike.
+##
+## The returned Callable OWNS its target. A plain `Callable(obj, method)` does
+## NOT keep a RefCounted target alive, so the hook was invalid the moment this
+## function returned — measured: `is_valid()` answered false for every spec even
+## with the split fixed. The lambda captures `obj` in a Variant, which refcounts
+## it, and its defaulted parameter forwards both call shapes the seams use — no
+## argument, and the one-argument actor/context.
 static func _resolve_callable(spec: String) -> Callable:
 	var split_at := spec.rfind(":")
 	if split_at <= 0 or split_at >= spec.length() - 1:
@@ -53,12 +59,15 @@ static func _resolve_callable(spec: String) -> Callable:
 		return Callable()
 	var obj: Object = script.new()
 	if not obj.has_method(method_name):
-		# Only a Node needs the explicit free; `free()` on a RefCounted target is an
-		# error, and the local reference is enough to release it.
+		# Only a Node needs the explicit free; a RefCounted target is released by
+		# the local reference going out of scope.
 		if obj is Node:
 			obj.free()
 		return Callable()
-	return Callable(obj, method_name)
+	return func(argument = null):
+		if argument == null:
+			return obj.call(method_name)
+		return obj.call(method_name, argument)
 
 
 ## Find every `mod.json` under `roots` and parse each. First failure wins:
@@ -130,7 +139,7 @@ static func discover(roots: Array) -> Dictionary:
 
 
 ## The full pass: discover, validate the dependency graph, sort, and stamp one
-## RegistrationContext per mod, filled through the five seams. On success:
+## RegistrationContext per mod, filled through the registration seams. On success:
 ## `{ok:true, order:[ids], mods:[manifests], contexts:[RegistrationContext]}`.
 ## On failure: `{ok:false, reason, detail}` with a named cause — cycle,
 ## missing dep, version mismatch, api mismatch, engine version mismatch —
@@ -299,14 +308,14 @@ static func _check_compatibility(mods: Array[Dictionary]) -> Dictionary:
 	return {"ok": true}
 
 
-## One mod's declarations, played through the five seams into a fresh
+## One mod's declarations, played through the registration seams into a fresh
 ## context. The ctx is stamped with its mod_id, its manifest (so the seams can
 ## read the declared overrides) and the shared registry (so `register_module`
-## forwards into the one graph the boot orders from). Attach hooks carry an
-## EMPTY Callable here: the manifest declares the phase, the mod's own entry
-## point binds the real function in W3+.
+## forwards into the one graph the boot orders from). A manifest `callable` spec
+## on an attach or lifecycle hook is resolved HERE, so the ctx carries the real
+## Callable; an event-only hook (no `callable`) stays an empty stub.
 ##
-## Config is loaded from disk BEFORE the mod's entry point runs, so a mod
+## Config is loaded from disk BEFORE the mod's `on_load` hook runs, so a mod
 ## reading its config during registration sees the persisted values.
 static func _stamp_context(
 	mod: Dictionary, registry: ModuleRegistry, api_registry: Dictionary = {}
