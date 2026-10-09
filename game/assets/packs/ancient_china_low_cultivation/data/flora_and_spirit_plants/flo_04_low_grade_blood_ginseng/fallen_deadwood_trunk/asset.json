@@ -46,15 +46,15 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_04_low_grade_blood_ginseng/fallen_deadwood_trunk/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.49,
-            0.54
+            0.471,
+            0.506
           ]
         ],
-        "frac_zero": 0.8391,
+        "frac_zero": 0.848,
         "blocks": [
           [
             false,
@@ -78,19 +78,19 @@
         ],
         "sub_fill": [
           [
-            0.158,
-            0.612,
-            0.207
+            0.121,
+            0.482,
+            0.211
           ],
           [
-            0.313,
-            0.686,
-            0.364
+            0.348,
+            0.694,
+            0.239
           ],
           [
-            0.774,
-            0.925,
-            0.449
+            0.756,
+            0.946,
+            0.382
           ]
         ],
         "crop_offset": [
@@ -102,8 +102,8 @@
           1,
           2
         ],
-        "contact_px": 81,
-        "contact_reference_px": 81.0,
+        "contact_px": 77,
+        "contact_reference_px": 77.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -131,15 +131,15 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_04_low_grade_blood_ginseng/fallen_deadwood_trunk/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.51,
-            0.576
+            0.619,
+            0.599
           ]
         ],
-        "frac_zero": 0.8339,
+        "frac_zero": 0.842,
         "blocks": [
           [
             false,
@@ -163,43 +163,37 @@
         ],
         "sub_fill": [
           [
-            0.197,
-            0.595,
-            0.245
+            0.428,
+            0.631,
+            0.146
           ],
           [
-            0.437,
-            0.717,
-            0.283
+            0.557,
+            0.693,
+            0.188
           ],
           [
-            0.73,
-            0.933,
-            0.571
+            0.757,
+            0.922,
+            0.306
           ]
         ],
         "crop_offset": [
-          85,
-          17
+          91,
+          16
         ],
         "trunk_columns": [
           0,
-          1,
-          2
+          1
         ],
-        "contact_px": 78,
-        "contact_reference_px": 78.0,
+        "contact_px": 71,
+        "contact_reference_px": 71.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": [
-            0,
-            0,
-            0,
-            0
-          ]
+          "1.6": null
         },
         "block_rect": null,
         "block_rect_px": null
@@ -216,15 +210,15 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_04_low_grade_blood_ginseng/fallen_deadwood_trunk/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.474,
-            0.527
+            0.558,
+            0.551
           ]
         ],
-        "frac_zero": 0.8381,
+        "frac_zero": 0.8327,
         "blocks": [
           [
             false,
@@ -248,24 +242,24 @@
         ],
         "sub_fill": [
           [
-            0.161,
-            0.616,
-            0.207
+            0.098,
+            0.506,
+            0.332
           ],
           [
-            0.291,
-            0.688,
-            0.355
+            0.664,
+            0.767,
+            0.345
           ],
           [
-            0.733,
-            0.91,
-            0.437
+            0.778,
+            0.95,
+            0.351
           ]
         ],
         "crop_offset": [
-          83,
-          17
+          86,
+          16
         ],
         "trunk_columns": [
           0,
@@ -301,15 +295,15 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_04_low_grade_blood_ginseng/fallen_deadwood_trunk/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.493,
-            0.538
+            0.587,
+            0.576
           ]
         ],
-        "frac_zero": 0.8394,
+        "frac_zero": 0.824,
         "blocks": [
           [
             false,
@@ -333,23 +327,23 @@
         ],
         "sub_fill": [
           [
-            0.151,
-            0.55,
-            0.199
+            0.207,
+            0.478,
+            0.338
           ],
           [
-            0.396,
-            0.732,
-            0.381
+            0.687,
+            0.797,
+            0.321
           ],
           [
-            0.739,
-            0.875,
-            0.465
+            0.756,
+            0.961,
+            0.561
           ]
         ],
         "crop_offset": [
-          86,
+          84,
           17
         ],
         "trunk_columns": [
@@ -357,8 +351,8 @@
           1,
           2
         ],
-        "contact_px": 76,
-        "contact_reference_px": 76.0,
+        "contact_px": 78,
+        "contact_reference_px": 78.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,

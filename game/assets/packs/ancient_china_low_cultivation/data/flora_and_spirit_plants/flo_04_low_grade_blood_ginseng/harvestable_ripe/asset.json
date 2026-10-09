@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_04_low_grade_blood_ginseng/harvestable_ripe/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.419
+            0.383
           ]
         ],
-        "frac_zero": 0.7312,
+        "frac_zero": 0.752,
         "blocks": [
           [
             false
@@ -75,36 +75,42 @@
         ],
         "sub_fill": [
           [
-            0.301,
-            0.702,
-            0.161
+            0.225,
+            0.362,
+            0.16
           ],
           [
-            0.582,
-            0.772,
-            0.427
+            0.438,
+            0.558,
+            0.083
           ],
           [
-            0.08,
-            0.478,
-            0.006
+            0.374,
+            0.602,
+            0.011
           ]
         ],
         "crop_offset": [
-          22,
+          27,
           17
         ],
         "trunk_columns": [
+          0,
           1
         ],
-        "contact_px": 25,
-        "contact_reference_px": 25.0,
+        "contact_px": 42,
+        "contact_reference_px": 42.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
         },
         "block_rect": null,
         "block_rect_px": null
@@ -121,14 +127,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_04_low_grade_blood_ginseng/harvestable_ripe/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.401
+            0.48
           ]
         ],
-        "frac_zero": 0.7391,
+        "frac_zero": 0.7339,
         "blocks": [
           [
             false
@@ -150,30 +156,30 @@
         ],
         "sub_fill": [
           [
-            0.115,
-            0.374,
-            0.062
+            0.373,
+            0.628,
+            0.167
           ],
           [
-            0.577,
-            0.818,
-            0.405
+            0.464,
+            0.749,
+            0.281
           ],
           [
-            0.238,
-            0.686,
-            0.046
+            0.295,
+            0.627,
+            0.059
           ]
         ],
         "crop_offset": [
-          22,
+          27,
           17
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 40,
-        "contact_reference_px": 40.0,
+        "contact_px": 42,
+        "contact_reference_px": 42.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -201,14 +207,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_04_low_grade_blood_ginseng/harvestable_ripe/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.486
+            0.491
           ]
         ],
-        "frac_zero": 0.706,
+        "frac_zero": 0.7237,
         "blocks": [
           [
             false
@@ -230,30 +236,31 @@
         ],
         "sub_fill": [
           [
-            0.389,
-            0.738,
-            0.173
+            0.346,
+            0.467,
+            0.115
           ],
           [
-            0.515,
-            0.726,
-            0.366
+            0.566,
+            0.608,
+            0.247
           ],
           [
-            0.243,
-            0.838,
-            0.097
+            0.633,
+            0.629,
+            0.035
           ]
         ],
         "crop_offset": [
-          21,
-          17
+          28,
+          16
         ],
         "trunk_columns": [
+          0,
           1
         ],
-        "contact_px": 49,
-        "contact_reference_px": 49.0,
+        "contact_px": 59,
+        "contact_reference_px": 59.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -281,14 +288,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_04_low_grade_blood_ginseng/harvestable_ripe/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.474
+            0.579
           ]
         ],
-        "frac_zero": 0.7106,
+        "frac_zero": 0.6458,
         "blocks": [
           [
             false
@@ -310,31 +317,32 @@
         ],
         "sub_fill": [
           [
-            0.396,
-            0.677,
-            0.127
+            0.332,
+            0.523,
+            0.348
           ],
           [
-            0.487,
-            0.606,
-            0.311
+            0.636,
+            0.774,
+            0.372
           ],
           [
-            0.363,
-            0.806,
-            0.104
+            0.679,
+            0.935,
+            0.457
           ]
         ],
         "crop_offset": [
-          23,
-          17
+          20,
+          16
         ],
         "trunk_columns": [
           0,
-          1
+          1,
+          2
         ],
-        "contact_px": 55,
-        "contact_reference_px": 55.0,
+        "contact_px": 73,
+        "contact_reference_px": 73.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
