@@ -1,0 +1,140 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_26_fallen_meteorite_crater_pit.crag_outcropping",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_26_fallen_meteorite_crater_pit",
+  "asset_slug": "crag_outcropping",
+  "variant_slug": "facing_east_profile",
+  "name": "East Facing Profile",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_26_fallen_meteorite_crater_pit/crag_outcropping/facing_east_profile.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "mine_stone",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.301,
+        0.487
+      ],
+      [
+        0.691,
+        0.784
+      ]
+    ],
+    "frac_zero": 0.6504,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.441,
+        0.544,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.851,
+        0.747,
+        0.05,
+        0.0
+      ],
+      [
+        0.0,
+        0.389,
+        0.996,
+        0.975,
+        0.548,
+        0.0
+      ],
+      [
+        0.386,
+        0.997,
+        1.0,
+        1.0,
+        0.996,
+        0.487
+      ],
+      [
+        0.752,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.886
+      ],
+      [
+        0.286,
+        0.967,
+        1.0,
+        1.0,
+        0.968,
+        0.465
+      ],
+      [
+        0.0,
+        0.255,
+        0.927,
+        0.533,
+        0.338,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      39,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 55,
+    "contact_reference_px": 55.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,184 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_26_fallen_meteorite_crater_pit.rich_resource_node",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_26_fallen_meteorite_crater_pit",
+  "asset_slug": "rich_resource_node",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_26_fallen_meteorite_crater_pit/rich_resource_node/pristine_dormant.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "mine_ore",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.398,
+        0.389
+      ],
+      [
+        0.716,
+        0.762
+      ]
+    ],
+    "frac_zero": 0.5928,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.438,
+        0.81,
+        0.022,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.094,
+        0.903,
+        1.0,
+        0.269,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.409,
+        1.0,
+        1.0,
+        0.729,
+        0.122,
+        0.0
+      ],
+      [
+        0.011,
+        0.88,
+        1.0,
+        1.0,
+        1.0,
+        0.526,
+        0.0
+      ],
+      [
+        0.48,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.837,
+        0.234
+      ],
+      [
+        0.602,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.923,
+        0.355
+      ],
+      [
+        0.08,
+        0.579,
+        0.616,
+        0.915,
+        0.713,
+        0.327,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      25,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 72,
+    "contact_reference_px": 72.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}
