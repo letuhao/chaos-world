@@ -1,0 +1,93 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_11_mountain_scree_talus_slopes.erosion_shelf",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_11_mountain_scree_talus_slopes",
+  "asset_slug": "erosion_shelf",
+  "variant_slug": "facing_north_back",
+  "name": "North Facing View",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_11_mountain_scree_talus_slopes/erosion_shelf/facing_north_back.png",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "walk_surface",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.635,
+        0.588
+      ]
+    ],
+    "frac_zero": 0.8261,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.178,
+        0.799,
+        0.029
+      ],
+      [
+        0.684,
+        1.0,
+        0.588
+      ],
+      [
+        0.593,
+        0.948,
+        0.61
+      ]
+    ],
+    "crop_offset": [
+      82,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 76,
+    "contact_reference_px": 76.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

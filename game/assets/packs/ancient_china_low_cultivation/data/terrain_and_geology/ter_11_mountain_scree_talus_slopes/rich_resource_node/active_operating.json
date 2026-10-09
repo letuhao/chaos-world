@@ -1,0 +1,183 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_11_mountain_scree_talus_slopes.rich_resource_node",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_11_mountain_scree_talus_slopes",
+  "asset_slug": "rich_resource_node",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_11_mountain_scree_talus_slopes/rich_resource_node/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "mine_ore",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.495,
+        0.344
+      ],
+      [
+        0.699,
+        0.683
+      ]
+    ],
+    "frac_zero": 0.5624,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.771,
+        0.771,
+        0.029,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.199,
+        0.996,
+        1.0,
+        0.502,
+        0.147,
+        0.0
+      ],
+      [
+        0.001,
+        0.494,
+        1.0,
+        1.0,
+        0.863,
+        0.219,
+        0.0
+      ],
+      [
+        0.032,
+        0.939,
+        1.0,
+        1.0,
+        1.0,
+        0.772,
+        0.041
+      ],
+      [
+        0.346,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.331
+      ],
+      [
+        0.638,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.532
+      ],
+      [
+        0.002,
+        0.23,
+        0.635,
+        0.869,
+        0.535,
+        0.194,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 66,
+    "contact_reference_px": 66.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}
