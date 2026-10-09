@@ -336,17 +336,17 @@ func test_random_answer_is_primitives_only() -> void:
 	_assert_primitives(WorldSpawnApi.random(actor, &"", &"", 31), "random")
 
 
-func test_set_current_is_the_explicit_pick() -> void:
+func test_selected_is_the_explicit_pick() -> void:
 	var actor := _actor()
-	var answer := WorldSpawnApi.set_current(actor, &"transcendent_realm")
-	assert_eq(answer["ok"], true, "set_current moves")
+	var answer := WorldSpawnApi.selected(actor, &"transcendent_realm")
+	assert_eq(answer["ok"], true, "selected moves")
 	assert_eq(answer["location_id"], "transcendent_realm", "to the named place")
 	assert_eq(WorldSpawnApi.current(actor)["location_id"], "transcendent_realm", "ledger agrees")
 
 
-func test_set_current_refuses_an_unknown_location() -> void:
+func test_selected_refuses_an_unknown_location() -> void:
 	var actor := _actor()
-	var answer := WorldSpawnApi.set_current(actor, &"invented")
+	var answer := WorldSpawnApi.selected(actor, &"invented")
 	assert_eq(answer["ok"], false, "a durable id nothing backs is refused")
 	assert_eq(answer["reason"], "unknown_location", "refusal is named")
 
