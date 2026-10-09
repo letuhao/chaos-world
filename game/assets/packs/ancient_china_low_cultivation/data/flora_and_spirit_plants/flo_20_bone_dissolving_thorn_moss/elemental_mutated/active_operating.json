@@ -1,0 +1,141 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_20_bone_dissolving_thorn_moss.elemental_mutated",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_20_bone_dissolving_thorn_moss",
+  "asset_slug": "elemental_mutated",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_20_bone_dissolving_thorn_moss/elemental_mutated/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "none",
+  "interactive_verb": "channel_element",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.405,
+        0.307
+      ],
+      [
+        0.639,
+        0.543
+      ]
+    ],
+    "frac_zero": 0.7065,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.046,
+        0.384,
+        0.011,
+        0.0,
+        0.0
+      ],
+      [
+        0.276,
+        0.548,
+        0.905,
+        0.567,
+        0.013,
+        0.0
+      ],
+      [
+        0.171,
+        0.689,
+        0.998,
+        0.606,
+        0.06,
+        0.016
+      ],
+      [
+        0.151,
+        0.921,
+        0.607,
+        0.25,
+        0.359,
+        0.156
+      ],
+      [
+        0.39,
+        0.916,
+        1.0,
+        0.788,
+        0.352,
+        0.0
+      ],
+      [
+        0.527,
+        0.99,
+        1.0,
+        0.972,
+        0.368,
+        0.0
+      ],
+      [
+        0.177,
+        0.47,
+        0.727,
+        0.495,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      48,
+      18
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 55,
+    "contact_reference_px": 55.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

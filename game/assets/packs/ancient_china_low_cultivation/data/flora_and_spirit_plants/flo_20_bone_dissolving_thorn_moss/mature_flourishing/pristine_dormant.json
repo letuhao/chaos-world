@@ -1,0 +1,148 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_20_bone_dissolving_thorn_moss.mature_flourishing",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_20_bone_dissolving_thorn_moss",
+  "asset_slug": "mature_flourishing",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_20_bone_dissolving_thorn_moss/mature_flourishing/pristine_dormant.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "inspect_plant",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.384,
+        0.426
+      ],
+      [
+        0.736,
+        0.571
+      ]
+    ],
+    "frac_zero": 0.618,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.046,
+        0.735,
+        0.671,
+        0.026,
+        0.0
+      ],
+      [
+        0.055,
+        0.455,
+        0.667,
+        0.657,
+        0.566,
+        0.0
+      ],
+      [
+        0.476,
+        0.612,
+        0.766,
+        0.533,
+        0.569,
+        0.385
+      ],
+      [
+        0.133,
+        0.384,
+        0.603,
+        0.533,
+        0.486,
+        0.281
+      ],
+      [
+        0.296,
+        0.867,
+        1.0,
+        0.868,
+        0.446,
+        0.103
+      ],
+      [
+        0.504,
+        0.997,
+        1.0,
+        1.0,
+        0.846,
+        0.275
+      ],
+      [
+        0.446,
+        0.883,
+        0.977,
+        0.936,
+        0.662,
+        0.18
+      ]
+    ],
+    "crop_offset": [
+      34,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 138,
+    "contact_reference_px": 138.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

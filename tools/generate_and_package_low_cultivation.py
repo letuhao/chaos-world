@@ -76,9 +76,9 @@ GAME_DIR = REPO_ROOT / "game"
 
 STYLE_PROMPT_CLAUSE = (
     "2D orthographic top-down (~45 degrees), gouache hand-painted, pine-soot ink contour lines (#1C1C1E), "
-    "balanced East Asian Xianxia mineral palette (loess ochre #B88648, vermilion cinnabar #A8382B, "
-    "weathered pine #5A4838, celadon jade #7A9A8B, spirit spring azure #4A7A8C, incense ash #4A4A52). "
-    "Isolated on solid pure white background, crisp silhouette."
+    "rich and abundant East Asian Xianxia mineral palette (loess ochre #B88648, vermilion cinnabar #A8382B, "
+    "weathered pine #5A4838, celadon jade #7A9A8B, spirit spring azure #4A7A8C, realgar gold #D4A347). "
+    "Isolated on solid pure white background, crisp silhouette, vibrant color contrast."
 )
 
 
@@ -356,8 +356,70 @@ ANTI_DRIFT_CLAUSE = (
     "Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, "
     "western gothic castle, medieval stone fortress, European church, witch cauldron, "
     "laboratory glassware, modern objects, anime mech, sci-fi wires, "
-    "monochrome cyan wash, heavy cyan tint, dull teal filter, blue-green cast, unnatural cyan glow"
+    "monochrome cyan wash, heavy cyan tint, dull teal filter, blue-green cast, unnatural cyan glow, "
+    "dull monochrome, desaturated colors, washed out, muddy brown wash, flat monotone palette, low contrast, grey overcast, bleached colors, lifeless colors"
 )
+
+
+def get_balanced_color_clause(asset: dict, asset_name: str, material: str) -> str:
+    """
+    Generate rich, balanced, multi-tonal East Asian Xianxia mineral color harmonies
+    tailored to the asset's cultivation element, material, and subject identity.
+    Ensures vibrant color abundance, preventing dull monochrome or muddy washes.
+    """
+    elem = (asset.get("cultivation_element") or "").lower()
+    text = f"{asset_name} {material} {asset.get('sub_domain', '')}".lower()
+
+    # Specific subject overrides for rich abundance
+    if any(w in text for w in ("osmanthus", "dan gui")):
+        return "rich abundant color harmony: radiant golden-yellow blossoms (#E5A93C), vibrant emerald foliage, warm amber resin, and deep cinnamon-brown bark"
+    if any(w in text for w in ("lingzhi", "flame_lingzhi", "crimson_flame")):
+        return "rich abundant color harmony: deep lacquered vermilion cinnabar cap (#C83C28), bright golden-ochre growth rim, dark umber stalk, and glowing ember highlights"
+    if any(w in text for w in ("lotus", "water_lily")):
+        return "rich abundant color harmony: pure snow-white and delicate rose-pink floral petals, bright golden stamen pistils, and lush malachite-green leaf pads"
+    if any(w in text for w in ("ginseng", "blood_ginseng")):
+        return "rich abundant color harmony: warm golden-ochre root rhizome, bright scarlet carmine berries, and deep forest-green herbal sprigs"
+    if any(w in text for w in ("peach", "peach_wood")):
+        return "rich abundant color harmony: soft blooming pink peach blossoms, golden honey centers, warm amber timber grain, and fresh celadon leaves"
+    if any(w in text for w in ("pine", "pine_nuts", "cypress")):
+        return "rich abundant color harmony: rich evergreen needle clusters, translucent golden amber resin droplets, and weathered cinnamon-umber bark"
+    if any(w in text for w in ("rice", "grain", "five_color")):
+        return "rich abundant color harmony: Sacred Five-Color panicles (golden yellow, ruby scarlet, emerald jade, twilight violet, and pearl white), brilliant harvest gradient"
+    if any(w in text for w in ("thorn", "briar", "bramble", "bone_dissolving")):
+        return "rich abundant color harmony: pale ivory-bone white thorns with crimson-tipped barbs, deep velvety malachite moss, and dark ironwood stems"
+    if any(w in text for w in ("reed", "viper_grass")):
+        return "rich abundant color harmony: variegated emerald and chartreuse reed blades, delicate violet-spotted stems, and warm tawny-tan dried sheath bases"
+    if any(w in text for w in ("poplar", "willow", "camphor")):
+        return "rich abundant color harmony: shimmering silver-green and golden-tinted leaves, warm honey-brown boughs, and dark charcoal bark crevices"
+
+    # Five Elements / Cultivation Element Harmonies
+    if elem == "fire":
+        return "rich abundant color harmony: glowing vermilion cinnabar (#C83C28), bright flame orange, warm golden-amber accents, and deep charcoal soot contrast"
+    if elem == "wood":
+        return "rich abundant color harmony: vibrant malachite forest green (#2D6A4F), delicate golden blossom accents, rich sandalwood brown (#8B5A2B), and fresh jade highlights"
+    if elem == "earth":
+        return "rich abundant color harmony: warm loess yellow ochre (#C68B39), rich terracotta red-brown (#9C4A28), olive-moss accents, and sparkling pyrite gold flecks"
+    if elem == "metal":
+        return "rich abundant color harmony: polished radiant golden brass (#D4A347), cold blue-gray forged iron steel (#3A4454), and crisp silver-white edge gleams"
+    if elem == "water":
+        return "rich abundant color harmony: deep azurite indigo (#1B3B6F), translucent turquoise mineral water, pearl-white foamy highlights, and jade waterweed accents"
+    if elem in ("thunder", "lightning"):
+        return "rich abundant color harmony: vivid electric violet (#7B2CBF), deep twilight indigo, dazzling golden-amber lightning arcs, and bright azure sparks"
+    if elem == "ice":
+        return "rich abundant color harmony: crystalline pale glacial sapphire, iridescent frost-silver, dark evergreen needle contrast, and sharp prismatic rainbow flecks"
+    if elem == "poison":
+        return "rich abundant color harmony: vivid toxic orchid purple (#7209B7), deep venomous emerald green, rich black lacquer, and bright warning-amber accents"
+    if elem == "blood":
+        return "rich abundant color harmony: rich carmine crimson (#9E1B32), deep ruby red, warm oxblood leather tones, aged dark bronze, and ivory-bone accents"
+    if elem in ("yin", "ghost"):
+        return "rich abundant color harmony: mystical twilight plum-purple (#4A154B), pale luminous moon-silver, dark ebony timber, and subtle cyan-turquoise spirit motes"
+    if elem in ("yang", "wuxing_omni"):
+        return "rich abundant color harmony: Imperial Five-Color mineral harmony (cinnabar vermilion, realgar gold, malachite green, azurite blue, pearl white), brilliantly balanced"
+    if elem == "wind":
+        return "rich abundant color harmony: whispering celadon and pale jade greens, warm sunlit pine bark, and golden pollen-dust highlights"
+
+    # Default / Mortal / Cultural Architecture & Props
+    return "rich abundant color harmony: authentic East Asian mineral gouache harmony (warm cinnabar vermilion, golden ochre, malachite green, and polished rosewood umber), vibrant balanced saturation"
 
 
 def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
@@ -376,6 +438,7 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
         asset_name = raw_asset_name
 
     material = asset.get("material", "carved wood and polished bronze")
+    color_clause = get_balanced_color_clause(asset, asset_name, material)
     var_mod = var.get("prompt_modifier") or var.get("prompt") or ""
     # Strip any negation words in var_mod to prevent FLUX T5 positive-trigger inversion
     var_mod = (
@@ -437,7 +500,7 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
             f"Single isolated 2D game asset of {asset_name.lower()}, {material}, {var_mod}, "
             "Ancient Chinese Xianxia cultivation mortal realm aesthetic, double-edged Chinese straight sword or authentic Daoist implement, "
             "bold readable silhouette, clean grouped value planes, chunky stylized proportions for 2D icon clarity, "
-            f"fine dark #1C1C1E ink contours, gouache hand-painted, {shadow_clause} centered on {adaptive_bg}."
+            f"{color_clause}, fine dark #1C1C1E ink contours, gouache hand-painted, {shadow_clause} centered on {adaptive_bg}."
         )
         return pos, item_neg
 
@@ -477,7 +540,7 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
         pos = (
             f"Single isolated 2D top-down world-map natural landmark sprite of {asset_name.lower()}, {material}, {var_mod}, "
             f"Ancient Chinese Xianxia landscape style, {landmark_pos} "
-            "sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, "
+            f"{color_clause}, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, "
             "crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, "
             "gouache hand-painted with dark #1C1C1E ink contours, isolated on solid plain white background."
         )
@@ -531,7 +594,7 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
 
         pos = (
             f"Seamless 2D ground texture map of {clean_name}, {material}, {var_mod}, "
-            "painterly anime gouache, continuous uniform natural earth texture, monolithic unbroken flat ground plane, "
+            f"painterly anime gouache, {color_clause}, continuous uniform natural earth texture, monolithic unbroken flat ground plane, "
             "macro top-down perpendicular 90-degree satellite overhead view looking straight down at soil surface, "
             "edge-to-edge seamless soil texture filling 100% of canvas."
         )
@@ -610,7 +673,7 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
         pos = (
             f"Single isolated 2D top-down RPG map sprite of {asset_name.lower()}, {material}, {var_mod}, "
             "Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), "
-            f"{foliage_spec} "
+            f"{foliage_spec} {color_clause}, "
             "gouache hand-painted with dark #1C1C1E pine-soot ink contours, flat grounded root base, short attached micro contact shadow only, "
             "isolated on solid plain white background."
         )
@@ -634,7 +697,7 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
         pos = (
             f"Single isolated 2D top-down RPG game creature sprite of {asset_name.lower()}, {material}, {var_mod}, "
             "Shan Hai Jing ancient Chinese mythological aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), "
-            f"back, wings, shoulders and creature body viewed foreshortened from overhead, gouache painted with dark ink contours, "
+            f"back, wings, shoulders and creature body viewed foreshortened from overhead, {color_clause}, gouache painted with dark ink contours, "
             f"{contact_spec}, zero directional drop shadow, isolated on {adaptive_bg}."
         )
         neg = (
@@ -733,7 +796,7 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
         pos = (
             f"Single isolated 2D top-down world-map building sprite of {asset_name.lower()}, {material}, {var_mod}, "
             f"Ancient Chinese Tang-Song Xianxia architectural style, {persp_pos} "
-            "gouache hand-painted with dark #1C1C1E ink contours, flat grounded baseline, short attached micro contact shadow only, "
+            f"{color_clause}, gouache hand-painted with dark #1C1C1E ink contours, flat grounded baseline, short attached micro contact shadow only, "
             "isolated on solid plain white background."
         )
         neg = (
@@ -766,7 +829,7 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
         pos = (
             f"Single isolated 2D RPG game prop of {asset_name.lower()}, {material}, {var_mod}, "
             "Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese traditional carved rosewood joinery or Daoist storage implement, "
-            "gouache hand-painted with crisp dark #1C1C1E ink contours, flat zero-cast-shadow baseline, "
+            f"{color_clause}, gouache hand-painted with crisp dark #1C1C1E ink contours, flat zero-cast-shadow baseline, "
             "micro ambient contact occlusion directly under base only, isolated on solid plain white background."
         )
         neg = (
@@ -780,7 +843,7 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
     pos = (
         f"Single isolated 2D RPG game prop of {asset_name.lower()}, {material}, {var_mod}, "
         "Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, "
-        "gouache hand-painted with crisp dark #1C1C1E ink contours, flat zero-cast-shadow baseline, "
+        f"{color_clause}, gouache hand-painted with crisp dark #1C1C1E ink contours, flat zero-cast-shadow baseline, "
         "micro ambient contact occlusion directly under feet only, isolated on solid plain white background."
     )
     neg = (

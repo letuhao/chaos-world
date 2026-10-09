@@ -1,0 +1,659 @@
+{
+  "id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_20_bone_dissolving_thorn_moss.dense_thicket_cluster",
+  "archetype": "dense_thicket_cluster_flo_20_bone_dissolving_thorn_moss",
+  "name": "Bone-Dissolving Thorn Moss - Impenetrable Wild Thicket",
+  "vietnamese_name": "Hóa Cốt Thích Đài - Bụi Cây Rậm Rạp Chắn Đường",
+  "hanzi": "化骨刺苔 · 茂密野生密丛",
+  "category": "flo_20_bone_dissolving_thorn_moss",
+  "category_code": "FLO-20",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_20_bone_dissolving_thorn_moss",
+  "asset_class": "flora_tree",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "obstacle",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "cut_thicket",
+  "gameplay_role": "flora_tree entity supporting Bone-Dissolving Thorn Moss gameplay",
+  "destructible": true,
+  "material": "weathered gnarled pine bark and resinous timber",
+  "cultivation_element": "wood",
+  "prompt_summary": "Single isolated 2D RPG game prop of bone-dissolving thorn moss - impenetrable wild thicket, authentic bone-dissolving thorn moss materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Natural Flora & Spiritual Plants",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D top-down RPG map sprite of impenetrable wild thicket, weathered gnarled pine bark and resinous timber, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_20_bone_dissolving_thorn_moss/dense_thicket_cluster/pristine_dormant.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.32,
+            0.393
+          ],
+          [
+            0.693,
+            0.606
+          ]
+        ],
+        "frac_zero": 0.5926,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.347,
+            0.848,
+            0.207,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.307,
+            0.624,
+            0.6,
+            0.67,
+            0.174,
+            0.0
+          ],
+          [
+            0.027,
+            0.254,
+            0.395,
+            0.586,
+            0.575,
+            0.771,
+            0.385
+          ],
+          [
+            0.298,
+            0.808,
+            0.987,
+            0.631,
+            0.384,
+            0.206,
+            0.0
+          ],
+          [
+            0.061,
+            0.851,
+            1.0,
+            1.0,
+            0.808,
+            0.408,
+            0.023
+          ],
+          [
+            0.203,
+            0.951,
+            1.0,
+            1.0,
+            1.0,
+            0.697,
+            0.089
+          ],
+          [
+            0.355,
+            0.664,
+            0.852,
+            0.967,
+            0.754,
+            0.557,
+            0.265
+          ]
+        ],
+        "crop_offset": [
+          22,
+          17
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 158,
+        "contact_reference_px": 158.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D top-down RPG map sprite of impenetrable wild thicket, weathered gnarled pine bark and resinous timber, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_20_bone_dissolving_thorn_moss/dense_thicket_cluster/active_operating.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.307,
+            0.421
+          ],
+          [
+            0.774,
+            0.654
+          ]
+        ],
+        "frac_zero": 0.582,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.097,
+            0.759,
+            0.619,
+            0.001,
+            0.0
+          ],
+          [
+            0.0,
+            0.128,
+            0.668,
+            0.541,
+            0.547,
+            0.251,
+            0.0
+          ],
+          [
+            0.209,
+            0.617,
+            0.293,
+            0.622,
+            0.4,
+            0.856,
+            0.339
+          ],
+          [
+            0.501,
+            0.929,
+            0.939,
+            0.668,
+            0.271,
+            0.119,
+            0.0
+          ],
+          [
+            0.18,
+            0.985,
+            1.0,
+            1.0,
+            0.913,
+            0.429,
+            0.0
+          ],
+          [
+            0.49,
+            0.997,
+            1.0,
+            1.0,
+            1.0,
+            0.661,
+            0.029
+          ],
+          [
+            0.287,
+            0.799,
+            0.969,
+            0.961,
+            0.841,
+            0.422,
+            0.022
+          ]
+        ],
+        "crop_offset": [
+          26,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 151,
+        "contact_reference_px": 151.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D top-down RPG map sprite of impenetrable wild thicket, weathered gnarled pine bark and resinous timber, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_20_bone_dissolving_thorn_moss/dense_thicket_cluster/damaged_weathered.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.464,
+            0.351
+          ],
+          [
+            0.793,
+            0.724
+          ]
+        ],
+        "frac_zero": 0.5958,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.16,
+            0.859,
+            0.502,
+            0.0,
+            0.0
+          ],
+          [
+            0.182,
+            0.452,
+            0.536,
+            0.608,
+            0.582,
+            0.004
+          ],
+          [
+            0.457,
+            0.63,
+            0.644,
+            0.354,
+            0.45,
+            0.15
+          ],
+          [
+            0.176,
+            0.981,
+            0.965,
+            0.718,
+            0.559,
+            0.363
+          ],
+          [
+            0.368,
+            0.988,
+            1.0,
+            1.0,
+            0.832,
+            0.206
+          ],
+          [
+            0.775,
+            1.0,
+            1.0,
+            1.0,
+            0.978,
+            0.564
+          ],
+          [
+            0.318,
+            0.841,
+            0.979,
+            0.939,
+            0.688,
+            0.222
+          ]
+        ],
+        "crop_offset": [
+          35,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 128,
+        "contact_reference_px": 128.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D top-down RPG map sprite of impenetrable wild thicket, weathered gnarled pine bark and resinous timber, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_20_bone_dissolving_thorn_moss/dense_thicket_cluster/ruined_rubble.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.492,
+            0.235
+          ],
+          [
+            0.735,
+            0.716
+          ]
+        ],
+        "frac_zero": 0.5956,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.358,
+            0.832,
+            0.149,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.101,
+            0.48,
+            0.52,
+            0.766,
+            0.238,
+            0.0,
+            0.0
+          ],
+          [
+            0.572,
+            0.722,
+            0.614,
+            0.188,
+            0.633,
+            0.005,
+            0.0
+          ],
+          [
+            0.145,
+            0.812,
+            1.0,
+            0.841,
+            0.818,
+            0.257,
+            0.0
+          ],
+          [
+            0.356,
+            0.928,
+            1.0,
+            1.0,
+            0.948,
+            0.461,
+            0.023
+          ],
+          [
+            0.582,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.887,
+            0.23
+          ],
+          [
+            0.116,
+            0.709,
+            0.91,
+            0.868,
+            0.699,
+            0.251,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          28,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 133,
+        "contact_reference_px": 133.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "FLO-20",
+    "domain": "flora_and_spirit_plants",
+    "interaction": "cut_thicket",
+    "collision_behavior": "obstacle",
+    "element": "wood",
+    "tier": 3
+  },
+  "category_id": "flo_20_bone_dissolving_thorn_moss",
+  "domain_id": "flora_and_spirit_plants",
+  "pinyin": "Huàgǔ Cìtái · Impenetrable Wild Thicket",
+  "archetype_name": "Impenetrable Wild Thicket",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "obstacle",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "ancient_pine_wood",
+  "secondary_material": "evergreen_needles",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Wood affinity (Core Formation (Kết Đan / 结丹))",
+  "elevation_tier": 3,
+  "mortal_realm_tier": "Core Formation (Kết Đan / 结丹)",
+  "asset_slug": "dense_thicket_cluster"
+}

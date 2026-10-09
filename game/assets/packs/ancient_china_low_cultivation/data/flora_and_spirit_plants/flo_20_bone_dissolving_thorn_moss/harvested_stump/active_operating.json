@@ -1,0 +1,86 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_20_bone_dissolving_thorn_moss.harvested_stump",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_20_bone_dissolving_thorn_moss",
+  "asset_slug": "harvested_stump",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_20_bone_dissolving_thorn_moss/harvested_stump/active_operating.png",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.478
+      ]
+    ],
+    "frac_zero": 0.7944,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      2,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.203,
+        0.231
+      ],
+      [
+        0.546,
+        0.464
+      ],
+      [
+        0.772,
+        0.641
+      ]
+    ],
+    "crop_offset": [
+      35,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 55,
+    "contact_reference_px": 55.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
