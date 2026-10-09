@@ -132,7 +132,8 @@
     "dual_cultivation": {
       "deps": [
         "contracts",
-        "core"
+        "core",
+        "foundation"
       ]
     },
     "economy": {

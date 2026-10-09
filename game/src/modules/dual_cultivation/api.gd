@@ -21,6 +21,14 @@ static func succubus_path() -> CultivationPathDef:
 	return SuccubusPath.path_def()
 
 
+## The dual-cultivation aid (BL-0951 / ADR 0939, S13): exchange cultivation with a partner —
+## the actor's scarred realm mends by exactly what the partner's perfection there loses.
+## `DualCultivationAid` owns the equal-transfer rule (the one transfer amount, bounded on
+## both sides), the essence price, and the time cost; this names it.
+static func dual_aid(actor: Actor, partner: Actor, realm_id: StringName = &"") -> Dictionary:
+	return DualCultivationAid.aid(actor, partner, realm_id)
+
+
 static func _ensure_resources(actor: Actor) -> void:
 	_add_pool(actor, DualCultivationStats.ESSENCE, true)
 	_add_pool(actor, DualCultivationStats.DESIRE, false)
