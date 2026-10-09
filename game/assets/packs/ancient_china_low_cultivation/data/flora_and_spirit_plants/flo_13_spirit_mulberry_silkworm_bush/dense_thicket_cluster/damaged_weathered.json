@@ -1,0 +1,154 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_13_spirit_mulberry_silkworm_bush.dense_thicket_cluster",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_13_spirit_mulberry_silkworm_bush",
+  "asset_slug": "dense_thicket_cluster",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_13_spirit_mulberry_silkworm_bush/dense_thicket_cluster/damaged_weathered.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "cut_thicket",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.409,
+        0.465
+      ],
+      [
+        0.619,
+        0.602
+      ]
+    ],
+    "frac_zero": 0.5885,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.465,
+        0.848,
+        0.295,
+        0.0,
+        0.0
+      ],
+      [
+        0.042,
+        0.326,
+        0.745,
+        0.656,
+        0.771,
+        0.227,
+        0.0
+      ],
+      [
+        0.172,
+        0.594,
+        0.633,
+        0.584,
+        0.399,
+        0.728,
+        0.276
+      ],
+      [
+        0.683,
+        0.896,
+        0.611,
+        0.832,
+        0.659,
+        0.398,
+        0.219
+      ],
+      [
+        0.043,
+        0.529,
+        0.85,
+        0.924,
+        0.74,
+        0.129,
+        0.0
+      ],
+      [
+        0.191,
+        0.903,
+        1.0,
+        1.0,
+        0.938,
+        0.577,
+        0.0
+      ],
+      [
+        0.077,
+        0.714,
+        0.945,
+        0.992,
+        0.814,
+        0.279,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 131,
+    "contact_reference_px": 131.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
