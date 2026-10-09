@@ -1,26 +1,274 @@
 {
-  "asset_id": "ancient_china_low_cultivation.rel_01_solitary_mountain_daoist_hermitage.daoist_temple_hall",
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_01_solitary_mountain_daoist_hermitage.daoist_temple_hall",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_01_solitary_mountain_daoist_hermitage",
+  "asset_slug": "daoist_temple_hall",
   "variant_slug": "rot_west_flank",
-  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_01_solitary_mountain_daoist_hermitage/daoist_temple_hall/rot_west_flank.png",
-  "width": 768,
-  "height": 768,
+  "name": "West Flank (Left Profile)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_01_solitary_mountain_daoist_hermitage/daoist_temple_hall/rot_west_flank.png",
   "footprint_cells": [
-    1,
-    1
+    4,
+    3
   ],
   "canvas_px": [
-    768,
-    768
+    512,
+    384
   ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
   "collision_type": "solid",
+  "interactive_verb": "worship_dao",
   "matrix_data": {
-    "subgrid_rows": 4,
-    "subgrid_cols": 4,
-    "walk_surface": false,
-    "elevation_step": 0,
-    "cliff_drop": false,
-    "contact_pixels": [],
-    "source_render_seed": 10904,
-    "source_candidate": "pure_yang_daoist_temple"
+    "coverage": [
+      [
+        0.292,
+        0.666,
+        0.608,
+        0.244
+      ],
+      [
+        0.818,
+        1.0,
+        1.0,
+        0.738
+      ],
+      [
+        0.499,
+        0.925,
+        0.92,
+        0.492
+      ]
+    ],
+    "frac_zero": 0.6529,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 12,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      9,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.074,
+        0.392,
+        0.0,
+        0.0,
+        0.002,
+        0.0
+      ],
+      [
+        0.009,
+        0.628,
+        0.348,
+        0.708,
+        0.942,
+        0.386,
+        0.444,
+        0.438,
+        0.0
+      ],
+      [
+        0.0,
+        0.81,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.349,
+        0.0
+      ],
+      [
+        0.16,
+        0.834,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.357,
+        0.003
+      ],
+      [
+        0.691,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.94,
+        0.296
+      ],
+      [
+        0.667,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.979,
+        0.406
+      ],
+      [
+        0.54,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.982,
+        0.374
+      ],
+      [
+        0.486,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.874
+      ],
+      [
+        0.487,
+        0.861,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.718,
+        0.236
+      ],
+      [
+        0.0,
+        0.682,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.259,
+        0.0
+      ],
+      [
+        0.0,
+        0.37,
+        0.455,
+        0.872,
+        0.8,
+        0.713,
+        0.516,
+        0.185,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      116,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 86,
+    "contact_reference_px": 86.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      384
+    ]
   }
 }

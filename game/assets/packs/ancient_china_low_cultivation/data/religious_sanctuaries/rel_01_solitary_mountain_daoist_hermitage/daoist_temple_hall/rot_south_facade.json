@@ -1,26 +1,295 @@
 {
-  "asset_id": "ancient_china_low_cultivation.rel_01_solitary_mountain_daoist_hermitage.daoist_temple_hall",
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_01_solitary_mountain_daoist_hermitage.daoist_temple_hall",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_01_solitary_mountain_daoist_hermitage",
+  "asset_slug": "daoist_temple_hall",
   "variant_slug": "rot_south_facade",
-  "image_path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_01_solitary_mountain_daoist_hermitage/daoist_temple_hall/rot_south_facade.png",
-  "width": 768,
-  "height": 768,
+  "name": "South Facade (Front Entrance)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_01_solitary_mountain_daoist_hermitage/daoist_temple_hall/rot_south_facade.png",
   "footprint_cells": [
-    1,
-    1
+    4,
+    3
   ],
   "canvas_px": [
-    768,
-    768
+    512,
+    384
   ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
   "collision_type": "solid",
+  "interactive_verb": "worship_dao",
   "matrix_data": {
-    "subgrid_rows": 4,
-    "subgrid_cols": 4,
-    "walk_surface": false,
-    "elevation_step": 0,
-    "cliff_drop": false,
-    "contact_pixels": [],
-    "source_render_seed": 10901,
-    "source_candidate": "pure_yang_daoist_temple"
+    "coverage": [
+      [
+        0.382,
+        0.725,
+        0.721,
+        0.361
+      ],
+      [
+        0.827,
+        1.0,
+        1.0,
+        0.819
+      ],
+      [
+        0.483,
+        0.922,
+        0.913,
+        0.398
+      ]
+    ],
+    "frac_zero": 0.5596,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 12,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.138,
+        0.002,
+        0.009,
+        0.079,
+        0.498,
+        0.01,
+        0.001,
+        0.003,
+        0.113,
+        0.0
+      ],
+      [
+        0.0,
+        0.751,
+        0.86,
+        0.774,
+        0.976,
+        1.0,
+        0.927,
+        0.765,
+        0.895,
+        0.387,
+        0.0
+      ],
+      [
+        0.0,
+        0.636,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.257,
+        0.0
+      ],
+      [
+        0.282,
+        0.808,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.59,
+        0.119
+      ],
+      [
+        0.643,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.432
+      ],
+      [
+        0.271,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.927,
+        0.0
+      ],
+      [
+        0.666,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.994,
+        0.483
+      ],
+      [
+        0.295,
+        0.988,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.693,
+        0.24
+      ],
+      [
+        0.366,
+        0.975,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.415,
+        0.0
+      ],
+      [
+        0.0,
+        0.688,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.923,
+        0.822,
+        0.505,
+        0.0
+      ],
+      [
+        0.0,
+        0.005,
+        0.196,
+        0.557,
+        0.895,
+        0.867,
+        0.859,
+        0.411,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      85,
+      17
+    ],
+    "trunk_columns": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 136,
+    "contact_reference_px": 136.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      384
+    ]
   }
 }

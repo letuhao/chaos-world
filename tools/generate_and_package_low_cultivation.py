@@ -372,6 +372,57 @@ def get_balanced_color_clause(asset: dict, asset_name: str, material: str) -> st
     name = asset_name.lower()
     id_str = f"{name} {sub}"
 
+    # Weapon and implement overrides: prevent conifer/tree leakage on metal/jade implements
+    if any(w in id_str for w in ("sword", "blade", "saber", "flying_sword")):
+        return "rich abundant color harmony: polished silver-steel forged blade with dark folded Damascus steel grain, warm golden brass crossguard fittings (#D4A347), and dark rosewood cord-wrapped grip, zero cyan tint"
+    if any(w in id_str for w in ("shovel", "spade", "trowel")):
+        return "rich abundant color harmony: translucent warm mutton-fat white nephrite jade blade, polished radiant brass ferrule (#D4A347), and dark polished rosewood handle, zero cyan tint"
+    if any(w in id_str for w in ("cauldron", "ding", "furnace")):
+        return "rich abundant color harmony: antique cast bronze with warm golden-amber highlights (#D4A347), rich verdigris patina accents, and glowing charcoal embers"
+
+    # Architecture overrides: ensure buildings use authentic Tang-Song timber, vermilion pillars, and warm charcoal terracotta tiles
+    is_arch = any(
+        k in (asset.get("asset_class") or asset.get("type") or "").lower()
+        for k in (
+            "structure",
+            "building",
+            "architecture",
+            "gateway",
+            "gate",
+            "pagoda",
+            "pavilion",
+            "tower",
+            "hall",
+            "shrine",
+            "temple",
+            "dwelling",
+            "barracks",
+            "hermitage",
+        )
+    ) or any(
+        k in id_str
+        for k in (
+            "gate",
+            "shanmen",
+            "barracks",
+            "hall",
+            "pavilion",
+            "tower",
+            "hermitage",
+            "temple",
+            "shrine",
+            "chamber",
+            "dwelling",
+        )
+    )
+    if is_arch:
+        if any(w in id_str for w in ("cottage", "granary", "straw", "thatch", "rustic", "farmer")):
+            return "rich abundant color harmony: warm golden sun-dried straw thatch (#D4A347), warm loess mud-brick walls, honey-chestnut timber framing, and rich natural earth tones"
+        elif any(w in id_str for w in ("hermitage", "daoist", "shrine", "temple", "altar")):
+            return "rich abundant color harmony: warm weathered sandalwood timber (#8B5A2B), authentic dark charcoal-slate terracotta roof tiles (#2E2E32), aged golden bronze incense burner accents (#D4A347), and warm grey granite foundation, zero cyan or teal wash"
+        else:
+            return "rich abundant color harmony: warm vermilion cinnabar lacquer pillars (#C83C28), radiant golden-amber dougong brackets (#D4A347), authentic dark charcoal-slate terracotta roof tiles (#2C2C30), and polished rosewood beams, zero cyan or teal wash"
+
     # Specific subject overrides for rich abundance - match by plant identity, NOT raw JSON material
     if any(w in id_str for w in ("osmanthus", "dan gui")):
         return "rich abundant color harmony: radiant golden-yellow blossoms (#E5A93C), vibrant emerald foliage, warm amber resin, and deep cinnamon-brown bark"
@@ -423,57 +474,6 @@ def get_balanced_color_clause(asset: dict, asset_name: str, material: str) -> st
         return "rich abundant color harmony: weeping golden-amber seed cones, fragrant cinnamon timber, and rich scale foliage"
     if any(w in id_str for w in ("poplar", "wind_listening")):
         return "rich abundant color harmony: shimmering silver-green and golden-tinted leaves, warm honey-brown boughs, and dark charcoal bark crevices"
-
-    # Architecture overrides: ensure buildings use authentic Tang-Song timber, vermilion pillars, and warm charcoal terracotta tiles
-    is_arch = any(
-        k in (asset.get("asset_class") or asset.get("type") or "").lower()
-        for k in (
-            "structure",
-            "building",
-            "architecture",
-            "gateway",
-            "gate",
-            "pagoda",
-            "pavilion",
-            "tower",
-            "hall",
-            "shrine",
-            "temple",
-            "dwelling",
-            "barracks",
-            "hermitage",
-        )
-    ) or any(
-        k in id_str
-        for k in (
-            "gate",
-            "shanmen",
-            "barracks",
-            "hall",
-            "pavilion",
-            "tower",
-            "hermitage",
-            "temple",
-            "shrine",
-            "chamber",
-            "dwelling",
-        )
-    )
-    if is_arch:
-        if any(w in id_str for w in ("cottage", "granary", "straw", "thatch", "rustic", "farmer")):
-            return "rich abundant color harmony: warm golden sun-dried straw thatch (#D4A347), warm loess mud-brick walls, honey-chestnut timber framing, and rich natural earth tones"
-        elif any(w in id_str for w in ("hermitage", "daoist", "shrine", "temple", "altar")):
-            return "rich abundant color harmony: warm weathered sandalwood timber (#8B5A2B), authentic dark charcoal-slate terracotta roof tiles (#2E2E32), aged golden bronze incense burner accents (#D4A347), and warm grey granite foundation, zero cyan or teal wash"
-        else:
-            return "rich abundant color harmony: warm vermilion cinnabar lacquer pillars (#C83C28), radiant golden-amber dougong brackets (#D4A347), authentic dark charcoal-slate terracotta roof tiles (#2C2C30), and polished rosewood beams, zero cyan or teal wash"
-
-    # Weapon and implement overrides: prevent conifer/tree leakage on metal/jade implements
-    if any(w in id_str for w in ("sword", "blade", "saber", "flying_sword")):
-        return "rich abundant color harmony: polished silver-steel forged blade with dark folded Damascus steel grain, warm golden brass crossguard fittings (#D4A347), and dark rosewood cord-wrapped grip, zero cyan tint"
-    if any(w in id_str for w in ("shovel", "spade", "trowel")):
-        return "rich abundant color harmony: translucent warm mutton-fat white nephrite jade blade, polished radiant brass ferrule (#D4A347), and dark polished rosewood handle"
-    if any(w in id_str for w in ("cauldron", "ding", "furnace")):
-        return "rich abundant color harmony: antique cast bronze with warm golden-amber highlights (#D4A347), rich verdigris patina accents, and glowing charcoal embers"
 
     # Five Elements / Cultivation Element Harmonies
     if elem == "fire":
@@ -717,6 +717,16 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
             if any(b in material.lower() for b in ("herb", "stalk", "leaf", "dew", "soil", "dirt")):
                 material = "forged cold iron crescent blade with sharp curved edge, polished dark rosewood handle wrapped in cord"
 
+        if any(w in low_name for w in ("sword", "blade", "saber", "flying_sword")):
+            implement_desc = "double-edged Chinese straight sword or Daoist flying sword"
+        elif any(
+            w in low_name
+            for w in ("shovel", "spade", "trowel", "sickle", "scythe", "harvester", "pick", "pickaxe")
+        ):
+            implement_desc = "authentic Xianxia herb harvesting implement and Daoist field tool"
+        else:
+            implement_desc = "authentic Daoist cultivation artifact and Xianxia mortal implement"
+
         is_ground_drop = "ground" in var_slug or "drop" in var_slug or "flat" in var_slug
         shadow_clause = (
             "subtle micro contact shadow directly underneath only, resting flat,"
@@ -725,18 +735,18 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
         )
         item_neg = (
             "diorama, miniature scene, floating island, dirt slab, grass pedestal, room, building, landscape, "
-            f"trees, field, human hands, fingers, holding, multiple items, collection, frame, UI, watermark, cyan tint, teal blade, turquoise glow, blue filter, {ANTI_DRIFT_CLAUSE}"
+            f"trees, field, human hands, fingers, holding, multiple items, collection, frame, UI, watermark, cyan tint, teal blade, turquoise glow, blue filter, green wash, green tint, {ANTI_DRIFT_CLAUSE}"
             if is_ground_drop
             else (
                 "diorama, miniature scene, floating island, dirt slab, grass pedestal, ground plane, "
                 "floor, surface, shadow on ground, building, house, cottage, farm, fence, landscape, "
                 "trees, field, human hands, fingers, holding, multiple items, collection, collage, border, "
-                f"frame, UI, watermark, blurry edges, microscopic high-frequency noise, decorative clouds, cloud swirls, vapor wisps, cyan tint, teal blade, turquoise glow, blue filter, {ANTI_DRIFT_CLAUSE}"
+                f"frame, UI, watermark, blurry edges, microscopic high-frequency noise, decorative clouds, cloud swirls, vapor wisps, cyan tint, teal blade, turquoise glow, blue filter, green wash, green tint, {ANTI_DRIFT_CLAUSE}"
             )
         )
         pos = (
             f"Single isolated 2D game asset of {asset_name.lower()}, {material}, {var_mod}, "
-            "Ancient Chinese Xianxia cultivation mortal realm aesthetic, double-edged Chinese straight sword or authentic Daoist implement, "
+            f"Ancient Chinese Xianxia cultivation mortal realm aesthetic, {implement_desc}, "
             "bold readable silhouette, clean grouped value planes, chunky stylized proportions for 2D icon clarity, "
             f"{color_clause}, fine dark #1C1C1E ink contours, gouache hand-painted, {shadow_clause} centered on {adaptive_bg}."
         )
