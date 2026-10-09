@@ -1,0 +1,427 @@
+{
+  "id": "ancient_china_low_cultivation.terrain_and_geology.ter_06_river_silt_shingle_banks.depleted_parched_earth",
+  "archetype": "depleted_parched_earth_ter_06_river_silt_shingle_banks",
+  "name": "River Silt & Shingle Banks - Exhausted Barren Earth Crust",
+  "vietnamese_name": "Hà Than Toái Thạch - Lớp Đất Bạc Màu Khô Cạn",
+  "hanzi": "河滩碎石 · 灵竭干枯地壳",
+  "category": "ter_06_river_silt_shingle_banks",
+  "category_code": "TER-06",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_06_river_silt_shingle_banks",
+  "asset_class": "terrain_tile",
+  "type": "tile",
+  "alpha": "opaque",
+  "pivot": "center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "terrain_tile entity supporting River Silt & Shingle Banks gameplay",
+  "destructible": false,
+  "material": "compact mineral soil with fine clay granules",
+  "cultivation_element": "water",
+  "prompt_summary": "Seamless flat top-down ground terrain texture tile of river silt & shingle banks - exhausted barren earth crust, authentic river silt & shingle banks materials, East Asian Xianxia craftsmanship, pure 90-degree top-down planar view, gouache watercolor hand-painted texture with fine mineral speckles, zero vertical perspective, edge-to-edge full canvas coverage.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Terrains & Geological Formations",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "dry_temperate",
+      "name": "Dry Normal State",
+      "prompt_modifier": "standard dry earthen surface, clear natural grain",
+      "variant_id": "dry_temperate",
+      "variant_name": "Dry Normal State",
+      "description": "standard dry earthen surface, clear natural grain",
+      "prompt": "Seamless 2D ground texture map of river silt & shingle banks - exhausted barren earth crust, compact mineral soil with fine clay granules, standard dry earthen surface, clear natural grain, painterly anime gouache, continuous uniform natural earth texture, monolithic unbroken flat ground plane, macro top-down perpendicular 90-degree satellite overhead view looking straight down at soil surface, edge-to-edge seamless soil texture filling 100% of canvas.",
+      "negative_prompt": "tiles, pavers, flagstones, stone slabs, paving, grid lines, tile seams, grout, cracks between tiles, subdivided stones, stepping stones, stone blocks, rock slabs, river stones, pebbles in a line, furrows, trenches, channels, walking path, stepping path, crater, arena, depression, circular hollow, ring of cliffs, surrounding rocks, border cliffs, perimeter rocks, border, frame, circular frame, ring of rocks, corner bushes, perimeter foliage, vignette, diorama, cliffs, canyon, pillars, columns, rock towers, elevation, horizon, sky, clouds, landscape, vista, distant view, perspective, 3D scene, chasm, ravine, valley, walls, UI, watermark, props, objects, buildings, trees",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_06_river_silt_shingle_banks/depleted_parched_earth/dry_temperate.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            1.0
+          ]
+        ],
+        "frac_zero": 0.0,
+        "blocks": [
+          [
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          0,
+          0
+        ],
+        "sub_grid": [
+          4,
+          4
+        ],
+        "sub_fill": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "crop_offset": [
+          0,
+          0
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "contact_px": 128,
+        "contact_reference_px": 128.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "wet_monsoon",
+      "name": "Wet Saturated Rain",
+      "prompt_modifier": "darkened damp ground with reflective standing water puddles",
+      "variant_id": "wet_monsoon",
+      "variant_name": "Wet Saturated Rain",
+      "description": "darkened damp ground with reflective standing water puddles",
+      "prompt": "Seamless 2D ground texture map of river silt & shingle banks - exhausted barren earth crust, compact mineral soil with fine clay granules, darkened damp ground with reflective standing water puddles, painterly anime gouache, continuous uniform natural earth texture, monolithic unbroken flat ground plane, macro top-down perpendicular 90-degree satellite overhead view looking straight down at soil surface, edge-to-edge seamless soil texture filling 100% of canvas.",
+      "negative_prompt": "tiles, pavers, flagstones, stone slabs, paving, grid lines, tile seams, grout, cracks between tiles, subdivided stones, stepping stones, stone blocks, rock slabs, river stones, pebbles in a line, furrows, trenches, channels, walking path, stepping path, crater, arena, depression, circular hollow, ring of cliffs, surrounding rocks, border cliffs, perimeter rocks, border, frame, circular frame, ring of rocks, corner bushes, perimeter foliage, vignette, diorama, cliffs, canyon, pillars, columns, rock towers, elevation, horizon, sky, clouds, landscape, vista, distant view, perspective, 3D scene, chasm, ravine, valley, walls, UI, watermark, props, objects, buildings, trees",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_06_river_silt_shingle_banks/depleted_parched_earth/wet_monsoon.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            1.0
+          ]
+        ],
+        "frac_zero": 0.0,
+        "blocks": [
+          [
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          0,
+          0
+        ],
+        "sub_grid": [
+          4,
+          4
+        ],
+        "sub_fill": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "crop_offset": [
+          0,
+          0
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "contact_px": 128,
+        "contact_reference_px": 128.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "winter_snow_crust",
+      "name": "Winter Frost Crust",
+      "prompt_modifier": "fine white crystalline frost dusting over crevices",
+      "variant_id": "winter_snow_crust",
+      "variant_name": "Winter Frost Crust",
+      "description": "fine white crystalline frost dusting over crevices",
+      "prompt": "Seamless 2D ground texture map of river silt & shingle banks - exhausted barren earth crust, compact mineral soil with fine clay granules, fine white crystalline frost dusting over crevices, painterly anime gouache, continuous uniform natural earth texture, monolithic unbroken flat ground plane, macro top-down perpendicular 90-degree satellite overhead view looking straight down at soil surface, edge-to-edge seamless soil texture filling 100% of canvas.",
+      "negative_prompt": "tiles, pavers, flagstones, stone slabs, paving, grid lines, tile seams, grout, cracks between tiles, subdivided stones, stepping stones, stone blocks, rock slabs, river stones, pebbles in a line, furrows, trenches, channels, walking path, stepping path, crater, arena, depression, circular hollow, ring of cliffs, surrounding rocks, border cliffs, perimeter rocks, border, frame, circular frame, ring of rocks, corner bushes, perimeter foliage, vignette, diorama, cliffs, canyon, pillars, columns, rock towers, elevation, horizon, sky, clouds, landscape, vista, distant view, perspective, 3D scene, chasm, ravine, valley, walls, UI, watermark, props, objects, buildings, trees",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_06_river_silt_shingle_banks/depleted_parched_earth/winter_snow_crust.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            1.0
+          ]
+        ],
+        "frac_zero": 0.0,
+        "blocks": [
+          [
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          0,
+          0
+        ],
+        "sub_grid": [
+          4,
+          4
+        ],
+        "sub_fill": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "crop_offset": [
+          0,
+          0
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "contact_px": 128,
+        "contact_reference_px": 128.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "yin_corrupted",
+      "name": "Baleful Yin Corrupted",
+      "prompt_modifier": "scorched ash-grey blighted ground with wisps of dark violet miasma",
+      "variant_id": "yin_corrupted",
+      "variant_name": "Baleful Yin Corrupted",
+      "description": "scorched ash-grey blighted ground with wisps of dark violet miasma",
+      "prompt": "Seamless 2D ground texture map of river silt & shingle banks - exhausted barren earth crust, compact mineral soil with fine clay granules, scorched ash-grey blighted ground with wisps of dark violet miasma, painterly anime gouache, continuous uniform natural earth texture, monolithic unbroken flat ground plane, macro top-down perpendicular 90-degree satellite overhead view looking straight down at soil surface, edge-to-edge seamless soil texture filling 100% of canvas.",
+      "negative_prompt": "tiles, pavers, flagstones, stone slabs, paving, grid lines, tile seams, grout, cracks between tiles, subdivided stones, stepping stones, stone blocks, rock slabs, river stones, pebbles in a line, furrows, trenches, channels, walking path, stepping path, crater, arena, depression, circular hollow, ring of cliffs, surrounding rocks, border cliffs, perimeter rocks, border, frame, circular frame, ring of rocks, corner bushes, perimeter foliage, vignette, diorama, cliffs, canyon, pillars, columns, rock towers, elevation, horizon, sky, clouds, landscape, vista, distant view, perspective, 3D scene, chasm, ravine, valley, walls, UI, watermark, props, objects, buildings, trees",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_06_river_silt_shingle_banks/depleted_parched_earth/yin_corrupted.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            1.0
+          ]
+        ],
+        "frac_zero": 0.0,
+        "blocks": [
+          [
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          0,
+          0
+        ],
+        "sub_grid": [
+          4,
+          4
+        ],
+        "sub_fill": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "crop_offset": [
+          0,
+          0
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "contact_px": 128,
+        "contact_reference_px": 128.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "TER-06",
+    "domain": "terrain_and_geology",
+    "interaction": "examine",
+    "collision_behavior": "walk_surface",
+    "element": "water",
+    "tier": 7
+  },
+  "category_id": "ter_06_river_silt_shingle_banks",
+  "domain_id": "terrain_and_geology",
+  "pinyin": "Hétān Suìshí · Exhausted Barren Earth Crust",
+  "archetype_name": "Exhausted Barren Earth Crust",
+  "footprint_subcells": {
+    "w": 4,
+    "h": 4
+  },
+  "footprint_px": {
+    "w": 128,
+    "h": 128
+  },
+  "cell_span": {
+    "w": 1,
+    "h": 1
+  },
+  "collision": {
+    "type": "walk_surface",
+    "shape": "box",
+    "solid": false,
+    "blocks_movement": false,
+    "blocks_projectiles": false,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "earthen_loam",
+  "secondary_material": "mineral_silt",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Water affinity (Body Integration (Hợp Thể / 合体))",
+  "elevation_tier": 7,
+  "mortal_realm_tier": "Body Integration (Hợp Thể / 合体)",
+  "asset_slug": "depleted_parched_earth"
+}
