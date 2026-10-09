@@ -44,10 +44,14 @@ const StatusApi := preload("res://src/modules/status/api.gd")
 const KIND_TRAP := &"trap"
 const KIND_PUZZLE := &"puzzle"
 const KIND_TREASURE := &"treasure"
+## A one-time authored SITE that reforges a scarred foundation (BL-0951 / ADR 0939, S9).
+## The row is the same shared shape; the verb that acts on it is `DomainSecretRealm.reforge`,
+## because this file's three verbs each refuse a kind they do not own.
+const KIND_SECRET_REALM := &"secret_realm"
 
 ## CLOSED, so an unrecognised kind is a loud refusal rather than a fixture the game
 ## quietly ignores — the failure this file exists to end.
-const KINDS: Array[StringName] = [KIND_TRAP, KIND_PUZZLE, KIND_TREASURE]
+const KINDS: Array[StringName] = [KIND_TRAP, KIND_PUZZLE, KIND_TREASURE, KIND_SECRET_REALM]
 
 ## Where the ledger lives inside the run. Nested under [constant DomainApi.MODULE_KEY]
 ## rather than beside it because a spent trap is run state: `DomainApi.enter` clears

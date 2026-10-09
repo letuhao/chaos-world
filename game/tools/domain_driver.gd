@@ -44,6 +44,7 @@ const VERB_ARGS: Dictionary = {
 	"arm": 3,
 	"attempt": 3,
 	"claim": 2,
+	"reforge": 3,
 	"leave": 0,
 	"map": 0,
 	"rooms": 0,
@@ -149,6 +150,8 @@ func _run_command(command: String) -> void:
 			_fixture(&"attempt_fixture", argument.split("|"), 3)
 		"claim":
 			_fixture(&"claim_fixture", argument.split("|"), 2)
+		"reforge":
+			_fixture(&"reforge_site", argument.split("|"), 3)
 		"leave":
 			_call(&"leave", [_actor])
 		"map":

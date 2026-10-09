@@ -124,6 +124,7 @@
       "deps": [
         "contracts",
         "core",
+        "foundation",
         "status"
       ]
     },

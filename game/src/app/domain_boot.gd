@@ -851,6 +851,8 @@ static func bridge() -> DomainBridge:
 	seam.presence_fixture = Callable(DomainBoot, "presence_fixture")
 	seam.attempt_fixture = Callable(DomainBoot, "attempt_fixture")
 	seam.claim_fixture = Callable(DomainBoot, "claim_fixture")
+	seam.reforge_site = Callable(DomainBoot, "reforge_fixture")
+	seam.inspect_site = Callable(DomainBoot, "inspect_site")
 	return seam
 
 
@@ -953,6 +955,21 @@ static func attempt_fixture(
 ## Open a treasure. Refused by name at every gate, in the order a player meets them.
 static func claim_fixture(player: Actor, room_id: StringName, fixture_id: StringName) -> Dictionary:
 	return DomainFixtures.claim(player, room_id, fixture_id)
+
+
+## Reforge a scarred past realm at a secret realm site (BL-0951 / ADR 0939, S9): the
+## avenue's one verb, reached by a screen through the bridge exactly as the three fixture
+## verbs are. `realm_id` is empty for the site's own authored target.
+static func reforge_fixture(
+	player: Actor, room_id: StringName, fixture_id: StringName, realm_id: StringName = &""
+) -> Dictionary:
+	return DomainSecretRealm.reforge(player, room_id, fixture_id, realm_id)
+
+
+## What a secret realm site WOULD do, without touching the actor: the read a screen
+## renders before a player commits.
+static func inspect_site(player: Actor, room_id: StringName, fixture_id: StringName) -> Dictionary:
+	return DomainSecretRealm.telegraph(player, room_id, fixture_id)
 
 
 ## The active run's map, or null outside one. Private, so a caller can never hold a

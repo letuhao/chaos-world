@@ -28,6 +28,10 @@ const REALM_GATED := &"ash_heart_hoard"
 const PUZZLE := &"ash_arena_formation"
 const TRAP := &"ash_chamber_vein"
 const UNPUBLISHED_LEVER := &"ash_chamber_collapse"
+## The one shipped secret realm SITE (BL-0951 / ADR 0939, S9): a fixture row of kind
+## `secret_realm` authored in `void_shrine.tres`, acted on by `DomainSecretRealm` rather
+## than by the three `DomainFixtures` verbs.
+const SITE := &"void_shrine_reforging"
 
 ## Long enough to clear every authored `telegraph_s` — the shipped kit's loudest is
 ## `ash_chamber_collapse` at 1.6 — in one step, for the cases that only care that the
@@ -81,6 +85,17 @@ func _authored_fixtures() -> Array[Dictionary]:
 	for room in _authored_rooms():
 		for fixture in room.fixtures:
 			out.append({"room_id": String(room.room_id), "fixture": fixture})
+	return out
+
+
+## Every authored secret realm SITE, as `{room_id, fixture}` rows — the subset of the
+## authored fixtures whose kind is `secret_realm` (BL-0951 / ADR 0939, S9). A bounded
+## `for` over the authored array; there is no `while`.
+func _authored_sites() -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	for entry in _authored_fixtures():
+		if StringName((entry["fixture"] as Dictionary).get("kind", "")) == &"secret_realm":
+			out.append(entry)
 	return out
 
 

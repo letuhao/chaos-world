@@ -84,6 +84,7 @@ VERBS = (
     "arm:<room_id>|<fixture_id>|<delta>",
     "attempt:<room_id>|<fixture_id>|<node_id>",
     "claim:<room_id>|<fixture_id>",
+    "reforge:<room_id>|<fixture_id>|<realm_id>",
     "leave",
     "map",
     "rooms",

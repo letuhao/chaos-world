@@ -97,6 +97,12 @@ var presence_fixture: Callable
 var attempt_fixture: Callable
 ## `DomainFixtures.claim(actor, room_id, fixture_id)` -> Dictionary: open a treasure.
 var claim_fixture: Callable
+## `DomainSecretRealm.reforge(actor, room_id, fixture_id, realm_id)` -> Dictionary: reforge a
+## scarred past realm at a one-time site (BL-0951 / ADR 0939, S9).
+var reforge_site: Callable
+## `DomainSecretRealm.telegraph(actor, room_id, fixture_id)` -> Dictionary: what a site
+## WOULD cost and mend, without touching the actor.
+var inspect_site: Callable
 
 
 ## The player-facing sentence for a reason id. Falls back to the id itself, because a
@@ -174,6 +180,8 @@ func _action_ids() -> Array:
 		"presence_fixture",
 		"attempt_fixture",
 		"claim_fixture",
+		"reforge_site",
+		"inspect_site",
 	]
 
 
@@ -191,4 +199,6 @@ func _actions() -> Dictionary:
 		"presence_fixture": presence_fixture,
 		"attempt_fixture": attempt_fixture,
 		"claim_fixture": claim_fixture,
+		"reforge_site": reforge_site,
+		"inspect_site": inspect_site,
 	}

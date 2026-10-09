@@ -23,9 +23,10 @@ roster_band = &"contact"
 tags = Array[StringName]([&"deep", &"void", &"shrine"])
 size = Vector2i(9, 7)
 actor_spawn_refs = Array[Dictionary]([
-	{"ref_id": &"void_shrine_leviathan", "inhabitant_id": &"void_leviathan", "role": &"miniboss", "count": 1}
+	{"ref_id": &"void_shrine_leviathan", "inhabitant_id": &"void_leviathan", "role": &"miniboss", "count": 1},
 ])
 fixtures = Array[Dictionary]([
-	{"fixture_id": &"void_shrine_offering", "kind": &"treasure", "tags": Array[StringName]([&"treasure_unkeyed", &"void", &"shrine"]), "position": Vector2i(4, 3), "bounds": Rect2i(4, 3, 2, 2), "reward_item_id": &"void_shrine_abyssal_offering", "reward_count": 1, "key_item_id": &"", "requires_realm": &"", "telegraph_s": 0.0, "damage_share": 0.0, "status_id": &"", "duration_s": 0.0, "mitigation_tags": Array[StringName]([])}
+	{"fixture_id": &"void_shrine_offering", "kind": &"treasure", "tags": Array[StringName]([&"treasure_unkeyed", &"void", &"shrine"]), "position": Vector2i(4, 3), "bounds": Rect2i(4, 3, 2, 2), "reward_item_id": &"void_shrine_abyssal_offering", "reward_count": 1, "key_item_id": &"", "requires_realm": &"", "telegraph_s": 0.0, "damage_share": 0.0, "status_id": &"", "duration_s": 0.0, "mitigation_tags": Array[StringName]([])},
+	{"fixture_id": &"void_shrine_reforging", "kind": &"secret_realm", "tags": Array[StringName]([&"secret_realm_site", &"void", &"shrine"]), "position": Vector2i(2, 1), "bounds": Rect2i(2, 1, 2, 2), "reward_item_id": &"", "reward_count": 0, "key_item_id": &"", "requires_realm": &"", "telegraph_s": 0.0, "damage_share": 0.12, "status_id": &"env_scourge", "duration_s": 8.0, "mitigation_tags": Array[StringName]([&"affinity", &"gear", &"technique", &"pill"]), "realm_id": &"qi_refining", "foundation_mend": 0.15, "period_cost": 120}
 ])
 environment_zones = Array[EnvironmentZoneDef]([SubResource("zone_void_shrine")])

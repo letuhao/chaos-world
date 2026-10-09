@@ -225,6 +225,10 @@ static func summary(actor: Actor) -> Dictionary:
 		"population": population(actor).size(),
 		"discovered": discovered(actor).size(),
 		"fixtures": DomainFixtures.summary(actor),
+		# The mending sites (BL-0951 / ADR 0939, S9), folded in for the same reason
+		# `fixtures` is: a reader asking "what is in this room" reads ONE dictionary, and a
+		# thirteenth facade verb would buy nothing this one cannot already answer.
+		"sites": DomainSecretRealm.summary(actor),
 		"run": _band(actor),
 		"narrative": _narrative(actor),
 	}

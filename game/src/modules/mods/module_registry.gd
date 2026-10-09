@@ -31,7 +31,7 @@ const BASE_DEPS := {
 	"destiny": [],
 	"difficulty": [],
 	"doctrine": ["destiny", "economy", "items", "quest"],
-	"domain": ["status"],
+	"domain": ["foundation", "status"],
 	"dual_cultivation": [],
 	"economy": ["items"],
 	"elements": ["items"],

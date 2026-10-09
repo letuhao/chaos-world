@@ -94,14 +94,18 @@ const RETIRED_ROOMS: Dictionary = {}
 ## populate a domain — and one fixed seed answers it for all three templates at once.
 const CONTENT_SEED := 20261003
 
-## The three authored fixture kinds, closed so an unrecognised kind is a failure
-## rather than something this suite quietly skips.
-const FIXTURE_KINDS: Array[String] = ["trap", "puzzle", "treasure"]
+## Every authored fixture kind, closed so an unrecognised kind is a failure rather than
+## something this suite quietly skips. `secret_realm` joined the set with BL-0951 / ADR
+## 0939 S9: a one-time mending SITE authored in the same `fixtures` array, acted on by
+## `DomainSecretRealm` rather than by the three `DomainFixtures` verbs.
+const FIXTURE_KINDS: Array[String] = ["trap", "puzzle", "treasure", "secret_realm"]
 
 ## The tags that make a fixture discoverable from a room's content rather than from
 ## its filename (ADR 0073: `tags` drive the encounter roster and hazard placement from
 ## ONE source, never a post-hoc heuristic).
-const FIXTURE_TAGS: Array[String] = ["trap_vein", "puzzle_formation", "treasure_keyed"]
+const FIXTURE_TAGS: Array[String] = [
+	"trap_vein", "puzzle_formation", "treasure_keyed", "secret_realm_site"
+]
 
 ## The keys EVERY fixture carries, whatever its kind. One shape for all three kinds is
 ## the whole point: content and a future reader cannot disagree about the shape if
@@ -126,6 +130,12 @@ const FIXTURE_KEYS: Array[String] = [
 ## A puzzle is the one kind with its own keys, because it is the one kind with an
 ## internal shape a reader has to know: which nodes exist, and in what order.
 const PUZZLE_KEYS: Array[String] = ["nodes", "sequence", "wrong_status_id"]
+
+## A secret realm SITE's own keys (BL-0951 / ADR 0939, S9): the realm its reforge lands on,
+## the mend STEP it pays, and the LIFE it spends. A site that names none of them reads as a
+## reward that pays nothing while costing nothing — the exact failure `DomainSecretRealm`
+## refuses by name, closed here so a typo'd key is a red test rather than a spent site.
+const SITE_KEYS: Array[String] = ["realm_id", "foundation_mend", "period_cost"]
 
 ## The contract problems each room is KNOWN to carry, named rather than waived.
 ##
@@ -656,9 +666,9 @@ func test_every_fixture_reward_and_key_resolves_in_the_item_corpus() -> void:
 	assert_eq(missing.is_empty(), true, note)
 
 
-## The three kinds the requirement names all exist in the shipped kit, and each is
-## discoverable by its tag rather than only by a filename nobody reads.
-func test_all_three_fixture_kinds_ship_and_are_tagged() -> void:
+## Every authored kind exists in the shipped kit, and each is discoverable by its tag
+## rather than only by a filename nobody reads.
+func test_every_authored_fixture_kind_ships_and_is_tagged() -> void:
 	var by_kind: Dictionary = {}
 	for entry in _authored_fixtures():
 		var fixture: Dictionary = entry["fixture"]
@@ -666,10 +676,7 @@ func test_all_three_fixture_kinds_ship_and_are_tagged() -> void:
 		assert_eq(
 			FIXTURE_KINDS.has(kind),
 			true,
-			(
-				"fixture '%s' is one of the three authored kinds"
-				% String(fixture.get("fixture_id", ""))
-			)
+			"fixture '%s' is one of the authored kinds" % String(fixture.get("fixture_id", ""))
 		)
 		by_kind[kind] = int(by_kind.get(kind, 0)) + 1
 	for kind in FIXTURE_KINDS:
@@ -685,6 +692,52 @@ func test_all_three_fixture_kinds_ship_and_are_tagged() -> void:
 			if _tagged(entry["fixture"], StringName(tag)):
 				found = true
 		assert_eq(found, true, "a shipped fixture carries the '%s' tag" % tag)
+
+
+## A secret realm SITE (BL-0951 / ADR 0939, S9) authors the three keys that make it a
+## site rather than a reward: the realm it reforges, the mend STEP it pays, and the LIFE
+## it spends. The realm is an ORDINAL on the shared ladder (ADR 0097), never a magnitude
+## curve, so a site naming one names a REAL realm — the same rule the treasure gate
+## follows above.
+func test_every_secret_realm_site_names_a_real_realm_a_step_and_a_price() -> void:
+	var sites := 0
+	for entry in _authored_fixtures():
+		var fixture: Dictionary = entry["fixture"]
+		if StringName(fixture.get("kind", "")) != &"secret_realm":
+			continue
+		sites += 1
+		var fixture_id := String(fixture.get("fixture_id", ""))
+		var missing: Array[String] = []
+		for key in SITE_KEYS:
+			if not fixture.has(key):
+				missing.append(key)
+		assert_eq(
+			missing.is_empty(),
+			true,
+			"site '%s' authors its shape; missing: %s" % [fixture_id, ", ".join(missing)]
+		)
+		assert_eq(
+			float(fixture.get("foundation_mend", 0.0)) > 0.0,
+			true,
+			"site '%s' authors the mend step it pays" % fixture_id
+		)
+		assert_eq(
+			int(fixture.get("period_cost", 0)) > 0,
+			true,
+			"site '%s' authors the life it spends" % fixture_id
+		)
+		var realm := String(fixture.get("realm_id", ""))
+		assert_eq(
+			realm != "",
+			true,
+			"site '%s' names the realm it reforges rather than leaving it to a default" % fixture_id
+		)
+		assert_eq(
+			RealmDefaults.ladder().has(StringName(realm)),
+			true,
+			"site '%s' reforges a real ladder realm, not '%s'" % [fixture_id, realm]
+		)
+	assert_eq(sites > 0, true, "at least one secret realm site ships")
 
 
 ## Every fixture is JSON-clean and round-trips. `RoomDef.to_dict` duplicates each
