@@ -291,6 +291,17 @@ static func forget(actor: Actor, partner_id: StringName) -> bool:
 	return removed
 
 
+## The master's sacrifice (BL-0951 / ADR 0939, S10): a mentor spends their OWN cultivation
+## so a disciple's scarred past may mend. The RELATIONSHIP is the gate (a bond at or above
+## `confidant`) and the mentor's permanent decline is the price. `SocialMasterSacrifice`
+## owns the rule — the bond read, the realm choice, the bounded transfer — and this names
+## it, like every verb here.
+static func master_sacrifice(
+	disciple: Actor, mentor: Actor, realm_id: StringName = &""
+) -> Dictionary:
+	return SocialMasterSacrifice.sacrifice(disciple, mentor, realm_id)
+
+
 static func _sorted_cause_ids(bond: SocialBond) -> Array:
 	var out: Array = []
 	for key in bond.causes.keys():

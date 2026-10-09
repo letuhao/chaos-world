@@ -57,7 +57,7 @@ const BASE_DEPS := {
 	"save": [],
 	"sect": ["social"],
 	"set_bonus": ["items"],
-	"social": ["economy", "items"],
+	"social": ["economy", "foundation", "items"],
 	"socket": ["items"],
 	"soul": ["items"],
 	"status": [],

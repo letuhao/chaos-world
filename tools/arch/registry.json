@@ -330,6 +330,7 @@
         "contracts",
         "core",
         "economy",
+        "foundation",
         "items"
       ]
     },
