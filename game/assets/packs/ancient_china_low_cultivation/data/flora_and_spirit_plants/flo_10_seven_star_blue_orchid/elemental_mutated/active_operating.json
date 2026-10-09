@@ -1,0 +1,132 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_10_seven_star_blue_orchid.elemental_mutated",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_10_seven_star_blue_orchid",
+  "asset_slug": "elemental_mutated",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_10_seven_star_blue_orchid/elemental_mutated/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "none",
+  "interactive_verb": "channel_element",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.417,
+        0.441
+      ],
+      [
+        0.442,
+        0.404
+      ]
+    ],
+    "frac_zero": 0.733,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.331,
+        0.817,
+        0.222,
+        0.003
+      ],
+      [
+        0.009,
+        0.737,
+        0.568,
+        0.635,
+        0.341
+      ],
+      [
+        0.381,
+        0.657,
+        0.66,
+        0.675,
+        0.492
+      ],
+      [
+        0.554,
+        0.499,
+        0.479,
+        0.293,
+        0.024
+      ],
+      [
+        0.141,
+        0.477,
+        0.711,
+        0.368,
+        0.125
+      ],
+      [
+        0.411,
+        0.745,
+        0.938,
+        0.836,
+        0.261
+      ],
+      [
+        0.141,
+        0.188,
+        0.379,
+        0.154,
+        0.143
+      ]
+    ],
+    "crop_offset": [
+      52,
+      17
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 8,
+    "contact_reference_px": 8.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
