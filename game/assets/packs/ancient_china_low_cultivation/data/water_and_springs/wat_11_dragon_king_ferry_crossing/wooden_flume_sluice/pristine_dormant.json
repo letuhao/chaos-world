@@ -1,0 +1,125 @@
+{
+  "asset_id": "ancient_china_low_cultivation.water_and_springs.wat_11_dragon_king_ferry_crossing.wooden_flume_sluice",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_11_dragon_king_ferry_crossing",
+  "asset_slug": "wooden_flume_sluice",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_11_dragon_king_ferry_crossing/wooden_flume_sluice/pristine_dormant.png",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "operate_sluice",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.465,
+        0.513
+      ]
+    ],
+    "frac_zero": 0.8221,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      4,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.63,
+        0.56,
+        0.737,
+        0.327
+      ],
+      [
+        0.306,
+        0.605,
+        0.512,
+        0.0
+      ],
+      [
+        0.226,
+        0.65,
+        0.54,
+        0.231
+      ]
+    ],
+    "crop_offset": [
+      73,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 33,
+    "contact_reference_px": 33.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}
