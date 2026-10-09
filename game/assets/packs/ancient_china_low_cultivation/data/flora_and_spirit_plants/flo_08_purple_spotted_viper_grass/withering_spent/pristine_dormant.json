@@ -1,0 +1,88 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_08_purple_spotted_viper_grass.withering_spent",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_08_purple_spotted_viper_grass",
+  "asset_slug": "withering_spent",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_08_purple_spotted_viper_grass/withering_spent/pristine_dormant.png",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "none",
+  "interactive_verb": "clear_debris",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.383
+      ]
+    ],
+    "frac_zero": 0.7372,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.297,
+        0.589,
+        0.066
+      ],
+      [
+        0.346,
+        0.529,
+        0.223
+      ],
+      [
+        0.246,
+        0.652,
+        0.145
+      ]
+    ],
+    "crop_offset": [
+      23,
+      16
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 59,
+    "contact_reference_px": 59.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
