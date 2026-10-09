@@ -1,0 +1,191 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_04_low_grade_pill_refining_chamber.disciple_cave_abode",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_04_low_grade_pill_refining_chamber",
+  "asset_slug": "disciple_cave_abode",
+  "variant_slug": "rot_south_facade",
+  "name": "South Facade (Front Entrance)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_04_low_grade_pill_refining_chamber/disciple_cave_abode/rot_south_facade.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "enter_dongfu",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.559,
+        0.836,
+        0.557
+      ],
+      [
+        0.59,
+        0.963,
+        0.625
+      ]
+    ],
+    "frac_zero": 0.646,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.188,
+        0.361,
+        0.291,
+        0.597,
+        0.284,
+        0.391,
+        0.145
+      ],
+      [
+        0.213,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.109
+      ],
+      [
+        0.239,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.136
+      ],
+      [
+        0.462,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.42
+      ],
+      [
+        0.545,
+        0.996,
+        1.0,
+        1.0,
+        1.0,
+        0.975,
+        0.539
+      ],
+      [
+        0.104,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.034
+      ],
+      [
+        0.018,
+        0.373,
+        0.776,
+        0.907,
+        0.843,
+        0.471,
+        0.029
+      ]
+    ],
+    "crop_offset": [
+      81,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 118,
+    "contact_reference_px": 118.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

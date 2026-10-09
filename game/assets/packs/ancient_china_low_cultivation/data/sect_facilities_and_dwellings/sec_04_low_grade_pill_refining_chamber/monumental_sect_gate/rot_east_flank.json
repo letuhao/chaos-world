@@ -1,0 +1,189 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_04_low_grade_pill_refining_chamber.monumental_sect_gate",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_04_low_grade_pill_refining_chamber",
+  "asset_slug": "monumental_sect_gate",
+  "variant_slug": "rot_east_flank",
+  "name": "East Flank (Right Profile)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_04_low_grade_pill_refining_chamber/monumental_sect_gate/rot_east_flank.png",
+  "footprint_cells": [
+    4,
+    2
+  ],
+  "canvas_px": [
+    512,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "pass_gate",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.361,
+        0.739,
+        0.732,
+        0.353
+      ],
+      [
+        0.559,
+        0.99,
+        0.991,
+        0.558
+      ]
+    ],
+    "frac_zero": 0.7808,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 8,
+    "anchor_cell": [
+      2,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.047,
+        0.0,
+        0.32,
+        0.226,
+        0.0,
+        0.049
+      ],
+      [
+        0.35,
+        0.832,
+        0.954,
+        0.931,
+        0.842,
+        0.276
+      ],
+      [
+        0.21,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.128
+      ],
+      [
+        0.296,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.223
+      ],
+      [
+        0.541,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.478
+      ],
+      [
+        0.565,
+        0.982,
+        1.0,
+        1.0,
+        0.944,
+        0.559
+      ],
+      [
+        0.016,
+        0.942,
+        0.969,
+        0.969,
+        0.907,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      161,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 129,
+    "contact_reference_px": 129.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      256
+    ]
+  }
+}

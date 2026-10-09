@@ -1,0 +1,295 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_05_low_grade_weapon_forging_hall.artifact_forging_hall",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_05_low_grade_weapon_forging_hall",
+  "asset_slug": "artifact_forging_hall",
+  "variant_slug": "rot_west_flank",
+  "name": "West Flank (Left Profile)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_05_low_grade_weapon_forging_hall/artifact_forging_hall/rot_west_flank.png",
+  "footprint_cells": [
+    4,
+    3
+  ],
+  "canvas_px": [
+    512,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "forge_treasure",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.203,
+        0.664,
+        0.694,
+        0.142
+      ],
+      [
+        0.755,
+        1.0,
+        1.0,
+        0.663
+      ],
+      [
+        0.159,
+        0.869,
+        0.936,
+        0.334
+      ]
+    ],
+    "frac_zero": 0.6201,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        false,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 10,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.018,
+        0.0,
+        0.006,
+        0.461,
+        0.0,
+        0.0,
+        0.022,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.363,
+        0.684,
+        0.709,
+        0.997,
+        0.636,
+        0.693,
+        0.368,
+        0.0,
+        0.0
+      ],
+      [
+        0.206,
+        0.287,
+        0.42,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.218,
+        0.0,
+        0.0
+      ],
+      [
+        0.316,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.727,
+        0.251,
+        0.0
+      ],
+      [
+        0.356,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.976,
+        0.379,
+        0.0
+      ],
+      [
+        0.653,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.605,
+        0.0
+      ],
+      [
+        0.35,
+        0.892,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.815,
+        0.365
+      ],
+      [
+        0.004,
+        0.937,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.8,
+        0.271
+      ],
+      [
+        0.0,
+        0.02,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.991,
+        0.373,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.115,
+        0.996,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.179,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.036,
+        0.581,
+        0.777,
+        0.903,
+        0.79,
+        0.613,
+        0.122,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      87,
+      16
+    ],
+    "trunk_columns": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 170,
+    "contact_reference_px": 170.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      384
+    ]
+  }
+}

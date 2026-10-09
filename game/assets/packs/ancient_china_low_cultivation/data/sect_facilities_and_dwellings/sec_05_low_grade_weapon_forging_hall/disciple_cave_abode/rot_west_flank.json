@@ -1,0 +1,189 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_05_low_grade_weapon_forging_hall.disciple_cave_abode",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_05_low_grade_weapon_forging_hall",
+  "asset_slug": "disciple_cave_abode",
+  "variant_slug": "rot_west_flank",
+  "name": "West Flank (Left Profile)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_05_low_grade_weapon_forging_hall/disciple_cave_abode/rot_west_flank.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "enter_dongfu",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.425,
+        0.771,
+        0.49
+      ],
+      [
+        0.566,
+        0.947,
+        0.653
+      ]
+    ],
+    "frac_zero": 0.7077,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.073,
+        0.067,
+        0.434,
+        0.003,
+        0.077,
+        0.0
+      ],
+      [
+        0.0,
+        0.7,
+        0.956,
+        0.992,
+        0.943,
+        0.321,
+        0.0
+      ],
+      [
+        0.467,
+        0.923,
+        1.0,
+        1.0,
+        1.0,
+        0.531,
+        0.0
+      ],
+      [
+        0.758,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.851,
+        0.2
+      ],
+      [
+        0.446,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.789,
+        0.106
+      ],
+      [
+        0.177,
+        0.943,
+        1.0,
+        1.0,
+        0.997,
+        0.481,
+        0.044
+      ],
+      [
+        0.0,
+        0.318,
+        0.72,
+        0.889,
+        0.679,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      94,
+      19
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 108,
+    "contact_reference_px": 108.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

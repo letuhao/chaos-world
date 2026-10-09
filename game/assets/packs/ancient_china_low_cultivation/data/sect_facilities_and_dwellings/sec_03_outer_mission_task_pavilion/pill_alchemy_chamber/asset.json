@@ -1,0 +1,1190 @@
+{
+  "id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_03_outer_mission_task_pavilion.pill_alchemy_chamber",
+  "archetype": "pill_alchemy_chamber_sec_03_outer_mission_task_pavilion",
+  "name": "Outer Mission / Task Pavilion - Octagonal Pill Alchemy Refining Hall",
+  "vietnamese_name": "Thứ Vụ Tạp Sự Đường - Điện Luyện Đan Bát Giác",
+  "hanzi": "庶务杂事堂 · 八角炼丹主殿",
+  "category": "sec_03_outer_mission_task_pavilion",
+  "category_code": "SEC-03",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_03_outer_mission_task_pavilion",
+  "asset_class": "structure_building",
+  "type": "building",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "refine_pills",
+  "gameplay_role": "structure_building entity supporting Outer Mission / Task Pavilion gameplay",
+  "destructible": false,
+  "material": "seasoned camphor timber framing and glazed ceramic roof tiles",
+  "cultivation_element": "earth",
+  "prompt_summary": "Single isolated 2D top-down RPG map building sprite of outer mission / task pavilion - octagonal pill alchemy refining hall, glazed dark ceramic roof tiles, steep high-angle top-down RPG map perspective (~65-70 degrees downward tilt), roof dominant overhead (75%-80% of height), foreshortened walls beneath eaves, gouache hand-painted, fine dark #263A35 ink contours, flat baseline, solid pure white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Cultivation Sect Facilities & Dwellings",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "rot_south_facade",
+      "name": "South Facade (Front Entrance)",
+      "prompt_modifier": "front entrance visible foreshortened beneath eaves, steep overhead map view",
+      "variant_id": "rot_south_facade",
+      "variant_name": "South Facade (Front Entrance)",
+      "description": "front entrance visible foreshortened beneath eaves, steep overhead map view",
+      "prompt": "Single isolated 2D top-down world-map building sprite of octagonal pill alchemy refining hall, seasoned camphor timber framing and glazed ceramic roof tiles, front entrance visible foreshortened beneath eaves, steep overhead map view, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, roof ridge running East-West with broad southern roof surface broad glazed ceramic roof tiles and curved dougong eaves dominant and fully visible overhead (70%-80% of height),  foreshortened front walls and entrance visible beneath eaves at bottom-center, stone courtyard steps descending at bottom, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_03_outer_mission_task_pavilion/pill_alchemy_chamber/rot_south_facade.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.501,
+            0.813,
+            0.495
+          ],
+          [
+            0.804,
+            1.0,
+            0.803
+          ],
+          [
+            0.534,
+            0.939,
+            0.546
+          ]
+        ],
+        "frac_zero": 0.4,
+        "blocks": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 9,
+        "anchor_cell": [
+          1,
+          2
+        ],
+        "sub_grid": [
+          11,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.022,
+            0.623,
+            0.308,
+            0.268,
+            0.302,
+            0.612,
+            0.005,
+            0.0,
+            0.0
+          ],
+          [
+            0.005,
+            0.145,
+            0.727,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.692,
+            0.084,
+            0.0
+          ],
+          [
+            0.364,
+            0.911,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.863,
+            0.317
+          ],
+          [
+            0.075,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.963,
+            0.014
+          ],
+          [
+            0.07,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.969,
+            0.017
+          ],
+          [
+            0.579,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.492
+          ],
+          [
+            0.388,
+            0.994,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.964,
+            0.463
+          ],
+          [
+            0.061,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.947,
+            0.005
+          ],
+          [
+            0.178,
+            0.993,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.124
+          ],
+          [
+            0.0,
+            0.258,
+            0.938,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.94,
+            0.276,
+            0.01
+          ],
+          [
+            0.0,
+            0.0,
+            0.178,
+            0.483,
+            0.789,
+            0.862,
+            0.784,
+            0.517,
+            0.185,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          17,
+          18
+        ],
+        "trunk_columns": [
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 169,
+        "contact_reference_px": 169.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            2
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          2
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          384
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_north_rear",
+      "name": "North Rear (Back Wall)",
+      "prompt_modifier": "rear roof slope dominant overhead, solid back wall beneath eaves, zero front entrance steps",
+      "variant_id": "rot_north_rear",
+      "variant_name": "North Rear (Back Wall)",
+      "description": "rear roof slope dominant overhead, solid back wall beneath eaves, zero front entrance steps",
+      "prompt": "Single isolated 2D top-down world-map building sprite of octagonal pill alchemy refining hall, seasoned camphor timber framing and glazed ceramic roof tiles, rear roof slope dominant overhead, solid back wall beneath eaves, solid continuous rear wall, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, roof ridge running East-West with broad northern rear roof surface broad glazed ceramic roof tiles and curved dougong eaves dominant and fully visible overhead (70%-80% of height),  solid unbroken timber lattice back wall and stone foundation foreshortened beneath eaves at bottom, completely windowless and doorless flat rear wall flush on level ground, clean horizontal baseline, back exterior view, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, front entrance door, open doorway, entrance steps, stairs, portal, door plaque, front veranda, open portal, descending stairs, central doorway, porch, arched entryway, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_03_outer_mission_task_pavilion/pill_alchemy_chamber/rot_north_rear.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.458,
+            0.719,
+            0.462
+          ],
+          [
+            0.791,
+            1.0,
+            0.802
+          ],
+          [
+            0.497,
+            0.958,
+            0.513
+          ]
+        ],
+        "frac_zero": 0.4368,
+        "blocks": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 9,
+        "anchor_cell": [
+          1,
+          2
+        ],
+        "sub_grid": [
+          11,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.019,
+            0.357,
+            0.002,
+            0.0,
+            0.04,
+            0.345,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.015,
+            0.005,
+            0.487,
+            1.0,
+            0.939,
+            0.914,
+            0.964,
+            0.936,
+            0.17,
+            0.0,
+            0.02
+          ],
+          [
+            0.416,
+            0.902,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.989,
+            0.854,
+            0.191
+          ],
+          [
+            0.084,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.718,
+            0.0
+          ],
+          [
+            0.022,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.65,
+            0.0
+          ],
+          [
+            0.182,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.837,
+            0.014
+          ],
+          [
+            0.752,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.997,
+            0.697
+          ],
+          [
+            0.008,
+            0.88,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.532,
+            0.0
+          ],
+          [
+            0.0,
+            0.906,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.561,
+            0.0
+          ],
+          [
+            0.0,
+            0.3,
+            0.941,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.817,
+            0.126,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.173,
+            0.664,
+            0.893,
+            0.905,
+            0.793,
+            0.603,
+            0.048,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          21,
+          17
+        ],
+        "trunk_columns": [
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 156,
+        "contact_reference_px": 156.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            2
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          2
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          384
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_west_flank",
+      "name": "West Flank (Left Profile)",
+      "prompt_modifier": "ridge oriented North-South, western roof slope and gable end visible from overhead",
+      "variant_id": "rot_west_flank",
+      "variant_name": "West Flank (Left Profile)",
+      "description": "ridge oriented North-South, western roof slope and gable end visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map building sprite of octagonal pill alchemy refining hall, seasoned camphor timber framing and glazed ceramic roof tiles, ridge oriented North-South, western roof slope and gable end visible from overhead, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, building rotated 90 degrees with roof ridge running North-South, western roof slope and high-angle triangular dougong timber gable end dominant and fully visible overhead, western side wall foreshortened beneath eaves at bottom, side window or railing, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center, annexed side structure, attached side pavilion, extra side gate, secondary structure, side tower, courtyard wing, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_03_outer_mission_task_pavilion/pill_alchemy_chamber/rot_west_flank.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.343,
+            0.685,
+            0.271
+          ],
+          [
+            0.74,
+            1.0,
+            0.701
+          ],
+          [
+            0.416,
+            0.912,
+            0.366
+          ]
+        ],
+        "frac_zero": 0.5157,
+        "blocks": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 9,
+        "anchor_cell": [
+          1,
+          2
+        ],
+        "sub_grid": [
+          11,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.462,
+            0.068,
+            0.0,
+            0.069,
+            0.097,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.186,
+            0.984,
+            0.785,
+            0.519,
+            0.889,
+            0.172,
+            0.0,
+            0.0
+          ],
+          [
+            0.647,
+            0.599,
+            0.724,
+            0.97,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.143,
+            0.0,
+            0.0
+          ],
+          [
+            0.434,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.372,
+            0.0,
+            0.0
+          ],
+          [
+            0.07,
+            0.979,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.814,
+            0.006,
+            0.0
+          ],
+          [
+            0.035,
+            0.853,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.491,
+            0.036
+          ],
+          [
+            0.302,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.853,
+            0.612
+          ],
+          [
+            0.063,
+            0.984,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.722,
+            0.006,
+            0.0
+          ],
+          [
+            0.0,
+            0.763,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.912,
+            0.024,
+            0.0
+          ],
+          [
+            0.0,
+            0.103,
+            0.584,
+            0.998,
+            1.0,
+            1.0,
+            1.0,
+            0.835,
+            0.291,
+            0.014,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.724,
+            0.611,
+            0.797,
+            0.435,
+            0.188,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          26,
+          16
+        ],
+        "trunk_columns": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "contact_px": 52,
+        "contact_reference_px": 52.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            2
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          2
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          384
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_east_flank",
+      "name": "East Flank (Right Profile)",
+      "prompt_modifier": "ridge oriented North-South, eastern roof slope and gable end visible from overhead",
+      "variant_id": "rot_east_flank",
+      "variant_name": "East Flank (Right Profile)",
+      "description": "ridge oriented North-South, eastern roof slope and gable end visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map building sprite of octagonal pill alchemy refining hall, seasoned camphor timber framing and glazed ceramic roof tiles, ridge oriented North-South, eastern roof slope and gable end visible from overhead, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, building rotated 90 degrees with roof ridge running North-South, eastern roof slope and high-angle triangular dougong timber gable end dominant and fully visible overhead, eastern side wall foreshortened beneath eaves at bottom, side window or railing, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center, annexed side structure, attached side pavilion, extra side gate, secondary structure, side tower, courtyard wing, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_03_outer_mission_task_pavilion/pill_alchemy_chamber/rot_east_flank.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.458,
+            0.779,
+            0.448
+          ],
+          [
+            0.803,
+            1.0,
+            0.789
+          ],
+          [
+            0.507,
+            0.951,
+            0.506
+          ]
+        ],
+        "frac_zero": 0.4361,
+        "blocks": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 9,
+        "anchor_cell": [
+          1,
+          2
+        ],
+        "sub_grid": [
+          11,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.02,
+            0.537,
+            0.099,
+            0.256,
+            0.176,
+            0.458,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.403,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.929,
+            0.102,
+            0.0,
+            0.0
+          ],
+          [
+            0.51,
+            0.709,
+            0.993,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.93,
+            0.677,
+            0.393
+          ],
+          [
+            0.235,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.843,
+            0.014
+          ],
+          [
+            0.031,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.639,
+            0.0
+          ],
+          [
+            0.231,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.851,
+            0.031
+          ],
+          [
+            0.767,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.983,
+            0.662
+          ],
+          [
+            0.006,
+            0.96,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.611,
+            0.0
+          ],
+          [
+            0.038,
+            0.982,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.717,
+            0.0
+          ],
+          [
+            0.0,
+            0.144,
+            0.85,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.65,
+            0.027,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.105,
+            0.612,
+            0.837,
+            0.846,
+            0.75,
+            0.538,
+            0.006,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          21,
+          21
+        ],
+        "trunk_columns": [
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 157,
+        "contact_reference_px": 157.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            2
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            2
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          2
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          384
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "SEC-03",
+    "domain": "sect_facilities_and_dwellings",
+    "interaction": "refine_pills",
+    "collision_behavior": "solid",
+    "element": "earth",
+    "tier": 2
+  },
+  "category_id": "sec_03_outer_mission_task_pavilion",
+  "domain_id": "sect_facilities_and_dwellings",
+  "pinyin": "Shùwù Zátáng · Octagonal Pill Alchemy Refining Hall",
+  "archetype_name": "Octagonal Pill Alchemy Refining Hall",
+  "footprint_subcells": {
+    "w": 12,
+    "h": 12
+  },
+  "footprint_px": {
+    "w": 384,
+    "h": 384
+  },
+  "cell_span": {
+    "w": 3,
+    "h": 3
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "structure"
+  },
+  "primary_material": "timber_frame",
+  "secondary_material": "glazed_ceramic_tile",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Earth affinity (Foundation Establishment (Trúc Cơ / 筑基))",
+  "elevation_tier": 2,
+  "mortal_realm_tier": "Foundation Establishment (Trúc Cơ / 筑基)",
+  "asset_slug": "pill_alchemy_chamber"
+}

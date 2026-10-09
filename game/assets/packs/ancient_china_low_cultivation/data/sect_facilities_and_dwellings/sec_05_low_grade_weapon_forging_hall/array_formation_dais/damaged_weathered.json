@@ -1,0 +1,257 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_05_low_grade_weapon_forging_hall.array_formation_dais",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_05_low_grade_weapon_forging_hall",
+  "asset_slug": "array_formation_dais",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_05_low_grade_weapon_forging_hall/array_formation_dais/damaged_weathered.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "walk_surface",
+  "interactive_verb": "activate_array",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.446,
+        0.83,
+        0.431
+      ],
+      [
+        0.658,
+        1.0,
+        0.675
+      ],
+      [
+        0.578,
+        0.935,
+        0.529
+      ]
+    ],
+    "frac_zero": 0.4253,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.45,
+        0.337,
+        0.286,
+        0.366,
+        0.429,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.244,
+        0.961,
+        1.0,
+        1.0,
+        1.0,
+        0.931,
+        0.189,
+        0.002,
+        0.0
+      ],
+      [
+        0.118,
+        0.774,
+        0.99,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.986,
+        0.729,
+        0.074
+      ],
+      [
+        0.802,
+        1.0,
+        0.986,
+        0.959,
+        1.0,
+        1.0,
+        1.0,
+        0.968,
+        0.995,
+        1.0,
+        0.817
+      ],
+      [
+        0.047,
+        0.879,
+        0.961,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.985,
+        0.858,
+        0.033
+      ],
+      [
+        0.0,
+        0.46,
+        0.896,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.899,
+        0.522,
+        0.049
+      ],
+      [
+        0.043,
+        0.693,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.539,
+        0.084
+      ],
+      [
+        0.219,
+        0.939,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.924,
+        0.073
+      ],
+      [
+        0.051,
+        0.983,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.805,
+        0.0
+      ],
+      [
+        0.0,
+        0.551,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.98,
+        0.365,
+        0.0
+      ],
+      [
+        0.0,
+        0.01,
+        0.397,
+        0.603,
+        0.791,
+        0.7,
+        0.825,
+        0.511,
+        0.344,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      18
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 123,
+    "contact_reference_px": 123.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        2,
+        1,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

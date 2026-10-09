@@ -1,0 +1,826 @@
+{
+  "id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_03_outer_mission_task_pavilion.monumental_sect_gate",
+  "archetype": "monumental_sect_gate_sec_03_outer_mission_task_pavilion",
+  "name": "Outer Mission / Task Pavilion - Soaring Sect Mountain Entrance Gate",
+  "vietnamese_name": "Thứ Vụ Tạp Sự Đường - Cổng Núi Tông Môn Uy Vũ",
+  "hanzi": "庶务杂事堂 · 宏伟宗门山门",
+  "category": "sec_03_outer_mission_task_pavilion",
+  "category_code": "SEC-03",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_03_outer_mission_task_pavilion",
+  "asset_class": "structure_building",
+  "type": "building",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    4,
+    2
+  ],
+  "canvas_px": [
+    512,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "pass_gate",
+  "gameplay_role": "structure_building entity supporting Outer Mission / Task Pavilion gameplay",
+  "destructible": false,
+  "material": "seasoned camphor timber framing and glazed ceramic roof tiles",
+  "cultivation_element": "earth",
+  "prompt_summary": "Single isolated 2D top-down RPG map building sprite of outer mission / task pavilion - soaring sect mountain entrance gate, glazed dark ceramic roof tiles, steep high-angle top-down RPG map perspective (~65-70 degrees downward tilt), roof dominant overhead (75%-80% of height), foreshortened walls beneath eaves, gouache hand-painted, fine dark #263A35 ink contours, flat baseline, solid pure white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Cultivation Sect Facilities & Dwellings",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "rot_south_facade",
+      "name": "South Facade (Front Entrance)",
+      "prompt_modifier": "front entrance visible foreshortened beneath eaves, steep overhead map view",
+      "variant_id": "rot_south_facade",
+      "variant_name": "South Facade (Front Entrance)",
+      "description": "front entrance visible foreshortened beneath eaves, steep overhead map view",
+      "prompt": "Single isolated 2D top-down world-map building sprite of soaring sect mountain entrance gate, seasoned camphor timber framing and glazed ceramic roof tiles, front entrance visible foreshortened beneath eaves, steep overhead map view, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, roof ridge running East-West with broad southern roof surface broad glazed ceramic roof tiles and curved dougong eaves dominant and fully visible overhead (70%-80% of height),  foreshortened front walls and entrance visible beneath eaves at bottom-center, stone courtyard steps descending at bottom, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_03_outer_mission_task_pavilion/monumental_sect_gate/rot_south_facade.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.423,
+            0.751,
+            0.756,
+            0.426
+          ],
+          [
+            0.507,
+            0.939,
+            0.942,
+            0.528
+          ]
+        ],
+        "frac_zero": 0.7527,
+        "blocks": [
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 8,
+        "anchor_cell": [
+          2,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.116,
+            0.039,
+            0.077,
+            0.446,
+            0.034,
+            0.069,
+            0.095
+          ],
+          [
+            0.275,
+            0.987,
+            0.978,
+            1.0,
+            0.964,
+            0.99,
+            0.085
+          ],
+          [
+            0.214,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.986,
+            0.004
+          ],
+          [
+            0.366,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.199
+          ],
+          [
+            0.736,
+            0.995,
+            1.0,
+            1.0,
+            1.0,
+            0.987,
+            0.708
+          ],
+          [
+            0.002,
+            0.95,
+            1.0,
+            1.0,
+            1.0,
+            0.753,
+            0.0
+          ],
+          [
+            0.027,
+            0.456,
+            0.823,
+            0.9,
+            0.732,
+            0.417,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          147,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 87,
+        "contact_reference_px": 87.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            3,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            3,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            3,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            3,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            3,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          3,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          512,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_north_rear",
+      "name": "North Rear (Back Wall)",
+      "prompt_modifier": "rear roof slope dominant overhead, solid back wall beneath eaves, zero front entrance steps",
+      "variant_id": "rot_north_rear",
+      "variant_name": "North Rear (Back Wall)",
+      "description": "rear roof slope dominant overhead, solid back wall beneath eaves, zero front entrance steps",
+      "prompt": "Single isolated 2D top-down world-map building sprite of soaring sect mountain entrance gate, seasoned camphor timber framing and glazed ceramic roof tiles, rear roof slope dominant overhead, solid back wall beneath eaves, solid continuous rear wall, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, roof ridge running East-West with broad northern rear roof surface broad glazed ceramic roof tiles and curved dougong eaves dominant and fully visible overhead (70%-80% of height),  solid unbroken timber lattice back wall and stone foundation foreshortened beneath eaves at bottom, completely windowless and doorless flat rear wall flush on level ground, clean horizontal baseline, back exterior view, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, front entrance door, open doorway, entrance steps, stairs, portal, door plaque, front veranda, open portal, descending stairs, central doorway, porch, arched entryway, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_03_outer_mission_task_pavilion/monumental_sect_gate/rot_north_rear.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.55,
+            0.816,
+            0.817,
+            0.542
+          ],
+          [
+            0.597,
+            0.939,
+            0.948,
+            0.607
+          ]
+        ],
+        "frac_zero": 0.7245,
+        "blocks": [
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 8,
+        "anchor_cell": [
+          2,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.332,
+            0.467,
+            0.313,
+            0.403,
+            0.339,
+            0.517,
+            0.245
+          ],
+          [
+            0.3,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.093
+          ],
+          [
+            0.316,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.129
+          ],
+          [
+            0.707,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.623
+          ],
+          [
+            0.584,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.481
+          ],
+          [
+            0.332,
+            0.957,
+            1.0,
+            1.0,
+            1.0,
+            0.841,
+            0.338
+          ],
+          [
+            0.017,
+            0.643,
+            0.774,
+            0.908,
+            0.764,
+            0.578,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          147,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 158,
+        "contact_reference_px": 158.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            3,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            3,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            3,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            3,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            3,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          3,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          512,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_west_flank",
+      "name": "West Flank (Left Profile)",
+      "prompt_modifier": "ridge oriented North-South, western roof slope and gable end visible from overhead",
+      "variant_id": "rot_west_flank",
+      "variant_name": "West Flank (Left Profile)",
+      "description": "ridge oriented North-South, western roof slope and gable end visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map building sprite of soaring sect mountain entrance gate, seasoned camphor timber framing and glazed ceramic roof tiles, ridge oriented North-South, western roof slope and gable end visible from overhead, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, building rotated 90 degrees with roof ridge running North-South, western roof slope and high-angle triangular dougong timber gable end dominant and fully visible overhead, western side wall foreshortened beneath eaves at bottom, side window or railing, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center, annexed side structure, attached side pavilion, extra side gate, secondary structure, side tower, courtyard wing, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_03_outer_mission_task_pavilion/monumental_sect_gate/rot_west_flank.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.473,
+            0.805,
+            0.792,
+            0.455
+          ],
+          [
+            0.546,
+            0.956,
+            0.954,
+            0.545
+          ]
+        ],
+        "frac_zero": 0.7715,
+        "blocks": [
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 8,
+        "anchor_cell": [
+          2,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.262,
+            0.261,
+            0.394,
+            0.283,
+            0.283,
+            0.237
+          ],
+          [
+            0.368,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.274
+          ],
+          [
+            0.313,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.21
+          ],
+          [
+            0.385,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.318
+          ],
+          [
+            0.639,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.601
+          ],
+          [
+            0.355,
+            1.0,
+            1.0,
+            1.0,
+            0.965,
+            0.341
+          ],
+          [
+            0.084,
+            0.718,
+            0.906,
+            0.874,
+            0.741,
+            0.011
+          ]
+        ],
+        "crop_offset": [
+          160,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 133,
+        "contact_reference_px": 133.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            3,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            3,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            3,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            3,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            3,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          3,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          512,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_east_flank",
+      "name": "East Flank (Right Profile)",
+      "prompt_modifier": "ridge oriented North-South, eastern roof slope and gable end visible from overhead",
+      "variant_id": "rot_east_flank",
+      "variant_name": "East Flank (Right Profile)",
+      "description": "ridge oriented North-South, eastern roof slope and gable end visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map building sprite of soaring sect mountain entrance gate, seasoned camphor timber framing and glazed ceramic roof tiles, ridge oriented North-South, eastern roof slope and gable end visible from overhead, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, building rotated 90 degrees with roof ridge running North-South, eastern roof slope and high-angle triangular dougong timber gable end dominant and fully visible overhead, eastern side wall foreshortened beneath eaves at bottom, side window or railing, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center, annexed side structure, attached side pavilion, extra side gate, secondary structure, side tower, courtyard wing, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_03_outer_mission_task_pavilion/monumental_sect_gate/rot_east_flank.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.333,
+            0.724,
+            0.703,
+            0.304
+          ],
+          [
+            0.5,
+            0.958,
+            0.957,
+            0.493
+          ]
+        ],
+        "frac_zero": 0.7892,
+        "blocks": [
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 8,
+        "anchor_cell": [
+          2,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.03,
+            0.0,
+            0.239,
+            0.199,
+            0.0,
+            0.027,
+            0.0
+          ],
+          [
+            0.287,
+            0.796,
+            0.917,
+            0.905,
+            0.788,
+            0.275,
+            0.0
+          ],
+          [
+            0.153,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.132,
+            0.0
+          ],
+          [
+            0.245,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.247,
+            0.0
+          ],
+          [
+            0.594,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.616,
+            0.016
+          ],
+          [
+            0.357,
+            0.938,
+            1.0,
+            1.0,
+            0.953,
+            0.388,
+            0.062
+          ],
+          [
+            0.0,
+            0.714,
+            0.903,
+            0.888,
+            0.77,
+            0.005,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          159,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 128,
+        "contact_reference_px": 128.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            3,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            3,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            3,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            3,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            3,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          3,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          512,
+          256
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "SEC-03",
+    "domain": "sect_facilities_and_dwellings",
+    "interaction": "pass_gate",
+    "collision_behavior": "solid",
+    "element": "earth",
+    "tier": 1
+  },
+  "category_id": "sec_03_outer_mission_task_pavilion",
+  "domain_id": "sect_facilities_and_dwellings",
+  "pinyin": "Shùwù Zátáng · Soaring Sect Mountain Entrance Gate",
+  "archetype_name": "Soaring Sect Mountain Entrance Gate",
+  "footprint_subcells": {
+    "w": 16,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 512,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 4,
+    "h": 2
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "structure"
+  },
+  "primary_material": "timber_frame",
+  "secondary_material": "glazed_ceramic_tile",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Earth affinity (Qi Refining (Luyện Khí / 练气))",
+  "elevation_tier": 1,
+  "mortal_realm_tier": "Qi Refining (Luyện Khí / 练气)",
+  "asset_slug": "monumental_sect_gate"
+}
