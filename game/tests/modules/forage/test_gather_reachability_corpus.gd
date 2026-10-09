@@ -183,12 +183,12 @@ func test_the_gatherable_set_has_not_shrunk_below_the_measured_floor() -> void:
 		distinct.size() >= MEASURED_GATHERABLE_FLOOR,
 		true,
 		(
-			"the gather route currently delivers %d distinct authored items; ADR 0253 measured"
-			+ " %d on 2026-10-05. Falling below the floor means a yield table lost an entry,"
-			+ (
-				" a node was removed, or an item was renamed out from under a node."
-				% [distinct.size(), MEASURED_GATHERABLE_FLOOR]
+			(
+				"the gather route currently delivers %d distinct authored items; ADR 0253 measured"
+				+ " %d on 2026-10-05. Falling below the floor means a yield table lost an entry,"
+				+ " a node was removed, or an item was renamed out from under a node."
 			)
+			% [distinct.size(), MEASURED_GATHERABLE_FLOOR]
 		)
 	)
 
