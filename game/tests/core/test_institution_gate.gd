@@ -13,6 +13,15 @@ extends TestCase
 ## without a tier module loaded. `ok_verb` passes, `no_verb` fails with an entry,
 ## `bad_verb` REFUSES.
 ##
+## The three composite verbs, and the flags each hands `InstitutionGate.composite`. A
+## table rather than three `match` arms: the arms differed only in two booleans, and the
+## difference is data.
+const COMPOSITES := {
+	&"all_of": [true, false],
+	&"any_of": [false, false],
+	&"none_of": [false, true],
+}
+
 ## The three COMPOSITE verbs dispatch back into `InstitutionGate.composite` — and that
 ## is not decoration, it is the pattern every implementer must follow. A tier's resolver
 ## receives its own composite verbs and hands the requirement back to the one composite,
@@ -22,6 +31,11 @@ extends TestCase
 ## said so with a bare `false`.
 func _resolve(requirement: Dictionary) -> Dictionary:
 	var verb := InstitutionGate.verb_of(requirement)
+	if COMPOSITES.has(verb):
+		var flags: Array = COMPOSITES[verb]
+		return InstitutionGate.composite(
+			Callable(self, "_resolve"), requirement, bool(flags[0]), bool(flags[1])
+		)
 	match verb:
 		&"ok_verb":
 			return InstitutionGate.passed()
@@ -31,16 +45,9 @@ func _resolve(requirement: Dictionary) -> Dictionary:
 			)
 		&"bad_verb":
 			return InstitutionGate.refuse(InstitutionGate.R_MALFORMED, "unreadable", "bad_verb")
-		&"all_of":
-			return InstitutionGate.composite(Callable(self, "_resolve"), requirement, true, false)
-		&"any_of":
-			return InstitutionGate.composite(Callable(self, "_resolve"), requirement, false, false)
-		&"none_of":
-			return InstitutionGate.composite(Callable(self, "_resolve"), requirement, false, true)
-		_:
-			return InstitutionGate.refuse(
-				InstitutionGate.R_UNKNOWN_VERB, "no such verb", String(verb)
-			)
+	return InstitutionGate.refuse(
+		InstitutionGate.R_UNKNOWN_VERB, "no such verb", String(verb)
+	)
 
 
 ## The three shapes, kept apart. `malformed` and `unknown_verb` are REFUSALS — the
