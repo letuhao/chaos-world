@@ -397,29 +397,27 @@ func _credit(actor: Actor) -> float:
 	return clampf(credit, 0.0, MAX_CREDIT)
 
 
-## The mean FORMATION DEPTH of the channels the gate demands, where depth is the share of
+## The mean FORMATION DEPTH of the channels a gate demands, where depth is the share of
 ## the trainable headroom ABOVE the gate a channel has actually been pushed into:
 ##
 ##     depth = clamp((refinement - required) / (cap - required), 0, 1)
 ##
 ## averaged over the required channels. Zero at the legality floor (every channel exactly
 ## at its demand) and 1.0 when every required channel sits on the realm's training cap —
-## which is what makes deepening past the gate worth something (BL-0830). The gate's own
-## numbers arrive through the INJECTED kernel, because they live on another path's seeds
-## and `core` may not read those; an uninstalled kernel or an unknown realm reads 0.0, the
-## same fail-safe an absent aid had.
-func _formation_depth(actor: Actor) -> float:
-	if not _gate_requirement.is_valid():
+## which is what makes deepening past the gate worth something (BL-0830). STATIC because
+## the number has a second consumer: a path snapshots it as the realm's PERFECTION at the
+## moment the actor leaves (BL-0951), and a second copy of this formula is the drift
+## ADR 0066 forbids. `row` is a gate requirement as the injected kernel returns it
+## (`{channels, required, cap}`); an empty or degenerate row reads 0.0, the same fail-safe
+## an absent aid had.
+static func formation_depth(actor: Actor, row: Dictionary) -> float:
+	if actor == null:
 		return 0.0
-	var raw: Variant = _gate_requirement.call(realm_id)
-	if not (raw is Dictionary):
-		return 0.0
-	var row: Dictionary = raw
 	var required := int(row.get("required", 0))
 	var cap := int(row.get("cap", 0))
 	if cap <= required:
 		# A realm whose demand IS its cap has no headroom to deepen into: the depth is
-		# not measurable, so the aid contributes nothing rather than a division by zero.
+		# not measurable, so it contributes nothing rather than a division by zero.
 		return 0.0
 	var channels: Array = row.get("channels", [])
 	if channels.is_empty():
@@ -431,6 +429,18 @@ func _formation_depth(actor: Actor) -> float:
 			continue
 		total += clampf(float(channel.refinement - required) / float(cap - required), 0.0, 1.0)
 	return total / float(channels.size())
+
+
+## The gate's own numbers arrive through the INJECTED kernel, because they live on
+## another path's seeds and `core` may not read those; an uninstalled kernel or an
+## unknown realm reads 0.0, the same fail-safe an absent aid had.
+func _formation_depth(actor: Actor) -> float:
+	if not _gate_requirement.is_valid():
+		return 0.0
+	var raw: Variant = _gate_requirement.call(realm_id)
+	if not (raw is Dictionary):
+		return 0.0
+	return formation_depth(actor, raw)
 
 
 ## How sound an arena the actor brings to the fight: the inside world's stability over

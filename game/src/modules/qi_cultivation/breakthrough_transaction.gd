@@ -12,6 +12,9 @@ const _ITEMS := preload("res://src/modules/items/api.gd")
 ## The element gate's mastery read, through the elements facade (ADR 0004's "master
 ## elements to rise"): the qi path names no element stat of its own.
 const _ELEMENTS := preload("res://src/modules/elements/api.gd")
+## The foundation record's write (BL-0951): the realm being left gets its perfection
+## snapshotted at departure, through the foundation facade like every other module edge.
+const _FOUNDATION := preload("res://src/modules/foundation/api.gd")
 ## How hard a failed breakthrough cracks the dao heart (BL-0932). This path's number,
 ## not core's: the deviation is the qi path's failure shape, and `QiTraining.recover`
 ## spends the realm's recovery elixir to mend whatever a deviation left behind.
@@ -158,6 +161,14 @@ static func execute(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
 	if roll >= chance:
 		_deviate(actor, state, seed, dantian, rng)
 		return false
+	# BL-0951: the realm being LEFT gets its PERFECTION snapshotted — how far past this
+	# gate the actor trained, measured by the same static the tribulation's own prep
+	# rating reads (one formula, no copy). Captured while `state` still names the realm;
+	# the write itself is once per realm, so a replay can never rewrite a spent past.
+	var leaving := state.rank_id
+	var perfection := Tribulation.formation_depth(
+		actor, QiCultivationApi.tribulation_gate_requirement(target.id)
+	)
 	# Advance through the cumulative tier gate so no Immortal+/Transcendent+ gate
 	# can be side-stepped. The condition was validated before the pill was
 	# consumed, so it is not re-checked here — re-running it would fail on the
@@ -169,6 +180,10 @@ static func execute(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
 	var advanced := Breakthrough.try_advance_gated(actor, QiPath.PATH_ID)
 	if not advanced:
 		return false
+	# The departure is real: record the realm's perfection now (BL-0951). A refusal is
+	# impossible by construction — the realm is written once and the actor has just left
+	# it — so the call needs no branch.
+	_FOUNDATION.snapshot(actor, leaving, perfection)
 	for key in seed.rewards:
 		var id := StringName(key)
 		actor.stats.set_base(id, actor.stats.get_base(id) + float(seed.rewards[key]))

@@ -180,6 +180,12 @@
         "holdings"
       ]
     },
+    "foundation": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
     "heavenly_tribulation": {
       "deps": [
         "contracts",
@@ -253,6 +259,7 @@
         "core",
         "destiny",
         "elements",
+        "foundation",
         "items",
         "race"
       ]

@@ -48,7 +48,7 @@ const BASE_DEPS := {
 	"mods": [],
 	"nation": ["sect", "social"],
 	"npc": ["social"],
-	"qi_cultivation": ["destiny", "elements", "items", "race"],
+	"qi_cultivation": ["destiny", "elements", "foundation", "items", "race"],
 	"quest": ["destiny", "items"],
 	"quick_use": [],
 	"race": [],
