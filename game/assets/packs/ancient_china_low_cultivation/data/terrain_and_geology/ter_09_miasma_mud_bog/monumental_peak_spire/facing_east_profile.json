@@ -1,0 +1,364 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_09_miasma_mud_bog.monumental_peak_spire",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_09_miasma_mud_bog",
+  "asset_slug": "monumental_peak_spire",
+  "variant_slug": "facing_east_profile",
+  "name": "East Facing Profile",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_09_miasma_mud_bog/monumental_peak_spire/facing_east_profile.png",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "climb_peak",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.0,
+        0.607,
+        0.192,
+        0.0
+      ],
+      [
+        0.017,
+        0.85,
+        0.74,
+        0.051
+      ],
+      [
+        0.749,
+        1.0,
+        1.0,
+        0.705
+      ],
+      [
+        0.158,
+        0.831,
+        0.932,
+        0.369
+      ]
+    ],
+    "frac_zero": 0.6958,
+    "blocks": [
+      [
+        false,
+        true,
+        false,
+        false
+      ],
+      [
+        false,
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        false,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 10,
+    "anchor_cell": [
+      2,
+      3
+    ],
+    "sub_grid": [
+      11,
+      15
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.081,
+        0.936,
+        0.173,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.649,
+        1.0,
+        0.554,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.72,
+        1.0,
+        0.596,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.757,
+        1.0,
+        0.647,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.021,
+        0.844,
+        1.0,
+        0.838,
+        0.085,
+        0.06,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.234,
+        1.0,
+        1.0,
+        0.949,
+        0.67,
+        0.529,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.272,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.729,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.472,
+        0.698,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.955,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.216,
+        0.886,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.996,
+        0.718,
+        0.043,
+        0.0
+      ],
+      [
+        0.556,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.756,
+        0.0
+      ],
+      [
+        0.876,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.907,
+        0.094
+      ],
+      [
+        0.078,
+        0.913,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.981,
+        0.581,
+        0.0
+      ],
+      [
+        0.0,
+        0.291,
+        0.206,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.566,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.136,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        0.949,
+        0.384,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.167,
+        0.463,
+        0.928,
+        0.968,
+        0.751,
+        0.106,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      95,
+      17
+    ],
+    "trunk_columns": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 109,
+    "contact_reference_px": 109.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        3
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      3
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      512
+    ]
+  }
+}
