@@ -1,0 +1,90 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_21_thunder_struck_scorched_soil.deep_crevice_fissure",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_21_thunder_struck_scorched_soil",
+  "asset_slug": "deep_crevice_fissure",
+  "variant_slug": "facing_east_profile",
+  "name": "East Facing Profile",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_21_thunder_struck_scorched_soil/deep_crevice_fissure/facing_east_profile.png",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.324,
+        0.873,
+        0.459
+      ]
+    ],
+    "frac_zero": 0.9121,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.116,
+        0.685,
+        0.055
+      ],
+      [
+        0.79,
+        1.0,
+        0.68
+      ],
+      [
+        0.366,
+        0.661,
+        0.081
+      ]
+    ],
+    "crop_offset": [
+      154,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 37,
+    "contact_reference_px": 37.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
