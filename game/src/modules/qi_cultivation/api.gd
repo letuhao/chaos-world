@@ -162,6 +162,12 @@ static func panel_state(actor: Actor) -> Dictionary:
 		# the same gate; these two numbers are what it compares.
 		"foundation": FoundationApi.foundation(actor),
 		"min_foundation": 0.0 if gate == null else gate.min_foundation,
+		# BL-0951 / ADR 0939, S15: the WHOLE record, so a foundation readout renders the
+		# per-realm snapshots and the karmic floor from the same read model the row above
+		# comes from. Embedded rather than reached for directly: `ui/` may name only the
+		# modules `rules.UI_MODULES` lists, and `foundation` is not one of them — so the
+		# facade that owns the screen carries it.
+		"foundation_summary": FoundationApi.summary(actor),
 	}
 
 

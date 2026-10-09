@@ -18,6 +18,9 @@ var _actions: ActionSet = null
 var _conditions_label: Label = null
 var _realm_label: Label = null
 var _channels: ChannelList = null
+## The foundation readout (BL-0951 / ADR 0939, S15). Null when the scene does not carry it,
+## so a headless driver that builds the screen from script alone never crashes on it.
+var _foundation_panel: FoundationPanel = null
 ## The channel the player last pressed in the list. The train action spends on it, so
 ## the specific verb has a production caller (ADR 0188); empty means the next-owed form.
 var _selected_channel: StringName = &""
@@ -213,6 +216,7 @@ func _refresh_view() -> void:
 		)
 	_render_conditions(live)
 	_render_realm(live)
+	_render_foundation(live)
 
 
 ## The realm line the scene declares but used to leave at its placeholder text.
@@ -254,6 +258,25 @@ func _render_conditions(live: Dictionary) -> void:
 		cost_line = " | Needs: %s" % ", ".join(ids)
 	_conditions_label.text = L.t("LOC_UI_SCREENS_D79D1724A3") % [", ".join(unmet), cost_line]
 	_conditions_label.theme_type_variation = &"MetaLabel"
+
+
+## The foundation readout (BL-0951 / ADR 0939, S15): the whole record and the wall AHEAD,
+## fed from the SAME read model the conditions line reads. A null panel — a screen built
+## from script without the scene — leaves this a no-op, so a headless driver never crashes
+## on a widget it did not instance.
+func _render_foundation(live: Dictionary) -> void:
+	if _foundation_panel == null:
+		return
+	(
+		_foundation_panel
+		. set_state(
+			live.get("foundation_summary", {}),
+			{
+				"foundation": live.get("foundation", 0.0),
+				"min_foundation": live.get("min_foundation", 0.0),
+			}
+		)
+	)
 
 
 # --- Actions, callable headlessly as well as by the buttons ----------------
@@ -535,6 +558,7 @@ func _bind_nodes() -> void:
 	_channels = get_node_or_null("%Channels") as ChannelList
 	_conditions_label = get_node_or_null("%ConditionLabel") as Label
 	_realm_label = get_node_or_null("%RealmLabel") as Label
+	_foundation_panel = get_node_or_null("%Foundation") as FoundationPanel
 	for key in [&"qi", &"dantian", &"progress"]:
 		_rows[key] = _find_row(key)
 	if _actions != null and not _actions.action_requested.is_connected(_on_action):
