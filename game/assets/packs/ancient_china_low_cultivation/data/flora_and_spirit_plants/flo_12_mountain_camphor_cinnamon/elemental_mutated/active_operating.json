@@ -1,0 +1,146 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_12_mountain_camphor_cinnamon.elemental_mutated",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_12_mountain_camphor_cinnamon",
+  "asset_slug": "elemental_mutated",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_12_mountain_camphor_cinnamon/elemental_mutated/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "none",
+  "interactive_verb": "channel_element",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.483,
+        0.478
+      ],
+      [
+        0.444,
+        0.42
+      ]
+    ],
+    "frac_zero": 0.7049,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.189,
+        0.819,
+        0.369,
+        0.016,
+        0.0
+      ],
+      [
+        0.072,
+        0.743,
+        0.624,
+        0.623,
+        0.348,
+        0.0
+      ],
+      [
+        0.643,
+        0.673,
+        0.801,
+        0.642,
+        0.703,
+        0.094
+      ],
+      [
+        0.134,
+        0.613,
+        0.767,
+        0.741,
+        0.16,
+        0.0
+      ],
+      [
+        0.062,
+        0.349,
+        0.765,
+        0.252,
+        0.064,
+        0.0
+      ],
+      [
+        0.044,
+        0.773,
+        1.0,
+        0.948,
+        0.334,
+        0.0
+      ],
+      [
+        0.058,
+        0.666,
+        0.852,
+        0.601,
+        0.103,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      45,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 88,
+    "contact_reference_px": 88.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
