@@ -507,12 +507,22 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
             material = "dark twisting woody creeper vine stems, pale ivory tendril barbs, deep plum-purple accents, and withered autumn bark"
         elif any(w in plant_id for w in ("wisteria",)):
             material = "cascading royal violet and amethyst purple blossom racemes with dark twisting woody vine stems"
-        elif any(w in plant_id for w in ("pine", "pine_nuts")):
-            material = "weathered gnarled pine branches, dark evergreen needle tufts, golden-amber resin droplets, and cinnamon bark"
+        elif any(w in plant_id for w in ("pine", "dragon_coil", "pine_nuts")):
+            material = "weathered gnarled dragon-coil pine boughs, rich cinnamon-russet bark plates, golden-amber resin tears, and deep forest-green needle tufts"
         elif any(w in plant_id for w in ("cypress", "weeping_cypress")):
             material = "weeping drooping cypress boughs, fragrant golden-brown timber, small amber seed cones, and dark evergreen scale foliage"
-        elif any(w in plant_id for w in ("willow", "hollow_heart_willow")):
-            material = "drooping weeping willow boughs with golden-green leaf ribbons and hollow ancient umber trunk"
+        elif any(w in plant_id for w in ("willow", "river_willow", "hollow_heart_willow")):
+            material = "drooping weeping willow boughs with sunlit golden-green leaf ribbons, hollow ancient cinnamon trunk, and spring blossoms"
+        elif any(w in plant_id for w in ("camphor", "cinnamon")):
+            material = "aromatic reddish-cinnamon timber bark, golden amber resin nodules, creamy blossom sprigs, and deep glossy forest canopy"
+        elif any(w in plant_id for w in ("tea", "mountain_tea", "cloud_mist")):
+            material = "creamy white tea blossoms with golden honey centers, dark cinnamon-brown woody stems, glossy olive-green tea leaves, and rich mountain soil"
+        elif any(w in plant_id for w in ("fern", "moon_swallowing", "moon_fern")):
+            material = "luminous moonlight pearl-silver fronds, deep twilight-indigo spore clusters, and dark moist humus soil base"
+        elif any(w in plant_id for w in ("viper_grass", "spotted_viper")):
+            material = "sinuous serpentine grass blades with vivid royal amethyst and scarlet spots, golden seed heads, and dark charcoal-umber stems"
+        elif any(w in plant_id for w in ("spirit_gathering_grass", "gathering_grass", "grass")):
+            material = "slender luminous spirit grass blades, golden-ochre seed tassels, celestial dewdrop sparkles, and warm terracotta root base"
         elif any(w in plant_id for w in ("poplar", "wind_listening_poplar")):
             material = "shimmering silver-green fluttering poplar leaves, pale white-barked trunk, and sunlit golden canopy highlights"
         elif any(w in plant_id for w in ("reed", "dragon_whisker")):
@@ -544,6 +554,7 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
                 .replace(
                     "Broad Leaf Collecting Spirit Dew", "Concave Spore Cap Collecting Spirit Dew"
                 )
+                .replace("Young Button Mushroom Cap Sprout", "Young Button Mushroom Cap Sprout")
                 .replace("Young Budding Green Sprout", "Young Button Mushroom Cap Sprout")
             )
         elif any(w in plant_id for w in ("lotus", "water_lily")):
@@ -576,6 +587,29 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
                 .replace(
                     "Impenetrable Wild Thicket", "Impenetrable Prickly Thorn Bramble Barricade"
                 )
+            )
+        elif any(w in plant_id for w in ("grass", "spirit_gathering", "viper_grass")):
+            asset_name = (
+                asset_name.replace("Millennial Ancestor Wood Heart", "Sacred Ancient Thousand-Year Mother Rhizome")
+                .replace("Moss-Covered Fallen Log", "Decaying Grass Mound with Ripened Seed Husks")
+                .replace("Impenetrable Wild Thicket", "Dense Lush Wild Spirit Grass Meadow Colony")
+                .replace("Broad Leaf Collecting Spirit Dew", "Dew-Laden Slender Grass Blades Collecting Pure Spirit Nectar")
+                .replace("Mature Flourishing Specimen", "Mature Standing Specimen with Golden Seed Tassels")
+            )
+        elif any(w in plant_id for w in ("fern", "moon_swallowing")):
+            asset_name = (
+                asset_name.replace("Millennial Ancestor Wood Heart", "Massive Ancient Moon-Fern Crown Rhizome")
+                .replace("Moss-Covered Fallen Log", "Decaying Forest Bed of Silver-Pearl Fern Fronds")
+                .replace("Impenetrable Wild Thicket", "Dense Impenetrable Moon-Fern Colony")
+                .replace("Broad Leaf Collecting Spirit Dew", "Arching Silver Fern Fronds Collecting Moonlight Dew")
+                .replace("Mature Flourishing Specimen", "Mature Standing Moon-Fern with Luminous Fronds")
+            )
+        elif any(w in plant_id for w in ("tea", "mountain_tea")):
+            asset_name = (
+                asset_name.replace("Millennial Ancestor Wood Heart", "Ancient Thousand-Year Mother Tea Bush Crown")
+                .replace("Moss-Covered Fallen Log", "Old Gnarled Pruned Tea Base with Fresh Shoots")
+                .replace("Impenetrable Wild Thicket", "Dense Misty Mountain Tea Shrub Colony")
+                .replace("Broad Leaf Collecting Spirit Dew", "Tender Golden Tea Tips Collecting Mountain Mist Dew")
             )
 
         # Sanitize workstation modifiers for flora: replace fireplaces/hearths/locks with authentic botanical growth states
