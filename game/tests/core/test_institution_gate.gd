@@ -12,17 +12,31 @@ extends TestCase
 ## A resolver with one verb of each outcome shape, so the composite fold can be driven
 ## without a tier module loaded. `ok_verb` passes, `no_verb` fails with an entry,
 ## `bad_verb` REFUSES.
+##
+## The three COMPOSITE verbs dispatch back into `InstitutionGate.composite` — and that
+## is not decoration, it is the pattern every implementer must follow. A tier's resolver
+## receives its own composite verbs and hands the requirement back to the one composite,
+## because `composite` is what REBUILDS the child probe per child. A resolver that
+## answered `all_of` itself would have to re-derive that rebuild, and the first version
+## of this fixture omitted the cases entirely, so its nesting test could never recurse and
+## said so with a bare `false`.
 func _resolve(requirement: Dictionary) -> Dictionary:
 	var verb := InstitutionGate.verb_of(requirement)
 	match verb:
 		&"ok_verb":
-			return InstitutionGate.pass()
+			return InstitutionGate.passed()
 		&"no_verb":
 			return InstitutionGate.fail(
 				&"bar", &"elder", int(requirement.get("need", 0)), 3, "Needs more"
 			)
 		&"bad_verb":
 			return InstitutionGate.refuse(InstitutionGate.R_MALFORMED, "unreadable", "bad_verb")
+		&"all_of":
+			return InstitutionGate.composite(Callable(self, "_resolve"), requirement, true, false)
+		&"any_of":
+			return InstitutionGate.composite(Callable(self, "_resolve"), requirement, false, false)
+		&"none_of":
+			return InstitutionGate.composite(Callable(self, "_resolve"), requirement, false, true)
 		_:
 			return InstitutionGate.refuse(
 				InstitutionGate.R_UNKNOWN_VERB, "no such verb", String(verb)

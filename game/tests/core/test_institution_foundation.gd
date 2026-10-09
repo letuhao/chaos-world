@@ -845,7 +845,14 @@ func _realm_scaled_actor(actor_id: StringName, ordinal: int) -> Actor:
 	var power := maxf(1.0, realm.power)
 	actor.stats.set_base(Stat.PHYSIQUE, 10.0 * power)
 	actor.stats.set_base(Stat.COMPREHENSION, 8.0 * power)
-	actor.stats.set_base(RECOGNISED, 4.0 * power)
+	## `INSIGHT_GAIN` is `1.0 + will * 0.01` (BL-0822 moved it off `comprehension`, which
+	## made the rate a function of the stock it grew). `will` is therefore the attribute
+	## this sheet must scale to differ by realm — and the `RECOGNISED` base write that
+	## used to sit here was DEAD, not merely stale: `_recompute` walks `_base` first and
+	## then re-`_put`s every derived stat, so `INSIGHT_GAIN` was overwritten by the rate
+	## before anyone read it. Both sheets answered exactly `1.0` and the assertion below
+	## said so. Naming the attribute is what makes "a deeper sheet" a fact again.
+	actor.stats.set_base(Stat.WILL, 6.0 * power)
 	return actor
 
 

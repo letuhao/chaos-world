@@ -62,7 +62,14 @@ const ENTRY_KEYS: Array[String] = ["kind", "id", "required", "actual", "label"]
 
 
 ## A requirement is satisfied.
-static func pass() -> Dictionary:
+##
+## Named `passed`, never `pass`: `pass` is a reserved GDScript keyword, so a
+## `func pass()` does not parse. Because this class is resolved by NAME, one
+## unparseable function here aborted every suite that referenced `InstitutionGate`:
+## 50 script errors and one failed suite load, which reads as a broken gate rather
+## than a broken word. The two tier gates this replaces spelled it `_pass()`, which
+## is why nobody hit this until the underscore came off.
+static func passed() -> Dictionary:
 	return {"ok": true, "reason": "", "unmet": []}
 
 
@@ -157,7 +164,7 @@ static func composite(
 	if refuse_when_any:
 		ok = passed == 0
 	if ok:
-		return pass()
+		return passed()
 	return {"ok": false, "reason": R_UNMET, "unmet": unmet}
 
 
