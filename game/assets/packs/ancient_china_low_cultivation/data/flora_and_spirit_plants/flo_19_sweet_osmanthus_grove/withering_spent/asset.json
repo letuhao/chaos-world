@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_19_sweet_osmanthus_grove/withering_spent/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.345
+            0.395
           ]
         ],
-        "frac_zero": 0.7493,
+        "frac_zero": 0.7134,
         "blocks": [
           [
             false
@@ -75,36 +75,41 @@
         ],
         "sub_fill": [
           [
-            0.234,
-            0.732,
-            0.159
+            0.146,
+            0.755,
+            0.137
           ],
           [
-            0.433,
-            0.451,
-            0.444
+            0.382,
+            0.473,
+            0.429
           ],
           [
-            0.063,
-            0.459,
-            0.041
+            0.224,
+            0.801,
+            0.11
           ]
         ],
         "crop_offset": [
-          19,
-          16
+          18,
+          17
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 37,
-        "contact_reference_px": 37.0,
+        "contact_px": 58,
+        "contact_reference_px": 58.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
         },
         "block_rect": null,
         "block_rect_px": null
@@ -121,14 +126,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_19_sweet_osmanthus_grove/withering_spent/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.347
+            0.456
           ]
         ],
-        "frac_zero": 0.7532,
+        "frac_zero": 0.6947,
         "blocks": [
           [
             false
@@ -150,36 +155,41 @@
         ],
         "sub_fill": [
           [
-            0.282,
-            0.688,
-            0.109
+            0.189,
+            0.74,
+            0.11
           ],
           [
-            0.364,
-            0.39,
-            0.348
+            0.546,
+            0.546,
+            0.616
           ],
           [
-            0.133,
-            0.576,
-            0.015
+            0.256,
+            0.845,
+            0.149
           ]
         ],
         "crop_offset": [
-          22,
-          17
+          19,
+          16
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 37,
-        "contact_reference_px": 37.0,
+        "contact_px": 55,
+        "contact_reference_px": 55.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
         },
         "block_rect": null,
         "block_rect_px": null
@@ -196,14 +206,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_19_sweet_osmanthus_grove/withering_spent/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.411
+            0.445
           ]
         ],
-        "frac_zero": 0.7408,
+        "frac_zero": 0.7045,
         "blocks": [
           [
             false
@@ -225,30 +235,31 @@
         ],
         "sub_fill": [
           [
-            0.352,
-            0.706,
-            0.072
+            0.192,
+            0.697,
+            0.082
           ],
           [
-            0.413,
-            0.369,
-            0.446
+            0.472,
+            0.51,
+            0.432
           ],
           [
-            0.293,
-            0.744,
-            0.019
+            0.425,
+            0.859,
+            0.156
           ]
         ],
         "crop_offset": [
-          22,
+          20,
           17
         ],
         "trunk_columns": [
+          0,
           1
         ],
-        "contact_px": 50,
-        "contact_reference_px": 50.0,
+        "contact_px": 64,
+        "contact_reference_px": 64.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -276,14 +287,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_19_sweet_osmanthus_grove/withering_spent/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.363
+            0.457
           ]
         ],
-        "frac_zero": 0.7736,
+        "frac_zero": 0.7004,
         "blocks": [
           [
             false
@@ -305,36 +316,42 @@
         ],
         "sub_fill": [
           [
-            0.292,
-            0.588,
-            0.015
+            0.21,
+            0.692,
+            0.054
           ],
           [
-            0.416,
-            0.421,
-            0.425
+            0.446,
+            0.464,
+            0.366
           ],
           [
-            0.286,
-            0.477,
-            0.0
+            0.546,
+            0.894,
+            0.229
           ]
         ],
         "crop_offset": [
-          24,
-          16
+          22,
+          17
         ],
         "trunk_columns": [
+          0,
           1
         ],
-        "contact_px": 39,
-        "contact_reference_px": 39.0,
+        "contact_px": 69,
+        "contact_reference_px": 69.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
         },
         "block_rect": null,
         "block_rect_px": null

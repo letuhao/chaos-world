@@ -46,19 +46,19 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_19_sweet_osmanthus_grove/elemental_mutated/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.428,
-            0.435
+            0.417,
+            0.351
           ],
           [
-            0.34,
-            0.291
+            0.55,
+            0.423
           ]
         ],
-        "frac_zero": 0.6933,
+        "frac_zero": 0.6385,
         "blocks": [
           [
             false,
@@ -91,84 +91,91 @@
         "sub_fill": [
           [
             0.0,
-            0.035,
-            0.456,
-            0.716,
-            0.207,
+            0.071,
+            0.495,
+            0.752,
+            0.151,
             0.0,
             0.0
           ],
           [
-            0.004,
-            0.399,
-            0.992,
-            1.0,
-            0.832,
-            0.205,
+            0.048,
+            0.416,
+            0.957,
+            0.975,
+            0.767,
+            0.156,
             0.0
           ],
           [
-            0.102,
-            0.834,
-            0.931,
-            0.889,
-            0.729,
-            0.348,
+            0.103,
+            0.508,
+            0.571,
+            0.712,
+            0.721,
+            0.359,
             0.0
           ],
           [
-            0.36,
-            0.567,
-            0.264,
-            0.474,
-            0.428,
-            0.715,
-            0.195
+            0.461,
+            0.881,
+            0.599,
+            0.333,
+            0.22,
+            0.229,
+            0.106
           ],
           [
-            0.551,
-            0.662,
-            0.317,
-            0.396,
-            0.396,
-            0.683,
-            0.348
+            0.155,
+            0.457,
+            0.614,
+            0.693,
+            0.472,
+            0.298,
+            0.16
           ],
           [
-            0.011,
-            0.106,
-            0.34,
-            0.477,
-            0.042,
-            0.053,
+            0.0,
+            0.287,
+            0.989,
+            0.881,
+            0.558,
+            0.018,
             0.0
           ],
           [
-            0.0,
-            0.0,
-            0.465,
-            0.611,
-            0.06,
-            0.0,
+            0.091,
+            0.839,
+            0.98,
+            0.975,
+            0.857,
+            0.244,
             0.0
           ]
         ],
         "crop_offset": [
-          24,
+          23,
           17
         ],
         "trunk_columns": [
+          1,
           2,
-          3
+          3,
+          4
         ],
-        "contact_px": 60,
-        "contact_reference_px": 60.0,
+        "contact_px": 141,
+        "contact_reference_px": 141.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
         },
         "block_rect": null,
         "block_rect_px": null
@@ -185,19 +192,19 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_19_sweet_osmanthus_grove/elemental_mutated/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.538,
-            0.491
+            0.439,
+            0.437
           ],
           [
-            0.433,
-            0.352
+            0.511,
+            0.467
           ]
         ],
-        "frac_zero": 0.65,
+        "frac_zero": 0.6134,
         "blocks": [
           [
             false,
@@ -230,78 +237,80 @@
         "sub_fill": [
           [
             0.0,
-            0.243,
-            0.667,
-            0.616,
-            0.107,
+            0.066,
+            0.479,
+            0.631,
+            0.126,
             0.0,
             0.0
           ],
           [
-            0.142,
-            0.736,
-            0.991,
+            0.005,
+            0.308,
+            0.921,
             1.0,
+            0.804,
+            0.232,
+            0.0
+          ],
+          [
+            0.087,
+            0.746,
+            0.969,
             0.829,
-            0.136,
-            0.0
-          ],
-          [
-            0.377,
-            0.936,
-            0.85,
-            0.873,
-            0.713,
-            0.134,
-            0.0
-          ],
-          [
-            0.507,
-            0.567,
-            0.335,
-            0.409,
-            0.865,
-            0.76,
-            0.104
-          ],
-          [
-            0.606,
-            0.613,
-            0.559,
-            0.385,
-            0.554,
-            0.265,
-            0.0
-          ],
-          [
-            0.0,
-            0.25,
-            0.666,
-            0.533,
-            0.318,
-            0.033,
-            0.0
-          ],
-          [
-            0.0,
-            0.2,
-            0.868,
+            0.714,
             0.621,
-            0.028,
+            0.015
+          ],
+          [
+            0.333,
+            0.753,
+            0.342,
+            0.61,
+            0.536,
+            0.974,
+            0.433
+          ],
+          [
+            0.416,
+            0.683,
+            0.571,
+            0.633,
+            0.299,
+            0.285,
+            0.067
+          ],
+          [
             0.0,
+            0.31,
+            0.879,
+            0.955,
+            0.778,
+            0.116,
+            0.0
+          ],
+          [
+            0.001,
+            0.408,
+            0.921,
+            0.969,
+            0.774,
+            0.176,
             0.0
           ]
         ],
         "crop_offset": [
-          31,
-          17
+          21,
+          16
         ],
         "trunk_columns": [
+          1,
           2,
-          3
+          3,
+          4
         ],
-        "contact_px": 75,
-        "contact_reference_px": 75.0,
+        "contact_px": 108,
+        "contact_reference_px": 108.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -310,7 +319,7 @@
           "1.6": [
             0,
             1,
-            0,
+            1,
             1
           ]
         },
@@ -329,19 +338,19 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_19_sweet_osmanthus_grove/elemental_mutated/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.401,
-            0.424
+            0.397,
+            0.402
           ],
           [
-            0.37,
-            0.418
+            0.54,
+            0.5
           ]
         ],
-        "frac_zero": 0.683,
+        "frac_zero": 0.6164,
         "blocks": [
           [
             false,
@@ -374,79 +383,80 @@
         "sub_fill": [
           [
             0.0,
-            0.0,
-            0.381,
-            0.497,
-            0.155,
+            0.02,
+            0.466,
+            0.742,
+            0.203,
             0.0,
             0.0
           ],
           [
             0.0,
-            0.394,
-            0.96,
-            0.994,
-            0.598,
-            0.085,
+            0.354,
+            0.912,
+            0.991,
+            0.822,
+            0.071,
             0.0
           ],
           [
-            0.077,
-            0.453,
-            0.818,
-            0.982,
-            0.919,
-            0.255,
-            0.0
-          ],
-          [
-            0.469,
-            0.865,
-            0.401,
-            0.504,
-            0.394,
+            0.016,
             0.428,
-            0.0
+            0.619,
+            0.804,
+            0.789,
+            0.479,
+            0.003
           ],
           [
-            0.045,
-            0.261,
-            0.535,
-            0.334,
-            0.562,
-            0.607,
-            0.219
+            0.47,
+            0.896,
+            0.551,
+            0.647,
+            0.429,
+            0.843,
+            0.262
+          ],
+          [
+            0.096,
+            0.463,
+            0.42,
+            0.749,
+            0.298,
+            0.541,
+            0.174
           ],
           [
             0.0,
-            0.149,
-            0.646,
-            0.854,
-            0.321,
-            0.011,
+            0.688,
+            0.973,
+            0.958,
+            0.806,
+            0.241,
             0.0
           ],
           [
             0.0,
-            0.3,
-            0.915,
-            0.905,
-            0.628,
-            0.04,
+            0.579,
+            0.932,
+            0.979,
+            0.815,
+            0.235,
             0.0
           ]
         ],
         "crop_offset": [
-          26,
-          17
+          20,
+          18
         ],
         "trunk_columns": [
+          1,
           2,
           3,
           4
         ],
-        "contact_px": 99,
-        "contact_reference_px": 99.0,
+        "contact_px": 127,
+        "contact_reference_px": 127.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -474,19 +484,19 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_19_sweet_osmanthus_grove/elemental_mutated/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.441,
-            0.447
+            0.418,
+            0.438
           ],
           [
-            0.484,
-            0.445
+            0.535,
+            0.415
           ]
         ],
-        "frac_zero": 0.6641,
+        "frac_zero": 0.625,
         "blocks": [
           [
             false,
@@ -513,70 +523,77 @@
           1
         ],
         "sub_grid": [
-          6,
+          7,
           7
         ],
         "sub_fill": [
           [
             0.0,
-            0.191,
-            0.612,
-            0.562,
-            0.052,
+            0.057,
+            0.495,
+            0.639,
+            0.12,
+            0.0,
             0.0
           ],
           [
-            0.069,
-            0.661,
-            0.988,
-            0.967,
-            0.658,
-            0.002
+            0.03,
+            0.435,
+            0.949,
+            0.993,
+            0.737,
+            0.098,
+            0.0
+          ],
+          [
+            0.025,
+            0.495,
+            0.47,
+            0.773,
+            0.752,
+            0.705,
+            0.258
+          ],
+          [
+            0.432,
+            0.91,
+            0.618,
+            0.569,
+            0.56,
+            0.489,
+            0.055
+          ],
+          [
+            0.014,
+            0.315,
+            0.458,
+            0.678,
+            0.245,
+            0.155,
+            0.0
+          ],
+          [
+            0.047,
+            0.76,
+            0.98,
+            0.926,
+            0.844,
+            0.205,
+            0.0
           ],
           [
             0.12,
-            0.612,
-            0.807,
-            0.766,
-            0.547,
-            0.244
-          ],
-          [
-            0.502,
-            0.606,
-            0.419,
-            0.33,
-            0.801,
-            0.53
-          ],
-          [
-            0.15,
-            0.458,
-            0.481,
-            0.373,
-            0.246,
-            0.021
-          ],
-          [
-            0.0,
-            0.621,
-            1.0,
-            0.973,
-            0.608,
+            0.74,
+            0.929,
+            0.944,
+            0.795,
+            0.258,
             0.0
-          ],
-          [
-            0.0,
-            0.568,
-            0.916,
-            0.876,
-            0.623,
-            0.038
           ]
         ],
         "crop_offset": [
-          32,
-          16
+          21,
+          17
         ],
         "trunk_columns": [
           1,
@@ -584,8 +601,8 @@
           3,
           4
         ],
-        "contact_px": 100,
-        "contact_reference_px": 100.0,
+        "contact_px": 135,
+        "contact_reference_px": 135.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
