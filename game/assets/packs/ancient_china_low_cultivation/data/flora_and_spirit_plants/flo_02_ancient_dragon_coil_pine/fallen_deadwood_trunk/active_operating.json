@@ -1,0 +1,93 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_02_ancient_dragon_coil_pine.fallen_deadwood_trunk",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_02_ancient_dragon_coil_pine",
+  "asset_slug": "fallen_deadwood_trunk",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_02_ancient_dragon_coil_pine/fallen_deadwood_trunk/active_operating.png",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "forage_mushrooms",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.523,
+        0.565
+      ]
+    ],
+    "frac_zero": 0.836,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.201,
+        0.606,
+        0.182
+      ],
+      [
+        0.448,
+        0.683,
+        0.23
+      ],
+      [
+        0.775,
+        0.919,
+        0.564
+      ]
+    ],
+    "crop_offset": [
+      87,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 76,
+    "contact_reference_px": 76.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

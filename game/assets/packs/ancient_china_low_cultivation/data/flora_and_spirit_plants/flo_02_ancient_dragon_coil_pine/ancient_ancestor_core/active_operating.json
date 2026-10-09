@@ -1,0 +1,287 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_02_ancient_dragon_coil_pine.ancient_ancestor_core",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_02_ancient_dragon_coil_pine",
+  "asset_slug": "ancient_ancestor_core",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_02_ancient_dragon_coil_pine/ancient_ancestor_core/active_operating.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "commune_spirit",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.139,
+        0.646,
+        0.236
+      ],
+      [
+        0.38,
+        0.648,
+        0.404
+      ],
+      [
+        0.394,
+        0.939,
+        0.398
+      ]
+    ],
+    "frac_zero": 0.6049,
+    "blocks": [
+      [
+        false,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 8,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.05,
+        0.562,
+        0.797,
+        0.349,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.004,
+        0.646,
+        0.933,
+        0.874,
+        0.964,
+        0.318,
+        0.005,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.017,
+        0.482,
+        0.605,
+        0.425,
+        0.539,
+        0.73,
+        0.884,
+        0.318,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.175,
+        0.558,
+        0.463,
+        0.68,
+        0.375,
+        0.513,
+        0.527,
+        0.658,
+        0.11,
+        0.0
+      ],
+      [
+        0.108,
+        0.662,
+        0.468,
+        0.094,
+        0.83,
+        0.686,
+        0.381,
+        0.526,
+        0.921,
+        0.739,
+        0.031
+      ],
+      [
+        0.564,
+        0.77,
+        0.606,
+        0.578,
+        0.479,
+        0.745,
+        0.635,
+        0.452,
+        0.591,
+        0.018,
+        0.0
+      ],
+      [
+        0.004,
+        0.212,
+        0.628,
+        0.489,
+        0.893,
+        1.0,
+        0.448,
+        0.525,
+        0.208,
+        0.003,
+        0.0
+      ],
+      [
+        0.0,
+        0.129,
+        0.473,
+        0.842,
+        1.0,
+        1.0,
+        0.748,
+        0.286,
+        0.184,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.296,
+        0.946,
+        0.99,
+        1.0,
+        1.0,
+        0.98,
+        0.923,
+        0.451,
+        0.019,
+        0.0
+      ],
+      [
+        0.018,
+        0.55,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.717,
+        0.006,
+        0.0
+      ],
+      [
+        0.0,
+        0.023,
+        0.431,
+        0.732,
+        0.802,
+        0.709,
+        0.806,
+        0.376,
+        0.028,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      31,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 151,
+    "contact_reference_px": 151.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}
