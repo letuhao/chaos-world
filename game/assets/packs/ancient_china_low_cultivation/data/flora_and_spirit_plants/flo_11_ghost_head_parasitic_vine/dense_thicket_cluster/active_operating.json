@@ -1,0 +1,154 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_11_ghost_head_parasitic_vine.dense_thicket_cluster",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_11_ghost_head_parasitic_vine",
+  "asset_slug": "dense_thicket_cluster",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_11_ghost_head_parasitic_vine/dense_thicket_cluster/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "cut_thicket",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.392,
+        0.419
+      ],
+      [
+        0.588,
+        0.552
+      ]
+    ],
+    "frac_zero": 0.6129,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.04,
+        0.632,
+        0.712,
+        0.093,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.516,
+        0.561,
+        0.562,
+        0.687,
+        0.029,
+        0.0
+      ],
+      [
+        0.22,
+        0.294,
+        0.668,
+        0.507,
+        0.495,
+        0.78,
+        0.344
+      ],
+      [
+        0.521,
+        0.607,
+        0.609,
+        0.816,
+        0.537,
+        0.317,
+        0.055
+      ],
+      [
+        0.083,
+        0.715,
+        0.603,
+        0.943,
+        0.62,
+        0.22,
+        0.0
+      ],
+      [
+        0.4,
+        0.922,
+        1.0,
+        1.0,
+        0.982,
+        0.522,
+        0.008
+      ],
+      [
+        0.125,
+        0.638,
+        0.833,
+        0.861,
+        0.421,
+        0.15,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      28,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 77,
+    "contact_reference_px": 77.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

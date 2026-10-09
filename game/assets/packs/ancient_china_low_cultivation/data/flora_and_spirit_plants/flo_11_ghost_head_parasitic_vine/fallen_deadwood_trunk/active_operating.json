@@ -1,0 +1,93 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_11_ghost_head_parasitic_vine.fallen_deadwood_trunk",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_11_ghost_head_parasitic_vine",
+  "asset_slug": "fallen_deadwood_trunk",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_11_ghost_head_parasitic_vine/fallen_deadwood_trunk/active_operating.png",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "forage_mushrooms",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.492,
+        0.526
+      ]
+    ],
+    "frac_zero": 0.8388,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.175,
+        0.499,
+        0.196
+      ],
+      [
+        0.333,
+        0.755,
+        0.235
+      ],
+      [
+        0.73,
+        0.922,
+        0.554
+      ]
+    ],
+    "crop_offset": [
+      85,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 78,
+    "contact_reference_px": 78.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

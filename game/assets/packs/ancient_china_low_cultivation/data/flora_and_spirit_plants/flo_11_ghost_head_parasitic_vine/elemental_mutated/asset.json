@@ -1,0 +1,603 @@
+{
+  "id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_11_ghost_head_parasitic_vine.elemental_mutated",
+  "archetype": "elemental_mutated_flo_11_ghost_head_parasitic_vine",
+  "name": "Ghost-Head Parasitic Vine - Elemental Resonance Bloomed Form",
+  "vietnamese_name": "Quỷ Thủ Hủ Đằng - Dạng Đột Biến Khí Tượng",
+  "hanzi": "鬼首腐藤 · 五行异变绽放",
+  "category": "flo_11_ghost_head_parasitic_vine",
+  "category_code": "FLO-11",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_11_ghost_head_parasitic_vine",
+  "asset_class": "flora_herb",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "channel_element",
+  "gameplay_role": "flora_herb entity supporting Ghost-Head Parasitic Vine gameplay",
+  "destructible": true,
+  "material": "succulent spiritual herb stalk with dew-tipped leaves",
+  "cultivation_element": "wood",
+  "prompt_summary": "Single isolated 2D RPG game prop of ghost-head parasitic vine - elemental resonance bloomed form, authentic ghost-head parasitic vine materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Natural Flora & Spiritual Plants",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D top-down RPG map sprite of elemental resonance bloomed form, succulent spiritual herb stalk with dew-tipped leaves, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_11_ghost_head_parasitic_vine/elemental_mutated/pristine_dormant.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.478,
+            0.449
+          ],
+          [
+            0.299,
+            0.272
+          ]
+        ],
+        "frac_zero": 0.7335,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.234,
+            0.803,
+            0.487,
+            0.058,
+            0.0
+          ],
+          [
+            0.158,
+            0.89,
+            0.756,
+            0.789,
+            0.312,
+            0.0
+          ],
+          [
+            0.255,
+            0.548,
+            0.587,
+            0.476,
+            0.841,
+            0.35
+          ],
+          [
+            0.457,
+            0.479,
+            0.76,
+            0.363,
+            0.202,
+            0.01
+          ],
+          [
+            0.008,
+            0.2,
+            0.723,
+            0.518,
+            0.126,
+            0.0
+          ],
+          [
+            0.007,
+            0.386,
+            0.969,
+            0.773,
+            0.156,
+            0.0
+          ],
+          [
+            0.0,
+            0.158,
+            0.417,
+            0.189,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          40,
+          17
+        ],
+        "trunk_columns": [
+          2
+        ],
+        "contact_px": 17,
+        "contact_reference_px": 17.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D top-down RPG map sprite of elemental resonance bloomed form, succulent spiritual herb stalk with dew-tipped leaves, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_11_ghost_head_parasitic_vine/elemental_mutated/active_operating.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.458,
+            0.514
+          ],
+          [
+            0.306,
+            0.375
+          ]
+        ],
+        "frac_zero": 0.7381,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          5,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.072,
+            0.283,
+            0.113,
+            0.0
+          ],
+          [
+            0.162,
+            0.784,
+            0.897,
+            0.745,
+            0.322
+          ],
+          [
+            0.249,
+            0.82,
+            0.927,
+            0.838,
+            0.612
+          ],
+          [
+            0.486,
+            0.721,
+            0.851,
+            0.713,
+            0.261
+          ],
+          [
+            0.039,
+            0.335,
+            0.814,
+            0.375,
+            0.033
+          ],
+          [
+            0.0,
+            0.396,
+            0.947,
+            0.721,
+            0.054
+          ],
+          [
+            0.0,
+            0.099,
+            0.538,
+            0.079,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          48,
+          18
+        ],
+        "trunk_columns": [
+          2
+        ],
+        "contact_px": 17,
+        "contact_reference_px": 17.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D top-down RPG map sprite of elemental resonance bloomed form, succulent spiritual herb stalk with dew-tipped leaves, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_11_ghost_head_parasitic_vine/elemental_mutated/damaged_weathered.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.522,
+            0.474
+          ],
+          [
+            0.46,
+            0.454
+          ]
+        ],
+        "frac_zero": 0.6872,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.159,
+            0.773,
+            0.308,
+            0.047,
+            0.0
+          ],
+          [
+            0.111,
+            0.834,
+            0.889,
+            0.883,
+            0.355,
+            0.0
+          ],
+          [
+            0.314,
+            0.691,
+            0.703,
+            0.723,
+            0.735,
+            0.169
+          ],
+          [
+            0.443,
+            0.755,
+            0.819,
+            0.544,
+            0.102,
+            0.0
+          ],
+          [
+            0.019,
+            0.165,
+            0.813,
+            0.473,
+            0.291,
+            0.0
+          ],
+          [
+            0.143,
+            0.812,
+            0.992,
+            0.958,
+            0.392,
+            0.0
+          ],
+          [
+            0.141,
+            0.659,
+            0.854,
+            0.643,
+            0.159,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          44,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3
+        ],
+        "contact_px": 83,
+        "contact_reference_px": 83.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            0,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D top-down RPG map sprite of elemental resonance bloomed form, succulent spiritual herb stalk with dew-tipped leaves, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_11_ghost_head_parasitic_vine/elemental_mutated/ruined_rubble.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.494,
+            0.411
+          ],
+          [
+            0.41,
+            0.38
+          ]
+        ],
+        "frac_zero": 0.6993,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.275,
+            0.83,
+            0.481,
+            0.048,
+            0.0
+          ],
+          [
+            0.179,
+            0.918,
+            0.869,
+            0.712,
+            0.291,
+            0.0
+          ],
+          [
+            0.272,
+            0.556,
+            0.584,
+            0.434,
+            0.803,
+            0.307
+          ],
+          [
+            0.43,
+            0.334,
+            0.706,
+            0.473,
+            0.271,
+            0.01
+          ],
+          [
+            0.001,
+            0.195,
+            0.617,
+            0.452,
+            0.317,
+            0.0
+          ],
+          [
+            0.163,
+            0.937,
+            1.0,
+            0.974,
+            0.59,
+            0.0
+          ],
+          [
+            0.081,
+            0.321,
+            0.693,
+            0.307,
+            0.152,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          39,
+          17
+        ],
+        "trunk_columns": [
+          2
+        ],
+        "contact_px": 28,
+        "contact_reference_px": 28.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "FLO-11",
+    "domain": "flora_and_spirit_plants",
+    "interaction": "channel_element",
+    "collision_behavior": "none",
+    "element": "wood",
+    "tier": 3
+  },
+  "category_id": "flo_11_ghost_head_parasitic_vine",
+  "domain_id": "flora_and_spirit_plants",
+  "pinyin": "Guǐshǒu Fǔténg · Elemental Resonance Bloomed Form",
+  "archetype_name": "Elemental Resonance Bloomed Form",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "none",
+    "shape": "box",
+    "solid": false,
+    "blocks_movement": false,
+    "blocks_projectiles": false,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "spiritual_root_stalk",
+  "secondary_material": "medicinal_blossom",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Wood affinity (Core Formation (Kết Đan / 结丹))",
+  "elevation_tier": 3,
+  "mortal_realm_tier": "Core Formation (Kết Đan / 结丹)",
+  "asset_slug": "elemental_mutated"
+}
