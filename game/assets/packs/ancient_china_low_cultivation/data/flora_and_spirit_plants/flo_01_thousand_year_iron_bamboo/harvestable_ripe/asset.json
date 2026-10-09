@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/harvestable_ripe/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.389
+            0.342
           ]
         ],
-        "frac_zero": 0.7561,
+        "frac_zero": 0.777,
         "blocks": [
           [
             false
@@ -75,30 +75,30 @@
         ],
         "sub_fill": [
           [
-            0.271,
-            0.598,
-            0.022
+            0.125,
+            0.581,
+            0.072
           ],
           [
-            0.61,
-            0.699,
-            0.417
+            0.368,
+            0.669,
+            0.171
           ],
           [
-            0.087,
-            0.424,
+            0.114,
+            0.508,
             0.0
           ]
         ],
         "crop_offset": [
-          23,
+          26,
           17
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 30,
-        "contact_reference_px": 30.0,
+        "contact_px": 22,
+        "contact_reference_px": 22.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -121,14 +121,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/harvestable_ripe/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.437
+            0.388
           ]
         ],
-        "frac_zero": 0.7455,
+        "frac_zero": 0.7581,
         "blocks": [
           [
             false
@@ -150,30 +150,30 @@
         ],
         "sub_fill": [
           [
-            0.306,
-            0.547,
-            0.078
-          ],
-          [
-            0.602,
-            0.725,
-            0.417
-          ],
-          [
-            0.248,
-            0.47,
+            0.209,
+            0.458,
             0.0
+          ],
+          [
+            0.559,
+            0.757,
+            0.137
+          ],
+          [
+            0.234,
+            0.504,
+            0.023
           ]
         ],
         "crop_offset": [
-          25,
+          26,
           18
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 38,
-        "contact_reference_px": 38.0,
+        "contact_px": 28,
+        "contact_reference_px": 28.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -196,14 +196,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/harvestable_ripe/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.465
+            0.44
           ]
         ],
-        "frac_zero": 0.7202,
+        "frac_zero": 0.7074,
         "blocks": [
           [
             false
@@ -225,30 +225,30 @@
         ],
         "sub_fill": [
           [
-            0.316,
-            0.745,
-            0.053
+            0.309,
+            0.63,
+            0.198
           ],
           [
-            0.586,
-            0.728,
-            0.512
+            0.373,
+            0.82,
+            0.287
           ],
           [
-            0.153,
-            0.729,
-            0.014
+            0.161,
+            0.858,
+            0.015
           ]
         ],
         "crop_offset": [
-          23,
+          21,
           17
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 45,
-        "contact_reference_px": 45.0,
+        "contact_px": 43,
+        "contact_reference_px": 43.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -276,14 +276,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/harvestable_ripe/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.487
+            0.483
           ]
         ],
-        "frac_zero": 0.6905,
+        "frac_zero": 0.6592,
         "blocks": [
           [
             false
@@ -305,30 +305,30 @@
         ],
         "sub_fill": [
           [
-            0.229,
-            0.775,
-            0.108
+            0.366,
+            0.879,
+            0.301
           ],
           [
-            0.551,
-            0.787,
-            0.451
+            0.239,
+            0.784,
+            0.255
           ],
           [
-            0.262,
-            0.841,
-            0.196
+            0.289,
+            0.969,
+            0.271
           ]
         ],
         "crop_offset": [
-          20,
-          17
+          16,
+          18
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 56,
-        "contact_reference_px": 56.0,
+        "contact_px": 63,
+        "contact_reference_px": 63.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,

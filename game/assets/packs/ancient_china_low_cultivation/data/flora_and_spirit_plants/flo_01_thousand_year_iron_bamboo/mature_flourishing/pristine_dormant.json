@@ -1,11 +1,11 @@
 {
-  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.mature_flourishing_flo_01_thousand_year_iron_bamboo",
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_01_thousand_year_iron_bamboo.mature_flourishing",
   "domain": "flora_and_spirit_plants",
   "sub_domain": "flo_01_thousand_year_iron_bamboo",
-  "asset_slug": "mature_flourishing_flo_01_thousand_year_iron_bamboo",
+  "asset_slug": "mature_flourishing",
   "variant_slug": "pristine_dormant",
   "name": "Pristine Dormant State",
-  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/mature_flourishing_flo_01_thousand_year_iron_bamboo/pristine_dormant.png",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/mature_flourishing/pristine_dormant.png",
   "footprint_cells": [
     2,
     2
@@ -21,15 +21,15 @@
   "matrix_data": {
     "coverage": [
       [
-        0.46,
-        0.435
+        0.579,
+        0.509
       ],
       [
-        0.372,
-        0.375
+        0.312,
+        0.279
       ]
     ],
-    "frac_zero": 0.6565,
+    "frac_zero": 0.6229,
     "blocks": [
       [
         false,
@@ -61,85 +61,91 @@
     ],
     "sub_fill": [
       [
-        0.0,
-        0.0,
-        0.396,
-        0.705,
-        0.113,
-        0.0,
-        0.0
+        0.345,
+        0.861,
+        0.928,
+        0.855,
+        0.83,
+        0.663,
+        0.438
+      ],
+      [
+        0.518,
+        0.73,
+        0.642,
+        0.808,
+        0.81,
+        0.563,
+        0.338
+      ],
+      [
+        0.215,
+        0.189,
+        0.665,
+        0.668,
+        0.611,
+        0.252,
+        0.006
       ],
       [
         0.0,
-        0.353,
-        0.908,
-        0.992,
-        0.707,
-        0.092,
-        0.0
+        0.334,
+        0.554,
+        0.584,
+        0.493,
+        0.405,
+        0.14
       ],
       [
-        0.089,
-        0.561,
-        0.985,
-        0.933,
-        0.987,
-        0.281,
-        0.0
-      ],
-      [
-        0.649,
-        0.931,
-        0.891,
-        0.765,
-        0.938,
-        0.889,
-        0.186
-      ],
-      [
-        0.251,
-        0.377,
-        0.629,
-        0.925,
-        0.521,
-        0.604,
-        0.387
+        0.01,
+        0.142,
+        0.35,
+        0.504,
+        0.412,
+        0.02,
+        0.001
       ],
       [
         0.0,
-        0.004,
-        0.27,
-        0.615,
-        0.167,
-        0.042,
-        0.0
-      ],
-      [
-        0.0,
-        0.0,
-        0.362,
+        0.003,
         0.651,
-        0.009,
+        0.935,
+        0.569,
+        0.014,
+        0.0
+      ],
+      [
         0.0,
+        0.03,
+        0.702,
+        0.96,
+        0.699,
+        0.045,
         0.0
       ]
     ],
     "crop_offset": [
-      21,
-      18
+      16,
+      19
     ],
     "trunk_columns": [
       2,
-      3
+      3,
+      4
     ],
-    "contact_px": 54,
-    "contact_reference_px": 54.0,
+    "contact_px": 84,
+    "contact_reference_px": 84.0,
     "blocked_by_scale": {
       "0.85": null,
       "1.0": null,
       "1.15": null,
       "1.35": null,
-      "1.6": null
+      "1.6": [
+        0,
+        1,
+        0,
+        1
+      ]
     },
     "block_rect": null,
     "block_rect_px": null

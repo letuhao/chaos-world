@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/tender_sapling/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.364
+            0.313
           ]
         ],
-        "frac_zero": 0.7709,
+        "frac_zero": 0.7944,
         "blocks": [
           [
             false
@@ -75,30 +75,30 @@
         ],
         "sub_fill": [
           [
-            0.249,
-            0.481,
-            0.098
+            0.184,
+            0.51,
+            0.0
           ],
           [
-            0.469,
-            0.776,
-            0.185
+            0.295,
+            0.58,
+            0.229
           ],
           [
-            0.09,
-            0.405,
-            0.008
+            0.102,
+            0.598,
+            0.006
           ]
         ],
         "crop_offset": [
-          25,
+          22,
           18
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 24,
-        "contact_reference_px": 24.0,
+        "contact_px": 31,
+        "contact_reference_px": 31.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -121,14 +121,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/tender_sapling/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.376
+            0.313
           ]
         ],
-        "frac_zero": 0.774,
+        "frac_zero": 0.7959,
         "blocks": [
           [
             false
@@ -150,30 +150,30 @@
         ],
         "sub_fill": [
           [
-            0.329,
-            0.508,
-            0.1
+            0.083,
+            0.461,
+            0.106
           ],
           [
-            0.482,
-            0.624,
-            0.275
+            0.287,
+            0.709,
+            0.154
           ],
           [
-            0.131,
-            0.369,
-            0.0
+            0.151,
+            0.446,
+            0.01
           ]
         ],
         "crop_offset": [
-          27,
-          18
+          24,
+          17
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 29,
-        "contact_reference_px": 29.0,
+        "contact_px": 22,
+        "contact_reference_px": 22.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -196,14 +196,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/tender_sapling/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.337
+            0.409
           ]
         ],
-        "frac_zero": 0.7717,
+        "frac_zero": 0.7471,
         "blocks": [
           [
             false
@@ -225,36 +225,41 @@
         ],
         "sub_fill": [
           [
-            0.198,
-            0.595,
-            0.028
+            0.466,
+            0.446,
+            0.149
           ],
           [
-            0.398,
-            0.711,
-            0.243
+            0.373,
+            0.645,
+            0.118
           ],
           [
-            0.075,
-            0.456,
-            0.014
+            0.253,
+            0.783,
+            0.0
           ]
         ],
         "crop_offset": [
-          22,
+          23,
           17
         ],
         "trunk_columns": [
           1
         ],
-        "contact_px": 29,
-        "contact_reference_px": 29.0,
+        "contact_px": 42,
+        "contact_reference_px": 42.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
         },
         "block_rect": null,
         "block_rect_px": null
@@ -271,14 +276,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_01_thousand_year_iron_bamboo/tender_sapling/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.421
+            0.495
           ]
         ],
-        "frac_zero": 0.7617,
+        "frac_zero": 0.7194,
         "blocks": [
           [
             false
@@ -300,36 +305,42 @@
         ],
         "sub_fill": [
           [
-            0.363,
-            0.642,
-            0.031
+            0.333,
+            0.621,
+            0.108
           ],
           [
-            0.515,
-            0.607,
-            0.398
+            0.319,
+            0.673,
+            0.421
           ],
           [
-            0.192,
-            0.487,
-            0.0
+            0.524,
+            0.83,
+            0.149
           ]
         ],
         "crop_offset": [
           26,
-          18
+          16
         ],
         "trunk_columns": [
+          0,
           1
         ],
-        "contact_px": 39,
-        "contact_reference_px": 39.0,
+        "contact_px": 53,
+        "contact_reference_px": 53.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
         },
         "block_rect": null,
         "block_rect_px": null
