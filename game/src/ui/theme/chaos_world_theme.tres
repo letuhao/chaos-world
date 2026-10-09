@@ -1,9 +1,16 @@
-[gd_resource type="Theme" load_steps=55 format=3]
+[gd_resource type="Theme" load_steps=57 format=3]
 
 ; The single UI theme for the Chaos World UI program. Every control this program
 ; creates inherits it; no node carries a style or colour override. Rarity and
 ; message tone are expressed as Label theme type variations, not per-node
 ; colour edits, so the palette stays in one place.
+;
+; Typography: Inter is the default and Cinzel carries the two title roles. Cinzel has
+; no Vietnamese, so it falls back to Inter — see fonts/display_font.tres for why that
+; is load-bearing rather than tidiness.
+
+[ext_resource type="FontVariation" path="res://src/ui/theme/fonts/body_font.tres" id="font_body"]
+[ext_resource type="FontVariation" path="res://src/ui/theme/fonts/display_font.tres" id="font_display"]
 
 [sub_resource type="StyleBoxFlat" id="surface"]
 bg_color = Color(0.078, 0.078, 0.098, 1)
@@ -647,12 +654,15 @@ content_margin_right = 12.0
 content_margin_bottom = 10.0
 
 [resource]
+default_font = ExtResource("font_body")
 default_font_size = 15
 Label/colors/font_color = Color(0.851, 0.843, 0.812, 1)
 ScreenTitle/colors/font_color = Color(0.898, 0.749, 0.318, 1)
 ScreenTitle/font_sizes/font_size = 22
+ScreenTitle/fonts/font = ExtResource("font_display")
 SectionTitle/colors/font_color = Color(0.949, 0.851, 0.643, 1)
 SectionTitle/font_sizes/font_size = 18
+SectionTitle/fonts/font = ExtResource("font_display")
 MetaLabel/colors/font_color = Color(0.667, 0.639, 0.576, 1)
 MetaLabel/font_sizes/font_size = 13
 EffectLabel/colors/font_color = Color(0.816, 0.878, 0.827, 1)

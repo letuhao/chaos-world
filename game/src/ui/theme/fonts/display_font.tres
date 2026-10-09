@@ -1,0 +1,15 @@
+[gd_resource type="FontVariation" load_steps=3 format=3]
+
+; Display face: Cinzel, an inscriptional Roman capital with no CJK and no Vietnamese.
+; Its cmap has 367 codepoints and is missing U+1EBF (e-circumflex-acute) and U+1EC7
+; (e-dot-below) — both of which this game's English catalogs really use, in the
+; screen names "Luyện Khí" and "Tu Niệm". Inter covers all nine non-ASCII codepoints
+; the catalogs contain, so it is the fallback: a glyph Cinzel cannot draw resolves
+; here instead of rendering as tofu. Remove the fallback and those two titles break.
+
+[ext_resource type="FontFile" path="res://assets/fonts/cinzel_variable.ttf" id="1_cinzel"]
+[ext_resource type="FontFile" path="res://assets/fonts/inter_variable.ttf" id="2_inter"]
+
+[resource]
+base_font = ExtResource("1_cinzel")
+fallbacks = Array[Font]([ExtResource("2_inter")])

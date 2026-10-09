@@ -1,0 +1,11 @@
+[gd_resource type="FontVariation" load_steps=2 format=3]
+
+; Body and UI face: Inter. Its cmap covers 2849 codepoints and every non-ASCII
+; character the English catalogs use (U+00B7, U+00EA, U+00ED, U+1EBF, U+1EC7, U+2014),
+; so it is the theme default and needs no fallback of its own. Tall x-height at the
+; 13-15px this UI runs at, and tabular figures for the stat screens.
+
+[ext_resource type="FontFile" path="res://assets/fonts/inter_variable.ttf" id="1_inter"]
+
+[resource]
+base_font = ExtResource("1_inter")
