@@ -40,6 +40,14 @@ const TAGS: Array[StringName] = [
 	&"duel",
 ]
 
+## The closed vocabulary [member difficulty_events] names, and the reason it is CLOSED: a
+## typo in an authored event type would otherwise read as an event nothing fires.
+const DIFFICULTY_EVENT_TYPES: Array[StringName] = [
+	&"enemy_spawn",
+	&"social_difficulty",
+	&"combat_difficulty",
+]
+
 @export var id: StringName = &""
 @export var display_name: String = ""
 ## Why this fate exists, in the game's own voice. Never engine vocabulary.
@@ -93,6 +101,35 @@ const TAGS: Array[StringName] = [
 ## Fates that must be held before this fate can be earned (ADR 0383). Empty means
 ## no synergy prerequisite. The synergy graph must be acyclic.
 @export var requires: Array[StringName] = []
+
+## The fate ids that can be offered together with this one when its trigger fires
+## (ADR 0389). Empty means this fate is never part of a choice group. The choice
+## is a UI presentation of implicit eligibility: when multiple fates in this
+## list are eligible (their gate conditions are met and the actor does not hold
+## them), the UI presents them as a choice. The backend resolves it through
+## existing earn logic — the player picks one and `earn_fate` records it.
+##
+## The group is symmetric: if A lists B, then B lists A. The UI reads this list
+## from the fate whose trigger fired and presents all eligible fates in the group.
+@export var eligible_choices: Array[StringName] = []
+
+## Dialogue changes when this fate is held (ADR 0398). Maps a dialog_id to a
+## text override. When the player holds this fate, the dialog generator
+## replaces the base text for that dialog_id with the override. Empty means
+## this fate modifies no dialogue.
+@export var dialog_modifiers: Dictionary = {}
+
+## The difficulty events this fate triggers when earned (ADR 0404).
+##
+## Each event is a Dictionary with `event_type` (closed vocabulary), `magnitude`
+## (float), and `description` (player-facing text). Three event types:
+##   &"enemy_spawn"       — more enemies appear in the world
+##   &"social_difficulty" — NPCs harder to persuade, prices increase
+##   &"combat_difficulty" — enemies become stronger, new enemy types appear
+##
+## The yin-yang rule: every fate with positive stat modifiers MUST declare at
+## least one difficulty event. A fate with no modifiers needs no event.
+@export var difficulty_events: Array[Dictionary] = []
 
 
 func is_visible() -> bool:
@@ -152,18 +189,6 @@ func has_probability_modifiers() -> bool:
 	return not probability_modifiers.is_empty()
 
 
-## The fate ids that can be offered together with this one when its trigger fires
-## (ADR 0389). Empty means this fate is never part of a choice group. The choice
-## is a UI presentation of implicit eligibility: when multiple fates in this
-## list are eligible (their gate conditions are met and the actor does not hold
-## them), the UI presents them as a choice. The backend resolves it through
-## existing earn logic — the player picks one and `earn_fate` records it.
-##
-## The group is symmetric: if A lists B, then B lists A. The UI reads this list
-## from the fate whose trigger fired and presents all eligible fates in the group.
-@export var eligible_choices: Array[StringName] = []
-
-
 ## Whether this fate is part of a choice group (ADR 0389).
 func has_eligible_choices() -> bool:
 	return not eligible_choices.is_empty()
@@ -177,31 +202,6 @@ func unheld_choices(ledger: Dictionary) -> Array[StringName]:
 		if not DestinyState.has_fate(ledger, fate_id):
 			out.append(fate_id)
 	return out
-
-
-## Dialogue changes when this fate is held (ADR 0398). Maps a dialog_id to a
-## text override. When the player holds this fate, the dialog generator
-## replaces the base text for that dialog_id with the override. Empty means
-## this fate modifies no dialogue.
-@export var dialog_modifiers: Dictionary = {}
-
-## The difficulty events this fate triggers when earned (ADR 0404).
-##
-## Each event is a Dictionary with `event_type` (closed vocabulary), `magnitude`
-## (float), and `description` (player-facing text). Three event types:
-##   &"enemy_spawn"       — more enemies appear in the world
-##   &"social_difficulty" — NPCs harder to persuade, prices increase
-##   &"combat_difficulty" — enemies become stronger, new enemy types appear
-##
-## The yin-yang rule: every fate with positive stat modifiers MUST declare at
-## least one difficulty event. A fate with no modifiers needs no event.
-const DIFFICULTY_EVENT_TYPES: Array[StringName] = [
-	&"enemy_spawn",
-	&"social_difficulty",
-	&"combat_difficulty",
-]
-
-@export var difficulty_events: Array[Dictionary] = []
 
 
 ## Whether this fate triggers any difficulty event at all.
