@@ -24,7 +24,7 @@
         0.502
       ]
     ],
-    "frac_zero": 0.714,
+    "frac_zero": 0.6953,
     "blocks": [
       [
         false
@@ -46,31 +46,32 @@
     ],
     "sub_fill": [
       [
-        0.413,
-        0.569,
-        0.057
+        0.108,
+        0.288,
+        0.097
       ],
       [
-        0.451,
-        0.435,
-        0.281
+        0.615,
+        0.76,
+        0.305
       ],
       [
-        0.624,
-        0.882,
-        0.141
+        0.627,
+        0.967,
+        0.607
       ]
     ],
     "crop_offset": [
-      26,
-      17
+      21,
+      18
     ],
     "trunk_columns": [
       0,
-      1
+      1,
+      2
     ],
-    "contact_px": 61,
-    "contact_reference_px": 61.0,
+    "contact_px": 75,
+    "contact_reference_px": 75.0,
     "blocked_by_scale": {
       "0.85": null,
       "1.0": null,

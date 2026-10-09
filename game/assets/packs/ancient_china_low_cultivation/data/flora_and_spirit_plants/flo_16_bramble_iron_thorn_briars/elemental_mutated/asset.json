@@ -46,19 +46,19 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_16_bramble_iron_thorn_briars/elemental_mutated/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.469,
-            0.438
+            0.245,
+            0.291
           ],
           [
-            0.402,
-            0.45
+            0.592,
+            0.548
           ]
         ],
-        "frac_zero": 0.6974,
+        "frac_zero": 0.6576,
         "blocks": [
           [
             false,
@@ -85,78 +85,87 @@
           1
         ],
         "sub_grid": [
-          6,
+          7,
           7
         ],
         "sub_fill": [
           [
             0.0,
-            0.271,
-            0.796,
-            0.493,
-            0.006,
+            0.013,
+            0.067,
+            0.251,
+            0.045,
+            0.0,
             0.0
           ],
           [
-            0.146,
-            0.889,
-            0.605,
-            0.871,
-            0.265,
+            0.016,
+            0.296,
+            0.238,
+            0.391,
+            0.499,
+            0.052,
             0.0
           ],
           [
-            0.285,
-            0.504,
-            0.512,
-            0.44,
-            0.814,
-            0.247
-          ],
-          [
-            0.456,
-            0.474,
-            0.726,
-            0.365,
-            0.262,
+            0.303,
+            0.519,
+            0.621,
+            0.323,
+            0.457,
+            0.455,
             0.0
           ],
           [
-            0.071,
-            0.284,
-            0.676,
-            0.523,
-            0.35,
-            0.01
+            0.242,
+            0.246,
+            0.768,
+            0.699,
+            0.48,
+            0.622,
+            0.367
           ],
           [
-            0.068,
-            0.797,
+            0.288,
+            0.664,
+            0.573,
+            0.937,
+            0.424,
+            0.319,
+            0.0
+          ],
+          [
+            0.01,
+            0.688,
             0.985,
-            0.95,
-            0.448,
+            0.966,
+            0.784,
+            0.304,
             0.0
           ],
           [
-            0.006,
-            0.47,
-            0.766,
-            0.691,
-            0.167,
+            0.176,
+            0.784,
+            0.957,
+            0.948,
+            0.808,
+            0.424,
             0.0
           ]
         ],
         "crop_offset": [
-          42,
+          26,
           17
         ],
         "trunk_columns": [
           1,
           2,
-          3
+          3,
+          4,
+          5
         ],
-        "contact_px": 85,
-        "contact_reference_px": 85.0,
+        "contact_px": 154,
+        "contact_reference_px": 154.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -184,19 +193,19 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_16_bramble_iron_thorn_briars/elemental_mutated/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.494,
-            0.517
+            0.425,
+            0.501
           ],
           [
-            0.401,
-            0.291
+            0.681,
+            0.531
           ]
         ],
-        "frac_zero": 0.7292,
+        "frac_zero": 0.5836,
         "blocks": [
           [
             false,
@@ -223,76 +232,97 @@
           1
         ],
         "sub_grid": [
-          5,
+          7,
           7
         ],
         "sub_fill": [
           [
             0.0,
-            0.156,
-            0.692,
-            0.118,
-            0.013
-          ],
-          [
-            0.176,
-            0.726,
-            0.79,
-            0.742,
-            0.304
-          ],
-          [
-            0.594,
-            0.729,
-            0.898,
-            0.73,
-            0.587
-          ],
-          [
-            0.141,
-            0.669,
-            0.799,
-            0.732,
-            0.254
-          ],
-          [
-            0.191,
-            0.367,
-            0.692,
-            0.322,
-            0.058
-          ],
-          [
-            0.052,
-            0.79,
-            0.988,
-            0.454,
-            0.043
+            0.028,
+            0.457,
+            0.716,
+            0.231,
+            0.0,
+            0.0
           ],
           [
             0.0,
-            0.439,
-            0.414,
-            0.05,
+            0.368,
+            0.995,
+            0.976,
+            0.979,
+            0.233,
+            0.0
+          ],
+          [
+            0.067,
+            0.682,
+            0.755,
+            0.862,
+            0.722,
+            0.651,
+            0.067
+          ],
+          [
+            0.319,
+            0.682,
+            0.818,
+            0.489,
+            0.649,
+            0.925,
+            0.613
+          ],
+          [
+            0.484,
+            0.601,
+            0.954,
+            0.739,
+            0.495,
+            0.152,
+            0.0
+          ],
+          [
+            0.148,
+            0.895,
+            1.0,
+            1.0,
+            0.976,
+            0.524,
+            0.0
+          ],
+          [
+            0.045,
+            0.713,
+            0.955,
+            0.95,
+            0.783,
+            0.26,
             0.0
           ]
         ],
         "crop_offset": [
-          48,
+          22,
           18
         ],
         "trunk_columns": [
           1,
-          2
+          2,
+          3,
+          4
         ],
-        "contact_px": 39,
-        "contact_reference_px": 39.0,
+        "contact_px": 136,
+        "contact_reference_px": 136.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
         },
         "block_rect": null,
         "block_rect_px": null
@@ -309,19 +339,19 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_16_bramble_iron_thorn_briars/elemental_mutated/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.436,
-            0.476
+            0.233,
+            0.308
           ],
           [
-            0.431,
-            0.4
+            0.671,
+            0.649
           ]
         ],
-        "frac_zero": 0.6972,
+        "frac_zero": 0.6187,
         "blocks": [
           [
             false,
@@ -348,78 +378,87 @@
           1
         ],
         "sub_grid": [
-          6,
+          7,
           7
         ],
         "sub_fill": [
           [
             0.0,
-            0.129,
-            0.731,
-            0.413,
-            0.105,
-            0.0
-          ],
-          [
-            0.107,
-            0.863,
-            0.679,
-            0.9,
-            0.358,
-            0.006
-          ],
-          [
-            0.166,
-            0.604,
-            0.736,
-            0.658,
-            0.776,
-            0.359
-          ],
-          [
-            0.567,
-            0.574,
-            0.69,
-            0.535,
-            0.263,
-            0.0
-          ],
-          [
-            0.009,
-            0.206,
-            0.778,
-            0.505,
-            0.389,
-            0.004
-          ],
-          [
-            0.005,
-            0.564,
-            0.942,
-            0.75,
-            0.156,
-            0.0
-          ],
-          [
             0.0,
-            0.52,
-            0.882,
-            0.793,
-            0.234,
+            0.197,
+            0.3,
+            0.017,
+            0.0,
             0.0
+          ],
+          [
+            0.002,
+            0.141,
+            0.128,
+            0.504,
+            0.283,
+            0.244,
+            0.0
+          ],
+          [
+            0.062,
+            0.208,
+            0.721,
+            0.417,
+            0.451,
+            0.783,
+            0.534
+          ],
+          [
+            0.248,
+            0.502,
+            0.741,
+            0.873,
+            0.453,
+            0.188,
+            0.027
+          ],
+          [
+            0.354,
+            0.521,
+            0.886,
+            0.982,
+            0.823,
+            0.479,
+            0.07
+          ],
+          [
+            0.371,
+            0.96,
+            1.0,
+            1.0,
+            1.0,
+            0.892,
+            0.301
+          ],
+          [
+            0.179,
+            0.808,
+            0.974,
+            0.997,
+            0.89,
+            0.555,
+            0.046
           ]
         ],
         "crop_offset": [
-          39,
+          22,
           17
         ],
         "trunk_columns": [
           1,
           2,
-          3
+          3,
+          4,
+          5
         ],
-        "contact_px": 88,
-        "contact_reference_px": 88.0,
+        "contact_px": 149,
+        "contact_reference_px": 149.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -447,19 +486,19 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_16_bramble_iron_thorn_briars/elemental_mutated/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.489,
-            0.406
+            0.3,
+            0.31
           ],
           [
-            0.481,
-            0.528
+            0.659,
+            0.666
           ]
         ],
-        "frac_zero": 0.6728,
+        "frac_zero": 0.6175,
         "blocks": [
           [
             false,
@@ -486,83 +525,99 @@
           1
         ],
         "sub_grid": [
-          6,
+          7,
           7
         ],
         "sub_fill": [
           [
             0.0,
-            0.324,
-            0.815,
-            0.525,
-            0.023,
+            0.003,
+            0.199,
+            0.156,
+            0.049,
+            0.0,
             0.0
           ],
           [
-            0.239,
-            0.882,
-            0.723,
-            0.741,
-            0.282,
+            0.0,
+            0.205,
+            0.43,
+            0.521,
+            0.451,
+            0.237,
             0.0
           ],
           [
-            0.252,
-            0.548,
-            0.617,
-            0.482,
-            0.624,
-            0.496
+            0.131,
+            0.263,
+            0.693,
+            0.569,
+            0.604,
+            0.628,
+            0.245
           ],
           [
-            0.456,
-            0.468,
-            0.733,
-            0.617,
-            0.242,
-            0.004
-          ],
-          [
-            0.102,
-            0.402,
-            0.833,
-            0.497,
-            0.606,
+            0.352,
+            0.537,
+            0.693,
+            0.906,
+            0.454,
+            0.046,
             0.0
           ],
           [
-            0.293,
-            0.983,
+            0.246,
+            0.629,
+            0.642,
+            0.937,
+            0.553,
+            0.382,
+            0.053
+          ],
+          [
+            0.418,
+            0.995,
             1.0,
             1.0,
-            0.794,
-            0.0
+            0.976,
+            0.844,
+            0.38
           ],
           [
-            0.03,
-            0.183,
-            0.752,
-            0.765,
-            0.191,
-            0.0
+            0.423,
+            0.867,
+            0.989,
+            0.992,
+            0.904,
+            0.569,
+            0.087
           ]
         ],
         "crop_offset": [
-          40,
+          25,
           17
         ],
         "trunk_columns": [
+          0,
+          1,
           2,
-          3
+          3,
+          4,
+          5
         ],
-        "contact_px": 54,
-        "contact_reference_px": 54.0,
+        "contact_px": 168,
+        "contact_reference_px": 168.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
         },
         "block_rect": null,
         "block_rect_px": null

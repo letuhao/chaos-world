@@ -46,15 +46,15 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_16_bramble_iron_thorn_briars/fallen_deadwood_trunk/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.483,
-            0.524
+            0.545,
+            0.476
           ]
         ],
-        "frac_zero": 0.8398,
+        "frac_zero": 0.829,
         "blocks": [
           [
             false,
@@ -78,23 +78,23 @@
         ],
         "sub_fill": [
           [
-            0.148,
-            0.587,
-            0.202
+            0.176,
+            0.299,
+            0.09
           ],
           [
-            0.317,
-            0.668,
-            0.375
+            0.521,
+            0.735,
+            0.338
           ],
           [
-            0.777,
-            0.883,
-            0.44
+            0.711,
+            0.979,
+            0.706
           ]
         ],
         "crop_offset": [
-          84,
+          83,
           17
         ],
         "trunk_columns": [
@@ -102,17 +102,17 @@
           1,
           2
         ],
-        "contact_px": 82,
-        "contact_reference_px": 82.0,
+        "contact_px": 79,
+        "contact_reference_px": 79.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
           "1.6": [
+            1,
             0,
-            0,
-            0,
+            1,
             0
           ]
         },
@@ -131,15 +131,15 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_16_bramble_iron_thorn_briars/fallen_deadwood_trunk/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.506,
-            0.551
+            0.571,
+            0.529
           ]
         ],
-        "frac_zero": 0.8342,
+        "frac_zero": 0.8304,
         "blocks": [
           [
             false,
@@ -163,19 +163,19 @@
         ],
         "sub_fill": [
           [
-            0.177,
-            0.569,
-            0.235
+            0.209,
+            0.663,
+            0.148
           ],
           [
-            0.394,
-            0.749,
-            0.265
+            0.466,
+            0.722,
+            0.412
           ],
           [
-            0.757,
-            0.916,
-            0.522
+            0.81,
+            0.93,
+            0.391
           ]
         ],
         "crop_offset": [
@@ -216,15 +216,15 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_16_bramble_iron_thorn_briars/fallen_deadwood_trunk/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.485,
-            0.538
+            0.537,
+            0.526
           ]
         ],
-        "frac_zero": 0.8352,
+        "frac_zero": 0.8238,
         "blocks": [
           [
             false,
@@ -249,22 +249,22 @@
         "sub_fill": [
           [
             0.118,
-            0.558,
-            0.223
+            0.268,
+            0.134
           ],
           [
-            0.372,
-            0.733,
-            0.415
+            0.512,
+            0.914,
+            0.59
           ],
           [
-            0.738,
-            0.911,
-            0.441
+            0.778,
+            0.913,
+            0.533
           ]
         ],
         "crop_offset": [
-          83,
+          81,
           17
         ],
         "trunk_columns": [
@@ -272,8 +272,8 @@
           1,
           2
         ],
-        "contact_px": 78,
-        "contact_reference_px": 78.0,
+        "contact_px": 76,
+        "contact_reference_px": 76.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -301,15 +301,15 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_16_bramble_iron_thorn_briars/fallen_deadwood_trunk/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.484,
-            0.543
+            0.498,
+            0.466
           ]
         ],
-        "frac_zero": 0.8412,
+        "frac_zero": 0.8405,
         "blocks": [
           [
             false,
@@ -333,23 +333,23 @@
         ],
         "sub_fill": [
           [
-            0.113,
-            0.53,
-            0.236
+            0.058,
+            0.26,
+            0.054
           ],
           [
-            0.367,
-            0.766,
-            0.361
+            0.403,
+            0.879,
+            0.368
           ],
           [
-            0.716,
-            0.91,
-            0.53
+            0.748,
+            0.949,
+            0.593
           ]
         ],
         "crop_offset": [
-          84,
+          82,
           17
         ],
         "trunk_columns": [
@@ -357,8 +357,8 @@
           1,
           2
         ],
-        "contact_px": 75,
-        "contact_reference_px": 75.0,
+        "contact_px": 85,
+        "contact_reference_px": 85.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,

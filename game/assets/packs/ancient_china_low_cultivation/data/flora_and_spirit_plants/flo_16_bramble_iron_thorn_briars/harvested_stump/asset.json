@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_16_bramble_iron_thorn_briars/harvested_stump/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.357
+            0.388
           ]
         ],
-        "frac_zero": 0.7781,
+        "frac_zero": 0.7455,
         "blocks": [
           [
             false
@@ -75,34 +75,42 @@
         ],
         "sub_fill": [
           [
-            0.362,
-            0.619,
-            0.087
+            0.038,
+            0.247,
+            0.278
           ],
           [
-            0.406,
-            0.435,
-            0.146
+            0.416,
+            0.625,
+            0.25
           ],
           [
-            0.23,
-            0.306,
-            0.004
+            0.442,
+            0.863,
+            0.216
           ]
         ],
         "crop_offset": [
-          27,
-          17
+          22,
+          18
         ],
-        "trunk_columns": [],
-        "contact_px": 32,
-        "contact_reference_px": 32.0,
+        "trunk_columns": [
+          0,
+          1
+        ],
+        "contact_px": 54,
+        "contact_reference_px": 54.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
           "1.15": null,
           "1.35": null,
-          "1.6": null
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
         },
         "block_rect": null,
         "block_rect_px": null
@@ -119,14 +127,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_16_bramble_iron_thorn_briars/harvested_stump/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.456
+            0.502
           ]
         ],
-        "frac_zero": 0.7467,
+        "frac_zero": 0.7111,
         "blocks": [
           [
             false
@@ -148,30 +156,31 @@
         ],
         "sub_fill": [
           [
-            0.465,
-            0.634,
-            0.098
+            0.344,
+            0.512,
+            0.0
           ],
           [
-            0.419,
-            0.502,
-            0.277
+            0.483,
+            0.653,
+            0.263
           ],
           [
-            0.342,
-            0.617,
-            0.004
+            0.683,
+            0.805,
+            0.053
           ]
         ],
         "crop_offset": [
-          28,
+          26,
           17
         ],
         "trunk_columns": [
+          0,
           1
         ],
-        "contact_px": 46,
-        "contact_reference_px": 46.0,
+        "contact_px": 66,
+        "contact_reference_px": 66.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -199,14 +208,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_16_bramble_iron_thorn_briars/harvested_stump/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.472
+            0.437
           ]
         ],
-        "frac_zero": 0.7494,
+        "frac_zero": 0.7283,
         "blocks": [
           [
             false
@@ -228,31 +237,32 @@
         ],
         "sub_fill": [
           [
-            0.424,
-            0.607,
-            0.115
+            0.111,
+            0.224,
+            0.037
           ],
           [
-            0.315,
-            0.447,
-            0.036
+            0.508,
+            0.752,
+            0.162
           ],
           [
-            0.539,
-            0.728,
-            0.07
+            0.534,
+            0.84,
+            0.45
           ]
         ],
         "crop_offset": [
-          28,
+          24,
           17
         ],
         "trunk_columns": [
           0,
-          1
+          1,
+          2
         ],
-        "contact_px": 53,
-        "contact_reference_px": 53.0,
+        "contact_px": 66,
+        "contact_reference_px": 66.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -280,14 +290,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_16_bramble_iron_thorn_briars/harvested_stump/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
             0.502
           ]
         ],
-        "frac_zero": 0.714,
+        "frac_zero": 0.6953,
         "blocks": [
           [
             false
@@ -309,31 +319,32 @@
         ],
         "sub_fill": [
           [
-            0.413,
-            0.569,
-            0.057
+            0.108,
+            0.288,
+            0.097
           ],
           [
-            0.451,
-            0.435,
-            0.281
+            0.615,
+            0.76,
+            0.305
           ],
           [
-            0.624,
-            0.882,
-            0.141
+            0.627,
+            0.967,
+            0.607
           ]
         ],
         "crop_offset": [
-          26,
-          17
+          21,
+          18
         ],
         "trunk_columns": [
           0,
-          1
+          1,
+          2
         ],
-        "contact_px": 61,
-        "contact_reference_px": 61.0,
+        "contact_px": 75,
+        "contact_reference_px": 75.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
