@@ -1,0 +1,88 @@
+{
+  "asset_id": "ancient_china_low_cultivation.water_and_springs.wat_12_mountain_torrent_washout.stepped_cascade_drop",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_12_mountain_torrent_washout",
+  "asset_slug": "stepped_cascade_drop",
+  "variant_slug": "facing_south_front",
+  "name": "South Facing View",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_12_mountain_torrent_washout/stepped_cascade_drop/facing_south_front.png",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.6,
+        0.572
+      ]
+    ],
+    "frac_zero": 0.8341,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.175,
+        0.673,
+        0.072
+      ],
+      [
+        0.68,
+        0.992,
+        0.539
+      ],
+      [
+        0.563,
+        0.897,
+        0.527
+      ]
+    ],
+    "crop_offset": [
+      84,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 69,
+    "contact_reference_px": 69.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

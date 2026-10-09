@@ -1,0 +1,784 @@
+{
+  "id": "ancient_china_low_cultivation.water_and_springs.wat_12_mountain_torrent_washout.stone_basin_spring",
+  "archetype": "stone_basin_spring_wat_12_mountain_torrent_washout",
+  "name": "Mountain Torrent Washout - Carved Stone Spring Basin",
+  "vietnamese_name": "Bạo Hồng Trùng Câu - Bể Đá Chứa Nước Linh Tuyền",
+  "hanzi": "暴洪冲沟 · 琢石蓄水灵泉",
+  "category": "wat_12_mountain_torrent_washout",
+  "category_code": "WAT-12",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_12_mountain_torrent_washout",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "drink_spring",
+  "gameplay_role": "prop_workstation entity supporting Mountain Torrent Washout gameplay",
+  "destructible": true,
+  "material": "stratified pale karst limestone and loose mineral scree",
+  "cultivation_element": "water",
+  "prompt_summary": "Single isolated 2D RPG game prop of mountain torrent washout - carved stone spring basin, authentic mountain torrent washout materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Water Systems & Spiritual Springs",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of carved stone spring basin, stratified pale karst limestone and loose mineral scree, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_12_mountain_torrent_washout/stone_basin_spring/pristine_dormant.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.527,
+            0.296
+          ],
+          [
+            0.759,
+            0.802
+          ]
+        ],
+        "frac_zero": 0.5451,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.05,
+            0.913,
+            0.297,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.284,
+            1.0,
+            0.846,
+            0.057,
+            0.012,
+            0.0
+          ],
+          [
+            0.006,
+            0.734,
+            1.0,
+            1.0,
+            0.902,
+            0.368,
+            0.0
+          ],
+          [
+            0.169,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.893,
+            0.132
+          ],
+          [
+            0.743,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.789
+          ],
+          [
+            0.379,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.7
+          ],
+          [
+            0.059,
+            0.49,
+            0.785,
+            0.961,
+            0.747,
+            0.408,
+            0.035
+          ]
+        ],
+        "crop_offset": [
+          18,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 126,
+        "contact_reference_px": 126.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of carved stone spring basin, stratified pale karst limestone and loose mineral scree, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_12_mountain_torrent_washout/stone_basin_spring/active_operating.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.533,
+            0.227
+          ],
+          [
+            0.777,
+            0.769
+          ]
+        ],
+        "frac_zero": 0.5601,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.076,
+            0.896,
+            0.333,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.342,
+            1.0,
+            0.756,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.046,
+            0.696,
+            1.0,
+            0.959,
+            0.438,
+            0.182,
+            0.0
+          ],
+          [
+            0.166,
+            0.991,
+            1.0,
+            1.0,
+            1.0,
+            0.648,
+            0.057
+          ],
+          [
+            0.492,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.987,
+            0.539
+          ],
+          [
+            0.649,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.422
+          ],
+          [
+            0.058,
+            0.697,
+            0.853,
+            0.975,
+            0.83,
+            0.435,
+            0.012
+          ]
+        ],
+        "crop_offset": [
+          19,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 99,
+        "contact_reference_px": 99.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of carved stone spring basin, stratified pale karst limestone and loose mineral scree, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_12_mountain_torrent_washout/stone_basin_spring/damaged_weathered.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.661,
+            0.666
+          ],
+          [
+            0.77,
+            0.818
+          ]
+        ],
+        "frac_zero": 0.476,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.24,
+            0.802,
+            0.978,
+            0.792,
+            0.251,
+            0.0
+          ],
+          [
+            0.052,
+            0.958,
+            1.0,
+            1.0,
+            1.0,
+            0.944,
+            0.075
+          ],
+          [
+            0.267,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.295
+          ],
+          [
+            0.684,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.794
+          ],
+          [
+            0.699,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.779
+          ],
+          [
+            0.152,
+            0.971,
+            0.995,
+            1.0,
+            1.0,
+            0.976,
+            0.388
+          ],
+          [
+            0.0,
+            0.056,
+            0.33,
+            0.533,
+            0.685,
+            0.116,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          16,
+          34
+        ],
+        "trunk_columns": [
+          3,
+          4
+        ],
+        "contact_px": 141,
+        "contact_reference_px": 141.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of carved stone spring basin, stratified pale karst limestone and loose mineral scree, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_12_mountain_torrent_washout/stone_basin_spring/ruined_rubble.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.544,
+            0.296
+          ],
+          [
+            0.777,
+            0.821
+          ]
+        ],
+        "frac_zero": 0.5428,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.125,
+            0.944,
+            0.252,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.42,
+            1.0,
+            0.681,
+            0.032,
+            0.005,
+            0.0
+          ],
+          [
+            0.012,
+            0.747,
+            1.0,
+            0.997,
+            0.871,
+            0.457,
+            0.0
+          ],
+          [
+            0.189,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.787,
+            0.061
+          ],
+          [
+            0.716,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.693
+          ],
+          [
+            0.463,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.999,
+            0.617
+          ],
+          [
+            0.102,
+            0.676,
+            0.777,
+            0.878,
+            0.92,
+            0.558,
+            0.07
+          ]
+        ],
+        "crop_offset": [
+          20,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 143,
+        "contact_reference_px": 143.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "WAT-12",
+    "domain": "water_and_springs",
+    "interaction": "drink_spring",
+    "collision_behavior": "solid",
+    "element": "water",
+    "tier": 3
+  },
+  "category_id": "wat_12_mountain_torrent_washout",
+  "domain_id": "water_and_springs",
+  "pinyin": "Bàohóng Chōnggōu · Carved Stone Spring Basin",
+  "archetype_name": "Carved Stone Spring Basin",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "ground"
+  },
+  "primary_material": "weathered_karst_limestone",
+  "secondary_material": "crag_scree",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Water affinity (Core Formation (Kết Đan / 结丹))",
+  "elevation_tier": 3,
+  "mortal_realm_tier": "Core Formation (Kết Đan / 结丹)",
+  "asset_slug": "stone_basin_spring"
+}

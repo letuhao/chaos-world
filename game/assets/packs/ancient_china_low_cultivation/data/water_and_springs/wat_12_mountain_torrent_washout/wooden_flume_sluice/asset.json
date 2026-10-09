@@ -1,0 +1,542 @@
+{
+  "id": "ancient_china_low_cultivation.water_and_springs.wat_12_mountain_torrent_washout.wooden_flume_sluice",
+  "archetype": "wooden_flume_sluice_wat_12_mountain_torrent_washout",
+  "name": "Mountain Torrent Washout - Timber Irrigation Sluice Gate",
+  "vietnamese_name": "Bạo Hồng Trùng Câu - Cửa Phai Dẫn Nước Bằng Gỗ",
+  "hanzi": "暴洪冲沟 · 木制引水分水闸",
+  "category": "wat_12_mountain_torrent_washout",
+  "category_code": "WAT-12",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_12_mountain_torrent_washout",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "operate_sluice",
+  "gameplay_role": "prop_workstation entity supporting Mountain Torrent Washout gameplay",
+  "destructible": true,
+  "material": "stratified pale karst limestone and loose mineral scree",
+  "cultivation_element": "ice",
+  "prompt_summary": "Single isolated 2D RPG game prop of mountain torrent washout - timber irrigation sluice gate, authentic mountain torrent washout materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Water Systems & Spiritual Springs",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of timber irrigation sluice gate, stratified pale karst limestone and loose mineral scree, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_12_mountain_torrent_washout/wooden_flume_sluice/pristine_dormant.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.555,
+            0.615
+          ]
+        ],
+        "frac_zero": 0.8228,
+        "blocks": [
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 2,
+        "anchor_cell": [
+          1,
+          0
+        ],
+        "sub_grid": [
+          3,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.28,
+            0.549,
+            0.176
+          ],
+          [
+            0.55,
+            0.648,
+            0.633
+          ],
+          [
+            0.748,
+            0.979,
+            0.685
+          ]
+        ],
+        "crop_offset": [
+          81,
+          16
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2
+        ],
+        "contact_px": 85,
+        "contact_reference_px": 85.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            0
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          128
+        ]
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of timber irrigation sluice gate, stratified pale karst limestone and loose mineral scree, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_12_mountain_torrent_washout/wooden_flume_sluice/active_operating.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.559,
+            0.609
+          ]
+        ],
+        "frac_zero": 0.8226,
+        "blocks": [
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 2,
+        "anchor_cell": [
+          1,
+          0
+        ],
+        "sub_grid": [
+          3,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.213,
+            0.509,
+            0.131
+          ],
+          [
+            0.547,
+            0.828,
+            0.617
+          ],
+          [
+            0.731,
+            0.976,
+            0.681
+          ]
+        ],
+        "crop_offset": [
+          81,
+          16
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2
+        ],
+        "contact_px": 82,
+        "contact_reference_px": 82.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            0
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          128
+        ]
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of timber irrigation sluice gate, stratified pale karst limestone and loose mineral scree, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_12_mountain_torrent_washout/wooden_flume_sluice/damaged_weathered.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.599,
+            0.62
+          ]
+        ],
+        "frac_zero": 0.8026,
+        "blocks": [
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 2,
+        "anchor_cell": [
+          1,
+          0
+        ],
+        "sub_grid": [
+          4,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.257,
+            0.5,
+            0.353,
+            0.0
+          ],
+          [
+            0.496,
+            0.919,
+            0.709,
+            0.05
+          ],
+          [
+            0.699,
+            0.973,
+            0.816,
+            0.275
+          ]
+        ],
+        "crop_offset": [
+          77,
+          16
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2
+        ],
+        "contact_px": 92,
+        "contact_reference_px": 92.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            0
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          128
+        ]
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of timber irrigation sluice gate, stratified pale karst limestone and loose mineral scree, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_12_mountain_torrent_washout/wooden_flume_sluice/ruined_rubble.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.589,
+            0.618
+          ]
+        ],
+        "frac_zero": 0.8129,
+        "blocks": [
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 2,
+        "anchor_cell": [
+          1,
+          0
+        ],
+        "sub_grid": [
+          3,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.254,
+            0.538,
+            0.2
+          ],
+          [
+            0.562,
+            0.907,
+            0.64
+          ],
+          [
+            0.728,
+            0.952,
+            0.65
+          ]
+        ],
+        "crop_offset": [
+          80,
+          16
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2
+        ],
+        "contact_px": 87,
+        "contact_reference_px": 87.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            0
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          128
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "WAT-12",
+    "domain": "water_and_springs",
+    "interaction": "operate_sluice",
+    "collision_behavior": "solid",
+    "element": "ice",
+    "tier": 3
+  },
+  "category_id": "wat_12_mountain_torrent_washout",
+  "domain_id": "water_and_springs",
+  "pinyin": "Bàohóng Chōnggōu · Timber Irrigation Sluice Gate",
+  "archetype_name": "Timber Irrigation Sluice Gate",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 4
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 128
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 1
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "ground"
+  },
+  "primary_material": "weathered_karst_limestone",
+  "secondary_material": "crag_scree",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Ice affinity (Core Formation (Kết Đan / 结丹))",
+  "elevation_tier": 3,
+  "mortal_realm_tier": "Core Formation (Kết Đan / 结丹)",
+  "asset_slug": "wooden_flume_sluice"
+}
