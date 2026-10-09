@@ -1,0 +1,779 @@
+{
+  "id": "ancient_china_low_cultivation.terrain_and_geology.ter_18_ghostly_ash_plains.quarry_cut_block",
+  "archetype": "quarry_cut_block_ter_18_ghostly_ash_plains",
+  "name": "Ghostly Ash Plains - Excavated Quarry Stone Block",
+  "vietnamese_name": "Âm Sát Hôi Nhưỡng - Khối Đá Khai Thác Đẽo Gọt",
+  "hanzi": "阴煞灰壤 · 开采方整石料",
+  "category": "ter_18_ghostly_ash_plains",
+  "category_code": "TER-18",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_18_ghostly_ash_plains",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "quarry_stone",
+  "gameplay_role": "prop_workstation entity supporting Ghostly Ash Plains gameplay",
+  "destructible": true,
+  "material": "authentic mortal craftsmanship materials",
+  "cultivation_element": "ghost",
+  "prompt_summary": "Single isolated 2D RPG game prop of ghostly ash plains - excavated quarry stone block, authentic ghostly ash plains materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Terrains & Geological Formations",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of excavated quarry stone block, authentic mortal craftsmanship materials, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_18_ghostly_ash_plains/quarry_cut_block/pristine_dormant.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.657,
+            0.566
+          ],
+          [
+            0.705,
+            0.724
+          ]
+        ],
+        "frac_zero": 0.4969,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.259,
+            0.688,
+            0.9,
+            0.335,
+            0.0,
+            0.0
+          ],
+          [
+            0.044,
+            0.995,
+            1.0,
+            1.0,
+            0.976,
+            0.538,
+            0.0
+          ],
+          [
+            0.19,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.964,
+            0.0
+          ],
+          [
+            0.534,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.178
+          ],
+          [
+            0.787,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.688
+          ],
+          [
+            0.306,
+            0.951,
+            1.0,
+            1.0,
+            1.0,
+            0.921,
+            0.245
+          ],
+          [
+            0.0,
+            0.14,
+            0.454,
+            0.953,
+            0.673,
+            0.078,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          20,
+          17
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4
+        ],
+        "contact_px": 70,
+        "contact_reference_px": 70.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of excavated quarry stone block, authentic mortal craftsmanship materials, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_18_ghostly_ash_plains/quarry_cut_block/active_operating.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.378,
+            0.629
+          ],
+          [
+            0.786,
+            0.768
+          ]
+        ],
+        "frac_zero": 0.5119,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.052,
+            0.251,
+            0.638,
+            0.892,
+            0.318,
+            0.0
+          ],
+          [
+            0.0,
+            0.271,
+            0.356,
+            0.909,
+            1.0,
+            0.555,
+            0.0
+          ],
+          [
+            0.025,
+            0.596,
+            0.913,
+            1.0,
+            1.0,
+            0.784,
+            0.183
+          ],
+          [
+            0.147,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.967,
+            0.269
+          ],
+          [
+            0.699,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.691
+          ],
+          [
+            0.471,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.99,
+            0.4
+          ],
+          [
+            0.06,
+            0.562,
+            0.839,
+            0.943,
+            0.693,
+            0.501,
+            0.003
+          ]
+        ],
+        "crop_offset": [
+          17,
+          24
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 149,
+        "contact_reference_px": 149.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of excavated quarry stone block, authentic mortal craftsmanship materials, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_18_ghostly_ash_plains/quarry_cut_block/damaged_weathered.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.604,
+            0.6
+          ],
+          [
+            0.685,
+            0.692
+          ]
+        ],
+        "frac_zero": 0.5306,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.291,
+            0.695,
+            0.926,
+            0.54,
+            0.14,
+            0.0
+          ],
+          [
+            0.0,
+            0.854,
+            1.0,
+            1.0,
+            1.0,
+            0.846,
+            0.0
+          ],
+          [
+            0.01,
+            0.938,
+            1.0,
+            1.0,
+            1.0,
+            0.915,
+            0.092
+          ],
+          [
+            0.37,
+            0.994,
+            1.0,
+            1.0,
+            1.0,
+            0.989,
+            0.385
+          ],
+          [
+            0.534,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.629
+          ],
+          [
+            0.035,
+            0.723,
+            1.0,
+            1.0,
+            0.877,
+            0.739,
+            0.169
+          ],
+          [
+            0.0,
+            0.01,
+            0.279,
+            0.648,
+            0.023,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          17,
+          32
+        ],
+        "trunk_columns": [
+          3
+        ],
+        "contact_px": 72,
+        "contact_reference_px": 72.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of excavated quarry stone block, authentic mortal craftsmanship materials, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_18_ghostly_ash_plains/quarry_cut_block/ruined_rubble.png",
+      "generated_on": "2026-10-09",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.569,
+            0.295
+          ],
+          [
+            0.694,
+            0.683
+          ]
+        ],
+        "frac_zero": 0.5732,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.223,
+            0.878,
+            0.5,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.509,
+            1.0,
+            0.821,
+            0.096,
+            0.0,
+            0.0
+          ],
+          [
+            0.005,
+            0.753,
+            1.0,
+            0.994,
+            0.916,
+            0.538,
+            0.042
+          ],
+          [
+            0.21,
+            1.0,
+            1.0,
+            1.0,
+            0.955,
+            0.986,
+            0.157
+          ],
+          [
+            0.7,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.701
+          ],
+          [
+            0.121,
+            0.852,
+            0.932,
+            1.0,
+            0.948,
+            0.498,
+            0.153
+          ],
+          [
+            0.0,
+            0.572,
+            0.281,
+            0.515,
+            0.628,
+            0.391,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          17,
+          24
+        ],
+        "trunk_columns": [
+          3,
+          4,
+          5
+        ],
+        "contact_px": 41,
+        "contact_reference_px": 41.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "TER-18",
+    "domain": "terrain_and_geology",
+    "interaction": "quarry_stone",
+    "collision_behavior": "solid",
+    "element": "ghost",
+    "tier": 9
+  },
+  "category_id": "ter_18_ghostly_ash_plains",
+  "domain_id": "terrain_and_geology",
+  "pinyin": "Yīnshà Huīrǎng · Excavated Quarry Stone Block",
+  "archetype_name": "Excavated Quarry Stone Block",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "ground"
+  },
+  "primary_material": "carved_wood",
+  "secondary_material": "polished_bronze",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Ghost affinity (Tribulation Crossing (Độ Kiếp / 渡劫))",
+  "elevation_tier": 9,
+  "mortal_realm_tier": "Tribulation Crossing (Độ Kiếp / 渡劫)",
+  "asset_slug": "quarry_cut_block"
+}
