@@ -101,6 +101,14 @@ var declared_resources: Array[StringName] = []
 ## nobody can read back is a refusal nobody can test.
 var declaration_refusals: Array[Dictionary] = []
 
+## Lifecycle hooks registered through `add_lifecycle_hook`. Public vars are declared
+## before private ones (gdlint's `class-definitions-order`), so this and [member
+## def_patches] sit here rather than beside the methods that fill them.
+var lifecycle_hooks: Array[Dictionary] = []
+
+## Def patches from the manifest, applied during catalog merge.
+var def_patches: Array = []
+
 ## The manifest this context was stamped from, so a seam can read the mod's
 ## declared overrides without the loader re-passing them per call.
 var _manifest: Dictionary = {}
@@ -119,12 +127,6 @@ var _config_values: Dictionary = {}
 
 ## Config schema from the manifest: Array of {key, label, type, default, ...}.
 var _config_schema: Array = []
-
-## Lifecycle hooks registered through `add_lifecycle_hook`.
-var lifecycle_hooks: Array[Dictionary] = []
-
-## Def patches from the manifest, applied during catalog merge.
-var def_patches: Array = []
 
 
 func _init(
@@ -364,40 +366,58 @@ func add_lifecycle_hook(event: String, callable: Callable) -> Array[Dictionary]:
 
 
 ## Validate a config value against its schema entry. Returns "" when valid,
-## or a named reason when invalid.
+## or a named reason when invalid. One dispatch, then one helper per type that has
+## bounds to check: the shape the reason vocabulary is written in.
 func _validate_config_value(entry: Dictionary, value: Variant) -> String:
-	var type := String(entry["type"])
-	match type:
+	match String(entry["type"]):
 		"int":
-			if typeof(value) != TYPE_INT:
-				return "not_int"
-			var min = entry.get("min", null)
-			if min != null and int(value) < int(min):
-				return "below_min"
-			var max = entry.get("max", null)
-			if max != null and int(value) > int(max):
-				return "above_max"
+			return _validate_int(entry, value)
 		"float":
-			if typeof(value) != TYPE_FLOAT and typeof(value) != TYPE_INT:
-				return "not_float"
-			var min = entry.get("min", null)
-			if min != null and float(value) < float(min):
-				return "below_min"
-			var max = entry.get("max", null)
-			if max != null and float(value) > float(max):
-				return "above_max"
+			return _validate_float(entry, value)
 		"bool":
-			if typeof(value) != TYPE_BOOL:
-				return "not_bool"
+			return "" if typeof(value) == TYPE_BOOL else "not_bool"
 		"string":
-			if typeof(value) != TYPE_STRING:
-				return "not_string"
+			return "" if typeof(value) == TYPE_STRING else "not_string"
 		"choice":
-			if typeof(value) != TYPE_STRING:
-				return "not_string"
-			var choices: Array = entry.get("choices", [])
-			if not choices.has(value):
-				return "not_in_choices"
+			return _validate_choice(entry, value)
+	return ""
+
+
+## `""` when the value is an int inside its authored `min`/`max`. Reads the bounds as
+## `low`/`high` rather than `min`/`max`, which are Godot globals and shadowable.
+func _validate_int(entry: Dictionary, value: Variant) -> String:
+	if typeof(value) != TYPE_INT:
+		return "not_int"
+	var low = entry.get("min", null)
+	if low != null and int(value) < int(low):
+		return "below_min"
+	var high = entry.get("max", null)
+	if high != null and int(value) > int(high):
+		return "above_max"
+	return ""
+
+
+## `""` when the value is a float (or an int, which a float schema accepts) inside its
+## authored bounds.
+func _validate_float(entry: Dictionary, value: Variant) -> String:
+	if typeof(value) != TYPE_FLOAT and typeof(value) != TYPE_INT:
+		return "not_float"
+	var low = entry.get("min", null)
+	if low != null and float(value) < float(low):
+		return "below_min"
+	var high = entry.get("max", null)
+	if high != null and float(value) > float(high):
+		return "above_max"
+	return ""
+
+
+## `""` when the value is one of the entry's authored `choices`.
+func _validate_choice(entry: Dictionary, value: Variant) -> String:
+	if typeof(value) != TYPE_STRING:
+		return "not_string"
+	var choices: Array = entry.get("choices", [])
+	if not choices.has(value):
+		return "not_in_choices"
 	return ""
 
 

@@ -11,6 +11,42 @@ const FAMILIES_PATH := "res://../tools/arch/families.json"
 ## Production's wiring table, read as text: the arms this suite asserts.
 const WIRING := "res://src/app/item_workbench_body.gd"
 
+## The catalog class each content family wires through, or absent for a family that has
+## none. A TABLE rather than a `match` returning from every arm: this is data the suite
+## reads, one line per family, and a family with no catalog is visible by its ABSENCE
+## rather than by which `return` branch it did not take. Keys are `StringName` because
+## that is what the family ids are.
+const CATALOG_CLASSES := {
+	&"items": "Crafting",
+	&"quest": "QuestCatalog",
+	&"event": "EventCatalog",
+	&"world_locations": "WorldLocationCatalog",
+	&"npcs": "NpcCatalog",
+	&"races": "RaceCatalog",
+	&"techniques": "TechniqueCatalog",
+	&"elements": "ElementCatalog",
+	&"statuses": "StatusCatalog",
+	&"soul_arrivals": "SoulCatalog",
+	&"sets": "SetCatalog",
+	&"set_items": "SetCatalog",
+	&"sects": "SectCatalog",
+	&"sect_doctrines": "SectDoctrineCatalog",
+	&"nations": "NationCatalog",
+	&"nation_territories": "NationCatalog",
+	&"market_shops": "ShopCatalog",
+	&"clans": "ClanCatalog",
+	&"holdings": "ResourceNodeCatalog",
+	&"body_weapons": "WeaponKindCatalog",
+	&"body_material_arts": "MaterialArtCatalog",
+	&"body_injury_tuning": "InjuryCatalog",
+	&"bloodlines": "BloodlineCatalog",
+	&"anchors": "AnchorCatalog",
+	&"difficulty": "DifficultyCatalog",
+	&"fates": "FateCatalog",
+	&"destinies": "FateCatalog",
+	&"item_options": "OptionCatalog",
+}
+
 
 ## `TestCase` publishes `assert_eq`/`assert_ne`/`assert_almost_eq` only, so the
 ## two-arg boolean shape used throughout this file is spelled here rather than
@@ -30,59 +66,11 @@ func _read_families() -> Dictionary:
 	return json.data
 
 
+## The catalog class a family wires through, or `""` when it has none — the answer
+## [constant CATALOG_CLASSES] holds, read through one lookup so an unwired family is a
+## missing key rather than an arm nobody wrote.
 func _catalog_class_for_family(family: String) -> String:
-	match family:
-		&"items":
-			return "Crafting"
-		&"quest":
-			return "QuestCatalog"
-		&"event":
-			return "EventCatalog"
-		&"world_locations":
-			return "WorldLocationCatalog"
-		&"npcs":
-			return "NpcCatalog"
-		&"races":
-			return "RaceCatalog"
-		&"techniques":
-			return "TechniqueCatalog"
-		&"elements":
-			return "ElementCatalog"
-		&"statuses":
-			return "StatusCatalog"
-		&"soul_arrivals":
-			return "SoulCatalog"
-		&"sets", &"set_items":
-			return "SetCatalog"
-		&"sects":
-			return "SectCatalog"
-		&"sect_doctrines":
-			return "SectDoctrineCatalog"
-		&"nations", &"nation_territories":
-			return "NationCatalog"
-		&"market_shops":
-			return "ShopCatalog"
-		&"clans":
-			return "ClanCatalog"
-		&"holdings":
-			return "ResourceNodeCatalog"
-		&"body_weapons":
-			return "WeaponKindCatalog"
-		&"body_material_arts":
-			return "MaterialArtCatalog"
-		&"body_injury_tuning":
-			return "InjuryCatalog"
-		&"bloodlines":
-			return "BloodlineCatalog"
-		&"anchors":
-			return "AnchorCatalog"
-		&"difficulty":
-			return "DifficultyCatalog"
-		&"fates", &"destinies":
-			return "FateCatalog"
-		&"item_options":
-			return "OptionCatalog"
-	return ""
+	return String(CATALOG_CLASSES.get(StringName(family), ""))
 
 
 func test_all_families_have_catalogs_or_are_skipped() -> void:

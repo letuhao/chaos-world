@@ -218,22 +218,22 @@ func _focus(action: StringName) -> void:
 		button.grab_focus()
 
 
+## The button an action id names, or `null` for an id this bar does not own. A table
+## rather than a `match`: `_bind_nodes` walks `ACTIONS` and binds each one, so this is
+## the inverse read of that same vocabulary, and a dictionary keeps the two in step one
+## line per entry. It also stops answering a genuinely unknown action with the LOAD
+## button, which is what a bare `_` branch did.
 func _button(action: StringName) -> Button:
-	match action:
-		&"use":
-			return _use_button
-		&"equip":
-			return _equip_button
-		&"unequip":
-			return _unequip_button
-		&"generate":
-			return _generate_button
-		&"save":
-			return _save_button
-		&"teardown":
-			return _teardown_button
-		_:
-			return _load_button
+	var by_action := {
+		&"use": _use_button,
+		&"equip": _equip_button,
+		&"unequip": _unequip_button,
+		&"generate": _generate_button,
+		&"save": _save_button,
+		&"teardown": _teardown_button,
+		&"load": _load_button,
+	}
+	return by_action.get(action, null)
 
 
 func _is_enabled(action: StringName) -> bool:

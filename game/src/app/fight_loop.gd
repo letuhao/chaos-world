@@ -482,14 +482,11 @@ func cast_rapid(seed_value: int = 0) -> Dictionary:
 	var refusal := _refusal_for_exchange()
 	if not refusal.is_empty():
 		return _refuse(String(refusal.get("reason", R_NOT_FIGHTING)))
+	var problem := _rapid_refusal()
+	if not problem.is_empty():
+		return _refuse(String(problem["reason"]))
 	var def := _rapid_def()
-	if def == null:
-		return _refuse(R_NO_RAPID)
-	if _rapid_cooldown > 0.0:
-		return _refuse(R_NOT_READY)
 	var casting := _casting()
-	if casting == null or not TechniqueCasting.has_resolver():
-		return _refuse(R_NO_CASTING)
 	var fired := casting.activate(_hero, def, _opponent)
 	if not bool(fired.get("ok", false)):
 		return _refuse(String(fired.get("reason", "refused")))
@@ -524,6 +521,24 @@ func cast_rapid(seed_value: int = 0) -> Dictionary:
 	if _health_of(_hero) <= 0.0:
 		return _decide(OUTCOME_HERO_LOST, result)
 	return result
+
+
+## Why a rapid cast may not be thrown, as `{"reason": ...}`, or `{}` when it may —
+## [method _refusal_for_exchange]'s shape, for the same reason. Three guards answered from
+## one place, so the cast itself has one refusal site rather than a return per check.
+##
+## The def is re-read by the caller after this passes, which is deliberate: a helper that
+## also handed the def back would be returning two things and neither signature would
+## read well.
+func _rapid_refusal() -> Dictionary:
+	if _rapid_def() == null:
+		return {"reason": R_NO_RAPID}
+	if _rapid_cooldown > 0.0:
+		return {"reason": R_NOT_READY}
+	var casting := _casting()
+	if casting == null or not TechniqueCasting.has_resolver():
+		return {"reason": R_NO_CASTING}
+	return {}
 
 
 ## The reason this exchange may not be thrown, as `{"reason": ...}`, or `{}` when it may.
