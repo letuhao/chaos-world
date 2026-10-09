@@ -424,6 +424,57 @@ def get_balanced_color_clause(asset: dict, asset_name: str, material: str) -> st
     if any(w in id_str for w in ("poplar", "wind_listening")):
         return "rich abundant color harmony: shimmering silver-green and golden-tinted leaves, warm honey-brown boughs, and dark charcoal bark crevices"
 
+    # Architecture overrides: ensure buildings use authentic Tang-Song timber, vermilion pillars, and warm charcoal terracotta tiles
+    is_arch = any(
+        k in (asset.get("asset_class") or asset.get("type") or "").lower()
+        for k in (
+            "structure",
+            "building",
+            "architecture",
+            "gateway",
+            "gate",
+            "pagoda",
+            "pavilion",
+            "tower",
+            "hall",
+            "shrine",
+            "temple",
+            "dwelling",
+            "barracks",
+            "hermitage",
+        )
+    ) or any(
+        k in id_str
+        for k in (
+            "gate",
+            "shanmen",
+            "barracks",
+            "hall",
+            "pavilion",
+            "tower",
+            "hermitage",
+            "temple",
+            "shrine",
+            "chamber",
+            "dwelling",
+        )
+    )
+    if is_arch:
+        if any(w in id_str for w in ("cottage", "granary", "straw", "thatch", "rustic", "farmer")):
+            return "rich abundant color harmony: warm golden sun-dried straw thatch (#D4A347), warm loess mud-brick walls, honey-chestnut timber framing, and rich natural earth tones"
+        elif any(w in id_str for w in ("hermitage", "daoist", "shrine", "temple", "altar")):
+            return "rich abundant color harmony: warm weathered sandalwood timber (#8B5A2B), authentic dark charcoal-slate terracotta roof tiles (#2E2E32), aged golden bronze incense burner accents (#D4A347), and warm grey granite foundation, zero cyan or teal wash"
+        else:
+            return "rich abundant color harmony: warm vermilion cinnabar lacquer pillars (#C83C28), radiant golden-amber dougong brackets (#D4A347), authentic dark charcoal-slate terracotta roof tiles (#2C2C30), and polished rosewood beams, zero cyan or teal wash"
+
+    # Weapon and implement overrides: prevent conifer/tree leakage on metal/jade implements
+    if any(w in id_str for w in ("sword", "blade", "saber", "flying_sword")):
+        return "rich abundant color harmony: polished silver-steel forged blade with dark folded Damascus steel grain, warm golden brass crossguard fittings (#D4A347), and dark rosewood cord-wrapped grip, zero cyan tint"
+    if any(w in id_str for w in ("shovel", "spade", "trowel")):
+        return "rich abundant color harmony: translucent warm mutton-fat white nephrite jade blade, polished radiant brass ferrule (#D4A347), and dark polished rosewood handle"
+    if any(w in id_str for w in ("cauldron", "ding", "furnace")):
+        return "rich abundant color harmony: antique cast bronze with warm golden-amber highlights (#D4A347), rich verdigris patina accents, and glowing charcoal embers"
+
     # Five Elements / Cultivation Element Harmonies
     if elem == "fire":
         return "rich abundant color harmony: glowing vermilion cinnabar (#C83C28), bright flame orange, warm golden-amber accents, and deep charcoal soot contrast"
@@ -655,9 +706,10 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
     if any(k in asset_class for k in ("item", "tool", "weapon", "talisman", "consumable", "icon")):
         # Sanitize tool materials if mismatched by heuristic
         low_name = asset_name.lower()
-        if any(w in low_name for w in ("shovel", "spade", "trowel")):
-            if any(b in material.lower() for b in ("herb", "stalk", "leaf", "dew", "soil", "dirt")):
-                material = "carved translucent mutton-fat nephrite jade blade, polished brass ferrule socket, dark rosewood handle"
+        if any(w in low_name for w in ("sword", "blade", "saber", "flying_sword")):
+            material = "forged cold iron steel blade with folded Damascus steel grain, polished bronze guard, wrapped dark rosewood hilt"
+        elif any(w in low_name for w in ("shovel", "spade", "trowel")):
+            material = "carved translucent mutton-fat nephrite jade blade, polished brass ferrule socket, dark rosewood handle"
         elif any(w in low_name for w in ("pick", "pickaxe", "mining")):
             if any(b in material.lower() for b in ("herb", "stalk", "leaf", "dew", "soil", "dirt")):
                 material = "forged heavy cold iron pick head with chisel point, reinforced bronze bands, aged hardwood shaft"
@@ -673,13 +725,13 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
         )
         item_neg = (
             "diorama, miniature scene, floating island, dirt slab, grass pedestal, room, building, landscape, "
-            f"trees, field, human hands, fingers, holding, multiple items, collection, frame, UI, watermark, {ANTI_DRIFT_CLAUSE}"
+            f"trees, field, human hands, fingers, holding, multiple items, collection, frame, UI, watermark, cyan tint, teal blade, turquoise glow, blue filter, {ANTI_DRIFT_CLAUSE}"
             if is_ground_drop
             else (
                 "diorama, miniature scene, floating island, dirt slab, grass pedestal, ground plane, "
                 "floor, surface, shadow on ground, building, house, cottage, farm, fence, landscape, "
                 "trees, field, human hands, fingers, holding, multiple items, collection, collage, border, "
-                f"frame, UI, watermark, blurry edges, microscopic high-frequency noise, decorative clouds, cloud swirls, vapor wisps, {ANTI_DRIFT_CLAUSE}"
+                f"frame, UI, watermark, blurry edges, microscopic high-frequency noise, decorative clouds, cloud swirls, vapor wisps, cyan tint, teal blade, turquoise glow, blue filter, {ANTI_DRIFT_CLAUSE}"
             )
         )
         pos = (
@@ -942,9 +994,10 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
             gable_spec = "high-angle triangular thatched timber gable end"
             material_neg = "ceramic tiles, glazed tiles, blue roof tiles, dark roof tiles, terracotta tiles, dougong brackets, imperial palace, temple hall, "
         else:
-            roof_spec = "broad glazed ceramic roof tiles and curved dougong eaves dominant and fully visible overhead (70%-80% of height), "
+            material = material.replace("glazed ceramic roof tiles", "dark charcoal terracotta roof tiles (#2C2C30)")
+            roof_spec = "broad dark charcoal-slate terracotta roof tiles (#2C2C30) with warm cinnabar timber dougong eaves dominant and fully visible overhead (70%-80% of height), "
             gable_spec = "high-angle triangular dougong timber gable end"
-            material_neg = "thatched straw roof, straw hut, hay, rustic shack, "
+            material_neg = "thatched straw roof, straw hut, hay, rustic shack, cyan roof, teal roof tiles, turquoise glaze, blue roof tiles, green moss wash, cold blue tint, "
 
         if is_rear:
             persp_pos = (
@@ -995,7 +1048,8 @@ def build_game_ready_prompt(asset: dict, var: dict) -> tuple[str, str]:
             "isolated on solid plain white background."
         )
         neg = (
-            f"{material_neg}{dir_neg}clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, "
+            f"{material_neg}{dir_neg}monochrome cyan wash, heavy cyan tint, dull teal filter, cyan roof tiles, turquoise ceramic, blue roof tiles, green algae wash, "
+            "clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, "
             "diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, "
             "garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, "
             "eye-level view, flat front elevation drawing, flat side view profile, side-scroller, "
