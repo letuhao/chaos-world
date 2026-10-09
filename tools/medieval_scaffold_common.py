@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Shared helpers and data structures for Medieval Western 48-Category Scaffolding."""
 
 from __future__ import annotations
@@ -12,7 +11,7 @@ CATEGORIES_PATH = PACK_DIR / "categories.json"
 
 
 def load_categories() -> list[dict]:
-    with open(CATEGORIES_PATH, "r", encoding="utf-8") as f:
+    with open(CATEGORIES_PATH, encoding="utf-8") as f:
         return json.load(f)
 
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Sphere VII: Nature, Living Traces, Micro-Fauna & Ecology (7 Categories, 870 Assets).
 
 Categories:
@@ -12,7 +11,8 @@ Categories:
 """
 
 from __future__ import annotations
-from typing import Callable
+
+from collections.abc import Callable
 
 
 def generate_sphere7(make_asset: Callable) -> list[dict]:

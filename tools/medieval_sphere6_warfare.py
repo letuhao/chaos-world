@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Sphere VI: War, Siege, Crime & Underworld (5 Categories, 540 Assets).
 
 Categories:
@@ -10,7 +9,8 @@ Categories:
 """
 
 from __future__ import annotations
-from typing import Callable
+
+from collections.abc import Callable
 
 
 def generate_sphere6(make_asset: Callable) -> list[dict]:

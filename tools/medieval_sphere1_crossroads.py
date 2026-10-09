@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Sphere I: The Cultural Crossroads (8 Categories, 900 Assets).
 
 Categories:
@@ -13,7 +12,8 @@ Categories:
 """
 
 from __future__ import annotations
-from typing import Callable
+
+from collections.abc import Callable
 
 
 def generate_sphere1(make_asset: Callable) -> list[dict]:

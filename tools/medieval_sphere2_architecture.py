@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Sphere II: Built Architecture & Fortifications (6 Categories, 800 Assets).
 
 Categories:
@@ -11,7 +10,8 @@ Categories:
 """
 
 from __future__ import annotations
-from typing import Callable
+
+from collections.abc import Callable
 
 
 def generate_sphere2(make_asset: Callable) -> list[dict]:

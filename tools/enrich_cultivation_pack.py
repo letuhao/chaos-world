@@ -487,7 +487,9 @@ def enrich_cultivation_pack() -> int:
 
         domain_id = asset.get("domain_id") or asset.get("domain") or cat.get("domain_id", "")
         raw_slug = asset.get("asset_slug") or asset.get("id", "").split(".")[-1]
-        clean_slug = raw_slug[:-len(f"_{cid}")] if cid and raw_slug.endswith(f"_{cid}") else raw_slug
+        clean_slug = (
+            raw_slug[: -len(f"_{cid}")] if cid and raw_slug.endswith(f"_{cid}") else raw_slug
+        )
         asset["asset_slug"] = clean_slug
         asset["id"] = f"ancient_china_low_cultivation.{domain_id}.{cid}.{clean_slug}"
         aclass = asset.get("asset_class", "prop_workstation")

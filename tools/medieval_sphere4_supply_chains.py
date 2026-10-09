@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Sphere IV: Manorial Supply Chains & Guild Crafts (10 Categories, 1,140 Assets).
 
 Categories:
@@ -15,7 +14,8 @@ Categories:
 """
 
 from __future__ import annotations
-from typing import Callable
+
+from collections.abc import Callable
 
 
 def generate_sphere4(make_asset: Callable) -> list[dict]:

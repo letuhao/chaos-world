@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Synchronize categories.json subcategories with the actual sphere generator subcategories."""
 
 import json
@@ -22,7 +21,7 @@ from tools.medieval_sphere7_ecology import generate_sphere7
 
 
 def main():
-    with open(CATEGORIES_PATH, "r", encoding="utf-8") as f:
+    with open(CATEGORIES_PATH, encoding="utf-8") as f:
         categories = json.load(f)
 
     all_assets = []

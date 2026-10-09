@@ -10,6 +10,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
+
 from PIL import Image
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -24,7 +25,7 @@ def audit_generated_assets(category_filter: str | None = None) -> int:
         print(f"Error: {PACK_JSON} does not exist", file=sys.stderr)
         return 1
 
-    with open(PACK_JSON, "r", encoding="utf-8") as f:
+    with open(PACK_JSON, encoding="utf-8") as f:
         pack = json.load(f)
 
     assets = pack.get("assets", [])

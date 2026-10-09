@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Sphere V: Commerce, Urban Life & Hanseatic Ports (5 Categories, 590 Assets).
 
 Categories:
@@ -10,7 +9,8 @@ Categories:
 """
 
 from __future__ import annotations
-from typing import Callable
+
+from collections.abc import Callable
 
 
 def generate_sphere5(make_asset: Callable) -> list[dict]:

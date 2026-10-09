@@ -16,7 +16,7 @@ PACK_PATH = (
 
 
 def main():
-    with open(PACK_PATH, "r", encoding="utf-8") as f:
+    with open(PACK_PATH, encoding="utf-8") as f:
         pack = json.load(f)
 
     stats = defaultdict(lambda: {"total": 0, "gen": 0})
@@ -30,7 +30,9 @@ def main():
 
     total_variants = sum(s["total"] for s in stats.values())
     total_gen = sum(s["gen"] for s in stats.values())
-    print(f"Overall Pack Progress: {total_gen}/{total_variants} ({total_gen/total_variants*100:.2f}%)\n")
+    print(
+        f"Overall Pack Progress: {total_gen}/{total_variants} ({total_gen / total_variants * 100:.2f}%)\n"
+    )
 
     current_dom = None
     for (dom, sub), d in sorted(stats.items()):

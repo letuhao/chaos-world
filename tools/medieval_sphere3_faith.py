@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Sphere III: Faith, Monasticism, Mortality & Occult (7 Categories, 760 Assets).
 
 Categories:
@@ -12,7 +11,8 @@ Categories:
 """
 
 from __future__ import annotations
-from typing import Callable
+
+from collections.abc import Callable
 
 
 def generate_sphere3(make_asset: Callable) -> list[dict]:

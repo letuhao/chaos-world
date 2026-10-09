@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from .selftest import case, expect
 from .map_assets import _source_image_findings
+from .selftest import case, expect
 
 
 @case("map-original-source-path-cannot-escape-archive")
