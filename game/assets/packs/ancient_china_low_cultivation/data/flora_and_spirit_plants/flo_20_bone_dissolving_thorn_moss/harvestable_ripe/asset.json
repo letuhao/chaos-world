@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_20_bone_dissolving_thorn_moss/harvestable_ripe/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.462
+            0.415
           ]
         ],
-        "frac_zero": 0.7725,
+        "frac_zero": 0.7343,
         "blocks": [
           [
             false
@@ -75,31 +75,31 @@
         ],
         "sub_fill": [
           [
-            0.282,
-            0.344,
-            0.0
+            0.095,
+            0.199,
+            0.046
           ],
           [
-            0.577,
-            0.426,
-            0.006
+            0.566,
+            0.58,
+            0.168
           ],
           [
-            0.622,
-            0.735,
-            0.153
+            0.71,
+            0.865,
+            0.247
           ]
         ],
         "crop_offset": [
-          29,
-          17
+          21,
+          19
         ],
         "trunk_columns": [
           0,
           1
         ],
-        "contact_px": 69,
-        "contact_reference_px": 69.0,
+        "contact_px": 76,
+        "contact_reference_px": 76.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -127,14 +127,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_20_bone_dissolving_thorn_moss/harvestable_ripe/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.486
+            0.543
           ]
         ],
-        "frac_zero": 0.7476,
+        "frac_zero": 0.6901,
         "blocks": [
           [
             false
@@ -156,32 +156,32 @@
         ],
         "sub_fill": [
           [
-            0.234,
-            0.32,
-            0.0
+            0.221,
+            0.656,
+            0.229
           ],
           [
-            0.48,
-            0.604,
-            0.259
+            0.495,
+            0.672,
+            0.273
           ],
           [
-            0.679,
-            0.874,
-            0.361
+            0.664,
+            0.938,
+            0.404
           ]
         ],
         "crop_offset": [
-          27,
-          17
+          24,
+          18
         ],
         "trunk_columns": [
           0,
           1,
           2
         ],
-        "contact_px": 73,
-        "contact_reference_px": 73.0,
+        "contact_px": 76,
+        "contact_reference_px": 76.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -209,14 +209,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_20_bone_dissolving_thorn_moss/harvestable_ripe/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.524
+            0.475
           ]
         ],
-        "frac_zero": 0.7367,
+        "frac_zero": 0.7078,
         "blocks": [
           [
             false
@@ -238,32 +238,32 @@
         ],
         "sub_fill": [
           [
-            0.308,
-            0.501,
-            0.0
+            0.062,
+            0.245,
+            0.04
           ],
           [
-            0.531,
-            0.534,
-            0.118
+            0.461,
+            0.788,
+            0.266
           ],
           [
-            0.696,
-            0.883,
-            0.401
+            0.74,
+            0.968,
+            0.563
           ]
         ],
         "crop_offset": [
-          27,
-          17
+          23,
+          18
         ],
         "trunk_columns": [
           0,
           1,
           2
         ],
-        "contact_px": 72,
-        "contact_reference_px": 72.0,
+        "contact_px": 85,
+        "contact_reference_px": 85.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -291,14 +291,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_20_bone_dissolving_thorn_moss/harvestable_ripe/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.469
+            0.494
           ]
         ],
-        "frac_zero": 0.7341,
+        "frac_zero": 0.6993,
         "blocks": [
           [
             false
@@ -320,32 +320,32 @@
         ],
         "sub_fill": [
           [
-            0.238,
-            0.394,
-            0.0
+            0.17,
+            0.308,
+            0.027
           ],
           [
-            0.403,
-            0.671,
-            0.179
+            0.568,
+            0.733,
+            0.192
           ],
           [
-            0.634,
-            0.938,
-            0.437
+            0.706,
+            0.965,
+            0.59
           ]
         ],
         "crop_offset": [
-          23,
-          17
+          21,
+          18
         ],
         "trunk_columns": [
           0,
           1,
           2
         ],
-        "contact_px": 81,
-        "contact_reference_px": 81.0,
+        "contact_px": 83,
+        "contact_reference_px": 83.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,

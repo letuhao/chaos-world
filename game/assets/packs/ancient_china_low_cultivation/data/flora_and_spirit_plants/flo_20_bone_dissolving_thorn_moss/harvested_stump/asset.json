@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_20_bone_dissolving_thorn_moss/harvested_stump/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.49
+            0.451
           ]
         ],
-        "frac_zero": 0.7841,
+        "frac_zero": 0.7288,
         "blocks": [
           [
             false
@@ -70,33 +70,36 @@
           0
         ],
         "sub_grid": [
-          2,
+          3,
           3
         ],
         "sub_fill": [
           [
-            0.298,
-            0.051
+            0.086,
+            0.514,
+            0.248
           ],
           [
-            0.754,
-            0.327
+            0.44,
+            0.532,
+            0.183
           ],
           [
-            0.732,
-            0.787
+            0.673,
+            0.797,
+            0.182
           ]
         ],
         "crop_offset": [
-          32,
+          24,
           17
         ],
         "trunk_columns": [
           0,
           1
         ],
-        "contact_px": 62,
-        "contact_reference_px": 62.0,
+        "contact_px": 63,
+        "contact_reference_px": 63.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -124,14 +127,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_20_bone_dissolving_thorn_moss/harvested_stump/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.478
+            0.499
           ]
         ],
-        "frac_zero": 0.7944,
+        "frac_zero": 0.7166,
         "blocks": [
           [
             false
@@ -148,33 +151,36 @@
           0
         ],
         "sub_grid": [
-          2,
+          3,
           3
         ],
         "sub_fill": [
           [
-            0.203,
-            0.231
+            0.332,
+            0.566,
+            0.025
           ],
           [
-            0.546,
-            0.464
+            0.425,
+            0.571,
+            0.339
           ],
           [
-            0.772,
-            0.641
+            0.725,
+            0.866,
+            0.067
           ]
         ],
         "crop_offset": [
-          35,
+          25,
           17
         ],
         "trunk_columns": [
           0,
           1
         ],
-        "contact_px": 55,
-        "contact_reference_px": 55.0,
+        "contact_px": 68,
+        "contact_reference_px": 68.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -202,14 +208,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_20_bone_dissolving_thorn_moss/harvested_stump/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.455
+            0.518
           ]
         ],
-        "frac_zero": 0.8022,
+        "frac_zero": 0.7185,
         "blocks": [
           [
             false
@@ -226,33 +232,37 @@
           0
         ],
         "sub_grid": [
-          2,
+          3,
           3
         ],
         "sub_fill": [
           [
-            0.357,
-            0.089
+            0.291,
+            0.383,
+            0.065
           ],
           [
-            0.517,
-            0.268
+            0.533,
+            0.747,
+            0.195
           ],
           [
-            0.783,
-            0.706
+            0.642,
+            0.885,
+            0.438
           ]
         ],
         "crop_offset": [
-          32,
-          17
+          25,
+          18
         ],
         "trunk_columns": [
           0,
-          1
+          1,
+          2
         ],
-        "contact_px": 59,
-        "contact_reference_px": 59.0,
+        "contact_px": 65,
+        "contact_reference_px": 65.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -280,14 +290,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_20_bone_dissolving_thorn_moss/harvested_stump/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.522
+            0.458
           ]
         ],
-        "frac_zero": 0.7347,
+        "frac_zero": 0.7188,
         "blocks": [
           [
             false
@@ -309,32 +319,32 @@
         ],
         "sub_fill": [
           [
-            0.142,
-            0.511,
-            0.0
+            0.086,
+            0.27,
+            0.011
           ],
           [
-            0.648,
-            0.49,
-            0.119
+            0.629,
+            0.737,
+            0.239
           ],
           [
-            0.759,
-            0.947,
-            0.512
+            0.6,
+            0.914,
+            0.437
           ]
         ],
         "crop_offset": [
-          26,
-          18
+          21,
+          17
         ],
         "trunk_columns": [
           0,
           1,
           2
         ],
-        "contact_px": 70,
-        "contact_reference_px": 70.0,
+        "contact_px": 71,
+        "contact_reference_px": 71.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
