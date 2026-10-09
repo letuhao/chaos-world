@@ -3163,11 +3163,37 @@ def _progression_items() -> set[str]:
 
 
 def _valid_stats() -> set[str]:
-    """Stat ids declared in contracts/stat.gd, so the audit follows the real schema."""
+    """Stat ids declared in contracts/stat.gd, so the audit follows the real schema.
+
+    **Comments are stripped before the scan** (DEF-0334): the regex also matched
+    inside DOCSTRINGS, and `stat.gd`'s own prose carries
+    `MindVocabulary.offence_id(&"slow")`, so the bare id `slow` was accepted while
+    the GDScript declaration reader — one id stricter — refuses it. The regex is
+    meant to read DECLARATIONS, and a comment is not one; `_resolve_rate_stats`
+    already reads the derivation for the generated ids, so this keeps the literal
+    scan honest rather than widening it.
+    """
     if not STAT_DEFS.is_file():
         return set()
-    text = STAT_DEFS.read_text(encoding="utf-8", errors="replace")
+    text = _code_only(STAT_DEFS.read_text(encoding="utf-8", errors="replace"))
     return set(re.findall(r'&"([a-z_]+)"', text))
+
+
+def _code_only(text: str) -> str:
+    """`text` with every `#` comment removed — whole-line and trailing.
+
+    The same shape `tests/modules/relations/test_relations_no_back_edge.gd` uses
+    on the GDScript side: a line whose first non-space character is `#` is dropped,
+    and a line's trailing comment is cut at its first `#`. Stat ids are `[a-z_]+`,
+    so a `#` inside a string literal cannot be mistaken for a comment.
+    """
+    out: list[str] = []
+    for line in text.splitlines():
+        if line.lstrip().startswith("#"):
+            continue
+        cut = line.find("#")
+        out.append(line if cut < 0 else line[:cut])
+    return "\n".join(out)
 
 
 def _resolve_rate_stats() -> set[str]:

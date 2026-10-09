@@ -1293,3 +1293,37 @@ def _unwired_fate_counter_declaration_is_a_note_only() -> None:
             "Nothing reads that field (DEF-0168), so it costs no player a door and must "
             f"NOT fail the build:\n{output}",
         )
+
+
+@case("data audit: a stat id that exists only in a DOCSTRING is refused, a declared one is kept")
+def _case_valid_stats_reads_declarations_not_prose() -> None:
+    """DEF-0334: `_valid_stats` must read DECLARATIONS, and prose is not one.
+
+    The measured defect: `contracts/stat.gd`'s own docstring carries
+    `MindVocabulary.offence_id(&"slow")`, the bare-id regex matched it, and a mod
+    declaring stat `slow` passed the Python audit while the GDScript declaration
+    reader — one id stricter — refuses it. Both directions are asserted, because a
+    scan that returned nothing would satisfy the refusal half alone.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        fixture = write(
+            Path(raw) / "stat.gd",
+            "class_name Stat\n\n"
+            '## The obvious spelling is `MindVocabulary.offence_id(&"prose_only")` and it\n'
+            "## cannot be used: a static call is not a constant expression.\n"
+            'const REAL_STAT := &"real_stat"\n',
+        )
+        original = data_tool.STAT_DEFS
+        data_tool.STAT_DEFS = fixture
+        try:
+            found = data_tool._valid_stats()  # noqa: SLF001
+        finally:
+            data_tool.STAT_DEFS = original
+    expect(
+        "real_stat" in found,
+        "the declared id is kept, so the refusal below is not emptiness passing",
+    )
+    expect(
+        "prose_only" not in found,
+        "an id that exists only in a docstring is not a declaration and must not validate",
+    )
