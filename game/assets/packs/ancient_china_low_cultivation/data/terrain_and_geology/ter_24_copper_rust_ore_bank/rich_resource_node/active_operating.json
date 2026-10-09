@@ -1,0 +1,184 @@
+{
+  "asset_id": "ancient_china_low_cultivation.terrain_and_geology.ter_24_copper_rust_ore_bank.rich_resource_node",
+  "domain": "terrain_and_geology",
+  "sub_domain": "ter_24_copper_rust_ore_bank",
+  "asset_slug": "rich_resource_node",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/terrain_and_geology/ter_24_copper_rust_ore_bank/rich_resource_node/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "mine_ore",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.445,
+        0.312
+      ],
+      [
+        0.698,
+        0.752
+      ]
+    ],
+    "frac_zero": 0.596,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.674,
+        0.644,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.07,
+        0.96,
+        0.95,
+        0.127,
+        0.0,
+        0.0
+      ],
+      [
+        0.027,
+        0.554,
+        1.0,
+        1.0,
+        0.573,
+        0.091,
+        0.0
+      ],
+      [
+        0.069,
+        0.869,
+        1.0,
+        1.0,
+        1.0,
+        0.611,
+        0.003
+      ],
+      [
+        0.307,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.243
+      ],
+      [
+        0.559,
+        0.984,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.448
+      ],
+      [
+        0.0,
+        0.497,
+        0.589,
+        0.889,
+        0.64,
+        0.224,
+        0.002
+      ]
+    ],
+    "crop_offset": [
+      22,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 59,
+    "contact_reference_px": 59.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}
