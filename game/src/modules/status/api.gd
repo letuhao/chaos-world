@@ -121,6 +121,11 @@ extends RefCounted
 ## (`water_deluge`, 2.0s), which no frame delta reaches.
 const PULSES_PER_FRAME := 64
 
+## The re-application lockout a def without its own `icd` uses (ADR 0902, P4).
+## Pushed from `CombatTuning.status_icd_default` at boot; `0.0` = no ICD. The
+## status module owns this because it owns the per-instance clock the check reads.
+static var _icd_default: float = 0.0
+
 
 ## Every authored status id, canonically ordered.
 static func status_ids() -> Array[StringName]:
@@ -1098,12 +1103,6 @@ static func _kind_of(kind: StringName) -> StatusEffect.Kind:
 ## def ids into every save.
 static func _runtime(actor: Actor) -> Dictionary:
 	return StatusRuntime._runtimes(actor)
-
-
-## The re-application lockout a def without its own `icd` uses (ADR 0902, P4).
-## Pushed from `CombatTuning.status_icd_default` at boot; `0.0` = no ICD. The
-## status module owns this because it owns the per-instance clock the check reads.
-static var _icd_default: float = 0.0
 
 
 ## Set the fallback ICD. A value, not a dispatch: deterministic and non-interactive.

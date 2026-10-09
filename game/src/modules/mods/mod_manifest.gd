@@ -13,6 +13,23 @@ extends RefCounted
 ## rename indistinguishable from a different mod.
 const REQUIRED_STRINGS := ["id", "version"]
 
+## Valid config types for the config seam.
+const CONFIG_TYPES := ["int", "float", "bool", "string", "choice"]
+
+## Valid lifecycle hook events.
+const LIFECYCLE_EVENTS := [
+	"on_load",
+	"on_unload",
+	"on_enable",
+	"on_disable",
+	"on_update",
+	"on_save",
+	"on_load_save",
+]
+
+## Valid def patch operations.
+const DEF_PATCH_OPS := ["set", "add", "remove", "multiply", "add_number"]
+
 
 ## Parse `text` from `source_path`. Returns `{ok, reason, detail, manifest}`:
 ## on failure `reason` is the named cause and `detail` says which file and why;
@@ -436,24 +453,6 @@ static func _parse_screens(value, source_path: String) -> Array:
 			}
 		)
 	return [true, out]
-
-
-## Valid config types for the config seam.
-const CONFIG_TYPES := ["int", "float", "bool", "string", "choice"]
-
-## Valid lifecycle hook events.
-const LIFECYCLE_EVENTS := [
-	"on_load",
-	"on_unload",
-	"on_enable",
-	"on_disable",
-	"on_update",
-	"on_save",
-	"on_load_save",
-]
-
-## Valid def patch operations.
-const DEF_PATCH_OPS := ["set", "add", "remove", "multiply", "add_number"]
 
 
 static func _parse_config(value, source_path: String) -> Array:
