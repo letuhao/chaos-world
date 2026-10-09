@@ -1,0 +1,27 @@
+{
+  "id": "spirit_world_celadon_faultlands.settlement_and_domain_prop.bronze_leyline_stake",
+  "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/settlement_and_domain_prop/bronze_leyline_stake.png",
+  "type": "interactable",
+  "category": "settlement_and_domain_prop",
+  "environment": "spirit_world_celadon_faultlands",
+  "environment_name": "Celadon Faultlands",
+  "world_tier": "Spirit World",
+  "archetype": "settlement_and_domain_prop.bronze_leyline_stake",
+  "name": "Bronze Leyline Stake",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "planned",
+  "source": "planned; not generated",
+  "license": "not applicable until generated",
+  "alpha": "transparent",
+  "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "brief": "One short hammered-bronze survey stake with a forked tip, a single celadon bead, and a compact dark-stone foot. Strict top-down isolated prop, transparent background, no writing or scenery."
+}

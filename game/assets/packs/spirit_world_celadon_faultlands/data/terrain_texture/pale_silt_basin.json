@@ -1,0 +1,27 @@
+{
+  "id": "spirit_world_celadon_faultlands.terrain_texture.pale_silt_basin",
+  "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/terrain_texture/pale_silt_basin.png",
+  "type": "terrain_texture",
+  "category": "terrain_texture",
+  "environment": "spirit_world_celadon_faultlands",
+  "environment_name": "Celadon Faultlands",
+  "world_tier": "Spirit World",
+  "archetype": "terrain_texture.pale_silt_basin",
+  "name": "Pale Silt Basin",
+  "canvas_px": [
+    1024,
+    1024
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "planned",
+  "source": "planned; not generated",
+  "license": "not applicable until generated",
+  "alpha": "opaque",
+  "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+  "footprint_cells": [
+    8,
+    8
+  ],
+  "brief": "A full-frame opaque patch of pale mineral silt with broad low-contrast wind-scoured bands and sparse dark grains. Keep it quiet and prop-free; no horizon, border, or focal crack."
+}

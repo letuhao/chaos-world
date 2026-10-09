@@ -1,0 +1,34 @@
+{
+  "id": "spirit_world_celadon_faultlands.flora.veinroot_bloom.harvested",
+  "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/flora/veinroot_bloom--harvested.png",
+  "type": "prop",
+  "category": "flora",
+  "environment": "spirit_world_celadon_faultlands",
+  "environment_name": "Celadon Faultlands",
+  "world_tier": "Spirit World",
+  "archetype": "flora.veinroot_bloom",
+  "name": "Veinroot Bloom (harvested)",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "bottom_center",
+  "collision": "none",
+  "status": "planned",
+  "alpha": "transparent",
+  "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "brief": "Match the base veinroot bloom's silhouette, footprint, camera, and gouache finish. Show the same plant after harvesting: the luminous flower head is gone, with a clean short cut stem and a few intact celadon leaves remaining. Keep its original ground anchor and transparent framing; no tool, character, or detached loot.",
+  "base_asset_id": "spirit_world_celadon_faultlands.flora.veinroot_bloom",
+  "state_axis": "harvest_state",
+  "state": "harvested",
+  "prompt": "Match the base veinroot bloom's silhouette, footprint, camera, and gouache finish. Show the same plant after harvesting: the luminous flower head is gone, with a clean short cut stem and a few intact celadon leaves remaining. Keep its original ground anchor and transparent framing; no tool, character, or detached loot.",
+  "variant_of": "spirit_world_celadon_faultlands.flora.veinroot_bloom",
+  "variant": {
+    "axis": "harvest_state",
+    "value": "harvested"
+  }
+}

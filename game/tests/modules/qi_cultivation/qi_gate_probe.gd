@@ -102,7 +102,27 @@ static func fresh_actor(rank_id: StringName) -> Actor:
 	QiCultivationApi.attach(actor)
 	ItemsApi.attach(actor, 512)
 	QiTraining.synchronize(actor)
+	# BL-0951: a fixture standing at `rank_id` implies it LEFT every realm below it, and
+	# a real walk would have snapshotted each departure. Backfill at 1.0 so the foundation
+	# wall reads the history such a walk must have had — without it the fixture is a state
+	# no player can reach and every enterability check meets a wall it never had a chance
+	# to clear.
+	backfill_foundation(actor)
 	return actor
+
+
+## One 1.0 snapshot per realm below the actor's standing qi realm, in ladder order.
+## Bounded by the ladder and terminated by the rank itself; a public helper because the
+## fixtures that build a hero at a realm directly (rather than walking there) imply the
+## same history.
+static func backfill_foundation(actor: Actor) -> void:
+	var state := actor.path(QiPath.PATH_ID)
+	if state == null:
+		return
+	for realm in RealmDefaults.ladder().realms():
+		if realm.id == state.rank_id:
+			return
+		FoundationApi.snapshot(actor, realm.id, 1.0)
 
 
 ## The work one `cultivate` call must do to earn a realm's whole progress gate.
@@ -249,6 +269,56 @@ static func train_gate_channels(actor: Actor, target: QiRealmSeed) -> bool:
 		return false
 	for meridian_id in target.required_meridians:
 		if not train_to_gate(actor, meridian_id, target):
+			return false
+	return true
+
+
+## BL-0951's PERFECTED run: push every channel the target's gate names to the SOURCE
+## realm's training cap, so the departure snapshot reads 1.0 and the foundation wall
+## never bites. `train_gate_channels` stops AT the demand, which leaves depth 0 — the
+## sloppy run the wall exists to refuse.
+static func perfect_gate_channels(actor: Actor, target: QiRealmSeed) -> bool:
+	var state := actor.path(QiPath.PATH_ID)
+	if state == null or target == null:
+		return false
+	var source := QiRealmSeed.for_realm(state.rank_id)
+	if source == null:
+		return false
+	var budget := 0
+	for meridian_id in target.required_meridians:
+		# From CLOSED, reaching the cap costs the state climb (open, expand, strengthen)
+		# plus one step per refinement, plus slack for an injury.
+		budget += source.channel_refinement_cap + 6
+		var channel := actor.meridians.get_meridian(meridian_id)
+		if channel != null and channel.is_injured():
+			budget += 1
+	if not stock(actor, source.training_item, budget):
+		return false
+	for meridian_id in target.required_meridians:
+		if not train_to_cap(actor, meridian_id, source):
+			return false
+	return true
+
+
+## One channel to `source`'s training cap, one elixir per step. The cap is the depth
+## denominator — `(refinement - required) / (cap - required)` reaches exactly 1.0 here —
+## and it is the strongest pre-state a player standing in the realm can hold.
+static func train_to_cap(actor: Actor, meridian_id: StringName, source: QiRealmSeed) -> bool:
+	if source == null:
+		return false
+	var channel := actor.meridians.get_meridian(meridian_id)
+	if channel == null:
+		return false
+	var budget := source.channel_refinement_cap + 6
+	var spent := 0
+	while channel.refinement < source.channel_refinement_cap:
+		if spent >= budget:
+			return false
+		spent += 1
+		if not _train(actor, meridian_id):
+			return false
+		channel = actor.meridians.get_meridian(meridian_id)
+		if channel == null:
 			return false
 	return true
 

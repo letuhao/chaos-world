@@ -31,6 +31,7 @@ these cases pass by losing the assertion with it.
 from __future__ import annotations
 
 import shutil
+import tempfile
 from pathlib import Path
 
 from ..selftest import case, expect
@@ -256,3 +257,31 @@ def qi_ladder_shipped_meridian_tiers_agree() -> None:
     expect(findings == [], f"the loader must be bound to {audit.MERIDIAN_DIR}: {findings}")
     text = ladder_module.MERIDIAN_DEFAULTS.read_text(encoding="utf-8", errors="replace")
     expect("_make(" not in text, "the loader must not re-hardcode its own data (BL-0272)")
+
+
+@case("foundation floors: an unreachable floor IS reported")
+def foundation_floor_findings_are_reported() -> None:
+    # A synthetic ladder over a synthetic corpus, never the shipped pair: a case that
+    # asserted today's content goes red the day somebody retunes it.
+    ladder = [("st_a", "St A", 1), ("st_b", "St B", 1), ("st_c", "St C", 2)]
+    root = Path(tempfile.mkdtemp(prefix="chaos_world_floors_"))
+    try:
+        (root / "st_a.tres").write_text("min_foundation = 0.0\n", encoding="utf-8")
+        (root / "st_b.tres").write_text("min_foundation = 0.5\n", encoding="utf-8")
+        (root / "st_c.tres").write_text("min_foundation = 1.5\n", encoding="utf-8")
+        saved = audit.QI_REALM_DIR
+        audit.QI_REALM_DIR = root
+        try:
+            findings = audit.foundation_floor_findings(ladder)
+        finally:
+            audit.QI_REALM_DIR = saved
+        expect(
+            any("foundation_floor_unreachable" in f and "st_b" in f for f in findings),
+            f"a floor on the SECOND realm must be reported: {findings}",
+        )
+        expect(
+            any("foundation_floor_unsatisfiable" in f and "st_c" in f for f in findings),
+            f"a floor above 1.0 must be reported: {findings}",
+        )
+    finally:
+        shutil.rmtree(root, ignore_errors=True)

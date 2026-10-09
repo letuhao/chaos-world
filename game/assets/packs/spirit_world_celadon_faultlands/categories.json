@@ -1,0 +1,120 @@
+[
+  {
+    "id": "terrain_texture",
+    "name": "Terrain texture",
+    "description": "Quiet opaque basin surfaces, kept low contrast for readable actors and props.",
+    "sub_categories": [
+      "base_surface",
+      "pale_silt_basin",
+      "basalt_vein_surface",
+      "convergence_ground",
+      "qi_depleted_fault"
+    ],
+    "planned_count": 5
+  },
+  {
+    "id": "ground_tile",
+    "name": "Ground tile",
+    "description": "Walkable material tiles used as local surface variation.",
+    "sub_categories": [
+      "fractured_basalt",
+      "vein_gravel",
+      "anchor_stone",
+      "mineral_silt",
+      "silt_paving"
+    ],
+    "planned_count": 5
+  },
+  {
+    "id": "terrain_transition",
+    "name": "Terrain transition",
+    "description": "Transparent seams and ramps connecting basin ground to leyline fractures.",
+    "sub_categories": [
+      "hairline_seam",
+      "broad_rift_edge",
+      "channel_edge",
+      "raised_plate_ramp",
+      "convergence_corner"
+    ],
+    "planned_count": 5
+  },
+  {
+    "id": "flora",
+    "name": "Fault flora",
+    "description": "Sparse plants adapted to mineral cracks; never a forest canopy.",
+    "sub_categories": [
+      "veinroot_bloom",
+      "celadon_crack_moss",
+      "mineral_reed",
+      "glassleaf_rosette",
+      "faultbrush"
+    ],
+    "planned_count": 5
+  },
+  {
+    "id": "stone_and_ore",
+    "name": "Stone and ore",
+    "description": "Blockers and harvest nodes formed by the exposed meridian.",
+    "sub_categories": [
+      "jade_seam_cluster",
+      "hovering_scree",
+      "pale_iron_nodule",
+      "resonance_geode",
+      "veinstone_boulder"
+    ],
+    "planned_count": 5
+  },
+  {
+    "id": "water_feature",
+    "name": "Water feature",
+    "description": "Small uphill flows and contained pools; no broad lake or wetland.",
+    "sub_categories": [
+      "uphill_rill",
+      "sealed_pool",
+      "spring_eye",
+      "reverse_seep",
+      "suspended_droplets"
+    ],
+    "planned_count": 5
+  },
+  {
+    "id": "settlement_and_domain_prop",
+    "name": "Survey and warding props",
+    "description": "Compact bronze and stone instruments used to measure or stabilize the fault.",
+    "sub_categories": [
+      "bronze_leyline_stake",
+      "survey_cairn",
+      "pulse_marker",
+      "ward_anchor",
+      "tuning_tablet"
+    ],
+    "planned_count": 5
+  },
+  {
+    "id": "travel_and_wayfinding",
+    "name": "Travel and wayfinding",
+    "description": "Grounded routes that cross narrow fissures and link safe survey points.",
+    "sub_categories": [
+      "linewalker_bridge",
+      "stepping_slabs",
+      "route_waystone",
+      "descent_marker",
+      "fault_ramp"
+    ],
+    "planned_count": 5
+  },
+  {
+    "id": "landmark_and_environment_detail",
+    "name": "Landmarks and environment detail",
+    "description": "Distinctive basin-scale silhouettes that reinforce the celadon fault identity.",
+    "sub_categories": [
+      "convergence_basin",
+      "law_echo_arch",
+      "meridian_prism",
+      "listening_ground",
+      "suspended_rock_crown"
+    ],
+    "planned_count": 5
+  }
+]
+

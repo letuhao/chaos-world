@@ -1,0 +1,27 @@
+{
+  "id": "spirit_world_celadon_faultlands.flora.celadon_crack_moss",
+  "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/flora/celadon_crack_moss.png",
+  "type": "prop",
+  "category": "flora",
+  "environment": "spirit_world_celadon_faultlands",
+  "environment_name": "Celadon Faultlands",
+  "world_tier": "Spirit World",
+  "archetype": "flora.celadon_crack_moss",
+  "name": "Celadon Crack Moss",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "bottom_center",
+  "collision": "none",
+  "status": "planned",
+  "source": "planned; not generated",
+  "license": "not applicable until generated",
+  "alpha": "transparent",
+  "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "brief": "A low irregular cushion of muted celadon moss growing along one narrow stone crack, with tiny mineral beads and no tall stems. Transparent cutout, restrained highlights, no soil tile."
+}

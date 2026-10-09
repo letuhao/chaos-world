@@ -62,6 +62,9 @@ func _hero_advanced_into_r28() -> Actor:
 	ItemsApi.attach(hero, 512)
 	assert_eq(QiCultivationApi.cultivate(hero, 1.0), true, "cultivate drives synchronization")
 	Breakthrough.try_advance(hero, PATH)
+	# BL-0951: the arrival implies the walk; backfill the history a real climb would have
+	# snapshotted, so the deep floors (R29's 0.8) read the hero as earned rather than sloppy.
+	Probe.backfill_foundation(hero)
 	return hero
 
 

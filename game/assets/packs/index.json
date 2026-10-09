@@ -1,7 +1,7 @@
 {
   "schema": "mapdata/pack_registry@1",
   "total_packs": 23,
-  "total_assets": 9355,
+  "total_assets": 13615,
   "packs": [
     {
       "pack_id": "dao_fracture",
@@ -115,7 +115,7 @@
     },
     {
       "pack_id": "ancient_china_low_cultivation",
-      "asset_count": 0,
+      "asset_count": 4260,
       "has_manifest": true
     }
   ]

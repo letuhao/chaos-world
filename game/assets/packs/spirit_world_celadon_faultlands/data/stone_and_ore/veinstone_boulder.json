@@ -1,0 +1,27 @@
+{
+  "id": "spirit_world_celadon_faultlands.stone_and_ore.veinstone_boulder",
+  "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/stone_and_ore/veinstone_boulder.png",
+  "type": "resource_node",
+  "category": "stone_and_ore",
+  "environment": "spirit_world_celadon_faultlands",
+  "environment_name": "Celadon Faultlands",
+  "world_tier": "Spirit World",
+  "archetype": "stone_and_ore.veinstone_boulder",
+  "name": "Veinstone Boulder",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "planned",
+  "source": "planned; not generated",
+  "license": "not applicable until generated",
+  "alpha": "transparent",
+  "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "brief": "One broad asymmetrical charcoal-basalt boulder with a single pale mineral band and a small celadon seam. Clear grounded footprint and upper-left contact shadow, transparent surroundings, no extra stones."
+}

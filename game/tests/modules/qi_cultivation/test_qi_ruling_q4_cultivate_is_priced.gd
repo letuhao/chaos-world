@@ -168,7 +168,7 @@ func _ready(actor: Actor, seed: QiRealmSeed) -> bool:
 		Probe.recover_all(actor)
 		and Probe.stock(actor, seed.breakthrough_item)
 		and Probe.stock(actor, seed.training_item)
-		and Probe.train_gate_channels(actor, seed)
+		and Probe.perfect_gate_channels(actor, seed)
 		and Probe.recover_all(actor)
 		and Probe.earn_progress(actor, seed)
 		and Probe.earn_element_mastery(actor, seed)

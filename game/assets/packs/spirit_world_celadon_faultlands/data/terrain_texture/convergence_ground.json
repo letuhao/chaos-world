@@ -1,0 +1,27 @@
+{
+  "id": "spirit_world_celadon_faultlands.terrain_texture.convergence_ground",
+  "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/terrain_texture/convergence_ground.png",
+  "type": "terrain_texture",
+  "category": "terrain_texture",
+  "environment": "spirit_world_celadon_faultlands",
+  "environment_name": "Celadon Faultlands",
+  "world_tier": "Spirit World",
+  "archetype": "terrain_texture.convergence_ground",
+  "name": "Convergence Ground",
+  "canvas_px": [
+    1024,
+    1024
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "planned",
+  "source": "planned; not generated",
+  "license": "not applicable until generated",
+  "alpha": "opaque",
+  "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+  "footprint_cells": [
+    8,
+    8
+  ],
+  "brief": "Broad quiet ground surrounding a stable meeting of several jade-lit fault lines."
+}

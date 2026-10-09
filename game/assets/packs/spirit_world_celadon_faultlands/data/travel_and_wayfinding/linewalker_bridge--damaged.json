@@ -1,0 +1,34 @@
+{
+  "id": "spirit_world_celadon_faultlands.travel_and_wayfinding.linewalker_bridge.damaged",
+  "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/travel_and_wayfinding/linewalker_bridge--damaged.png",
+  "type": "interactable",
+  "category": "travel_and_wayfinding",
+  "environment": "spirit_world_celadon_faultlands",
+  "environment_name": "Celadon Faultlands",
+  "world_tier": "Spirit World",
+  "archetype": "travel_and_wayfinding.linewalker_bridge",
+  "name": "Linewalker Bridge (damaged)",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "bottom_center",
+  "collision": "none",
+  "status": "planned",
+  "alpha": "transparent",
+  "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "brief": "Match the intact linewalker bridge's camera, span, width, footprint, materials, and end anchors. Show moderate damage: one missing central slab and a cracked bronze brace, while both approaches remain recognizable. Keep damage inside the original footprint, transparent surroundings, and the same restrained gouache style.",
+  "base_asset_id": "spirit_world_celadon_faultlands.travel_and_wayfinding.linewalker_bridge",
+  "state_axis": "structural_integrity",
+  "state": "damaged",
+  "prompt": "Match the intact linewalker bridge's camera, span, width, footprint, materials, and end anchors. Show moderate damage: one missing central slab and a cracked bronze brace, while both approaches remain recognizable. Keep damage inside the original footprint, transparent surroundings, and the same restrained gouache style.",
+  "variant_of": "spirit_world_celadon_faultlands.travel_and_wayfinding.linewalker_bridge",
+  "variant": {
+    "axis": "structural_integrity",
+    "value": "damaged"
+  }
+}

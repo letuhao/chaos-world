@@ -1,0 +1,1301 @@
+{
+  "id": "spirit_world_celadon_faultlands",
+  "name": "Spirit World: Celadon Faultlands",
+  "world_tier": "Spirit World",
+  "realm_range": [
+    10,
+    18
+  ],
+  "environment_name": "Celadon Faultlands",
+  "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+  "reference_unit_px": 128,
+  "art_style": "2D orthographic straight-down map art; anime-painted gouache, dark #263A35 ink contours, broad readable value planes, material-led colors, restrained upper-left light.",
+  "status": "planned",
+  "asset_count": 45,
+  "variant_count": 4,
+  "has_matrix_data": false,
+  "matrix_spec_version": "mapdata/cells@1+subcell@2",
+  "matrix_data_status": "pending alpha-derived mapping and review",
+  "source_policy": {
+    "original_directory": "game/assets/packs/spirit_world_celadon_faultlands/original",
+    "original_path_pattern": "original/{category}/{asset_name}--{sha256_first_12}.png",
+    "runtime_path_pattern": "res://assets/packs/spirit_world_celadon_faultlands/runtime/{category}/{asset_name}.png",
+    "source_render_minimum_px": [
+      1024,
+      1024
+    ],
+    "keep_original_unchanged": true,
+    "exclude_original_from_engine_import": true,
+    "runtime_format": "png"
+  },
+  "categories": [
+    "terrain_texture",
+    "ground_tile",
+    "terrain_transition",
+    "flora",
+    "stone_and_ore",
+    "water_feature",
+    "settlement_and_domain_prop",
+    "travel_and_wayfinding",
+    "landmark_and_environment_detail"
+  ],
+  "variant_plans": [
+    {
+      "id": "spirit_world_celadon_faultlands.stone_and_ore.jade_seam_cluster.depleted",
+      "base_asset_id": "spirit_world_celadon_faultlands.stone_and_ore.jade_seam_cluster",
+      "category": "stone_and_ore",
+      "state_axis": "harvest_state",
+      "state": "depleted",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/stone_and_ore/jade_seam_cluster--depleted.png",
+      "status": "planned",
+      "prompt": "Match the base jade seam cluster's camera, silhouette, footprint, and gouache finish. Show its harvest-depleted state: broken pale host stone, only small dull celadon fragments remaining, no bright exposed seam, same transparent framing and bottom contact. Do not add tools or a character."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.flora.veinroot_bloom.harvested",
+      "base_asset_id": "spirit_world_celadon_faultlands.flora.veinroot_bloom",
+      "category": "flora",
+      "state_axis": "harvest_state",
+      "state": "harvested",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/flora/veinroot_bloom--harvested.png",
+      "status": "planned",
+      "prompt": "Match the base veinroot bloom's silhouette, footprint, camera, and gouache finish. Show the same plant after harvesting: the luminous flower head is gone, with a clean short cut stem and a few intact celadon leaves remaining. Keep its original ground anchor and transparent framing; no tool, character, or detached loot."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.settlement_and_domain_prop.pulse_marker.active",
+      "base_asset_id": "spirit_world_celadon_faultlands.settlement_and_domain_prop.pulse_marker",
+      "category": "settlement_and_domain_prop",
+      "state_axis": "marker_state",
+      "state": "active",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/settlement_and_domain_prop/pulse_marker--active.png",
+      "status": "planned",
+      "prompt": "Match the base bronze-and-stone pulse marker's silhouette, scale, camera, anchor, and gouache finish. Show its active state with one restrained celadon pulse visible in the central inset and a small contained glow on the ground directly beneath it. No large aura, text, runes, or added objects."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.travel_and_wayfinding.linewalker_bridge.damaged",
+      "base_asset_id": "spirit_world_celadon_faultlands.travel_and_wayfinding.linewalker_bridge",
+      "category": "travel_and_wayfinding",
+      "state_axis": "structural_integrity",
+      "state": "damaged",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/travel_and_wayfinding/linewalker_bridge--damaged.png",
+      "status": "planned",
+      "prompt": "Match the intact linewalker bridge's camera, span, width, footprint, materials, and end anchors. Show moderate damage: one missing central slab and a cracked bronze brace, while both approaches remain recognizable. Keep damage inside the original footprint, transparent surroundings, and the same restrained gouache style."
+    }
+  ],
+  "assets": [
+    {
+      "id": "spirit_world_celadon_faultlands.terrain_texture.base_surface",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/terrain_texture/base_surface.png",
+      "type": "terrain_texture",
+      "category": "terrain_texture",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "terrain_texture.base_surface",
+      "name": "Base Surface",
+      "canvas_px": [
+        1024,
+        1024
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "opaque",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        8,
+        8
+      ],
+      "brief": "Primary low-contrast opaque mineral-silt surface for the basin."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.terrain_texture.pale_silt_basin",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/terrain_texture/pale_silt_basin.png",
+      "type": "terrain_texture",
+      "category": "terrain_texture",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "terrain_texture.pale_silt_basin",
+      "name": "Pale Silt Basin",
+      "canvas_px": [
+        1024,
+        1024
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "opaque",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        8,
+        8
+      ],
+      "brief": "A full-frame opaque patch of pale mineral silt with broad low-contrast wind-scoured bands and sparse dark grains. Keep it quiet and prop-free; no horizon, border, or focal crack."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.terrain_texture.basalt_vein_surface",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/terrain_texture/basalt_vein_surface.png",
+      "type": "terrain_texture",
+      "category": "terrain_texture",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "terrain_texture.basalt_vein_surface",
+      "name": "Basalt Vein Surface",
+      "canvas_px": [
+        1024,
+        1024
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "opaque",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        8,
+        8
+      ],
+      "brief": "An opaque charcoal-basalt ground surface with one subdued celadon mineral seam crossing the texture. Broad values, subtle fractures, no isolated boulder or strong glow; fill the complete square."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.terrain_texture.convergence_ground",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/terrain_texture/convergence_ground.png",
+      "type": "terrain_texture",
+      "category": "terrain_texture",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "terrain_texture.convergence_ground",
+      "name": "Convergence Ground",
+      "canvas_px": [
+        1024,
+        1024
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "opaque",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        8,
+        8
+      ],
+      "brief": "Broad quiet ground surrounding a stable meeting of several jade-lit fault lines."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.terrain_texture.qi_depleted_fault",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/terrain_texture/qi_depleted_fault.png",
+      "type": "terrain_texture",
+      "category": "terrain_texture",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "terrain_texture.qi_depleted_fault",
+      "name": "Qi Depleted Fault",
+      "canvas_px": [
+        1024,
+        1024
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "opaque",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        8,
+        8
+      ],
+      "brief": "Opaque depleted fault ground: dry pale silt around a wide matte charcoal crack with only a few dull green mineral flecks. No active glow, props, debris piles, or frame."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.ground_tile.fractured_basalt",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/ground_tile/fractured_basalt.png",
+      "type": "tile",
+      "category": "ground_tile",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "ground_tile.fractured_basalt",
+      "name": "Fractured Basalt",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "opaque",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A joined charcoal-basalt ground tile with broad fractured plates and a few hairline pale seams. Keep it flat, quiet, and edge-compatible; no glowing vein, props, or border."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.ground_tile.vein_gravel",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/ground_tile/vein_gravel.png",
+      "type": "tile",
+      "category": "ground_tile",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "ground_tile.vein_gravel",
+      "name": "Vein Gravel",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "opaque",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A flat ground tile of loose charcoal basalt grit and pale mineral pebbles, with only tiny muted celadon flecks. Keep detail low and distributed so it repeats under props without a focal object."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.ground_tile.anchor_stone",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/ground_tile/anchor_stone.png",
+      "type": "tile",
+      "category": "ground_tile",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "ground_tile.anchor_stone",
+      "name": "Anchor Stone",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "opaque",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A worn, flat pale-grey anchor stone set flush with surrounding ground, with one small bronze survey notch. Top-down tile surface; no upright marker, glow, or frame."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.ground_tile.mineral_silt",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/ground_tile/mineral_silt.png",
+      "type": "tile",
+      "category": "ground_tile",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "ground_tile.mineral_silt",
+      "name": "Mineral Silt",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "opaque",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "Quiet pale mineral silt with soft powdery value variation, a few tiny charcoal grains, and no focal crack or object. Opaque repeating ground tile with detail kept below props."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.ground_tile.silt_paving",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/ground_tile/silt_paving.png",
+      "type": "tile",
+      "category": "ground_tile",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "ground_tile.silt_paving",
+      "name": "Silt Paving",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "opaque",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A small patch of worn irregular pale-stone paving with visible mineral-silt joints. Keep slabs flush, weathered, and walkable; no raised curb, inscription, or surrounding scene."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.terrain_transition.hairline_seam",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/terrain_transition/hairline_seam.png",
+      "type": "tile",
+      "category": "terrain_transition",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "terrain_transition.hairline_seam",
+      "name": "Hairline Seam",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A thin irregular celadon fault seam separating pale silt from charcoal basalt, fading naturally at both ends. Transparent outside the transition, clean edge continuity, no detached crystals or glow haze."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.terrain_transition.broad_rift_edge",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/terrain_transition/broad_rift_edge.png",
+      "type": "tile",
+      "category": "terrain_transition",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "terrain_transition.broad_rift_edge",
+      "name": "Broad Rift Edge",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A broad broken edge where pale silt meets a dark open rift, with a few angular basalt lips and a narrow contained jade glimmer below. Transparent surroundings; no bridge, water, or scenery."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.terrain_transition.channel_edge",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/terrain_transition/channel_edge.png",
+      "type": "tile",
+      "category": "terrain_transition",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "terrain_transition.channel_edge",
+      "name": "Channel Edge",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A curved bank transition from mineral silt to a narrow clear celadon water channel, with a soft stone lip and transparent outside area. Keep water contained within the edge; no pool or vegetation."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.terrain_transition.raised_plate_ramp",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/terrain_transition/raised_plate_ramp.png",
+      "type": "tile",
+      "category": "terrain_transition",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "terrain_transition.raised_plate_ramp",
+      "name": "Raised Plate Ramp",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A single low sloped basalt plate ramp connecting the lower silt edge to a raised rock shelf. Show its footprint and contact shadow clearly from above; transparent surroundings, no extra props."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.terrain_transition.convergence_corner",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/terrain_transition/convergence_corner.png",
+      "type": "tile",
+      "category": "terrain_transition",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "terrain_transition.convergence_corner",
+      "name": "Convergence Corner",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A compact three-way terrain junction where two narrow celadon seams meet a dark basalt fracture in pale silt. Keep edges tile-compatible and the glow restrained; no central monument."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.flora.veinroot_bloom",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/flora/veinroot_bloom.png",
+      "type": "prop",
+      "category": "flora",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "flora.veinroot_bloom",
+      "name": "Veinroot Bloom",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "bottom_center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "One sparse mineral-crack plant with a short dark root base, several thick celadon leaves, and a single pale jade flower. Compact readable silhouette, transparent background, no ground patch."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.flora.celadon_crack_moss",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/flora/celadon_crack_moss.png",
+      "type": "prop",
+      "category": "flora",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "flora.celadon_crack_moss",
+      "name": "Celadon Crack Moss",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "bottom_center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A low irregular cushion of muted celadon moss growing along one narrow stone crack, with tiny mineral beads and no tall stems. Transparent cutout, restrained highlights, no soil tile."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.flora.mineral_reed",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/flora/mineral_reed.png",
+      "type": "prop",
+      "category": "flora",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "flora.mineral_reed",
+      "name": "Mineral Reed",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "bottom_center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A small clump of three stiff pale mineral reeds with dark rooted bases and subtle translucent celadon tips. Top-down map prop, distinct stems, transparent background, no water or mud."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.flora.glassleaf_rosette",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/flora/glassleaf_rosette.png",
+      "type": "prop",
+      "category": "flora",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "flora.glassleaf_rosette",
+      "name": "Glassleaf Rosette",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "bottom_center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "One ground-hugging rosette of broad smoky-glass leaves with pale celadon edges and a small mineral center. Keep the radial silhouette clear, transparent surroundings, no flower or terrain."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.flora.faultbrush",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/flora/faultbrush.png",
+      "type": "prop",
+      "category": "flora",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "flora.faultbrush",
+      "name": "Faultbrush",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "bottom_center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A sparse knee-high faultbrush cluster of wiry charcoal stems and a few dusty sage leaves, adapted to dry mineral ground. Irregular narrow silhouette, transparent cutout, no bloom or tree canopy."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.stone_and_ore.jade_seam_cluster",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/stone_and_ore/jade_seam_cluster.png",
+      "type": "resource_node",
+      "category": "stone_and_ore",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "stone_and_ore.jade_seam_cluster",
+      "name": "Jade Seam Cluster",
+      "canvas_px": [
+        256,
+        256
+      ],
+      "pivot": "bottom_center",
+      "collision": "solid",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        2,
+        2
+      ],
+      "brief": "A compact harvestable node where celadon crystal follows a dark basalt seam."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.stone_and_ore.hovering_scree",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/stone_and_ore/hovering_scree.png",
+      "type": "resource_node",
+      "category": "stone_and_ore",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "stone_and_ore.hovering_scree",
+      "name": "Hovering Scree",
+      "canvas_px": [
+        256,
+        256
+      ],
+      "pivot": "bottom_center",
+      "collision": "solid",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        2,
+        2
+      ],
+      "brief": "A compact scatter of five charcoal scree chips hovering just above an implied fault seam, each with a small gap and subtle shadow beneath. Transparent background, no terrain slab or bright aura."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.stone_and_ore.pale_iron_nodule",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/stone_and_ore/pale_iron_nodule.png",
+      "type": "resource_node",
+      "category": "stone_and_ore",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "stone_and_ore.pale_iron_nodule",
+      "name": "Pale Iron Nodule",
+      "canvas_px": [
+        256,
+        256
+      ],
+      "pivot": "bottom_center",
+      "collision": "solid",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        2,
+        2
+      ],
+      "brief": "One squat pale-iron nodule embedded in a few angular dark host-rock pieces, with a restrained cool metallic sheen. Top-down resource prop, grounded contact, transparent surroundings, no pickaxe."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.stone_and_ore.resonance_geode",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/stone_and_ore/resonance_geode.png",
+      "type": "resource_node",
+      "category": "stone_and_ore",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "stone_and_ore.resonance_geode",
+      "name": "Resonance Geode",
+      "canvas_px": [
+        256,
+        256
+      ],
+      "pivot": "bottom_center",
+      "collision": "solid",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        2,
+        2
+      ],
+      "brief": "A split charcoal geode with a compact cluster of faceted celadon crystals inside and one visible dark outer shell. Strong readable silhouette, restrained inner light, transparent background, no loose ore."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.stone_and_ore.veinstone_boulder",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/stone_and_ore/veinstone_boulder.png",
+      "type": "resource_node",
+      "category": "stone_and_ore",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "stone_and_ore.veinstone_boulder",
+      "name": "Veinstone Boulder",
+      "canvas_px": [
+        256,
+        256
+      ],
+      "pivot": "bottom_center",
+      "collision": "solid",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        2,
+        2
+      ],
+      "brief": "One broad asymmetrical charcoal-basalt boulder with a single pale mineral band and a small celadon seam. Clear grounded footprint and upper-left contact shadow, transparent surroundings, no extra stones."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.water_feature.uphill_rill",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/water_feature/uphill_rill.png",
+      "type": "tile",
+      "category": "water_feature",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "water_feature.uphill_rill",
+      "name": "Uphill Rill",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A short narrow clear-water rill bending uphill through a shallow dark-stone groove, with a few restrained celadon reflections. Transparent outside its channel, no bank terrain, pool, or waterfall."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.water_feature.sealed_pool",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/water_feature/sealed_pool.png",
+      "type": "tile",
+      "category": "water_feature",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "water_feature.sealed_pool",
+      "name": "Sealed Pool",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A small still oval pool held inside an unbroken pale-stone rim, clear celadon water with one subtle reflection. Top-down isolated feature, transparent outside the rim, no reeds or waterfall."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.water_feature.spring_eye",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/water_feature/spring_eye.png",
+      "type": "tile",
+      "category": "water_feature",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "water_feature.spring_eye",
+      "name": "Spring Eye",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A compact round spring eye with a dark basalt ring and clear celadon water welling at the center, shown directly overhead. Keep splash and glow minimal; transparent surroundings, no basin terrain."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.water_feature.reverse_seep",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/water_feature/reverse_seep.png",
+      "type": "tile",
+      "category": "water_feature",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "water_feature.reverse_seep",
+      "name": "Reverse Seep",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A thin ribbon of water visibly seeping upward along a short inclined stone crack, with beads held close to the channel and no large spray. Transparent background; keep the ground-contact base clear."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.water_feature.suspended_droplets",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/water_feature/suspended_droplets.png",
+      "type": "tile",
+      "category": "water_feature",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "water_feature.suspended_droplets",
+      "name": "Suspended Droplets",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A small cluster of seven clear droplets suspended above an implied spring point, with individually readable highlights and soft tiny shadows below. Transparent background, no visible vessel or ground."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.settlement_and_domain_prop.bronze_leyline_stake",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/settlement_and_domain_prop/bronze_leyline_stake.png",
+      "type": "interactable",
+      "category": "settlement_and_domain_prop",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "settlement_and_domain_prop.bronze_leyline_stake",
+      "name": "Bronze Leyline Stake",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "bottom_center",
+      "collision": "solid",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "One short hammered-bronze survey stake with a forked tip, a single celadon bead, and a compact dark-stone foot. Strict top-down isolated prop, transparent background, no writing or scenery."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.settlement_and_domain_prop.survey_cairn",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/settlement_and_domain_prop/survey_cairn.png",
+      "type": "interactable",
+      "category": "settlement_and_domain_prop",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "settlement_and_domain_prop.survey_cairn",
+      "name": "Survey Cairn",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "bottom_center",
+      "collision": "solid",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A small three-stone survey cairn with one bronze measuring band and a muted green alignment chip. Stable compact stack, grounded overhead silhouette, transparent surroundings, no banners or text."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.settlement_and_domain_prop.pulse_marker",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/settlement_and_domain_prop/pulse_marker.png",
+      "type": "interactable",
+      "category": "settlement_and_domain_prop",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "settlement_and_domain_prop.pulse_marker",
+      "name": "Pulse Marker",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "bottom_center",
+      "collision": "solid",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A waist-high bronze-and-basalt pulse marker: squat octagonal base, one celadon inset, and three small radial bronze tabs. Isolated transparent prop with clear bottom-center contact; no large aura or lettering."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.settlement_and_domain_prop.ward_anchor",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/settlement_and_domain_prop/ward_anchor.png",
+      "type": "interactable",
+      "category": "settlement_and_domain_prop",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "settlement_and_domain_prop.ward_anchor",
+      "name": "Ward Anchor",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "bottom_center",
+      "collision": "solid",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "One heavy basalt ward anchor with a bronze collar and a narrow celadon channel cut into its face. Clearly grounded upright marker, transparent background, restrained light, no symbols or extra stones."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.settlement_and_domain_prop.tuning_tablet",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/settlement_and_domain_prop/tuning_tablet.png",
+      "type": "interactable",
+      "category": "settlement_and_domain_prop",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "settlement_and_domain_prop.tuning_tablet",
+      "name": "Tuning Tablet",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "bottom_center",
+      "collision": "solid",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A single flat dark-stone tuning tablet with three simple bronze resonance grooves and one pale celadon inset. Overhead readable face, clean silhouette, transparent surroundings, no text or runes."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.travel_and_wayfinding.linewalker_bridge",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/travel_and_wayfinding/linewalker_bridge.png",
+      "type": "interactable",
+      "category": "travel_and_wayfinding",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "travel_and_wayfinding.linewalker_bridge",
+      "name": "Linewalker Bridge",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "bottom_center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A narrow grounded stone-and-bronze crossing over one active fissure."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.travel_and_wayfinding.stepping_slabs",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/travel_and_wayfinding/stepping_slabs.png",
+      "type": "interactable",
+      "category": "travel_and_wayfinding",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "travel_and_wayfinding.stepping_slabs",
+      "name": "Stepping Slabs",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "bottom_center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "Four broad flat charcoal stepping slabs in a short crossing over a narrow fissure, each isolated with transparent surroundings. Keep a clear route, grounded shadows, and no water or extra markers."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.travel_and_wayfinding.route_waystone",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/travel_and_wayfinding/route_waystone.png",
+      "type": "interactable",
+      "category": "travel_and_wayfinding",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "travel_and_wayfinding.route_waystone",
+      "name": "Route Waystone",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "bottom_center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "One compact upright route waystone of pale basalt with a single bronze direction notch and a muted celadon inset. Isolated transparent prop, clear bottom contact, no lettering or scenery."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.travel_and_wayfinding.descent_marker",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/travel_and_wayfinding/descent_marker.png",
+      "type": "interactable",
+      "category": "travel_and_wayfinding",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "travel_and_wayfinding.descent_marker",
+      "name": "Descent Marker",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "bottom_center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "One short paired descent marker: two low basalt posts joined by a bronze crosspiece, with a subdued celadon mark indicating a safe drop. Transparent prop, no text, path, or background."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.travel_and_wayfinding.fault_ramp",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/travel_and_wayfinding/fault_ramp.png",
+      "type": "interactable",
+      "category": "travel_and_wayfinding",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "travel_and_wayfinding.fault_ramp",
+      "name": "Fault Ramp",
+      "canvas_px": [
+        128,
+        128
+      ],
+      "pivot": "bottom_center",
+      "collision": "none",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "brief": "A low broad ramp of fitted charcoal stone descending into a narrow fault, with secure pale-stone edges and no tall wall. Isolated transparent map prop with both grounded approaches visible."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.landmark_and_environment_detail.convergence_basin",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/landmark_and_environment_detail/convergence_basin.png",
+      "type": "landmark",
+      "category": "landmark_and_environment_detail",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "landmark_and_environment_detail.convergence_basin",
+      "name": "Convergence Basin",
+      "canvas_px": [
+        256,
+        256
+      ],
+      "pivot": "bottom_center",
+      "collision": "solid",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        2,
+        2
+      ],
+      "brief": "A shallow central bowl where several ley channels meet and water briefly flows uphill."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.landmark_and_environment_detail.law_echo_arch",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/landmark_and_environment_detail/law_echo_arch.png",
+      "type": "landmark",
+      "category": "landmark_and_environment_detail",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "landmark_and_environment_detail.law_echo_arch",
+      "name": "Law Echo Arch",
+      "canvas_px": [
+        256,
+        256
+      ],
+      "pivot": "bottom_center",
+      "collision": "solid",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        2,
+        2
+      ],
+      "brief": "A single weathered basalt echo arch with an open center and a narrow celadon seam at its feet. Compact overhead landmark, stable ground-contact footprint, no inscriptions, extra pillars, or terrain patch."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.landmark_and_environment_detail.meridian_prism",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/landmark_and_environment_detail/meridian_prism.png",
+      "type": "landmark",
+      "category": "landmark_and_environment_detail",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "landmark_and_environment_detail.meridian_prism",
+      "name": "Meridian Prism",
+      "canvas_px": [
+        256,
+        256
+      ],
+      "pivot": "bottom_center",
+      "collision": "solid",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        2,
+        2
+      ],
+      "brief": "One tall faceted celadon mineral prism rooted in a fractured pale-stone socket, with restrained inner light and a readable pointed silhouette from directly overhead. Transparent landmark, no floating fragments."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.landmark_and_environment_detail.listening_ground",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/landmark_and_environment_detail/listening_ground.png",
+      "type": "landmark",
+      "category": "landmark_and_environment_detail",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "landmark_and_environment_detail.listening_ground",
+      "name": "Listening Ground",
+      "canvas_px": [
+        256,
+        256
+      ],
+      "pivot": "bottom_center",
+      "collision": "solid",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        2,
+        2
+      ],
+      "brief": "A shallow circular listening ground: low dark-stone ring, quiet silt center, and three small bronze resonance tabs. Keep it ground-hugging, readable from above, and free of text or characters."
+    },
+    {
+      "id": "spirit_world_celadon_faultlands.landmark_and_environment_detail.suspended_rock_crown",
+      "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/landmark_and_environment_detail/suspended_rock_crown.png",
+      "type": "landmark",
+      "category": "landmark_and_environment_detail",
+      "environment": "spirit_world_celadon_faultlands",
+      "environment_name": "Celadon Faultlands",
+      "world_tier": "Spirit World",
+      "archetype": "landmark_and_environment_detail.suspended_rock_crown",
+      "name": "Suspended Rock Crown",
+      "canvas_px": [
+        256,
+        256
+      ],
+      "pivot": "bottom_center",
+      "collision": "solid",
+      "status": "planned",
+      "source": "planned; not generated",
+      "license": "not applicable until generated",
+      "alpha": "transparent",
+      "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+      "footprint_cells": [
+        2,
+        2
+      ],
+      "brief": "A compact crown of three charcoal rock plates hovering just above a narrow celadon fault seam, with separated silhouettes and subtle contact shadows below. No island base, sky, or oversized glow."
+    }
+  ]
+}

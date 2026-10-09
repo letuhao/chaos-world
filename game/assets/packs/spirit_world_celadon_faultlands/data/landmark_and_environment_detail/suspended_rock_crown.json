@@ -1,0 +1,27 @@
+{
+  "id": "spirit_world_celadon_faultlands.landmark_and_environment_detail.suspended_rock_crown",
+  "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/landmark_and_environment_detail/suspended_rock_crown.png",
+  "type": "landmark",
+  "category": "landmark_and_environment_detail",
+  "environment": "spirit_world_celadon_faultlands",
+  "environment_name": "Celadon Faultlands",
+  "world_tier": "Spirit World",
+  "archetype": "landmark_and_environment_detail.suspended_rock_crown",
+  "name": "Suspended Rock Crown",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "planned",
+  "source": "planned; not generated",
+  "license": "not applicable until generated",
+  "alpha": "transparent",
+  "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "brief": "A compact crown of three charcoal rock plates hovering just above a narrow celadon fault seam, with separated silhouettes and subtle contact shadows below. No island base, sky, or oversized glow."
+}

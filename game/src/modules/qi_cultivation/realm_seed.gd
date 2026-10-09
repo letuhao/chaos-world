@@ -68,8 +68,22 @@ static var _cache: Dictionary = {}
 @export var required_channel_refinement: int = 0
 ## The deepest a required channel may be trained while standing in THIS realm.
 @export var channel_refinement_cap: int = 1
+## BL-0951 / ADR 0939: the FOUNDATION FLOOR for entering this realm. The actor's carried
+## foundation (the mean perfection of every realm it has left) must stand at or above
+## this, or the breakthrough is refused by name (`foundation_insufficient`) and shown as
+## an unmet condition in the preview BEFORE the wall is hit. Authored data, never a
+## curve: the floor is a content decision per realm, and a realm whose demand IS its cap
+## still reads 0.0 here until an author raises it.
+@export var min_foundation: float = 0.0
 @export var dantian_capacity: float = 100.0
 @export var rewards: Dictionary = {}
+
+
+## BL-0951's wall, as ONE predicate: the carried foundation clears this realm's authored
+## floor. The condition, the preview and the transaction all call THIS, so the reported
+## gate is the enforced gate (ADR 0044) — the same rule `channel_met` follows.
+func foundation_met(foundation: float) -> bool:
+	return foundation >= min_foundation
 
 
 static func for_realm(realm_id: StringName) -> QiRealmSeed:

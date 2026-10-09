@@ -36,20 +36,27 @@ static func mount_pcks(roots: Array) -> Dictionary:
 
 ## Resolve a "path/to/script.gd:method_name" string into a Callable.
 ## Returns an empty Callable if the format is invalid or the script fails to load.
+##
+## Split at the LAST colon, never `split(":")`: every spec here is a `res://` or
+## `user://` path and both schemes carry their own colon, so a first-colon split
+## yields three parts and this resolver answered an EMPTY Callable for every
+## manifest callable — attach and lifecycle hooks alike (the bug both callable
+## suites were red on).
 static func _resolve_callable(spec: String) -> Callable:
-	var parts := spec.split(":")
-	if parts.size() != 2:
+	var split_at := spec.rfind(":")
+	if split_at <= 0 or split_at >= spec.length() - 1:
 		return Callable()
-	var script_path := String(parts[0])
-	var method_name := String(parts[1])
-	if script_path.is_empty() or method_name.is_empty():
-		return Callable()
+	var script_path := spec.substr(0, split_at)
+	var method_name := spec.substr(split_at + 1)
 	var script: Resource = load(script_path)
 	if script == null:
 		return Callable()
 	var obj: Object = script.new()
 	if not obj.has_method(method_name):
-		obj.free()
+		# Only a Node needs the explicit free; `free()` on a RefCounted target is an
+		# error, and the local reference is enough to release it.
+		if obj is Node:
+			obj.free()
 		return Callable()
 	return Callable(obj, method_name)
 

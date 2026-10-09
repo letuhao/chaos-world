@@ -1,0 +1,34 @@
+{
+  "id": "spirit_world_celadon_faultlands.stone_and_ore.jade_seam_cluster.depleted",
+  "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/stone_and_ore/jade_seam_cluster--depleted.png",
+  "type": "resource_node",
+  "category": "stone_and_ore",
+  "environment": "spirit_world_celadon_faultlands",
+  "environment_name": "Celadon Faultlands",
+  "world_tier": "Spirit World",
+  "archetype": "stone_and_ore.jade_seam_cluster",
+  "name": "Jade Seam Cluster (depleted)",
+  "canvas_px": [
+    256,
+    256
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "planned",
+  "alpha": "transparent",
+  "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "brief": "Match the base jade seam cluster's camera, silhouette, footprint, and gouache finish. Show its harvest-depleted state: broken pale host stone, only small dull celadon fragments remaining, no bright exposed seam, same transparent framing and bottom contact. Do not add tools or a character.",
+  "base_asset_id": "spirit_world_celadon_faultlands.stone_and_ore.jade_seam_cluster",
+  "state_axis": "harvest_state",
+  "state": "depleted",
+  "prompt": "Match the base jade seam cluster's camera, silhouette, footprint, and gouache finish. Show its harvest-depleted state: broken pale host stone, only small dull celadon fragments remaining, no bright exposed seam, same transparent framing and bottom contact. Do not add tools or a character.",
+  "variant_of": "spirit_world_celadon_faultlands.stone_and_ore.jade_seam_cluster",
+  "variant": {
+    "axis": "harvest_state",
+    "value": "depleted"
+  }
+}

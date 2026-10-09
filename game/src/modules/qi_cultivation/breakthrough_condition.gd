@@ -6,6 +6,10 @@ const _ITEMS := preload("res://src/modules/items/api.gd")
 ## channel lives there, and a bare class reference from this module would be a second
 ## door into it (the same reason `_ITEMS` is a facade preload).
 const _ELEMENTS := preload("res://src/modules/elements/api.gd")
+## The foundation record's read (BL-0951): the wall lives in THIS condition, so
+## `Breakthrough.can_advance` enforces it and the preview reports it — one predicate,
+## never two (ADR 0044).
+const _FOUNDATION := preload("res://src/modules/foundation/api.gd")
 
 
 func can_breakthrough(actor: Actor, state: PathState, _context: Dictionary) -> bool:
@@ -21,10 +25,20 @@ func can_breakthrough(actor: Actor, state: PathState, _context: Dictionary) -> b
 		and _ITEMS.has_item(actor, seed.breakthrough_item)
 		and _channels_ready(actor, seed)
 		and _elements_ready(actor, seed)
+		and _foundation_ready(actor, seed)
 		# Immortal+ adds tribulation, a stable inside world, and at Transcendent a
 		# stable world plus completed ascension (ADR 0018-0021).
 		and Breakthrough.tier_gates_met(actor, target.index)
 	)
+
+
+## BL-0951 / ADR 0939: the foundation wall. The carried foundation — the mean perfection
+## of every realm the actor has LEFT — must clear the target seed's authored
+## `min_foundation`. It lives HERE so the preview, `QiAdvancement` and the transaction
+## cannot disagree about it (ADR 0044), exactly as `channel_met` and
+## `element_mastery_met` do.
+func _foundation_ready(actor: Actor, seed: QiRealmSeed) -> bool:
+	return seed.foundation_met(_FOUNDATION.foundation(actor))
 
 
 func _dantian_ready(actor: Actor, state: PathState, seed: QiRealmSeed, dantian: Dantian) -> bool:

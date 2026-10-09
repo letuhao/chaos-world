@@ -388,7 +388,9 @@ func _attach_body_modules(actor: Actor) -> void:
 	elif not (kit.get("refused", []) as Array).is_empty():
 		# Named, not swallowed: a kit naming an item the tree does not define is a content
 		# bug, and a player promised it would otherwise open on a bag missing a row.
-		push_warning("ItemWorkbenchBody: the starter kit could not deliver: %s" % str(kit["refused"]))
+		push_warning(
+			"ItemWorkbenchBody: the starter kit could not deliver: %s" % str(kit["refused"])
+		)
 	# Wire mod event subscriptions onto the events buses (ADR 0184).
 	_wire_subscriptions(registrations.get("subscriptions", []))
 

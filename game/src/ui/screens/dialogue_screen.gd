@@ -41,7 +41,9 @@ func act_start(npc_id: StringName) -> Dictionary:
 	if _actor == null:
 		return {"ok": false, "reason": "no_actor"}
 	var outcome := DialogueApi.start(_actor, npc_id)
-	set_message(String(outcome.get("reason", "")), TONE_OK if bool(outcome.get("ok", false)) else TONE_ERROR)
+	set_message(
+		String(outcome.get("reason", "")), TONE_OK if bool(outcome.get("ok", false)) else TONE_ERROR
+	)
 	refresh()
 	return outcome
 
@@ -51,7 +53,9 @@ func act_choose(choice_id: StringName) -> Dictionary:
 	if _actor == null:
 		return {"ok": false, "reason": "no_actor"}
 	var outcome := DialogueApi.choose(_actor, choice_id)
-	set_message(String(outcome.get("reason", "")), TONE_OK if bool(outcome.get("ok", false)) else TONE_ERROR)
+	set_message(
+		String(outcome.get("reason", "")), TONE_OK if bool(outcome.get("ok", false)) else TONE_ERROR
+	)
 	refresh()
 	return outcome
 
@@ -156,7 +160,10 @@ func _conversations() -> Array[Dictionary]:
 		if npc_id == "":
 			continue
 		out.append({"dialog_id": String(dialog_id), "npc_id": npc_id})
-	out.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return String(a["dialog_id"]) < String(b["dialog_id"]))
+	out.sort_custom(
+		func(a: Dictionary, b: Dictionary) -> bool:
+			return String(a["dialog_id"]) < String(b["dialog_id"])
+	)
 	return out
 
 

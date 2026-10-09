@@ -1,0 +1,34 @@
+{
+  "id": "spirit_world_celadon_faultlands.settlement_and_domain_prop.pulse_marker.active",
+  "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/settlement_and_domain_prop/pulse_marker--active.png",
+  "type": "interactable",
+  "category": "settlement_and_domain_prop",
+  "environment": "spirit_world_celadon_faultlands",
+  "environment_name": "Celadon Faultlands",
+  "world_tier": "Spirit World",
+  "archetype": "settlement_and_domain_prop.pulse_marker",
+  "name": "Pulse Marker (active)",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "bottom_center",
+  "collision": "solid",
+  "status": "planned",
+  "alpha": "transparent",
+  "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "brief": "Match the base bronze-and-stone pulse marker's silhouette, scale, camera, anchor, and gouache finish. Show its active state with one restrained celadon pulse visible in the central inset and a small contained glow on the ground directly beneath it. No large aura, text, runes, or added objects.",
+  "base_asset_id": "spirit_world_celadon_faultlands.settlement_and_domain_prop.pulse_marker",
+  "state_axis": "marker_state",
+  "state": "active",
+  "prompt": "Match the base bronze-and-stone pulse marker's silhouette, scale, camera, anchor, and gouache finish. Show its active state with one restrained celadon pulse visible in the central inset and a small contained glow on the ground directly beneath it. No large aura, text, runes, or added objects.",
+  "variant_of": "spirit_world_celadon_faultlands.settlement_and_domain_prop.pulse_marker",
+  "variant": {
+    "axis": "marker_state",
+    "value": "active"
+  }
+}

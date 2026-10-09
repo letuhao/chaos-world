@@ -19,6 +19,7 @@ required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach",
 required_channel_state = &"strengthened"
 required_channel_refinement = 6
 channel_refinement_cap = 10
+min_foundation = 0.35
 dantian_capacity = 325.0
 rewards = {
 "spirit": 2.0

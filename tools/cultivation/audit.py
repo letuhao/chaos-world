@@ -565,6 +565,7 @@ def validate() -> list[str]:
             )
     findings.extend(_gate_soundness_findings(ladder, seeds))
     findings.extend(_qi_gate_soundness_findings(ladder))
+    findings.extend(foundation_floor_findings(ladder))
     findings.extend(qi_gate_ladder_findings(ladder))
     findings.extend(qi_catalyst_findings(ladder))
     findings.extend(qi_price_findings())
@@ -739,6 +740,45 @@ def meridian_loader_findings(loader_dir, corpus_dir) -> list[str]:
             f" audit grades {corpus_dir}"
         ]
     return []
+
+
+def foundation_floor_findings(ladder: list) -> list[str]:
+    """Every authored `min_foundation` must be REACHABLE, and the first one must be zero.
+
+    BL-0951 / ADR 0939: a breakthrough into a realm demands the carried foundation —
+    the mean perfection of every realm the actor has LEFT — at or above that realm's
+    authored floor. Two authored values can never be met, so they are findings rather
+    than content:
+
+    - a floor outside [0, 1], because the aggregate is a mean of snapshots in [0, 1];
+    - a floor on the SECOND realm, because entering it there are NO snapshots and the
+      aggregate is exactly 0.0 — the first wall a player meets would be a wall nobody
+      can ever clear, in any run, at any skill.
+    """
+    findings: list[str] = []
+    for index, (realm_id, _name, _tier) in enumerate(ladder):
+        path = QI_REALM_DIR / f"{realm_id}.tres"
+        if not path.is_file():
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        floor = re.search(r"(?m)^min_foundation\s*=\s*([\d.]+)", text)
+        if not floor:
+            continue
+        value = float(floor.group(1))
+        if value < 0.0 or value > 1.0:
+            findings.append(
+                f"foundation_floor_unsatisfiable: {realm_id}: min_foundation {value} is"
+                " outside [0, 1]; the carried foundation is a mean of snapshots in [0, 1],"
+                " so no run reaches it"
+            )
+        if index == 1 and value > 0.0:
+            findings.append(
+                f"foundation_floor_unreachable: {realm_id}: min_foundation {value} sits on"
+                " the second realm, where the actor has left nothing and the carried"
+                " foundation is exactly 0.0 — the first breakthrough would be refused for"
+                " every player, in every run"
+            )
+    return findings
 
 
 def qi_gate_ladder_findings(

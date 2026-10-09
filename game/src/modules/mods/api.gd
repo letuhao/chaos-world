@@ -5,15 +5,23 @@ extends RefCounted
 ## Other modules may reference ONLY this file (`api.gd`).
 ##
 ## The module is the locked loader: it is policy plus a parsed-manifest plus a
-## sorted order, never a plugin host. Boot comes in two pieces across waves:
-## this facade computes the load order and stamps RegistrationContexts (W2),
-## and a later wave replaces the recorded rows with real wiring (W3+). A mod
+## sorted order, never a plugin host. The facade computes the load order and
+## stamps RegistrationContexts, and the composition root publishes the boot
+## (`set_active`) and fires the load-time seam (`fire_lifecycle_event`). A mod
 ## can never replace the loader itself, so boot policy stays uniform no matter
 ## what content a mod registers.
 
 ## The manifest contract version the loader speaks. Surfaced so a mod tooling
 ## probe can read it without parsing the loader's source.
 const LOADER_API_VERSION := ModLoader.API_VERSION
+
+## The lifecycle events THIS build fires. `ModManifest.LIFECYCLE_EVENTS` is the
+## declared vocabulary a manifest may use; this is the subset with a production
+## firer, and a hook declared for any other event is recorded and NEVER called.
+## `on_load` fires from `ModBoot.run` once per successful boot pass, after
+## `set_active`, so a hook can already read its config and its own context.
+## Adding a firer means adding the event here and to the test that pins the list.
+const FIRED_EVENTS := ["on_load"]
 
 
 ## Parse one `mod.json` text into the normalized manifest row or a NAMED
@@ -71,8 +79,15 @@ static func set_config(mod_id: String, key: String, value: Variant) -> Dictionar
 	return ctx.set_config(key, value)
 
 
-## Fire all lifecycle hooks registered for an event. Hooks are called in
-## registration order. A hook that throws is reported and the next hook fires.
+## Fire all lifecycle hooks registered for an event, in registration order. Each
+## hook is called with ITS OWN mod's RegistrationContext — the load-time seam: a
+## hook declared as `{"event": "on_load", "callable": "<mod>/api.gd:boot"}` is
+## handed the same context `ModRuntime.finalize` played the mod's declarations
+## through, so its `declared_resource_ids()` are the pools that were accepted.
+## A hook with an empty/invalid Callable (an event-only declaration, or a spec
+## that failed to resolve) is skipped, never an error. GDScript has no
+## exceptions: a hook that errors at runtime aborts only its own call, so later
+## hooks still fire.
 static func fire_lifecycle_event(event: String) -> void:
 	for ctx in _active_contexts:
 		if ctx == null:
@@ -81,7 +96,7 @@ static func fire_lifecycle_event(event: String) -> void:
 			if String(row.get("event", "")) == event:
 				var callable: Callable = row.get("callable", Callable())
 				if callable.is_valid():
-					callable.call()
+					callable.call(ctx)
 
 
 ## Apply all def patches for a family to a def. Returns the number of patches

@@ -1,0 +1,27 @@
+{
+  "id": "spirit_world_celadon_faultlands.ground_tile.silt_paving",
+  "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/ground_tile/silt_paving.png",
+  "type": "tile",
+  "category": "ground_tile",
+  "environment": "spirit_world_celadon_faultlands",
+  "environment_name": "Celadon Faultlands",
+  "world_tier": "Spirit World",
+  "archetype": "ground_tile.silt_paving",
+  "name": "Silt Paving",
+  "canvas_px": [
+    128,
+    128
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "planned",
+  "source": "planned; not generated",
+  "license": "not applicable until generated",
+  "alpha": "opaque",
+  "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "brief": "A small patch of worn irregular pale-stone paving with visible mineral-silt joints. Keep slabs flush, weathered, and walkable; no raised curb, inscription, or surrounding scene."
+}

@@ -88,6 +88,12 @@ static func preview(actor: Actor) -> Dictionary:
 		result["unmet_conditions"].append("ascension_not_complete")
 	if not Breakthrough.dao_heart_ok(actor, target.index):
 		result["unmet_conditions"].append("dao_heart_too_low")
+	# BL-0951: the foundation wall. The carried foundation (the mean perfection of every
+	# realm left) must clear the target seed's authored floor; below it the refusal is
+	# NAMED and shown here, one attempt ahead of the wall, so it is a cost the player can
+	# read rather than a trap.
+	if not _foundation_ok(actor, target):
+		result["unmet_conditions"].append("foundation_insufficient")
 
 	# BL-0833: the ascension trio the tier-gate block above already gates on, PUBLISHED
 	# here so a screen renders the stage, the dao level and completion from the one
@@ -206,6 +212,21 @@ static func execute(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
 
 
 # --- Internals ---------------------------------------------------------------
+
+
+## BL-0951: the realm's floor. The carried foundation — the mean perfection of every
+## realm the actor has LEFT — must stand at or above the target seed's authored
+## `min_foundation`; below it the wall is a named refusal. The preview reports the same
+## predicate, so the wall a panel shows is the wall the transaction enforces (ADR 0044),
+## one attempt ahead of the refusal.
+##
+## A missing seed is `false`: a realm whose content cannot be read has no authored floor
+## to clear, and letting the attempt through would be a gate nobody wrote.
+static func _foundation_ok(actor: Actor, target: RealmDef) -> bool:
+	var seed := QiRealmSeed.for_realm(target.id)
+	if seed == null:
+		return false
+	return seed.foundation_met(_FOUNDATION.foundation(actor))
 
 
 ## Whether this actor's body plan permits a qi breakthrough at all (ADR 0109).

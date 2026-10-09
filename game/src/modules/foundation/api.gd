@@ -28,6 +28,17 @@ const R_EMPTY_REALM := "empty_realm"
 const R_ALREADY_SNAPSHOTTED := "already_snapshotted"
 
 
+## The carried aggregate the paths gate on: the mean of every snapshot, `0.0` when the
+## actor has left no realm yet. This is the number a path's authored `min_foundation`
+## compares against; the paths own the comparison, this module owns the arithmetic.
+static func foundation(actor: Actor) -> float:
+	if actor == null:
+		return 0.0
+	return FoundationRecord.aggregate(
+		FoundationRecord.normalize(actor.get_module_data(FoundationRecord.SLOT))
+	)
+
+
 ## Write the PERFECTION snapshot for a realm the actor is leaving. ONCE per realm: a
 ## second write for the same realm is refused by name, because a past the actor already
 ## spent must not be rewritable (ADR 0939).

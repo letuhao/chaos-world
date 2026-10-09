@@ -1,0 +1,27 @@
+{
+  "id": "spirit_world_celadon_faultlands.terrain_texture.qi_depleted_fault",
+  "path": "res://assets/packs/spirit_world_celadon_faultlands/runtime/terrain_texture/qi_depleted_fault.png",
+  "type": "terrain_texture",
+  "category": "terrain_texture",
+  "environment": "spirit_world_celadon_faultlands",
+  "environment_name": "Celadon Faultlands",
+  "world_tier": "Spirit World",
+  "archetype": "terrain_texture.qi_depleted_fault",
+  "name": "Qi Depleted Fault",
+  "canvas_px": [
+    1024,
+    1024
+  ],
+  "pivot": "center",
+  "collision": "none",
+  "status": "planned",
+  "source": "planned; not generated",
+  "license": "not applicable until generated",
+  "alpha": "opaque",
+  "environment_theme": "A dry Spirit World fault basin cut by exposed celadon ley veins. Pale mineral silt and charcoal basalt frame narrow jade-lit fissures; stone chips hover just above some seams, and clear water trickles uphill into still pools. Bronze survey markers and small way shrines stabilize routes. No bamboo forest, swamp, coast, mountain skyline, cloud island, or technological circuitry.",
+  "footprint_cells": [
+    8,
+    8
+  ],
+  "brief": "Opaque depleted fault ground: dry pale silt around a wide matte charcoal crack with only a few dull green mineral flecks. No active glow, props, debris piles, or frame."
+}

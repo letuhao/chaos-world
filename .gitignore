@@ -59,6 +59,11 @@ __pycache__/
 # High-resolution map source images stay local; indexed runtime canvases are the shipped assets.
 /art-source/map-originals/
 game/assets/packs/*/original/
+# Faultlands originals are local source files, but keep a .gdignore so Godot does not import
+# those high-resolution renders as runtime assets.
+!game/assets/packs/spirit_world_celadon_faultlands/original/
+game/assets/packs/spirit_world_celadon_faultlands/original/*
+!game/assets/packs/spirit_world_celadon_faultlands/original/.gdignore
 
 # Local map-generation workspace; keep runtime sprites uncommitted until the batch is approved.
 game/assets/world_map/

@@ -32,6 +32,9 @@ func _actor() -> Actor:
 	QiCultivationApi.attach(actor)
 	ItemsApi.attach(actor, 1024)
 	QiTraining.synchronize(actor)
+	# BL-0951: a hero standing at R18 has LEFT every realm below it; backfill the history
+	# a real walk would have snapshotted, so R19's foundation floor reads it as earned.
+	Probe.backfill_foundation(actor)
 	return actor
 
 

@@ -58,7 +58,10 @@ func _prepare(actor: Actor) -> QiRealmSeed:
 		Probe.recover_all(actor)
 		and Probe.stock(actor, seed.breakthrough_item)
 		and Probe.stock(actor, seed.training_item)
-		and Probe.train_gate_channels(actor, seed)
+		# BL-0951: the traversal is the PERFECTED run — every departure snapshots at 1.0,
+		# so the foundation wall (R4's floor and up) never bites it. The sloppy run that
+		# hits the wall is `test_qi_foundation_wall.gd`'s proof.
+		and Probe.perfect_gate_channels(actor, seed)
 		and Probe.recover_all(actor)
 		and Probe.earn_progress(actor, seed)
 		and Probe.earn_element_mastery(actor, seed)

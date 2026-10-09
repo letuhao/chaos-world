@@ -261,8 +261,11 @@ func test_location_mortal_plains_loads() -> void:
 	assert_eq(loc.resources.size(), 2, "resources count")
 	assert_eq(loc.resources.has(&"iron_ore"), true, "has iron_ore")
 	assert_eq(loc.resources.has(&"herb_common"), true, "has herb_common")
-	assert_eq(loc.inhabitant_types.size(), 1, "inhabitant_types count")
+	assert_eq(loc.inhabitant_types.size(), 2, "inhabitant_types count")
 	assert_eq(loc.inhabitant_types.has(&"beast"), true, "has beast")
+	# The quest board joined the plains with the quest lane's spawn markers; the pin
+	# moved with the data rather than the data being trimmed to the pin.
+	assert_eq(loc.inhabitant_types.has(&"quest_board"), true, "has quest_board")
 	assert_eq(loc.danger_level, 2, "danger_level")
 
 
@@ -370,8 +373,6 @@ func test_inhabitant_storm_elemental_loads() -> void:
 
 
 # ── the catalogs cross-reference each other ──────────────────────────────────
-
-
 ## Every authored family cross-references WITHIN the shipped catalogs: a location's
 ## faction and tier resolve, and a faction's `relationships` name only factions that
 ## ship. The three faction files carried relationship rows no reader ever checked
@@ -405,3 +406,180 @@ func test_world_catalogs_cross_reference() -> void:
 			true,
 			"location %s names a shipped tier" % String(location_id)
 		)
+
+
+# ── the legacy domain records are the id catalog, and it is ONE universe ─────
+
+const DOMAIN_DIR := "res://data/domains"
+const BOSS_DIR := "res://data/bosses"
+const ENCOUNTER_DIR := "res://data/loot/encounters"
+
+
+## BL-0474's decision in executable form. The 160 legacy `DomainDef` records are the
+## domain-id catalog the corpus keys on: bosses name one via `domain_id`, authored
+## encounters carry one, items declare one in `sources` (gated by
+## `tests/acquisition/test_domain_route_acquisition.gd`, which resolves them against
+## the encounters), and a record's own `boss_ids` lists exactly the bosses that name
+## it. Measured 2026-10-09: bosses, encounters and items are all the SAME 160 ids as
+## the records. So they are not orphaned and are not deleted; they are not maps, so
+## they are not migrated into templates; they are the registry, and this test keeps
+## the three text sides from drifting apart silently — one renamed side would orphan
+## content while every suite stayed green, which is the shape the audit named.
+func test_the_domain_records_are_the_id_catalog_the_corpus_agrees_on() -> void:
+	var records := _domain_records()
+	var defs: Array[String] = []
+	defs.assign(records.keys())
+	defs.sort()
+	assert_eq(defs.size() >= 160, true, "the registry still ships (%d records)" % defs.size())
+	var naming := _bosses_by_domain()
+	var boss_refs: Array[String] = []
+	boss_refs.assign(naming.keys())
+	boss_refs.sort()
+	assert_eq(
+		_set_diff(defs, naming).is_empty(),
+		true,
+		(
+			"every record is named by a boss; unnamed: %s"
+			% ", ".join(_set_diff(defs, naming).slice(0, 8))
+		)
+	)
+	assert_eq(
+		_set_diff(boss_refs, records).is_empty(),
+		true,
+		(
+			"every boss names a shipped record; naming nothing: %s"
+			% ", ".join(_set_diff(boss_refs, records).slice(0, 8))
+		)
+	)
+	var encounters := _encounter_domain_refs()
+	assert_eq(
+		_set_diff(defs, encounters).is_empty(),
+		true,
+		(
+			"every record is hosted by an encounter; unhosted: %s"
+			% ", ".join(_set_diff(defs, encounters).slice(0, 8))
+		)
+	)
+	assert_eq(
+		_set_diff(encounters, records).is_empty(),
+		true,
+		(
+			"every encounter hosts a shipped record; hosting nothing: %s"
+			% ", ".join(_set_diff(encounters, records).slice(0, 8))
+		)
+	)
+	var drifted: Array[String] = []
+	for domain_id in defs:
+		var listed: Array[String] = (records[domain_id] as Array[String]).duplicate()
+		listed.sort()
+		var actual: Array[String] = (naming.get(domain_id, []) as Array[String]).duplicate()
+		actual.sort()
+		if listed != actual:
+			drifted.append(domain_id)
+	assert_eq(
+		drifted.is_empty(),
+		true,
+		(
+			"each record's boss_ids matches the bosses that name it; drifted: %s"
+			% ", ".join(drifted.slice(0, 8))
+		)
+	)
+
+
+## `left`'s members absent from `right`, sorted — the set difference a failure message
+## needs, because two 160-entry arrays do not name their own disagreement. `right` may
+## be the keyed map or a plain sorted list, so both shapes read the same way.
+func _set_diff(left: Array[String], right: Variant) -> Array[String]:
+	var known := {}
+	if right is Dictionary:
+		for key in (right as Dictionary).keys():
+			known[String(key)] = true
+	else:
+		for value in right as Array:
+			known[String(value)] = true
+	var out: Array[String] = []
+	for value in left:
+		if not known.has(value):
+			out.append(value)
+	out.sort()
+	return out
+
+
+## `{record id: the boss ids the record's own boss_ids lists}`, one pass over the
+## registry so the walk is 160 file reads whether the corpus holds 2 domains or 200.
+func _domain_records() -> Dictionary:
+	var out := {}
+	for path in ContentScan.files_under(DOMAIN_DIR):
+		var text := _main_block(FileAccess.get_file_as_string(path))
+		var id := _scalar_id(text)
+		if id != "":
+			out[id] = _all_quoted_in_array(text, "boss_ids")
+	return out
+
+
+## `{domain id: the boss ids whose own domain_id names it}`, one pass over the boss
+## corpus. The reverse walk: content asks the boss who it serves; only the record
+## claims who serves it, and the two must agree.
+func _bosses_by_domain() -> Dictionary:
+	var out := {}
+	for path in ContentScan.files_under(BOSS_DIR):
+		var text := _main_block(FileAccess.get_file_as_string(path))
+		var domain_id := _scalar_domain_id(text)
+		var boss_id := _scalar_id(text)
+		if domain_id == "" or boss_id == "":
+			continue
+		# An explicit branch, not `out.get(id, [])`: the literal default is an UNTYPED
+		# array, and assigning it to `Array[String]` aborts the whole walk at runtime —
+		# the failure that made this map answer `{}` while the probe beside it read a
+		# boss correctly.
+		var row: Array[String] = []
+		if out.has(domain_id):
+			row = out[domain_id]
+		row.append(boss_id)
+		out[domain_id] = row
+	return out
+
+
+## Every `domain_id` an authored encounter carries, as a sorted id list.
+func _encounter_domain_refs() -> Array[String]:
+	var out: Array[String] = []
+	for path in ContentScan.files_under(ENCOUNTER_DIR):
+		var ref := _scalar_domain_id(_main_block(FileAccess.get_file_as_string(path)))
+		if ref != "":
+			out.append(ref)
+	out.sort()
+	return out
+
+
+## The file's own `[resource]` block, excluding every `sub_resource` above it. A boss
+## authors `LootTier`/gate sub-resources that carry their OWN `domain_id`, so a
+## first-match scan reads the wrong block and reports a drift that is not there.
+func _main_block(text: String) -> String:
+	var marker := "\n[resource]"
+	var index := text.rfind(marker)
+	return text.substr(index + 1) if index >= 0 else text
+
+
+func _scalar_id(text: String) -> String:
+	var re := RegEx.create_from_string('(?m)^id = &"([^"]+)"')
+	var found := re.search(text)
+	return found.get_string(1) if found != null else ""
+
+
+func _scalar_domain_id(text: String) -> String:
+	var re := RegEx.create_from_string('(?m)^domain_id = &"([^"]+)"')
+	var found := re.search(text)
+	return found.get_string(1) if found != null else ""
+
+
+func _all_quoted_in_array(text: String, field: String) -> Array[String]:
+	var block := RegEx.create_from_string(
+		"(?ms)^%s = Array\\[StringName\\]\\(\\[(.*?)\\]\\)" % field
+	)
+	var found := block.search(text)
+	if found == null:
+		return []
+	var out: Array[String] = []
+	for item in RegEx.create_from_string('&"([^"]+)"').search_all(found.get_string(1)):
+		out.append(item.get_string(1))
+	return out
