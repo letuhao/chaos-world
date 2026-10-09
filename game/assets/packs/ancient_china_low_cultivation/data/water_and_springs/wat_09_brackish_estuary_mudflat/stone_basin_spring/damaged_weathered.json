@@ -1,0 +1,185 @@
+{
+  "asset_id": "ancient_china_low_cultivation.water_and_springs.wat_09_brackish_estuary_mudflat.stone_basin_spring",
+  "domain": "water_and_springs",
+  "sub_domain": "wat_09_brackish_estuary_mudflat",
+  "asset_slug": "stone_basin_spring",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/water_and_springs/wat_09_brackish_estuary_mudflat/stone_basin_spring/damaged_weathered.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "drink_spring",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.579,
+        0.561
+      ],
+      [
+        0.795,
+        0.831
+      ]
+    ],
+    "frac_zero": 0.5044,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.008,
+        0.415,
+        0.567,
+        0.003,
+        0.0,
+        0.0
+      ],
+      [
+        0.007,
+        0.638,
+        1.0,
+        1.0,
+        0.827,
+        0.128,
+        0.0
+      ],
+      [
+        0.522,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.831,
+        0.149
+      ],
+      [
+        0.472,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.884,
+        0.07
+      ],
+      [
+        0.724,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.941,
+        0.346
+      ],
+      [
+        0.658,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.98,
+        0.457
+      ],
+      [
+        0.112,
+        0.643,
+        0.894,
+        0.959,
+        0.905,
+        0.486,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      24,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 142,
+    "contact_reference_px": 142.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}
