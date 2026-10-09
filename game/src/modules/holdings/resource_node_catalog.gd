@@ -25,10 +25,10 @@ const NODES_ROOT := "res://data/holdings/nodes"
 const NODE_SCRIPT_CLASS := "ResourceNodeDef"
 const BASE_OWNER := "base"
 
-static var _shared: ResourceNodeCatalog = null
-
 ## The property a `ResourceNodeDef` is keyed by. NOT `id` — see `_merge_stack`.
 const NODE_ID_FIELD := "node_id"
+
+static var _shared: ResourceNodeCatalog = null
 
 ## Overlay stack for the holdings family (ADR 0184 §5). Empty means "not wired
 ## yet": `_ensure_loaded` merges only the authored NODES_ROOT. When set, the

@@ -23,6 +23,11 @@ const LOADER_API_VERSION := ModLoader.API_VERSION
 ## Adding a firer means adding the event here and to the test that pins the list.
 const FIRED_EVENTS := ["on_load"]
 
+## Active contexts and registrations, set by the composition root after boot.
+## Stored here so the facade can answer queries without referencing app/.
+static var _active_contexts: Array = []
+static var _active_registrations: Dictionary = {}
+
 
 ## Parse one `mod.json` text into the normalized manifest row or a NAMED
 ## parse error. `source_path` is only used for error detail.
@@ -48,12 +53,6 @@ static func load_order(roots: Array) -> Dictionary:
 ## without a loader pass (tests, in-repo registrants in a later wave).
 static func build_context(mod_id: String = "") -> RegistrationContext:
 	return RegistrationContext.new(mod_id)
-
-
-## Active contexts and registrations, set by the composition root after boot.
-## Stored here so the facade can answer queries without referencing app/.
-static var _active_contexts: Array = []
-static var _active_registrations: Dictionary = {}
 
 
 ## Set the active contexts and registrations after a boot pass.
