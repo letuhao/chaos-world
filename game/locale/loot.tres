@@ -4,7 +4,6 @@
 locale = "en"
 messages = {
 "LOC_LOOT_565A25A0A8": "table %s entry '%s'",
-"LOC_LOOT_741DCC4590": "#u%d",
 "LOC_LOOT_AMULET_IRON_SAGE_DAO_FRUIT_0_DISPLAY_NAME": "Iron Sage salvage (dao_fruit)",
 "LOC_LOOT_AMULET_IRON_SAGE_EARTH_IMMORTAL_0_DISPLAY_NAME": "Iron Sage salvage (earth_immortal)",
 "LOC_LOOT_AMULET_IRON_SAGE_FOUNDATION_0_DISPLAY_NAME": "Iron Sage salvage (foundation)",
@@ -2978,7 +2977,6 @@ messages = {
 "LOC_LOOT_F4_INTEGRATION_WARDEN_CORE_FORMATION_0_DISPLAY_NAME": "Integration Warden salvage (core_formation)",
 "LOC_LOOT_F4_INTEGRATION_WARDEN_FOUNDATION_0_DISPLAY_NAME": "Integration Warden salvage (foundation)",
 "LOC_LOOT_F4_INTEGRATION_WARDEN_SPIRIT_TRANSFORMATION_0_DISPLAY_NAME": "Integration Warden salvage (spirit_transformation)",
-"LOC_LOOT_F5F7CA2111": "#i0",
 "LOC_LOOT_F5_ASCENSION_WARDEN_BODY_INTEGRATION_0_DISPLAY_NAME": "Ascension Warden salvage (body_integration)",
 "LOC_LOOT_F5_ASCENSION_WARDEN_CORE_0_DISPLAY_NAME": "Ascension Warden",
 "LOC_LOOT_F5_ASCENSION_WARDEN_VOID_REFINEMENT_0_DISPLAY_NAME": "Ascension Warden salvage (void_refinement)",

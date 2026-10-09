@@ -17,8 +17,8 @@ extends RefCounted
 const PAYLOAD_VERSION := 1
 ## Shared realization of a stackable drop: every unit of one drop record carries
 ## the same realization, so they merge into one batch and never disagree.
-const SHARED_INSTANCE_SUFFIX := "LOC_LOOT_F5F7CA2111"
-const UNIT_INSTANCE_FORMAT := "LOC_LOOT_741DCC4590"
+const SHARED_INSTANCE_SUFFIX := "#i0"
+const UNIT_INSTANCE_FORMAT := "#u%d"
 
 
 ## Build the single reward payload for a defeated boss. `plans` come from

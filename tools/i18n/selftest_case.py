@@ -16,7 +16,7 @@ import tempfile
 from pathlib import Path
 
 from ..selftest import case, expect, write
-from . import catalog, engine
+from . import catalog, engine, policy
 
 _MIGRATED = """extends Control
 
@@ -408,6 +408,34 @@ def _array_field_keys_each_element() -> None:
             keys == ["LOC_NPC_QI_DAO_NAMES_1", "LOC_NPC_QI_DAO_NAMES_2"],
             f"each list element gets its own key, and a code array is ignored: {keys}",
         )
+
+
+_ID_SUFFIX_CONST = """extends RefCounted
+
+
+const UNIT_INSTANCE_FORMAT := "#u%d"
+
+
+static func unit_id(drop_id: String, unit: int) -> String:
+\treturn "%s%s" % [drop_id, UNIT_INSTANCE_FORMAT % unit]
+"""
+
+
+@case("i18n: an id suffix is not display text, and extract must not key it")
+def _id_suffix_is_not_text() -> None:
+    expect(policy.is_player_text("#u%d") is False, "a format id is not player text")
+    expect(policy.is_player_text("#i0") is False, "and neither is a bare id fragment")
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        write(root / "game" / "src" / "modules" / "probe" / "rewards.gd", _ID_SUFFIX_CONST)
+        write(root / "game" / "locale" / "ui.tres", catalog.render("en", {}))
+        write(root / "game" / "locale" / "gaps.json", "{}")
+        _extract(root)
+        text = (root / "game" / "src" / "modules" / "probe" / "rewards.gd").read_text(
+            encoding="utf-8"
+        )
+        expect('"#u%d"' in text, f"the id format stays a literal: {text!r}")
+        expect(_check(root) == 0, "and the tree passes the gate with no catalog row for it")
 
 
 @case("i18n: a format string is keyed as the message, its arguments left as data")

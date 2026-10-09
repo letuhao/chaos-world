@@ -193,6 +193,12 @@ def is_player_text(value: str) -> bool:
             return False
         if re.fullmatch(r"[a-z0-9_]*:", text):
             return False
+        # A '#'-led token with no space is an ID fragment, not text: extract once keyed
+        # `"#u%d"` and `"#i0"` (loot instance-id suffixes) as display strings, and the
+        # keyed format then raised `not all arguments converted` inside pickup
+        # (measured 2026-10-08, `LootRewards.deliver`).
+        if text.startswith("#"):
+            return False
         # A template of specifiers and separators (`"%s/%s"`, `"%s:term:%s"`) is a builder.
         if re.fullmatch(r"[%a-z0-9_.:+/()\-]*", text) and re.search(r"%[sdf]", text):
             return False
