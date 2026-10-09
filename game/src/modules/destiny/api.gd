@@ -578,6 +578,14 @@ static func has_choice(actor: Actor, fate_id: StringName) -> bool:
 	return eligible_choices(actor, fate_id).size() > 1
 
 
+## The karmic virtue avenue (BL-0951 / ADR 0939, S12): spend the deeds the world remembers
+## to mend a scarred past realm. The price is a DEED — read from the shared `WorldFact`
+## ledger and impossible to buy — and `DestinyKarmicVirtue` owns the rule: which facts are
+## virtue, how many a mend costs, and how the spent ones are tracked. This names it.
+static func karmic_virtue(actor: Actor, realm_id: StringName = &"") -> Dictionary:
+	return DestinyKarmicVirtue.mend_via_virtue(actor, realm_id)
+
+
 ## A codex row for one destiny branch.
 ##
 ## **`teaser` is published, and it is published UNCONDITIONALLY** — the same

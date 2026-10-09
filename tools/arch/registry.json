@@ -95,7 +95,8 @@
     "destiny": {
       "deps": [
         "contracts",
-        "core"
+        "core",
+        "foundation"
       ]
     },
     "dialogue": {

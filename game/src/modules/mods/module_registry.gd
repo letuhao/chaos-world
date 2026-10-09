@@ -28,7 +28,7 @@ const BASE_DEPS := {
 	"combat_engine": [],
 	"conflict": ["holdings"],
 	"custody": ["economy"],
-	"destiny": [],
+	"destiny": ["foundation"],
 	"difficulty": [],
 	"doctrine": ["destiny", "economy", "items", "quest"],
 	"domain": ["foundation", "status"],

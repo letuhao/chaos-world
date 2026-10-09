@@ -44,7 +44,8 @@ extends TestCase
 ##     called all nine is still a codex: it reports, it announces, it explains why a
 ##     destiny has not arrived, and it has written no ledger entry.
 ##
-##   FORBIDDEN — `earn_fate`, `earn_destiny`, `record`, `register_starter_pack`
+##   FORBIDDEN — `earn_fate`, `earn_destiny`, `record`, `register_starter_pack`,
+##               `karmic_virtue`
 ##
 ##     These are the `mutate` rows of the same ADR 0134 table, and that same table
 ##     says of them: "**Write verbs belong to the owner of the moment, never to
@@ -126,6 +127,9 @@ const FORBIDDEN := [
 	"DestinyApi.earn_destiny(",
 	"DestinyApi.record(",
 	"DestinyApi.register_starter_pack(",
+	# BL-0951 / ADR 0939, S12: the karmic virtue avenue spends deeds and mends foundation, so
+	# it is a `mutate` row like the four above — a screen reads the deeds, never spends them.
+	"DestinyApi.karmic_virtue(",
 ]
 
 ## ## The widgets and handlers a READ-ONLY surface may not publish
@@ -487,8 +491,9 @@ func test_the_allowed_and_forbidden_lists_are_disjoint_and_real() -> void:
 			"DestinyApi.earn_destiny(",
 			"DestinyApi.record(",
 			"DestinyApi.register_starter_pack(",
+			"DestinyApi.karmic_virtue(",
 		],
-		"and the forbidden half is exactly ADR 0134 §1's mutate row"
+		"and the forbidden half is ADR 0134 §1's mutate row plus the S12 mending avenue"
 	)
 	assert_eq(
 		ALLOWED,
