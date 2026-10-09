@@ -44,6 +44,28 @@ const ROOM := "clerk"
 ## is the case that makes "no office at all" reachable.
 const GUILD := LANTERN
 
+## ## The verbs a screen is not allowed to use, and why `%d` is NOT among them
+##
+## The rule is about formatting a VALUE the player reads. A bare `%d` is not that: a
+## screen names its pooled nodes `"Card%d"`, which is a node identity and never printed.
+## Asserting `%d` absent would fail a correct screen and teach the next author to hide
+## the rule in a comment. So the probe names the shapes that RENDER a number -- a `%`
+## format with a width/precision, a rounding call, and the string-number converters -- and
+## the behavioural half of the same rule is the type assertion above: `founding_cost`
+## arrives as an `int`, which no amount of formatting could survive.
+const SCREEN_FORMAT_VERBS := [
+	"%.0f",
+	"%.1f",
+	"%.2f",
+	"%d /",
+	"%s / %d",
+	"roundf(",
+	"roundi(",
+	"str(",
+	"String.num",
+	"itos(",
+]
+
 ## Every node this suite instantiated, freed from [method teardown]. A row added here and
 ## not freed is a leak, not a fixture: the runner drives every suite from one process, so a
 ## leaked subtree survives into the next suite. **Only `Node`s are freed** -- an `Actor` is
@@ -479,29 +501,6 @@ func test_the_screen_publishes_raw_values_for_the_panel_to_format() -> void:
 	assert_ne(str(view["founding_cost"]), "2,400", "never grouped")
 	assert_ne(str(view["founding_cost"]), "2400 gold", "never unit-suffixed")
 	assert_eq(str(view["founding_cost"]), "2400", "and the raw value as text, for a caller")
-
-
-## ## The verbs a screen is not allowed to use, and why `%d` is NOT among them
-##
-## The rule is about formatting a VALUE the player reads. A bare `%d` is not that: a
-## screen names its pooled nodes `"Card%d"`, which is a node identity and never printed.
-## Asserting `%d` absent would fail a correct screen and teach the next author to hide
-## the rule in a comment. So the probe names the shapes that RENDER a number -- a `%`
-## format with a width/precision, a rounding call, and the string-number converters -- and
-## the behavioural half of the same rule is the type assertion above: `founding_cost`
-## arrives as an `int`, which no amount of formatting could survive.
-const SCREEN_FORMAT_VERBS := [
-	"%.0f",
-	"%.1f",
-	"%.2f",
-	"%d /",
-	"%s / %d",
-	"roundf(",
-	"roundi(",
-	"str(",
-	"String.num",
-	"itos(",
-]
 
 
 func test_the_screen_source_contains_no_number_formatting() -> void:

@@ -6,13 +6,12 @@ extends TestCase
 
 const SCREEN := "res://src/ui/screens/world_map_screen.tscn"
 
+## How many values the primitive walk visited, so the test can assert it looked at all.
+var _primitives_seen := 0
+
 
 func _screen() -> WorldMapScreen:
 	return (load(SCREEN) as PackedScene).instantiate() as WorldMapScreen
-
-
-## How many values the primitive walk visited, so the test can assert it looked at all.
-var _primitives_seen := 0
 
 
 func _actor() -> Actor:
