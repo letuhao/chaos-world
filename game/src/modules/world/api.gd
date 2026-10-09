@@ -43,7 +43,13 @@ static func resources(actor: Actor) -> Dictionary:
 	return actor.world.resources.duplicate()
 
 
-## Query: all world location definitions as primitive dictionaries.
+## Query: all world location definitions as primitive dictionaries, in the SCAN order
+## consumers already know (`WorldSpawnApi.random` sorts by `location_id` itself before
+## its draw, so a re-sorted read here would only move the ground under it). Each row
+## names the authored FACTION and TIER the location belongs to
+## (`faction_name`/`tier_name`, LOC keys a reader resolves) — the raw ids were the
+## only thing the authored faction and tier catalogs ever reached production with
+## (BL-0227).
 static func locations(_actor: Actor) -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
 	var dir := DirAccess.open("res://data/world/locations")
@@ -63,7 +69,9 @@ static func locations(_actor: Actor) -> Array[Dictionary]:
 							"location_id": String(def.location_id),
 							"display_name": def.display_name,
 							"tier": String(def.tier),
+							"tier_name": WorldDefIndex.display_name(&"tier", def.tier),
 							"faction_id": String(def.faction_id),
+							"faction_name": WorldDefIndex.display_name(&"faction", def.faction_id),
 							"resources": def.resources.duplicate(),
 							"inhabitant_types": def.inhabitant_types.duplicate(),
 							"danger_level": def.danger_level,

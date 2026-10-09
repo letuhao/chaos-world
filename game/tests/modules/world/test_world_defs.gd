@@ -367,3 +367,41 @@ func test_inhabitant_storm_elemental_loads() -> void:
 	assert_eq(inh.loyalty_max, 0.5, "loyalty_max")
 	assert_eq(inh.combat_power_min, 100.0, "combat_power_min")
 	assert_eq(inh.combat_power_max, 1000.0, "combat_power_max")
+
+
+# ── the catalogs cross-reference each other ──────────────────────────────────
+
+
+## Every authored family cross-references WITHIN the shipped catalogs: a location's
+## faction and tier resolve, and a faction's `relationships` name only factions that
+## ship. The three faction files carried relationship rows no reader ever checked
+## (BL-0227); this is the gate that turns them from prose into content.
+func test_world_catalogs_cross_reference() -> void:
+	var faction_ids := WorldDefIndex.ids(&"faction")
+	var tier_ids := WorldDefIndex.ids(&"tier")
+	assert_eq(faction_ids.size() >= 3, true, "the dao factions ship")
+	assert_eq(tier_ids.size() >= 3, true, "the world tiers ship")
+	for faction_id in faction_ids:
+		var faction := WorldDefIndex.definition(&"faction", faction_id) as WorldFactionDef
+		assert_ne(faction, null, "faction %s loads through the index" % String(faction_id))
+		for relation in faction.relationships:
+			var row := relation as Dictionary
+			assert_eq(
+				faction_ids.has(StringName(row.get("faction_id", ""))),
+				true,
+				"%s relates to a shipped faction" % String(faction_id)
+			)
+	var catalog := WorldLocationCatalog.instance()
+	for location_id in catalog.location_ids():
+		var location := catalog.definition(location_id)
+		assert_ne(location, null, "location %s loads" % String(location_id))
+		assert_eq(
+			faction_ids.has(location.faction_id),
+			true,
+			"location %s names a shipped faction" % String(location_id)
+		)
+		assert_eq(
+			tier_ids.has(location.tier),
+			true,
+			"location %s names a shipped tier" % String(location_id)
+		)

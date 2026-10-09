@@ -128,6 +128,27 @@ func test_locations_structure() -> void:
 	assert_eq(first.has("danger_level"), true, "has danger_level")
 
 
+## The authored catalogs reach the read: every row names its faction and tier by the
+## defs' OWN display keys, not by an invented string, so the two catalogs have a
+## production reader (BL-0227).
+func test_locations_carry_the_authored_faction_and_tier_names() -> void:
+	var locations := WorldApi.locations(null)
+	assert_eq(locations.size() > 0, true, "the corpus ships locations to name")
+	for row in locations:
+		var loc := row as Dictionary
+		assert_eq(
+			String(loc.get("faction_name", "")),
+			WorldDefIndex.display_name(&"faction", StringName(loc.get("faction_id", ""))),
+			"the faction name is the authored def's own key"
+		)
+		assert_ne(String(loc.get("faction_name", "")), "", "and it is not empty")
+		assert_eq(
+			String(loc.get("tier_name", "")),
+			WorldDefIndex.display_name(&"tier", StringName(loc.get("tier", ""))),
+			"the tier name is the authored def's own key"
+		)
+
+
 # ── create_world() ───────────────────────────────────────────────────────────
 
 

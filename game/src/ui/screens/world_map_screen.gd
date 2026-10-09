@@ -382,6 +382,13 @@ func _add_node(loc: Dictionary, pos: Vector2) -> void:
 	var button := Button.new()
 	button.name = display_name
 	button.text = L.t(display_name)
+	# The location's authored faction, named on hover. The row carries the LOC key
+	# (`faction_name`, resolved here like every other display field) because the
+	# authored faction catalog had no production reader before this tooltip
+	# (BL-0227): the id alone coloured the node and named nothing.
+	var faction_name := String(loc.get("faction_name", ""))
+	if faction_name != "":
+		button.tooltip_text = L.t(faction_name)
 	button.position = pos
 	button.size = Vector2(NODE_WIDTH, NODE_HEIGHT)
 	button.focus_mode = Control.FOCUS_ALL
