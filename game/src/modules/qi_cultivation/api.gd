@@ -156,6 +156,12 @@ static func panel_state(actor: Actor) -> Dictionary:
 		"chance": float(preview.get("chance", 0.0)),
 		"unmet": preview.get("unmet_conditions", []),
 		"costs": preview.get("costs", {}),
+		# BL-0951 / ADR 0939, S15: the foundation row. The carried foundation and the target
+		# realm's authored floor, as DATA, so a screen renders met/unmet and the wall ahead
+		# without reaching for the seed (ADR 0043). `foundation_insufficient` in `unmet` is
+		# the same gate; these two numbers are what it compares.
+		"foundation": FoundationApi.foundation(actor),
+		"min_foundation": 0.0 if gate == null else gate.min_foundation,
 	}
 
 

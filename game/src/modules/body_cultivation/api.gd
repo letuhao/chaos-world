@@ -206,7 +206,19 @@ static func panel_state(actor: Actor) -> Dictionary:
 		# published — including the kinds and arts this body may NOT yet use, because
 		# "what am I missing" is the question a mastery screen exists to answer.
 		"practice": _practice_state(actor),
+		# BL-0951 / ADR 0939, S15: the foundation row. The carried foundation and the target
+		# realm's authored floor, as DATA, so a screen renders met/unmet and the wall ahead
+		# without reaching for the seed (ADR 0043).
+		"foundation": FoundationApi.foundation(actor),
+		"min_foundation": _target_min_foundation(preview),
 	}
+
+
+## The foundation floor of the realm the preview is trying to ENTER, or `0.0` when there is
+## no target (the top of the ladder) — the wall-ahead half of the S15 foundation row.
+static func _target_min_foundation(preview: Dictionary) -> float:
+	var seed := BodyRealmSeed.for_realm(StringName(preview.get("target", &"")))
+	return 0.0 if seed == null else seed.min_foundation
 
 
 ## Every weapon kind and material art, with this body's mastery on each, as

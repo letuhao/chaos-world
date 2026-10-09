@@ -127,6 +127,52 @@ static func karmic(actor: Actor) -> float:
 	)
 
 
+## The whole record as primitives, for a foundation READOUT (BL-0951 / ADR 0939, S15): the
+## carried foundation, the karmic floor, the mended ceiling, the weakest scar, the final-band
+## flag, and one row per realm the actor has LEFT, in LADDER order. `{}` for a null actor, so
+## a screen can tell "no actor" from "an actor who has left nothing".
+##
+## Rows are ordered by the SHARED ladder, not by the snapshot map's key order, so two runs of
+## the same record render identically — a readout that reshuffles is one a player cannot
+## compare against itself.
+static func summary(actor: Actor) -> Dictionary:
+	if actor == null:
+		return {}
+	var record := FoundationRecord.normalize(actor.get_module_data(FoundationRecord.SLOT))
+	var ladder := RealmDefaults.ladder()
+	var rows: Array = []
+	for realm_id in (record["snapshots"] as Dictionary).keys():
+		(
+			rows
+			. append(
+				{
+					"realm_id": String(realm_id),
+					"perfection": FoundationRecord.snapshot_for(record, StringName(realm_id)),
+					"index": ladder.index_of(StringName(realm_id)),
+				}
+			)
+		)
+	rows.sort_custom(
+		func(a: Dictionary, b: Dictionary) -> bool:
+			var ai := int(a["index"])
+			var bi := int(b["index"])
+			if ai != bi:
+				# An id the ladder does not hold sorts LAST, so a stale save cannot push a
+				# real realm down the list; equal indices fall back to the id, for determinism.
+				return (ai if ai >= 0 else 1 << 30) < (bi if bi >= 0 else 1 << 30)
+			return String(a["realm_id"]) < String(b["realm_id"])
+	)
+	return {
+		"foundation": foundation(actor),
+		"karmic": FoundationRecord.karmic(record),
+		"count": FoundationRecord.count(record),
+		"mend_cap": MEND_CAP,
+		"weakest": String(mend_target(actor)),
+		"lastlight": AgeBandTable.band_for_actor(actor) == AgeBandTable.LASTLIGHT,
+		"snapshots": rows,
+	}
+
+
 ## The realm whose snapshot a mend should land on: the WEAKEST scar — the lowest snapshot
 ## strictly below `MEND_CAP` — or `&""` when there is none (BL-0951 / ADR 0939, S7). The
 ## item route mends through this because it names no realm: lifting the worst scar raises

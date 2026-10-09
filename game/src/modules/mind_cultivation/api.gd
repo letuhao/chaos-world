@@ -151,6 +151,17 @@ static func summary(actor: Actor) -> Dictionary:
 			required_state = String(gate.required_channel_state)
 			for meridian_id in gate.required_meridians:
 				required_channels.append(String(meridian_id))
+	# BL-0951 / ADR 0939, S15: the foundation row. The carried foundation and the target
+	# realm's authored floor, as DATA, so a screen renders met/unmet and the wall ahead
+	# without reaching for the seed (ADR 0043). The wall reads the realm being ENTERED,
+	# which is the one `MindAdvancement` checks (`advancement.gd:130`).
+	var min_foundation := 0.0
+	if state != null:
+		var next_realm := ladder.next(state.rank_id)
+		if next_realm != null:
+			var target_seed := MindRealmSeed.for_realm(next_realm.id)
+			if target_seed != null:
+				min_foundation = target_seed.min_foundation
 	return {
 		"has_path": state != null,
 		"rank": String(state.rank_id) if state != null else "",
@@ -167,6 +178,8 @@ static func summary(actor: Actor) -> Dictionary:
 		"channels": channels,
 		"required_channels": required_channels,
 		"required_channel_state": required_state,
+		"foundation": FoundationApi.foundation(actor),
+		"min_foundation": min_foundation,
 	}
 
 
