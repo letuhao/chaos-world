@@ -153,12 +153,12 @@ static func _partition(
 static func _split(
 	template: DomainTemplateDef, rng: RandomNumberGenerator, cell: DomainCell
 ) -> Array[DomainCell]:
-	var axis := _preferred_axis(cell.rect, template)
+	var axis := DomainSplit.preferred_axis(cell.rect, template)
 	if axis == &"":
 		return [] as Array[DomainCell]
 	if template.repeat_axis_chance > 0.0 and rng.randf() < template.repeat_axis_chance:
 		axis = &"y" if axis == &"x" else &"x"
-		if not _axis_legal(cell.rect, template, axis):
+		if not DomainSplit.axis_legal(cell.rect, template, axis):
 			axis = &"y" if axis == &"x" else &"x"
 	var needed := template.min_leaf + template.margin * 2
 	var span := cell.rect.size.y if axis == &"x" else cell.rect.size.x
@@ -168,7 +168,7 @@ static func _split(
 	var first := clampi(
 		int(round(float(span) * ratio)), template.min_leaf, span - template.min_leaf
 	)
-	var rects := _split_rects(cell.rect, axis, first)
+	var rects := DomainSplit.split_rects(cell.rect, axis, first)
 	if rects.is_empty():
 		return [] as Array[DomainCell]
 	var children: Array[DomainCell] = []
@@ -180,55 +180,6 @@ static func _split(
 		child.parent = cell
 		children.append(child)
 	return children
-
-
-## The axis to cut on: the LONGER one, so a cell's aspect does not drift. `&""` when
-## that axis cannot legally be cut. A repeat-axis roll that lands on an illegal
-## orientation falls back to the other one, so the roll only ever adds variety.
-static func _preferred_axis(rect: Rect2i, template: DomainTemplateDef) -> StringName:
-	var needed := template.min_leaf + template.margin * 2
-	if rect.size.x >= rect.size.y and rect.size.x >= needed * 2:
-		return &"x"
-	if rect.size.y >= needed * 2:
-		return &"y"
-	return &""
-
-
-static func _axis_legal(rect: Rect2i, template: DomainTemplateDef, axis: StringName) -> bool:
-	var needed := template.min_leaf + template.margin * 2
-	return rect.size.x >= needed * 2 if axis == &"x" else rect.size.y >= needed * 2
-
-
-## Two rects covering `rect`, the first `first` tiles along the split axis. Empty when
-## the split would leave a child under `min_leaf`.
-static func _split_rects(rect: Rect2i, axis: StringName, first: int) -> Array[Rect2i]:
-	if first <= 0:
-		return [] as Array[Rect2i]
-	if axis == &"x":
-		if first >= rect.size.x:
-			return [] as Array[Rect2i]
-		return (
-			[
-				Rect2i(rect.position, Vector2i(first, rect.size.y)),
-				Rect2i(
-					Vector2i(rect.position.x + first, rect.position.y),
-					Vector2i(rect.size.x - first, rect.size.y)
-				),
-			]
-			as Array[Rect2i]
-		)
-	if first >= rect.size.y:
-		return [] as Array[Rect2i]
-	return (
-		[
-			Rect2i(rect.position, Vector2i(rect.size.x, first)),
-			Rect2i(
-				Vector2i(rect.position.x, rect.position.y + first),
-				Vector2i(rect.size.x, rect.size.y - first)
-			),
-		]
-		as Array[Rect2i]
-	)
 
 
 ## Leaves in canonical spatial order: center.y, then center.x, then birth. Zero rng —
