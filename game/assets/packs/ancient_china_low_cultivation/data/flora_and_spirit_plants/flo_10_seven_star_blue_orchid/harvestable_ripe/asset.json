@@ -46,14 +46,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_10_seven_star_blue_orchid/harvestable_ripe/pristine_dormant.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.44
+            0.394
           ]
         ],
-        "frac_zero": 0.744,
+        "frac_zero": 0.7401,
         "blocks": [
           [
             false
@@ -75,30 +75,31 @@
         ],
         "sub_fill": [
           [
-            0.384,
-            0.658,
-            0.109
+            0.155,
+            0.24,
+            0.012
           ],
           [
-            0.485,
-            0.563,
-            0.362
+            0.415,
+            0.861,
+            0.174
           ],
           [
-            0.288,
-            0.574,
-            0.0
+            0.383,
+            0.839,
+            0.198
           ]
         ],
         "crop_offset": [
-          26,
+          21,
           17
         ],
         "trunk_columns": [
+          0,
           1
         ],
-        "contact_px": 41,
-        "contact_reference_px": 41.0,
+        "contact_px": 43,
+        "contact_reference_px": 43.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -126,14 +127,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_10_seven_star_blue_orchid/harvestable_ripe/active_operating.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.386
+            0.368
           ]
         ],
-        "frac_zero": 0.7498,
+        "frac_zero": 0.7611,
         "blocks": [
           [
             false
@@ -155,19 +156,19 @@
         ],
         "sub_fill": [
           [
-            0.109,
-            0.271,
-            0.048
+            0.042,
+            0.262,
+            0.005
           ],
           [
-            0.51,
-            0.795,
-            0.533
+            0.423,
+            0.852,
+            0.197
           ],
           [
-            0.328,
-            0.556,
-            0.104
+            0.377,
+            0.733,
+            0.111
           ]
         ],
         "crop_offset": [
@@ -175,6 +176,7 @@
           17
         ],
         "trunk_columns": [
+          0,
           1
         ],
         "contact_px": 32,
@@ -201,14 +203,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_10_seven_star_blue_orchid/harvestable_ripe/damaged_weathered.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.499
+            0.452
           ]
         ],
-        "frac_zero": 0.7203,
+        "frac_zero": 0.7374,
         "blocks": [
           [
             false
@@ -230,30 +232,31 @@
         ],
         "sub_fill": [
           [
-            0.404,
-            0.729,
-            0.152
+            0.237,
+            0.295,
+            0.015
           ],
           [
-            0.588,
-            0.635,
-            0.415
+            0.57,
+            0.833,
+            0.173
           ],
           [
-            0.266,
-            0.776,
-            0.052
+            0.405,
+            0.856,
+            0.167
           ]
         ],
         "crop_offset": [
-          24,
+          25,
           17
         ],
         "trunk_columns": [
+          0,
           1
         ],
-        "contact_px": 47,
-        "contact_reference_px": 47.0,
+        "contact_px": 52,
+        "contact_reference_px": 52.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
@@ -281,14 +284,14 @@
       "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
       "status": "generated",
       "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_10_seven_star_blue_orchid/harvestable_ripe/ruined_rubble.png",
-      "generated_on": "2026-10-09",
+      "generated_on": "2026-10-10",
       "matrix_data": {
         "coverage": [
           [
-            0.432
+            0.501
           ]
         ],
-        "frac_zero": 0.7391,
+        "frac_zero": 0.713,
         "blocks": [
           [
             false
@@ -310,30 +313,31 @@
         ],
         "sub_fill": [
           [
-            0.375,
-            0.631,
-            0.048
+            0.133,
+            0.249,
+            0.017
           ],
           [
-            0.511,
-            0.555,
-            0.351
+            0.683,
+            0.849,
+            0.275
           ],
           [
-            0.205,
-            0.657,
-            0.045
+            0.62,
+            0.919,
+            0.286
           ]
         ],
         "crop_offset": [
-          25,
+          24,
           17
         ],
         "trunk_columns": [
+          0,
           1
         ],
-        "contact_px": 43,
-        "contact_reference_px": 43.0,
+        "contact_px": 64,
+        "contact_reference_px": 64.0,
         "blocked_by_scale": {
           "0.85": null,
           "1.0": null,
