@@ -252,10 +252,10 @@ func test_a_roll_never_moves_the_magnitude_ladder_or_its_own_coefficient() -> vo
 	# Read off a REALM rather than off the actor, so the assertion cannot be
 	# satisfied by an actor whose `realm()` is empty and therefore neutral.
 	#
-	# The realm is `&"core_formation"`, NOT the fixture's own `TechniqueMarginaliaFixture.MORTAL`. R1
+	# The realm is `&"core_formation"`, NOT the fixture's own `MORTAL`. R1
 	# (`qi_refining`) is authored at exactly 1.0000000 — the ladder is DELIBERATELY
 	# neutral at its base (ADR 0055 anchors it there, and `technique_power check`
-	# walks exactly that), so asserting `factor(TechniqueMarginaliaFixture.MORTAL) != 1.0` was asserting that
+	# walks exactly that), so asserting `factor(MORTAL) != 1.0` was asserting that
 	# the shipped data is wrong. The point of this case is "the factor is a real,
 	# non-neutral number the roll could have moved", and R3 is where that is true.
 	var ladder_realm := &"core_formation"
@@ -400,7 +400,7 @@ func test_the_catalogs_own_bounds_clamp_the_band_when_they_are_tighter_than_it()
 		TechniqueMarginaliaFixture.STAT_OPTION
 	)
 	assert_ne(real_record.is_empty(), true, "the option exists so a record can be cloned from it")
-	# A ceiling INSIDE the band: `TechniqueMarginaliaFixture.STAT_VALUE * 0.90 = 5.4`, reached by any copy whose
+	# A ceiling INSIDE the band: `STAT_VALUE * 0.90 = 5.4`, reached by any copy whose
 	# span exceeds 0.90. `clamp_to_bounds` is static and takes the record as an
 	# argument, so this needs no seam into production and cannot narrow the shipped
 	# record — the clone is local to this case.
