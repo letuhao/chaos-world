@@ -20,6 +20,10 @@ var _wall_label: Label = null
 var _mending_label: Label = null
 var _state: Dictionary = {}
 var _wall: Dictionary = {}
+## The shared mending read (BL-0951 / ADR 0939, S15), handed over by the composition root
+## through the screen. Empty when nothing was injected, where the panel falls back to the
+## LEGEND naming the eight avenues rather than showing nothing.
+var _mending: Dictionary = {}
 
 
 func _ready() -> void:
@@ -37,6 +41,15 @@ func set_state(state: Dictionary, wall: Dictionary = {}) -> void:
 	_render()
 
 
+## Install the shared mending read ([MendingRead.for_actor]'s answer), so the readout shows
+## what is AVAILABLE and at what price instead of only the legend. A caller that never
+## installs one leaves the legend in place.
+func set_mending(read: Dictionary) -> void:
+	_bind_nodes()
+	_mending = read
+	_render()
+
+
 ## The readout as primitives. Child rows live under their own keys; this is the shape tests
 ## assert.
 func summary() -> Dictionary:
@@ -51,6 +64,7 @@ func summary() -> Dictionary:
 		"weakest": String(_state.get("weakest", "")),
 		"rows": _rows(),
 		"wall": _wall_view(),
+		"mending": _mending,
 	}
 
 
@@ -126,7 +140,29 @@ func _render() -> void:
 	# a domain, a master's sacrifice through a mentor, the forbidden art and karmic virtue
 	# through their own screens, a dual-cultivation aid with a partner — and this readout is
 	# the one place that says so.
-	_mending_label.text = L.t("LOC_UI_PANELS_07CE746EC8")
+	# The mending WEB: when the composition root handed over a read, show what is AVAILABLE
+	# and at what price; otherwise the legend naming all eight avenues.
+	if _mending.is_empty():
+		_mending_label.text = L.t("LOC_UI_PANELS_07CE746EC8")
+	else:
+		var available: Array[String] = []
+		for row in _mending.get("avenues", []):
+			if bool((row as Dictionary).get("available", false)):
+				(
+					available
+					. append(
+						(
+							"%s (%s)"
+							% [
+								String((row as Dictionary).get("id", "")),
+								String((row as Dictionary).get("price", "")),
+							]
+						)
+					)
+				)
+		_mending_label.text = (
+			L.t("LOC_UI_PANELS_07CE746EC8") if available.is_empty() else "%s" % "\n".join(available)
+		)
 
 
 func _rows() -> Array:

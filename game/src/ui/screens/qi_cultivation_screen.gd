@@ -21,6 +21,19 @@ var _channels: ChannelList = null
 ## The foundation readout (BL-0951 / ADR 0939, S15). Null when the scene does not carry it,
 ## so a headless driver that builds the screen from script alone never crashes on it.
 var _foundation_panel: FoundationPanel = null
+## The shared mending read (S15), assembled by the composition root — only `app/` may name
+## every avenue's module — and handed to the readout. Empty until one is installed.
+var _mending: Dictionary = {}
+
+
+## Install the shared mending read and hand it to the foundation readout, so the web is
+## shown where the readout lives.
+func set_mending(read: Dictionary) -> void:
+	_mending = read
+	if _foundation_panel != null:
+		_foundation_panel.set_mending(read)
+
+
 ## The channel the player last pressed in the list. The train action spends on it, so
 ## the specific verb has a production caller (ADR 0188); empty means the next-owed form.
 var _selected_channel: StringName = &""

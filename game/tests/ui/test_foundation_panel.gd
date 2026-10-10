@@ -64,3 +64,31 @@ func test_the_summary_is_json_clean() -> void:
 	panel.set_state(_summary(0.4, 0.0, [{"realm_id": "qi_refining", "perfection": 0.4}]))
 	var parsed: Variant = JSON.parse_string(JSON.stringify(panel.summary()))
 	assert_eq(parsed is Dictionary, true, "the readout is primitives only")
+
+
+## The shared mending read (BL-0951 / ADR 0939, S15) is reported when installed, so the
+## readout can render the web rather than only the legend.
+func test_the_mending_read_is_reported_when_installed() -> void:
+	var panel := _panel()
+	(
+		panel
+		. set_mending(
+			{
+				"scar": "qi_refining",
+				"avenues":
+				[
+					{"id": "miracle_elixir", "available": true, "price": "an elixir", "note": ""},
+					{
+						"id": "secret_realm",
+						"available": false,
+						"price": "danger and time",
+						"note": "found in a domain",
+					},
+				],
+			}
+		)
+	)
+	panel.set_state(_summary(0.2, 0.0, []))
+	var mending: Dictionary = panel.summary().get("mending", {})
+	assert_eq(String(mending.get("scar", "")), "qi_refining", "the read rides the summary")
+	assert_eq((mending.get("avenues", []) as Array).size(), 2, "with its avenue rows")
