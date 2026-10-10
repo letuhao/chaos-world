@@ -25,6 +25,20 @@ to all damage" is a magnitude, and the ladder would learn a second one from a JS
 and a module named after the platform's own noun reads as infrastructure no matter what it
 does.
 
+**And the name chosen was already taken, by an unrelated concept.** `SectDoctrineDef`
+(`modules/sect/sect_doctrine_def.gd`, BL-0186) is a **sect's institutional teaching** — what
+a school exists to teach and what membership confers. It is granted by JOINING an
+institution. The module this ADR names is a **practitioner's own transmitted rules**
+(`contracts/doctrine_rule.gd`, ADR 0267) — bought with the System's own currency, granting
+values and rates, and carrying no institutional recognition at all. The two are close in
+wording and far in meaning, so conflating them is a design error rather than a typo: one is
+joined, the other is bought.
+
+Neither name is wrong for what it names, and neither is renamed here — a rename would touch
+the `sect` module's public surface for no reader benefit. The collision is recorded so the
+next reader who meets both does not spend a turn reconciling them: **`sect`'s doctrine is
+institutional, `doctrine`'s is not.**
+
 ## Decision
 
 **The module is `doctrine`** (道統 — the transmitted lineage), so the names read
