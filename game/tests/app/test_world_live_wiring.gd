@@ -185,17 +185,21 @@ func test_every_routed_press_is_recorded_and_one_press_is_one_row() -> void:
 
 ## A log is bounded. An unbounded history on a composition-root object is a leak, and
 ## this walks to the ceiling rather than trusting the bound to exist.
+##
+## The ceiling is [WorldStageInteractionLog]'s since the log was extracted out of
+## `WorldStage` (it is that class's `MAX_ROWS`); the stage publishes no copy of the
+## number, so naming the stage's old constant is what kept this suite from loading.
 func test_the_routed_press_log_is_bounded() -> void:
 	if not _commit():
 		return
 	var stage := WorldStage.instance()
 	if stage == null:
 		return
-	for _i in WorldStage.MAX_INTERACTIONS_LOGGED * 3:
+	for _i in WorldStageInteractionLog.MAX_ROWS * 3:
 		stage.interact("quest_board")
 	assert_eq(
 		stage.interactions().size(),
-		WorldStage.MAX_INTERACTIONS_LOGGED,
+		WorldStageInteractionLog.MAX_ROWS,
 		"the log stops growing at its declared ceiling"
 	)
 

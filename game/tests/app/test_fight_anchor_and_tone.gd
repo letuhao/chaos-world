@@ -137,10 +137,11 @@ func test_a_minted_opponents_pool_is_the_actor_formula_own() -> void:
 		"the pool is the formula's own floor, written by nobody",
 		0.001
 	)
-	assert_eq(
-		pool,
+	assert_almost_eq(
+		float(opened.get("opponent_health_max", 0.0)),
 		float(loop.opponent().resource(&"health").maximum),
-		"the pool reported is the pool spent"
+		"the pool reported is the pool spent",
+		0.001
 	)
 
 
