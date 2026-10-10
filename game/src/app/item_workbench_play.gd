@@ -57,6 +57,11 @@ extends Control
 ## clock that pays it, through the same [method advance_world] every other period cost uses.
 const CRAFT_PERIODS := 2
 
+## What one DOMAIN DELVE costs, in periods (ADR 0167's season-scale class: a delve is not a
+## short act but a journey into a place that exists once). Authored here, in the one file that
+## owns the clock; `WorldPulse` pays it in bounded chunked spends like every other span.
+const DOMAIN_DELVE_PERIODS := 30
+
 var _actor: Actor = null
 ## What [code]NpcBoot.populate_room[/code] answered at boot: how many bodies stood up
 ## and who they are. Held so a probe can read the cast without reaching past `app/` —

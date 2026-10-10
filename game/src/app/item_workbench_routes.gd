@@ -812,7 +812,15 @@ func _capturable_cast() -> Array:
 func _venture_domain_enter(template_id: String, seed: int) -> Dictionary:
 	if _actor == null:
 		return {"ok": false, "reason": "no_actor"}
-	return DomainBoot.enter_domain(_actor, StringName(template_id), seed)
+	var entered := DomainBoot.enter_domain(_actor, StringName(template_id), seed)
+	if not bool(entered.get("ok", false)):
+		return entered
+	# ADR 0167 / BL-0815: a delve is a SEASON-SCALE action, so it costs world time. Paid only
+	# once the run is open, so a refused delve costs nothing (ADR 0044). `paid` is a
+	# measurement off the fold's own total, read the way the craft and the retreat read it.
+	var before := int(world_summary().get("periods", 0))
+	var outcome := advance_world(DOMAIN_DELVE_PERIODS) as Dictionary
+	return entered.merged({"paid": maxi(0, int(outcome.get("periods", 0)) - before)})
 
 
 func _venture_domain_leave() -> Dictionary:
