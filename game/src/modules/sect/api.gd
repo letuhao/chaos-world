@@ -973,3 +973,13 @@ static func _declare_world_schism(parent_id: StringName, half_id: String) -> Str
 	if reason == InstitutionRelation.R_ALREADY_DECLARED:
 		return ""
 	return reason
+
+
+## The module's event bus, as a `Callable(Class, "events")` target.
+##
+## Published because a mod subscribes to a bus BY NAME and `app/` registers the shipped
+## buses with `RegistrationContext` — the composition root may name a facade, never an
+## interior like [SectProjection], so this is the only door to `SectEvents` from outside
+## the module.
+static func events() -> SectEvents:
+	return SectProjection.events()

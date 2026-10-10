@@ -244,6 +244,7 @@ static func attach_mod_modules(pipeline: AttachPipeline, actor: Actor, modules: 
 ## the caller's `unresolved` list so the skip is observable from a test and not only from a log.
 ## One row is one pass — the loop drains the array it was handed, so it terminates.
 static func wire_subscriptions(subscriptions: Array, unresolved: Array[Dictionary]) -> Array:
+	register_shipped_buses()
 	unresolved.clear()
 	for sub in subscriptions:
 		if not (sub is Dictionary):
@@ -306,3 +307,38 @@ static func resolve_events_bus(bus_name: String) -> RefCounted:
 		return ClassDB.class_call_static(bus_name, &"shared")
 	# 3. Otherwise instantiate.
 	return ClassDB.instantiate(bus_name)
+
+
+## Register the SHIPPED event buses with `RegistrationContext` by name, so a mod's
+## subscription (`{event_bus: "NpcEvents"}`) reaches the process-wide bus it names.
+##
+## ## Why this is needed at all
+##
+## [method resolve_events_bus]'s fallback is `ClassDB.class_exists`, and that is FALSE
+## for every GDScript global class — the engine's class database holds native classes
+## only. So every shipped bus resolved to null, every subscription to one was skipped,
+## and the boot warned `mod '…' subscribed to unknown events bus 'NpcEvents'` while
+## doing exactly what it was told. This table is the ONE place that says which name
+## reaches which accessor; `contracts/*_events.gd` owns the buses themselves.
+##
+## A mod's own registration WINS: it happens first, during that mod's manifest pass, and
+## the `has_custom_bus` check is what keeps a shipped default from clobbering it.
+##
+## `Callable(Class, "static")` and never a lambda wrapping the call — a lambda over
+## another script's static function is the access-violation shape `EconomyBoot.install`
+## documents.
+static func register_shipped_buses() -> void:
+	var shipped := {
+		"NpcEvents": Callable(NpcEvents, "shared"),
+		"AuctionEvents": Callable(AuctionEvents, "shared"),
+		"QuestEvents": Callable(QuestEvents, "shared"),
+		"ConflictEvents": Callable(ConflictApi, "events"),
+		"WorldEvents": Callable(EventApi, "events"),
+		"DestinyEvents": Callable(DestinyApi, "events"),
+		"NationEvents": Callable(NationApi, "events"),
+		"SectEvents": Callable(SectApi, "events"),
+		"HoldingsEvents": Callable(HoldingsApi, "events"),
+	}
+	for bus_name in shipped:
+		if not RegistrationContext.has_custom_bus(String(bus_name)):
+			RegistrationContext.register_events_bus(String(bus_name), shipped[bus_name])

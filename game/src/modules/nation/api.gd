@@ -978,3 +978,13 @@ static func _standoff_view(standoff: Dictionary) -> Dictionary:
 		# The DECLARED prize, verbatim. Never recomputed for display.
 		"prize": (standoff.get("prize", {}) as Dictionary).duplicate(true),
 	}
+
+
+## The module's event bus, as a `Callable(Class, "events")` target.
+##
+## Published because a mod subscribes to a bus BY NAME and `app/` registers the shipped
+## buses with `RegistrationContext` — the composition root may name a facade, never an
+## interior like [NationProjection], so this is the only door to `NationEvents` from
+## outside the module.
+static func events() -> NationEvents:
+	return NationProjection.events()
