@@ -211,7 +211,7 @@ static func train_channel(actor: Actor, meridian_id: StringName) -> bool:
 ## happened, so a panel can tell a real recovery from a no-op.
 ##
 ## The mind path has no second wound to check first, unlike qi's dantian scar or
-## the body's blocked huyệt: `MindTraining.recover` acts on the channel named and
+## the body's blocked acupoint: `MindTraining.recover` acts on the channel named and
 ## calms the sea with it, so the injured channel IS the whole selection.
 static func recover_next(actor: Actor) -> bool:
 	for def in MeridianDefaults.all():

@@ -659,9 +659,9 @@ static func _reads_a_share(def: TechniqueDef) -> bool:
 ## Every `aim_meridian` names a meridian that EXISTS, on both sides.
 ##
 ## The name must be one of `MeridianDefaults`' 20 AND one of the `meridian_id`s the
-## authored huyệt carry, because those are the two vocabularies `BodyLocation` resolves
+## authored acupoint carry, because those are the two vocabularies `BodyLocation` resolves
 ## against: `_channel_of` for the channel and `_points_of` -> `meridian_of_point` for
-## the point inside it. A meridian with a channel but no huyệt resolves `locked` at a
+## the point inside it. A meridian with a channel but no acupoint resolves `locked` at a
 ## neutral `1.0`, and one with neither is a `named` aim at nothing, which
 ## `site_of` refuses outright — so both are content defects wearing a valid-looking id.
 ##
@@ -688,7 +688,7 @@ func test_every_authored_aim_meridian_is_a_meridian_that_exists_and_can_be_unloc
 			_acupoint_meridians().has(aim),
 			true,
 			(
-				"'%s' aims at '%s', which carries no authored huyệt, so every strike lands "
+				"'%s' aims at '%s', which carries no authored acupoint, so every strike lands "
 				+ "on it at the neutral multiplier" % [def.id, aim]
 			)
 		)
@@ -743,7 +743,7 @@ func test_every_authored_mind_kind_is_one_of_the_three_real_kinds() -> void:
 		)
 
 
-## Every `meridian_id` the authored huyệt carry, read off the shipped files rather than
+## Every `meridian_id` the authored acupoint carry, read off the shipped files rather than
 ## restated. Read through the same directory `CombatTuning.acupoint_data_dir` names, so
 ## adding a twenty-first meridian needs no edit here.
 static func _acupoint_meridians() -> Dictionary:

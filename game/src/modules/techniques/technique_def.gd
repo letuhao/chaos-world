@@ -93,7 +93,7 @@ extends Resource
 @export var required_meridians: Array[StringName] = []
 @export var required_channel_state: StringName = MeridianState.OPEN
 
-## `BodyRealmSeed`'s pair: the huyệt to open and the `AcupointDef.tier` they must
+## `BodyRealmSeed`'s pair: the acupoint to open and the `AcupointDef.tier` they must
 ## reach.
 @export var required_acupoints: Array[StringName] = []
 @export var required_acupoint_tier: StringName = &""

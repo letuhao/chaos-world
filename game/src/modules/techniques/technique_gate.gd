@@ -109,7 +109,7 @@ static func unmet(actor: Actor, def: TechniqueDef) -> Array[Dictionary]:
 				}
 			)
 		)
-	# Meridian channels and huyệt. Read from `Actor.meridians`, which is core state
+	# Meridian channels and acupoint. Read from `Actor.meridians`, which is core state
 	# rather than a module component (ADR 0057), so this needs no facade either.
 	if not def.required_meridians.is_empty():
 		for meridian_id in def.required_meridians:
@@ -151,7 +151,7 @@ static func unmet(actor: Actor, def: TechniqueDef) -> Array[Dictionary]:
 						"required": String(def.required_acupoint_tier),
 						"actual": reached,
 						"label":
-						"Requires huyệt %s at tier %s" % [point_id, def.required_acupoint_tier],
+						"Requires acupoint %s at tier %s" % [point_id, def.required_acupoint_tier],
 					}
 				)
 			)

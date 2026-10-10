@@ -197,9 +197,9 @@ point_quality_step = 0.5
 channel_mult_step = 0.15
 injured_mult_step = 0.25
 ; `blocked_mult` 1.5 -> 1.6. ADR 0070's inversion and `combat_tuning.gd`'s own
-; PRECONDITION of this field both say a jammed huyệt must outrank EVERY open one,
+; PRECONDITION of this field both say a jammed acupoint must outrank EVERY open one,
 ; and the whole quality range IS the maximum open point: `1 + point_quality_step x 1.0`
-; = 1.5. The shipped `1.5` therefore TIED the best-trained huyệt exactly, so `random`
+; = 1.5. The shipped `1.5` therefore TIED the best-trained acupoint exactly, so `random`
 ; aim could only ever find a jam on the lowest-id tie-break, not because the jam was
 ; the better aim point. `1.6` is the smallest change that makes the ordering STRICT,
 ; and it keeps the quality range the 50% swing it was authored as: an untrained point
