@@ -31,6 +31,8 @@ const BODY_FILE := "res://src/app/item_workbench_body.gd"
 ## The content-family wiring table, which the body's ceiling moved out to its own file.
 const WIRING_FILE := "res://src/app/item_workbench_wiring.gd"
 const APP_FILE := "res://src/app/item_workbench_app.gd"
+## The app's routes half: the binder arm this suite's census reads now lives there.
+const APP_ROUTES_FILE := "res://src/app/item_workbench_routes.gd"
 const BOOT_FILE := "res://src/app/institution_boot.gd"
 const ROUTES_FILE := "res://src/app/screen_routes.gd"
 const MEMBERSHIP_FILE := "res://src/core/institution_membership.gd"
@@ -189,8 +191,13 @@ func test_the_institution_boot_is_installed_from_the_composition_root() -> void:
 ## Callables it builds are the three public verbs, so a caller pressing the screen presses
 ## `core` and nothing in between.
 func test_the_route_binder_binds_all_three_actor_scoped_seams() -> void:
-	var body := FileAccess.get_file_as_string(APP_FILE)
-	assert_ne(body, "", "the composition root is readable")
+	# BOTH files: the binder arm moved to `item_workbench_routes.gd` when the app hit the
+	# line ceiling, while the three seam METHODS stayed on the app. The claim is about the
+	# pair — a route arm and the verbs it binds — so the census reads the pair.
+	var body := (
+		FileAccess.get_file_as_string(APP_FILE) + FileAccess.get_file_as_string(APP_ROUTES_FILE)
+	)
+	assert_ne(body, "", "the composition root and its routes half are readable")
 	assert_eq(body.contains("ROUTE_INSTITUTION"), true, "the route has a binder arm")
 	assert_eq(body.contains('"bind_institutions"'), true, "and it calls the screen's seam binder")
 	# All three verbs, and no fourth: a screen that could read, join and leave is a screen
