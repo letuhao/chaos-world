@@ -98,6 +98,16 @@ func _seam() -> SeamHarness:
 	return _harness
 
 
+## The node the realized world is parented to: `PlayfieldLayer.world_slot()`, reached through
+## the running app this suite already holds. Null when the shell carries no world layer,
+## which is itself the failure the caller reports.
+func _world_slot() -> Node2D:
+	if _harness == null or _harness.app == null:
+		return null
+	var layer := _harness.app.get_node_or_null(^"%PlayfieldLayer") as PlayfieldLayer
+	return null if layer == null else layer.world_slot()
+
+
 ## Navigate to the domain route through the real `navigate_to` and hand back the screen
 ## the ROOT mounted. Read off the stack, never instantiated here: a screen this suite
 ## built itself could never prove the root bound it, let alone that the root parented a
@@ -119,6 +129,12 @@ func _domain_screen() -> Control:
 	if live == null:
 		return null
 	assert_eq(String(live.name), DOMAIN_NODE, "and the root named it for the route it serves")
+	# The playfield is proven HERE rather than in each case: it is a property of the shell,
+	# not of a particular test, and repeating the null-guard per case pushed two of them
+	# past gdlint's `max-returns`.
+	assert_eq(
+		_world_slot() != null, true, "and the shell carries the world layer the playfield lives in"
+	)
 	_born.append(live)
 	return live
 
@@ -213,22 +229,31 @@ func test_entering_a_domain_realizes_a_walkable_world_under_the_mounted_screen()
 	assert_eq(entered != null, true, "the screen's Enter was accepted")
 	if entered == null:
 		return
-	# ## The world is a CHILD of the mounted screen, read by the name `DomainBoot`
-	# publishes. Looked up by name rather than by handle because the composition root
-	# deliberately keeps no handle: the node that draws the world is the node that owns it,
-	# so the proof has to be about the TREE.
-	var world := screen.get_node_or_null(NodePath(DomainBoot.WORLD_NODE))
+	# ## The world is a CHILD of the WORLD LAYER, read by the name `DomainBoot` publishes.
+	# Looked up by name rather than by handle because the composition root deliberately
+	# keeps no handle: the node that draws the world is the node that owns it, so the proof
+	# has to be about the TREE.
+	#
+	# ## Why NOT under the screen any more
+	#
+	# It used to be asserted as a child of the mounted screen, and that assertion described
+	# the bug: a `Node2D` world parented under a `Control` renders inside that control's
+	# rect, behind the control's own children, so the playfield was real and invisible. The
+	# world is now realized under `PlayfieldLayer.world_slot()` — a `Node2D` sibling of the UI
+	# canvas — and the parent check below is what stops it drifting back under a screen.
+	var slot := _world_slot()
+	var world := slot.get_node_or_null(NodePath(DomainBoot.WORLD_NODE))
 	assert_eq(
 		world != null,
 		true,
-		"a world named '%s' exists under the mounted screen" % String(DomainBoot.WORLD_NODE)
+		"a world named '%s' exists under the world layer" % String(DomainBoot.WORLD_NODE)
 	)
 	if world == null:
 		return
 	assert_eq(
 		world.get_parent(),
-		screen,
-		"and its parent is the mounted screen, so the node that draws it is the node that owns it"
+		slot,
+		"and its parent is the world slot, so a screen can never occlude the playfield"
 	)
 	var scene := world.get_node_or_null(NodePath(DomainBoot.WORLD_SCENE_NODE)) as DomainScene
 	assert_eq(scene != null, true, "the world holds the DomainScene the map is realized into")
@@ -293,7 +318,10 @@ func test_every_minted_inhabitant_stands_at_the_placement_the_spawner_recorded()
 		return
 	var refs := DomainApi.population(_hero)
 	assert_eq(refs.is_empty(), false, "the entered map authored at least one spawn ref")
-	var view := DomainBoot.world_summary(screen)
+	var slot := _world_slot()
+	if slot == null:
+		return
+	var view := DomainBoot.world_summary(slot)
 	assert_eq(view.is_empty(), false, "the realized world publishes a read model")
 	if view.is_empty():
 		return
@@ -367,9 +395,12 @@ func _recorded_placement(body: Node) -> Vector2:
 ## Every inhabitant body in the realized world, tree order. Depth-capped for the reason
 ## `SeamHarness._all_named` is: a traversal with no cap is an unbounded loop the moment the
 ## tree contains a cycle.
-func _inhabitant_bodies(screen: Node) -> Array[Node]:
+func _inhabitant_bodies(_screen: Node) -> Array[Node]:
 	var out: Array[Node] = []
-	var world := screen.get_node_or_null(NodePath(DomainBoot.WORLD_NODE))
+	var slot := _world_slot()
+	if slot == null:
+		return out
+	var world := slot.get_node_or_null(NodePath(DomainBoot.WORLD_NODE))
 	if world == null:
 		return out
 	var holder := world.get_node_or_null(NodePath(DomainBoot.WORLD_INHABITANTS_NODE))
@@ -411,8 +442,9 @@ func test_a_player_avatar_stands_in_the_world_inside_the_drawn_bounds() -> void:
 	if _enter(screen) == null:
 		assert_eq(true, false, "the screen's Enter was accepted")
 		return
-	var world := screen.get_node_or_null(NodePath(DomainBoot.WORLD_NODE))
-	assert_eq(world != null, true, "a world is realized under the screen")
+	var slot := _world_slot()
+	var world := slot.get_node_or_null(NodePath(DomainBoot.WORLD_NODE))
+	assert_eq(world != null, true, "a world is realized in the world layer")
 	if world == null:
 		return
 	var avatar := world.get_node_or_null(NodePath(DomainBoot.WORLD_PLAYER_NODE)) as PlayerAdapter
@@ -492,9 +524,13 @@ func test_the_realized_avatar_moves_by_its_own_movement_verb() -> void:
 	if _enter(screen) == null:
 		assert_eq(true, false, "the screen's Enter was accepted")
 		return
-	var world := screen.get_node_or_null(NodePath(DomainBoot.WORLD_NODE))
+	var slot := _world_slot()
+	if slot == null:
+		assert_eq(true, false, "the shell carries a world layer")
+		return
+	var world := slot.get_node_or_null(NodePath(DomainBoot.WORLD_NODE))
 	if world == null:
-		assert_eq(true, false, "a world is realized under the screen")
+		assert_eq(true, false, "a world is realized in the world layer")
 		return
 	var avatar := world.get_node_or_null(NodePath(DomainBoot.WORLD_PLAYER_NODE)) as PlayerAdapter
 	if avatar == null:
@@ -560,7 +596,14 @@ func test_leaving_the_domain_frees_the_world_the_entering_built() -> void:
 	assert_eq(screen != null, true, "the domain screen is mounted")
 	if screen == null:
 		return
-	var before := _node_count(screen)
+	# The baseline is the WORLD SLOT, and it is taken AFTER the route is opened: entering
+	# the route realizes the world (item_workbench_routes.gd calls `_realize_domain_world`
+	# on arrival), so a count taken earlier would compare a populated tree against an empty
+	# one and demand the world shrink.
+	var slot := _world_slot()
+	if slot == null:
+		return
+	var before := _node_count(slot)
 	var template_id := _selectable_template(screen)
 	# `assert_eq(x.is_empty(), false)`, NOT `assert_ne(x.is_empty(), false)`: on two
 	# booleans `assert_ne` is the same comparison written to look different, so
@@ -572,9 +615,11 @@ func test_leaving_the_domain_frees_the_world_the_entering_built() -> void:
 	if _enter(screen) == null:
 		assert_eq(true, false, "the screen's Enter was accepted")
 		return
-	var during := _node_count(screen)
-	assert_eq(during > before, true, "entering grew the mounted tree: %d -> %d" % [before, during])
-	var world := screen.get_node_or_null(NodePath(DomainBoot.WORLD_NODE))
+	# The tree that grows is the WORLD SLOT, not the screen: the playfield is not in the
+	# screen's subtree, which is the whole point of the split.
+	var during := _node_count(slot)
+	assert_eq(during > before, true, "entering grew the world tree: %d -> %d" % [before, during])
+	var world := slot.get_node_or_null(NodePath(DomainBoot.WORLD_NODE))
 	assert_eq(world != null, true, "and the growth is the realized world")
 	if world == null:
 		return
@@ -587,15 +632,15 @@ func test_leaving_the_domain_frees_the_world_the_entering_built() -> void:
 	var left: Variant = screen.call("act_leave")
 	assert_eq(left, true, "the screen's Leave was accepted")
 	assert_eq(
-		screen.get_node_or_null(NodePath(DomainBoot.WORLD_NODE)),
+		slot.get_node_or_null(NodePath(DomainBoot.WORLD_NODE)),
 		null,
-		"and the world is GONE from the mounted screen: leaving frees the floor"
+		"and the world is GONE from the world layer: leaving frees the floor"
 	)
-	var after := _node_count(screen)
+	var after := _node_count(slot)
 	assert_eq(
 		after,
 		before,
-		"the mounted tree is back to where it started: %d nodes entered, %d left" % [during, after]
+		"the world tree is back to where it started: %d nodes entered, %d left" % [during, after]
 	)
 
 
@@ -611,7 +656,10 @@ func test_the_composition_roots_teardown_frees_a_world_that_is_still_standing() 
 	assert_eq(screen != null, true, "the domain screen is mounted")
 	if screen == null:
 		return
-	var before := _node_count(screen)
+	var slot := _world_slot()
+	if slot == null:
+		return
+	var before := _node_count(slot)
 	var template_id := _selectable_template(screen)
 	# `assert_eq(x.is_empty(), false)`, NOT `assert_ne(x.is_empty(), false)`: on two
 	# booleans `assert_ne` is the same comparison written to look different, so
@@ -624,9 +672,9 @@ func test_the_composition_roots_teardown_frees_a_world_that_is_still_standing() 
 		assert_eq(true, false, "the screen's Enter was accepted")
 		return
 	assert_eq(
-		screen.get_node_or_null(NodePath(DomainBoot.WORLD_NODE)) != null,
+		slot.get_node_or_null(NodePath(DomainBoot.WORLD_NODE)) != null,
 		true,
-		"a world is standing under the screen before the teardown"
+		"a world is standing in the world layer before the teardown"
 	)
 	var app := _harness.app
 	assert_eq(app.has_method(&"teardown"), true, "the composition root publishes a teardown")
@@ -634,15 +682,14 @@ func test_the_composition_roots_teardown_frees_a_world_that_is_still_standing() 
 		return
 	app.call("teardown")
 	assert_eq(
-		screen.get_node_or_null(NodePath(DomainBoot.WORLD_NODE)),
+		slot.get_node_or_null(NodePath(DomainBoot.WORLD_NODE)),
 		null,
 		"teardown freed the world: a domain that outlives its run is a leak, not a world"
 	)
-	assert_eq(
-		_node_count(screen), before, "and the mounted tree is back where it started: %d" % before
-	)
-	# ## Navigating away frees it too — the world is a child of the screen, so the stack's
-	# OWN free takes it with no second owner to forget. Driven through the real
+	assert_eq(_node_count(slot), before, "and the world tree is back where it started: %d" % before)
+	# ## Navigating away frees it too. The world is NOT a child of the screen any more, so the
+	# stack's own free does NOT take it with it: leaving the route is what releases the world,
+	# and that is the assertion that has to keep holding. Driven through the real
 	# `navigate_to`, so this is the path a player takes rather than a private call.
 	#
 	# ## LEAVE BEFORE RE-ENTERING, and that is the whole fix
@@ -669,7 +716,7 @@ func test_the_composition_roots_teardown_frees_a_world_that_is_still_standing() 
 		assert_eq(true, false, "the screen's Enter was accepted a second time")
 		return
 	assert_eq(
-		screen.get_node_or_null(NodePath(DomainBoot.WORLD_NODE)) != null,
+		slot.get_node_or_null(NodePath(DomainBoot.WORLD_NODE)) != null,
 		true,
 		"a second world is standing after re-entering"
 	)
@@ -685,10 +732,10 @@ func test_the_composition_roots_teardown_frees_a_world_that_is_still_standing() 
 		"the player navigated off the domain route: %s" % String(moved["note"])
 	)
 	assert_eq(
-		DomainBoot.world_realized(screen),
+		DomainBoot.world_realized(slot),
 		false,
 		(
-			"and the screen that was showing the domain no longer holds a world: %s"
+			"and the world layer no longer holds a world once the player left the route: %s"
 			% String(moved["note"])
 		)
 	)

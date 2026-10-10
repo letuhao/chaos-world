@@ -921,29 +921,53 @@ func _install_domain_world_observer() -> void:
 ## `DomainBoot` reaches the parent back through this same seam, because it may not name a
 ## `ui/` type and guessing a second lookup would be a second thing that can disagree about
 ## where the world went. So one callable does both halves, and `release` is its other arm.
+##
+## The parent is `PlayfieldLayer.world_slot()`, not the screen: a world parented to a
+## `Control` renders inside that control's rect and is invisible. The route check below is
+## unchanged — a world parented where the player is not looking outlives its visit.
 func _realize_domain_world(action: StringName = &"realize") -> Dictionary:
 	var screen := _live_screen()
+	var layer := _world_layer()
 	if action == &"release":
-		return {} if screen == null else DomainBoot.release_world(screen)
+		if layer == null:
+			return {}
+		return DomainBoot.release_world(layer.world_slot())
 	var hero := _actor
 	if hero == null:
 		return {"ok": false, "reason": "no_actor"}
+	if layer == null:
+		# Reported by name, never falling back to the screen: the fallback is the bug.
+		return {"ok": false, "reason": "no_world_layer"}
 	if screen == null or String(screen.name) != ScreenRoutes.node_of(ROUTE_DOMAIN):
 		# The run exists but nothing is showing the domain. REPORTED rather than drawn
 		# somewhere the player cannot see: a world parented to an unrelated screen is a
 		# world that outlives the visit that created it.
 		return {"ok": false, "reason": "no_surface"}
-	return DomainBoot.realize_world(screen, hero)
+	var realized := DomainBoot.realize_world(layer.world_slot(), hero)
+	if bool(realized.get("ok", false)):
+		# Bound the camera by the floor actually drawn, so it stops at the playfield edge.
+		var bounds: Variant = realized.get("bounds")
+		if bounds is Rect2:
+			layer.set_bounds(bounds)
+	return realized
+
+
+## The world layer, or null when the shell does not carry one.
+##
+## The playfield layer. `PlayfieldLayer.find_from` holds the walk (never
+## `current_scene`: it is null for any caller that MOUNTS this shell rather than booting it).
+func _world_layer() -> PlayfieldLayer:
+	return PlayfieldLayer.find_from(self)
 
 
 ## The realized domain world, as primitives, or `{}` when nothing is realized. Published
 ## on the same contract as `routes()` and `summary()`: a probe asserts the wiring through
 ## a verb, never by reaching into a private field.
 func domain_world_summary() -> Dictionary:
-	var screen := _live_screen()
-	if screen == null:
+	var layer := _world_layer()
+	if layer == null:
 		return {}
-	return DomainBoot.world_summary(screen)
+	return DomainBoot.world_summary(layer.world_slot())
 
 
 # --- the file-backed state the UI program may not own ---------------------

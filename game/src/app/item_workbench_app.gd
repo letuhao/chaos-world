@@ -852,10 +852,10 @@ func refresh_socket_screen() -> void:
 ## always lands somewhere.
 
 
+## Free the realized world on quit or reload. Released against the PLAYFIELD LAYER's
+## slot: releasing against the screen would look for a subtree never under it.
 func teardown() -> void:
-	var screen := _live_screen()
-	if screen != null:
-		DomainBoot.release_world(screen)
+	PlayfieldLayer.release_under(self)
 
 
 ## ADR 0089's combat-exit purge, handed to the loot screen as a `Callable`.

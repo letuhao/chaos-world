@@ -1,18 +1,27 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 ; Playable entry point and the game's only composition root. The shell is a
-; navigation bar over a screen stack; every screen itself comes from the route table
-; in `res://src/app/screen_routes.gd`, so this scene composes navigation and nothing
-; else (ADR 0002, 0027, 0033).
+; world layer with a navigation bar and a screen stack drawn OVER it; every screen
+; itself comes from the route table in `res://src/app/screen_routes.gd`, so this
+; scene composes navigation and nothing else (ADR 0002, 0027, 0033).
 ;
 ; The stack owns which screen is live and where focus goes. The nav bar stays live
 ; beside it, so every route is one button press or one digit away from anywhere.
+;
+; ## The two layers, and why the world is not under the UI
+;
+; `PlayfieldLayer` is a `Node2D` and the UI is a `CanvasLayer` ABOVE it. The world
+; used to be realized under a live `UiScreen` — a `Control` inside this stack —
+; so the 2.5D world rendered inside a label's rect, behind that label's siblings.
+; The world was real and invisible. A screen can no longer occlude the playfield,
+; because the playfield is not in the screen's subtree at all.
 
 [ext_resource type="Script" path="res://src/app/item_workbench_app.gd" id="1"]
 [ext_resource type="Theme" path="res://src/ui/theme/chaos_world_theme.tres" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/nav/nav_bar.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://src/ui/screens/screen_stack.tscn" id="4"]
 [ext_resource type="Script" path="res://src/app/mod_boot.gd" id="5"]
+[ext_resource type="Script" path="res://src/app/playfield_layer.gd" id="6"]
 
 [node name="ItemWorkbenchApp" type="Control"]
 layout_mode = 3
@@ -29,7 +38,25 @@ script = ExtResource("1")
 [node name="ModBoot" type="Node" parent="."]
 script = ExtResource("5")
 
-[node name="Layout" type="MarginContainer" parent="."]
+; The playfield. SIBLING of the UI canvas, never its child: a world parented
+; under a Control competes with that Control's own children for the same pixels.
+[node name="PlayfieldLayer" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("6")
+
+; `unique_name_in_owner` is REQUIRED, not decoration: `PlayfieldLayer.world_slot()`
+; resolves this node by `%WorldSlot`, and an unnamed-percentage lookup returns null.
+; A null slot mints a fresh empty node instead, which reads as "the world layer is
+; there but holds nothing" — indistinguishable from the wiring never having happened.
+[node name="WorldSlot" type="Node2D" parent="PlayfieldLayer"]
+unique_name_in_owner = true
+
+; The UI, drawn over the world. `layer = 1` is what puts it in front; the default
+; canvas (the world's own layer 0) is behind it.
+[node name="UILayer" type="CanvasLayer" parent="."]
+layer = 1
+
+[node name="Layout" type="MarginContainer" parent="UILayer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -41,14 +68,14 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="Column" type="VBoxContainer" parent="Layout"]
+[node name="Column" type="VBoxContainer" parent="UILayer/Layout"]
 layout_mode = 2
 
-[node name="NavBar" parent="Layout/Column" instance=ExtResource("3")]
+[node name="NavBar" parent="UILayer/Layout/Column" instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ScreenStack" parent="Layout/Column" instance=ExtResource("4")]
+[node name="ScreenStack" parent="UILayer/Layout/Column" instance=ExtResource("4")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

@@ -34,6 +34,7 @@ const ROUTE_QUEST := &"quest"
 const ROUTE_DIALOGUE := &"dialogue"
 
 const ROUTE_BODY := &"body_cultivation"
+const ROUTE_QI := &"qi_cultivation"
 
 const ROUTE_WORLD_MAP := &"world_map"
 
@@ -307,6 +308,7 @@ func navigate_to(route_id: StringName) -> bool:
 	# One level is ever stacked over the home screen, so this unwinds at most one
 	# screen. The home screen is never popped: the workbench is where the player
 	# keeps state, and a route change must not destroy it.
+	PlayfieldLayer.release_under(self)  # this free never reaches the PLAYFIELD LAYER
 	_stack.call("pop_to_root")
 	_feature_screen = null
 	if route_id != ScreenRoutes.ROOT_ID:

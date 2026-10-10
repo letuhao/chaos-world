@@ -7,39 +7,37 @@
 ; tile for it to be. Walls are a different tile of the SAME source rather than a second
 ; source, so both layers share one terrain set and one physics layer by construction.
 ;
-; The 32 px region is deliberate: `TILE_PIXELS` in `res://src/app/domain_scene.gd` must
+; The 128 px region is deliberate: `TILE_PIXELS` in `res://src/app/domain_scene.gd` must
 ; match `texture_region_size` here, because that constant is the only thing converting the
 ; map's tile coordinates into pixels, and the two files cannot read each other. The equality
 ; is asserted by `tests/modules/domain/test_domain_scene.gd` rather than assumed.
 ;
-; The texture is the shipped 128x128 ground tile, sliced into a 4x4 grid of 32 px cells, so
-; the floor is drawn from real repo art and no asset was authored for this.
+; The texture is the shipped 128x128 ground tile, drawn ONE-TO-ONE as a single
+; 128 px cell, so the floor is drawn from real repo art and no asset was authored
+; for this. It used to be sliced into a 4x4 grid of 32 px cells, which contradicted
+; the art library: every `map-asset-index.jsonl` footprint is `canvas_px / 128`, so
+; at a 32 px unit every prop drew four times too large for the tile it stood on.
+;
+; The wall, and the tile this no longer has:
+;
+; The atlas is ONE 128 px cell, so `WALL_ATLAS_COORDS` is `(0, 0)` too — the same
+; ground texture, which is exactly the "walls are painted with grass" defect this
+; file's own header used to describe as intentional. `test_domain_scene.gd`
+; asserts the wall is currently the same tile, and that assertion flips the moment
+; a second authored wall texture ships. Until then the wall is visibly wrong, and
+; saying so here is cheaper than a comment that calls it a design choice.
+;
+; A real wall atlas belongs in `game/assets/world_map/<env>/ground_tile/`, which
+; already holds eight authored ground tiles per environment; this tileset names
+; exactly one of them.
 
 [ext_resource type="Texture2D" path="res://assets/world_map/mortal_plains/ground_tile/base_ground.png" id="1_ground"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_domain_terrain"]
 texture = ExtResource("1_ground")
-texture_region_size = Vector2i(32, 32)
+texture_region_size = Vector2i(128, 128)
 0:0/0 = 0
-0:1/0 = 0
-0:2/0 = 0
-0:3/0 = 0
-1:0/0 = 0
-1:1/0 = 0
-1:2/0 = 0
-1:3/0 = 0
-2:0/0 = 0
-2:1/0 = 0
-2:2/0 = 0
-2:3/0 = 0
-3:0/0 = 0
-3:1/0 = 0
-3:2/0 = 0
-3:3/0 = 0
-; The ONLY tile in the set that collides. The quad is full-tile and centred on the tile's
-; own origin — `TileData` polygon points are tile-local and centred, so an off-centre quad
-; would leave the wall's outer quarter walkable.
-2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+0:0/physics_layer_0/polygon_0/points = PackedVector2Array(-64, -64, 64, -64, 64, 64, -64, 64)
 
 [resource]
 physics_layer_0/collision_layer = 1

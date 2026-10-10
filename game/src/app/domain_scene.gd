@@ -77,10 +77,27 @@ extends Node2D
 ## `static` function and never stored. `map` is the only field, and it is the thing being viewed,
 ## not a table the scene maintains.
 
-## One tile is 32 px. This is the ONLY thing turning the map's `Vector2i` TILE coordinates into
+## One tile is 128 px. This is the ONLY thing turning the map's `Vector2i` TILE coordinates into
 ## pixels, and it must equal `texture_region_size` in the tileset `.tres`. The two files cannot
 ## read each other, so `test_domain_scene.gd` asserts the equality rather than trusting it.
-const TILE_PIXELS := 32
+##
+## ## Why 128 and not 32
+##
+## The whole art library is authored on a 128 px grid: `map-asset-index.jsonl` gives every
+## `ground_tile` a `canvas_px` of `[128, 128]` and every prop a `footprint_cells` of exactly
+## `canvas_px / 128` — a 256 px boulder is 2x2 cells, a 512 px storehouse is 4x4, a 128 px
+## supply crate is 1x1. That ratio is the authored contract.
+##
+## At `TILE_PIXELS := 32` the tileset sliced a 128 px ground PNG into a 4x4 grid of 32 px cells,
+## so every prop drew at 4x the size the floor it stands on implied: a supply crate's art was
+## four tiles wide on a one-tile footprint. The scene and the art disagreed by exactly the
+## factor the atlas grid introduced.
+##
+## 128 makes the ground tile 1:1 — one authored PNG, one tile, no slicing — and puts every prop
+## on the footprint its index already claims. It is also the framing AGENTS.md records: at
+## 128 px/unit a 1280x720 viewport shows ~10x5.6 tiles, which is the close, high-detail view
+## rather than the ~40x22 a 32 px unit gives.
+const TILE_PIXELS := 128
 
 ## The source id in the tileset. Constant rather than a field a caller can point elsewhere: a
 ## scene whose floor depends on the caller's atlas is not a view of the map.
@@ -89,9 +106,12 @@ const SOURCE_ID := 0
 ## The floor tile. Rooms AND corridors stamp this one tile — see the class docstring.
 const FLOOR_ATLAS_COORDS := Vector2i(0, 0)
 
-## The wall tile: the same atlas source, so both layers share one terrain set and one physics
-## layer and neither layer has to declare a private one.
-const WALL_ATLAS_COORDS := Vector2i(2, 0)
+## The wall tile. Same atlas source and therefore the same terrain set and physics layer, and
+## with the atlas now ONE authored cell this is the SAME COORDS AS THE FLOOR: the wall draws
+## the ground texture. That is a known-wrong render, not a design choice — the previous 4x4
+## atlas had a second cell to point at, and it was a crop of the same grass. A real wall tile
+## is the next authored asset; the tileset's own header says so at the length it deserves.
+const WALL_ATLAS_COORDS := Vector2i(0, 0)
 
 ## Where the tileset lives. One path declared once: `realize()` and the test that loads the file
 ## by hand both read it, and two copies of a path are two copies that can disagree.
