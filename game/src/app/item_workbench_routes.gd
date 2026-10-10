@@ -415,6 +415,13 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 			# time through this bridge. Wiring it here is what makes the crafting route
 			# cost a period rather than run free.
 			screen.call("set_bridge", _crafting_bridge())
+		ROUTE_QI:
+			# The qi screen carries the FOUNDATION READOUT (BL-0951 / ADR 0939, S15), so the
+			# composition root hands it the shared mending read here — `app/` is the one layer
+			# that may name every avenue's module, and the readout renders what is available and
+			# at what price while each avenue's INVOCATION stays in its own screen.
+			screen.call("setup", _actor)
+			screen.call("set_mending", _mending_read())
 		ROUTE_BODY:
 			screen.call("setup", _actor)
 			# The body screen's World Map button is a real navigation door, so the

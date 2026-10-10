@@ -871,6 +871,14 @@ func _crafting_bridge() -> CraftingBridge:
 	return bridge
 
 
+## The shared mending read (BL-0951 / ADR 0939, S15): what each of the eight avenues can do
+## for the actor's weakest scar, as primitives. The qi route hands it to the foundation
+## readout, because `app/` is the one layer that may name every avenue's module and `ui/`
+## reads the answer without naming any.
+func _mending_read() -> Dictionary:
+	return MendingRead.for_actor(_actor)
+
+
 # --- resolve_item --------------------------------------------------------
 ## Look a definition up by id through the items module's single resolver, so the
 ## app uses the same lookup as inventory, crafting, the generator and loot.
