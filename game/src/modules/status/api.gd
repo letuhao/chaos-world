@@ -121,10 +121,13 @@ extends RefCounted
 ## (`water_deluge`, 2.0s), which no frame delta reaches.
 const PULSES_PER_FRAME := 64
 
-## The re-application lockout a def without its own `icd` uses (ADR 0902, P4).
-## Pushed from `CombatTuning.status_icd_default` at boot; `0.0` = no ICD. The
-## status module owns this because it owns the per-instance clock the check reads.
-static var _icd_default: float = 0.0
+
+## The re-application lockout a def without its own `icd` uses (ADR 0902, P4), and the
+## verbs that read it, live in [StatusEngine]. This stays the facade's published setter
+## because the composition root pushes `CombatTuning.status_icd_default` through it at
+## boot, and the status suites set it per case.
+static func set_icd_default(seconds: float) -> void:
+	StatusEngine.set_icd_default(seconds)
 
 
 ## Every authored status id, canonically ordered.
@@ -177,7 +180,7 @@ static func apply(
 	var life := def.duration if duration < 0.0 else duration
 	# ADR 0902 (P4): the lockout is checked BEFORE the effect lands, so a refused
 	# re-application leaves the live instance untouched.
-	if _icd_refusal(actor, def):
+	if StatusEngine.icd_refusal(actor, def):
 		StatusEvents.note_resisted(actor.id, def.id, &"status_icd")
 		return {"ok": false, "reason": "status_icd", "id": String(def.id)}
 	# `Actor.add_status` is ADR 0086's apply path. Its return type is in flight (it
@@ -186,8 +189,8 @@ static func apply(
 	# legal in GDScript whether or not there is one, and `has_status` is the
 	# contract both shapes agree on. That also makes a refusal observable without
 	# a second code path per shape.
-	var answer := actor.add_status(_effect_for(def, resolved, life, grant_id))
-	var held := _effect_by_instance(actor, int(answer.get(StatusRegistry.INSTANCE, 0)))
+	var answer := actor.add_status(StatusEngine.effect_for(def, resolved, life, grant_id))
+	var held := StatusEngine.effect_by_instance(actor, int(answer.get(StatusRegistry.INSTANCE, 0)))
 	if not bool(answer.get(&"ok", false)) or held == null:
 		StatusEvents.note_resisted(
 			actor.id, def.id, &"refused_by_actor", StringName(answer.get(&"reason", &""))
@@ -195,13 +198,13 @@ static func apply(
 		return {"ok": false, "reason": "refused_by_actor", "id": String(def.id)}
 	# The merge decided WHICH instance survives (ADR 0902, P3); the runtime binds
 	# to that instance, not to the id, so a `coexist` pair keeps two records.
-	var runtime := _bind_runtime(actor, def, held)
+	var runtime := StatusEngine.bind_runtime(actor, def, held)
 	StatusRuntime.apply_modifiers(actor, runtime)
-	_reconcile(actor)
+	StatusEngine.reconcile(actor)
 	# A BURST spends itself at the moment of arrival (water_deluge): it damages
 	# exactly once and leaves no modifier behind to be rebuilt later.
 	if bool(def.payload.get("spends_on_apply", false)):
-		_pulse(actor, runtime)
+		StatusEngine.pulse(actor, runtime)
 	# ADR 0902 (P5): the completed fact, announced after the modifiers are on the
 	# actor — a subscriber reacting to it can never observe a half-written status.
 	StatusEvents.note_applied(actor.id, def.id, held.instance_id, grant_id)
@@ -245,8 +248,8 @@ static func apply(
 static func tick_statuses(actor: Actor, delta: float) -> Dictionary:
 	if actor == null:
 		return {"ok": false, "reason": "no_actor", "ticked": 0, "damage": 0.0, "expired": 0}
-	var before := _live_instances(actor)
-	var runtimes := _runtime(actor)
+	var before := StatusEngine.live_instances(actor)
+	var runtimes := StatusEngine.runtimes(actor)
 	var damage := 0.0
 	var ticks := 0
 	var truncated := 0
@@ -286,14 +289,14 @@ static func tick_statuses(actor: Actor, delta: float) -> Dictionary:
 			runtime.tick_elapsed -= interval
 			runtime.ticks_elapsed += 1
 			ticks += 1
-			var paid := _pulse(actor, runtime)
+			var paid := StatusEngine.pulse(actor, runtime)
 			damage += paid
 			# ADR 0902 (P7): the meter's value-event source — the amount this pulse paid.
 			if paid > 0.0:
-				_feed_meter(actor, status.instance_id, runtime, paid)
+				StatusEngine.feed_meter(actor, status.instance_id, runtime, paid)
 	actor.tick_statuses(delta)
-	var expired := _count_lost(before, _live_instances(actor))
-	_reconcile(actor)
+	var expired := StatusEngine.count_lost(before, StatusEngine.live_instances(actor))
+	StatusEngine.reconcile(actor)
 	var answer := {"ok": true, "ticked": ticks, "damage": damage, "expired": expired}
 	if truncated > 0:
 		answer["truncated"] = truncated
@@ -372,11 +375,11 @@ static func apply_cultivation(
 	var life := def.duration if duration < 0.0 else duration
 	# ADR 0902 (P4): the lockout is checked BEFORE the effect lands, so a refused
 	# re-application leaves the live instance untouched.
-	if _icd_refusal(actor, def):
+	if StatusEngine.icd_refusal(actor, def):
 		StatusEvents.note_resisted(actor.id, def.id, &"status_icd")
 		return {"ok": false, "reason": "status_icd", "id": String(def.id)}
-	var answer := actor.add_status(_effect_for(def, resolved, life, grant_id))
-	var held := _effect_by_instance(actor, int(answer.get(StatusRegistry.INSTANCE, 0)))
+	var answer := actor.add_status(StatusEngine.effect_for(def, resolved, life, grant_id))
+	var held := StatusEngine.effect_by_instance(actor, int(answer.get(StatusRegistry.INSTANCE, 0)))
 	if not bool(answer.get(&"ok", false)) or held == null:
 		StatusEvents.note_resisted(
 			actor.id, def.id, &"refused_by_actor", StringName(answer.get(&"reason", &""))
@@ -384,9 +387,9 @@ static func apply_cultivation(
 		return {"ok": false, "reason": "refused_by_actor", "id": String(def.id)}
 	# The merge decided WHICH instance survives (ADR 0902, P3); the runtime binds
 	# to that instance, not to the id, so a `coexist` pair keeps two records.
-	var runtime := _bind_runtime(actor, def, held)
+	var runtime := StatusEngine.bind_runtime(actor, def, held)
 	StatusRuntime.apply_modifiers(actor, runtime)
-	_reconcile(actor)
+	StatusEngine.reconcile(actor)
 	# ADR 0902 (P5): the completed fact, in the same spelling as [method apply]'s.
 	StatusEvents.note_applied(actor.id, def.id, held.instance_id, grant_id)
 	return {
@@ -464,10 +467,10 @@ static func resolve(actor: Actor, effect: StatusEffect) -> Dictionary:
 	var def := StatusCatalog.instance().any_definition(effect.id)
 	if def == null:
 		return {"ok": false, "reason": "unknown_status", "id": String(effect.id)}
-	var live := _live(actor, effect.id)
+	var live := StatusEngine.live(actor, effect.id)
 	if live == null:
 		return {"ok": false, "reason": "def_not_on_actor", "id": String(effect.id)}
-	var runtime := _bind_runtime(actor, def, live)
+	var runtime := StatusEngine.bind_runtime(actor, def, live)
 	runtime.magnitude = minf(maxf(live.magnitude, 0.0), def.magnitude_cap)
 	StatusRuntime.apply_modifiers(actor, runtime)
 	return {
@@ -493,14 +496,14 @@ static func clear_combat_scope(actor: Actor) -> Array[String]:
 	if actor == null:
 		return []
 	var cleared: Array[String] = []
-	var runtimes := _runtime(actor)
+	var runtimes := StatusEngine.runtimes(actor)
 	for status in actor.statuses:
 		var runtime := runtimes.get(status.instance_id) as StatusRuntime
 		if runtime == null or not runtime.def.is_combat_scope():
 			continue
 		StatusRuntime.clear_source(actor, runtime.source)
 		cleared.append(String(runtime.def.id))
-	_purge(actor, cleared)
+	StatusEngine.purge(actor, cleared)
 	return cleared
 
 
@@ -548,7 +551,7 @@ static func cleanse(actor: Actor, lever: StringName) -> Dictionary:
 	# status this module did not author carries no `StatusDef`, so it has no authored
 	# `mitigation_tags` to match and is simply never removed: guessing at a foreign
 	# status's lever set is how a cleanse would start eating somebody else's state.
-	var runtimes := _runtime(actor)
+	var runtimes := StatusEngine.runtimes(actor)
 	var cleared: Array[String] = []
 	for status in actor.statuses:
 		var runtime := runtimes.get(status.instance_id) as StatusRuntime
@@ -556,7 +559,7 @@ static func cleanse(actor: Actor, lever: StringName) -> Dictionary:
 			continue
 		StatusRuntime.clear_source(actor, runtime.source)
 		cleared.append(String(runtime.def.id))
-	_purge(actor, cleared)
+	StatusEngine.purge(actor, cleared)
 	return {
 		"ok": true,
 		"lever": named,
@@ -588,7 +591,7 @@ static func clear_grant(actor: Actor, grant_id: StringName) -> Dictionary:
 		return {"ok": false, "grant": String(grant_id), "reason": "no_actor"}
 	if grant_id == &"":
 		return {"ok": false, "grant": "", "reason": "empty_grant"}
-	var store := _runtime(actor)
+	var store := StatusEngine.runtimes(actor)
 	var cleared: Array[String] = []
 	var instances: Array[int] = []
 	for status in actor.statuses:
@@ -598,7 +601,7 @@ static func clear_grant(actor: Actor, grant_id: StringName) -> Dictionary:
 			continue
 		cleared.append(String(status.id))
 		instances.append(status.instance_id)
-	_purge_instances(actor, instances)
+	StatusEngine.purge_instances(actor, instances)
 	# ADR 0902 (P6=C): the grant's counters go with its instances — the Keepverse
 	# `ClearGrant` prefix sweep, so a re-projected grant starts from zero.
 	StatusCounters.clear_grant(actor, grant_id)
@@ -618,7 +621,7 @@ static func clear_grant(actor: Actor, grant_id: StringName) -> Dictionary:
 static func withdraw(actor: Actor) -> Dictionary:
 	if actor == null:
 		return {"ok": false, "reason": "no_actor"}
-	var store := _runtime(actor)
+	var store := StatusEngine.runtimes(actor)
 	var cleared: Array[String] = []
 	var instances: Array[int] = []
 	for status in actor.statuses:
@@ -626,7 +629,7 @@ static func withdraw(actor: Actor) -> Dictionary:
 			continue
 		cleared.append(String(status.id))
 		instances.append(status.instance_id)
-	_purge_instances(actor, instances)
+	StatusEngine.purge_instances(actor, instances)
 	StatusRuntime.forget(actor)
 	# ADR 0902 (P6=C): the host's counters leave with its instances.
 	StatusCounters.forget(actor)
@@ -664,7 +667,7 @@ static func spread_status(
 ) -> Array[Dictionary]:
 	if actor == null or rng == null:
 		return []
-	var source := _effect_by_instance(actor, instance_id)
+	var source := StatusEngine.effect_by_instance(actor, instance_id)
 	if source == null:
 		return []
 	var def := StatusCatalog.instance().any_definition(source.id)
@@ -674,7 +677,7 @@ static func spread_status(
 	var chance_used := chance if chance >= 0.0 else float(config.get("chance", 0.0))
 	if chance_used <= 0.0:
 		return []
-	var runtime := _runtime(actor).get(instance_id) as StatusRuntime
+	var runtime := StatusEngine.runtimes(actor).get(instance_id) as StatusRuntime
 	var icd := maxf(0.0, float(config.get("icd", 0.0)))
 	if runtime != null and runtime.spread_elapsed < icd:
 		return []
@@ -684,17 +687,6 @@ static func spread_status(
 	if not rows.is_empty() and runtime != null:
 		runtime.spread_elapsed = 0.0
 	return rows
-
-
-## Remove the statuses carrying `instances`, in place, and let the same reconcile
-## every other purge runs release their records and modifiers. INSTANCE-keyed where
-## [method _purge] is id-keyed (ADR 0902, P3), because `coexist` siblings share an id.
-static func _purge_instances(actor: Actor, instances: Array[int]) -> void:
-	for index in range(actor.statuses.size() - 1, -1, -1):
-		if instances.has(actor.statuses[index].instance_id):
-			actor.statuses.remove_at(index)
-	_reconcile(actor)
-	actor.mark_stats_dirty()
 
 
 ## ## `record_counter_hit` / `record_instance_hit` — the two key spaces (ADR 0902, P6=C)
@@ -792,46 +784,17 @@ static func record_landed_blow(host: Actor, entry: Dictionary) -> bool:
 	if instance_id <= 0:
 		# No fresh handle: advance the LIVE instance the id names. The first match is
 		# unique for every stacking except `coexist`, which this docblock names.
-		instance_id = _live_instance_for(host, status_id)
+		instance_id = StatusEngine.live_instance_for(host, status_id)
 	var fired := record_instance_hit(host, instance_id, every_hits, reset_on_burst)
 	if fired:
 		# The crossing PAYS (ADR 0902, P6): the accumulated hits discharge as one pulse
 		# of the def's own channel — the counter's whole point, not a bookkeeping flag —
 		# and the fact is announced beside the meter's crossing.
-		var runtime := _runtime(host).get(instance_id) as StatusRuntime
+		var runtime := StatusEngine.runtimes(host).get(instance_id) as StatusRuntime
 		if runtime != null:
-			_pulse(host, runtime)
+			StatusEngine.pulse(host, runtime)
 		StatusEvents.note_counter_fired(host.id, status_id, instance_id, every_hits)
 	return fired
-
-
-## ADR 0902 (P7): a `meter`-kind status fills from the VALUE events its own pulses pay
-## — the second of the one accumulator's two sources (hit counts are the first, T4's
-## landed-blow path). Crossing the authored `payload.meter.every` publishes
-## `status_meter_fired`; `reset_on_burst` follows the same residual rule as every other
-## counter. A def that is not a meter is a no-op here, so every shipped def is
-## byte-identical.
-static func _feed_meter(
-	actor: Actor, instance_id: int, runtime: StatusRuntime, amount: float
-) -> void:
-	if actor == null or runtime == null or runtime.def == null:
-		return
-	var def := runtime.def
-	if def.kind != &"meter":
-		return
-	var config: Variant = def.payload.get("meter", {})
-	if not (config is Dictionary):
-		return
-	var authored := config as Dictionary
-	var every := maxf(0.0, float(authored.get("every", 0.0)))
-	if every <= 0.0:
-		return
-	var reset_on_burst := bool(authored.get("reset_on_burst", true))
-	if StatusCounters.advance(actor, instance_id, every, reset_on_burst, amount):
-		# The discharge (ADR 0902, P7): the meter pays one pulse of its own channel
-		# when it crosses, beside the announced fact.
-		_pulse(actor, runtime)
-		StatusEvents.note_meter_fired(actor.id, def.id, instance_id, amount)
 
 
 ## The element→status mapping of ADR 0105: the id whose def claims
@@ -902,7 +865,7 @@ static func summary(actor: Actor = null) -> Dictionary:
 		(report["rejected"] as Array).append(entry)
 	if actor == null:
 		return report
-	var runtimes := _runtime(actor)
+	var runtimes := StatusEngine.runtimes(actor)
 	var active: Array = []
 	for status in actor.statuses:
 		var runtime := runtimes.get(status.instance_id) as StatusRuntime
@@ -920,7 +883,8 @@ static func summary(actor: Actor = null) -> Dictionary:
 					"ticks_elapsed": 0 if runtime == null else runtime.ticks_elapsed,
 					"scope": "" if runtime == null else String(runtime.def.scope),
 					"family": "" if runtime == null else String(runtime.def.family),
-					"categories": [] if runtime == null else _strings_of(runtime.def.categories),
+					"categories":
+					[] if runtime == null else StatusEngine.strings_of(runtime.def.categories),
 					"crowd_control": false if runtime == null else runtime.def.crowd_control,
 				}
 			)
@@ -1005,7 +969,6 @@ static func mind_confront(
 		"detail": "a composure is the defender's answer and is never projected",
 	}
 
-
 ## ## Why there is no `mind_summary` beside it
 ##
 ## This used to publish a second mind verb, `mind_summary`, which delegated to
@@ -1018,393 +981,3 @@ static func mind_confront(
 ## `mind_confront` above STAYS, and the distinction is the whole point: that one is
 ## the mind path's single production-shaped verb, and both mind suites call it as
 ## the loop under test.
-
-# --- Internals ---------------------------------------------------------------
-
-
-## The live `StatusEffect` an authored def resolves to.
-##
-## ## Why this is more than `StatusEffect.new(id, life)`
-##
-## ADR 0086 is explicit that the contract is "a tagged, stackable INSTANCE" and ADR 0090
-## is explicit that a `StatusDef` "carries exactly the instance fields of ADR 0086 that
-## are AUTHORED". So the two halves are one object and this is the seam: a def that
-## resolves into a bare `StatusEffect.new(id, life)` throws its authored half away and
-## leaves every default, and those defaults are the silent kind — `tick_interval = 0.0`
-## is the contract's "plain timer, never pays one" (`contracts/status_effect.gd`), so a
-## DoT written that way still ages out, still shows as applied, and spends nothing. A
-## `.tres` would have to be a `.tres` that does nothing at all.
-##
-## Each field is read through the def's own closed vocabulary rather than cast, because a
-## def that names something outside it is refused at load (`StatusDef.problems`) and a
-## bad cast here would be a second, quieter opinion about the same value.
-static func _effect_for(
-	def: StatusDef, magnitude: float, life: float, grant_id: StringName = &""
-) -> StatusEffect:
-	var effect := StatusEffect.new(def.id, life)
-	effect.magnitude = magnitude
-	effect.magnitude_cap = def.magnitude_cap
-	effect.tick_interval = maxf(0.0, def.tick_interval)
-	effect.mitigation_tags = def.mitigation_tags.duplicate()
-	effect.element = def.element
-	effect.scope = (
-		StatusEffect.Scope.CULTIVATION
-		if def.scope == &"cultivation"
-		else (StatusEffect.Scope.COMBAT)
-	)
-	effect.stacking = _stacking_of(def.stacking)
-	effect.kind = _kind_of(def.kind)
-	# ADR 0902 (P5): the application's own handle, carried on the effect so a
-	# lifecycle sweep can find every instance ONE grant wrote.
-	effect.grant_id = grant_id
-	return effect
-
-
-## A def's authored `stacking` as the contract's enum. REFRESH rather than a hard
-## failure, because it is the contract's own default and a refactor that left this
-## unreadable must not turn every re-application into a refusal.
-static func _stacking_of(stacking: StringName) -> StatusEffect.Stacking:
-	match stacking:
-		&"stack":
-			return StatusEffect.Stacking.STACK
-		&"replace":
-			return StatusEffect.Stacking.REPLACE
-		&"coexist":
-			return StatusEffect.Stacking.COEXIST
-		_:
-			return StatusEffect.Stacking.REFRESH
-
-
-## A def's authored `kind` as the contract's enum, for the same reason as `_stacking_of`.
-static func _kind_of(kind: StringName) -> StatusEffect.Kind:
-	match kind:
-		&"dot":
-			return StatusEffect.Kind.DOT
-		&"control":
-			return StatusEffect.Kind.CONTROL
-		&"amplifier":
-			return StatusEffect.Kind.AMPLIFIER
-		&"burst":
-			return StatusEffect.Kind.BURST
-		&"counter":
-			return StatusEffect.Kind.COUNTER
-		&"meter":
-			return StatusEffect.Kind.METER
-		&"contagion":
-			return StatusEffect.Kind.CONTAGION
-		_:
-			return StatusEffect.Kind.STAT_MODIFIER
-
-
-## The per-actor runtime store, delegated to `StatusRuntime` so there is exactly one
-## owner of the id-keyed map. ADR 0089 keeps statuses out of the save payload entirely,
-## and that works because the store is a `WeakRef` table rather than module data — a
-## record parked in `actor.module_data` would put potency, escalation state and authored
-## def ids into every save.
-static func _runtime(actor: Actor) -> Dictionary:
-	return StatusRuntime._runtimes(actor)
-
-
-## Set the fallback ICD. A value, not a dispatch: deterministic and non-interactive.
-static func set_icd_default(seconds: float) -> void:
-	_icd_default = maxf(0.0, seconds)
-
-
-## Whether a live same-id instance is still inside its ICD window (ADR 0902, P4).
-## A same-id effect with NO runtime record cannot prove it is outside the window,
-## so it refuses — the conservative reading, the same way a null rng never mints
-## a free CC. Bounded `for` over the actor's list.
-static func _icd_refusal(actor: Actor, def: StatusDef) -> bool:
-	var icd := def.icd if def.icd > 0.0 else _icd_default
-	if icd <= 0.0:
-		return false
-	var store := _runtime(actor)
-	for status in actor.statuses:
-		if status.id != def.id:
-			continue
-		var runtime := store.get(status.instance_id) as StatusRuntime
-		if runtime == null or runtime.icd_elapsed < icd:
-			return true
-	return false
-
-
-## The live instance handle carrying `status_id` on `actor`, or 0 when none does
-## (ADR 0902, P6=C). Bounded `for` over the actor's own list; the FIRST match is
-## unique for every stacking except `coexist`, which [method record_landed_blow] names.
-static func _live_instance_for(actor: Actor, status_id: StringName) -> int:
-	for status in actor.statuses:
-		if status.id == status_id:
-			return status.instance_id
-	return 0
-
-
-## The live effect carrying `instance_id`, or null (ADR 0902, P3). Bounded
-## `for` over the actor's list; the caller only asks with an id it just read
-## off an answer, so `0` (not minted) matches nothing in practice.
-static func _effect_by_instance(actor: Actor, instance_id: int) -> StatusEffect:
-	for status in actor.statuses:
-		if status.instance_id == instance_id:
-			return status
-	return null
-
-
-## The ONE resolution record of a live instance (ADR 0902, P3): reused across
-## merges — refresh and stack mutate the held instance and must NOT mint a
-## second record — and created on first appearance. Magnitude and stacks mirror
-## the CORE effect, so one number keeps one home.
-static func _bind_runtime(actor: Actor, def: StatusDef, held: StatusEffect) -> StatusRuntime:
-	var store := _runtime(actor)
-	var runtime := store.get(held.instance_id) as StatusRuntime
-	if runtime == null:
-		runtime = StatusRuntime.new()
-		runtime.def = def
-		runtime.source = (
-			StatusRuntime.source_for_instance(def.id, held.instance_id)
-			if def.stacking == &"coexist"
-			else StatusRuntime.source_for(def.id)
-		)
-		store[held.instance_id] = runtime
-	runtime.magnitude = held.magnitude
-	runtime.stacks = held.stacks
-	# The application cleared the window (ADR 0902, P4): elapsed restarts here.
-	runtime.icd_elapsed = 0.0
-	return runtime
-
-
-## Sweep every runtime whose instance left the actor's list. Expiry, replace
-## and purge all land here, so the sweep lives in ONE place.
-static func _reconcile(actor: Actor) -> void:
-	_prune(actor, _live_instances(actor))
-
-
-## One tick channel of one status. Returns the damage it wrote.
-##
-## `magnitude_unit` names WHICH CHANNEL the status resolves through, and `pool` names
-## how much of it is spent — a share of the potency, not an authored damage number.
-## So `health_share` spends, `stat_modifier` holds modifiers already computed at apply
-## time (ADR 0089: ticking never adds or removes one), and `sibling_amp` contributes
-## nothing itself and exists only to feed the burns beside it.
-static func _pulse(actor: Actor, runtime: StatusRuntime) -> float:
-	if runtime == null or runtime.def == null:
-		return 0.0
-	var def := runtime.def
-	# A BURST spends itself AT ARRIVAL, which is `apply`'s call into this function.
-	# It is deliberately NOT suppressed here: suppressing by kind inside `_pulse`
-	# blocked the arrival spend too, so `water_deluge` landed nothing at all. The
-	# no-respend rule lives in `tick_statuses`, which is the only other caller and
-	# the only place "a second spend" is even possible.
-	# TWO damage channels, not one. `health_share` is the flat bleed shape; the
-	# `element_power` channel is the escalating burn, which resolves its magnitude
-	# through the attacker's element power the same way any other qi term does. Both
-	# spend; returning early for the second made `fire_immolation` a no-op that
-	# still read as "applied", which is the failure this program exists to prevent.
-	var spends_health := (
-		def.magnitude_unit == &"health_share" or def.magnitude_unit == &"element_power"
-	)
-	if not spends_health:
-		return 0.0
-	var magnitude := StatusRuntime.pulse_magnitude(
-		runtime, _sibling_burns(actor, runtime), _amplifier_gain(actor), _amplifier_cap(actor)
-	)
-	if magnitude <= 0.0:
-		return 0.0
-	var pool_id := StringName(def.payload.get("pool", &"health"))
-	var pool := actor.resource(pool_id)
-	if pool == null:
-		return 0.0
-	var amount := magnitude * float(def.payload.get("share_per_pulse", 0.0))
-	if amount <= 0.0:
-		return 0.0
-	actor.change_resource(pool_id, -amount)
-	return amount
-
-
-## How many statuses ALREADY on the actor the amplifiers feed: the burns that spend
-## through the `health_share` or `element_power` channel, excluding the one being
-## pulsed, so a burn never counts as its own sibling and the channel can never double.
-##
-## ## Why the gate left THIS function
-##
-## It used to refuse unless `runtime.def.mechanic() == feed_siblings` — the pulsing
-## status had to BE an amplifier. That is backwards: `fire_pyre` is a `sibling_amp`
-## status with no pool of its own, so it spends nothing and `_pulse` returns before
-## ever reaching this count. The two conditions were mutually exclusive, so
-## `_sibling_burns` answered `0` for every burn in the game and both amplifiers were
-## structurally inert at any magnitude (measured: `AMPLIFIER DELTA = 0.000000`).
-##
-## The count is now a property of the ACTOR — what is feeding the amplifiers — rather
-## than of the status happening to be on its tick. Which siblings an amplifier feeds is
-## authored per amplifier ([method _amplifier_gain] reads that def), not decided here.
-static func _sibling_burns(actor: Actor, runtime: StatusRuntime) -> int:
-	# The `runtime.def == null` half is the non-vacuity guard: a caller that has no
-	# resolved status cannot name the id to exclude, and counting against an unknown def
-	# is how a pulse ends up multiplied by a sibling set it was never part of.
-	if actor == null or runtime == null or runtime.def == null:
-		return 0
-	var count := 0
-	for other in actor.statuses:
-		if other.id == runtime.def.id:
-			continue
-		var other_runtime := _runtime(actor).get(other.instance_id) as StatusRuntime
-		if other_runtime != null and _feeds(other_runtime.def):
-			count += 1
-	return count
-
-
-## Every live amplifier's authored `sibling_gain`, summed.
-##
-## ## Why the total rather than one def's number
-##
-## An amplifier's `sibling_gain` lives on ITS OWN def (`fire_pyre` authors 0.5,
-## `wind_spread` 0.45), and the pulsing status authors none — which is the defect this
-## reads past. The gain therefore has to be collected from the amplifiers present on the
-## actor, and SUMMED so a body carrying both gets both: `fire_pyre` and `wind_spread`
-## are two authored amplifiers with two authored gains, and a second one that quietly
-## did nothing is the same defect wearing a different hat.
-##
-## Each def's gain is clamped to its own authored `sibling_cap` before it is added, so
-## the channel saturates per amplifier instead of running away as amplifiers accumulate:
-## a body with N amplifiers reaches at most `N * cap`, and no single amplifier can
-## contribute an unbounded share. A status this module did not author carries no
-## `StatusDef`, so it contributes nothing rather than being guessed at.
-static func _amplifier_gain(actor: Actor) -> float:
-	var total := 0.0
-	for _entry in _amplifiers(actor):
-		total += minf(_entry[&"gain"], _entry[&"cap"])
-	return total
-
-
-## The most the amplifier channel may add on top, as the MAXIMUM over the live
-## amplifiers rather than their sum: the cap is the ceiling of the channel, not a
-## per-amplifier budget, so stacking two amplifiers widens what they are allowed to add
-## (see [method _amplifier_gain]) without also stacking the ceiling that bounds it.
-static func _amplifier_cap(actor: Actor) -> float:
-	var cap := 0.0
-	for _entry in _amplifiers(actor):
-		cap = maxf(cap, _entry[&"cap"])
-	return cap
-
-
-## Every live `feed_siblings` amplifier on the actor, as `{gain, cap}` read off its own
-## def. One walk so the gain and the cap cannot be counted over different sets.
-static func _amplifiers(actor: Actor) -> Array[Dictionary]:
-	var out: Array[Dictionary] = []
-	if actor == null:
-		return out
-	var runtimes := _runtime(actor)
-	for status in actor.statuses:
-		var runtime := runtimes.get(status.instance_id) as StatusRuntime
-		if runtime == null or not _is_amplifier(runtime.def):
-			continue
-		(
-			out
-			. append(
-				{
-					&"gain": maxf(0.0, float(runtime.def.payload.get("sibling_gain", 0.0))),
-					&"cap": maxf(0.0, float(runtime.def.payload.get("sibling_cap", 0.0))),
-				}
-			)
-		)
-	return out
-
-
-static func _is_amplifier(def: StatusDef) -> bool:
-	if def == null:
-		return false
-	return def.magnitude_unit == &"sibling_amp" and def.mechanic() == &"feed_siblings"
-
-
-## Whether this def is one the amplifiers feed. `magnitude_unit` decides rather than
-## `kind`: `element_power` is what makes a status spend its magnitude, so it is the
-## channel that can be fed, and a def whose own mechanic is `feed_siblings` is the
-## amplifier being fed rather than a sibling — which is why `_sibling_burns` excludes
-## the pulsing status by id as well.
-static func _feeds(def: StatusDef) -> bool:
-	if def == null:
-		return false
-	return def.magnitude_unit == &"health_share" or def.magnitude_unit == &"element_power"
-
-
-## The ONE live instance carrying `status_id`, or null — the same question
-## `Actor.has_status` answers, except it hands back the instance the merge rule chose so
-## a caller can read the strength that will actually pulse. Bounded `for` over the
-## actor's live status list, which `tick_statuses` prunes.
-static func _live(actor: Actor, status_id: StringName) -> StatusEffect:
-	for status in actor.statuses:
-		if status.id == status_id:
-			return status
-	return null
-
-
-static func _live_instances(actor: Actor) -> Array[int]:
-	var out: Array[int] = []
-	for status in actor.statuses:
-		out.append(status.instance_id)
-	return out
-
-
-static func _count_lost(before: Array[int], after: Array[int]) -> int:
-	var lost := 0
-	for instance in before:
-		if not after.has(instance):
-			lost += 1
-	return lost
-
-
-## `categories` as plain strings for the read model: the summary contract is
-## primitives only (ADR 0902, P13).
-static func _strings_of(values: Array[StringName]) -> Array[String]:
-	var out: Array[String] = []
-	for value in values:
-		out.append(String(value))
-	return out
-
-
-## Drop the runtime records and modifiers of instances the actor no longer
-## carries, so an expired burn cannot leave a modifier or a stale magnitude
-## behind. Keyed by INSTANCE (ADR 0902, P3): one `for` over a snapshot, with
-## the sibling carrying another instance of the same id untouched.
-static func _prune(actor: Actor, live: Array[int]) -> void:
-	var runtimes := _runtime(actor)
-	var gone: Array[int] = []
-	for instance in runtimes.keys():
-		var runtime := runtimes.get(instance) as StatusRuntime
-		if runtime == null or live.has(int(instance)):
-			continue
-		runtimes.erase(instance)
-		StatusRuntime.clear_source(actor, runtime.source)
-		gone.append(int(instance))
-	if not gone.is_empty():
-		# ADR 0902 (P6=C): a left instance's counters leave with it, so a successor
-		# instance can never inherit a dead sibling's count.
-		StatusCounters.drop_instances(actor, gone)
-
-
-## Drop the purged ids from the actor's array, in place, and let `_prune` sweep the
-## runtimes and modifiers they leave behind.
-##
-## ## Why the array is erased IN PLACE and never reassigned
-##
-## `StatusRegistry` holds that array BY REFERENCE (`core/actor.gd:143`,
-## `StatusRegistry._init(statuses)`), which is deliberate: `FertilityApi.advance` erases
-## from `actor.statuses` directly (`modules/fertility/api.gd:69`) and `EnvironmentField`
-## reads it directly, so a shadow copy here would go stale the moment either ran.
-## `actor.statuses = kept` therefore REBINDS the property to a brand new array while the
-## registry keeps the old one — after which `actor.statuses` reads empty and
-## `actor.has_status()` still answers for the purged ids, because every read of a status
-## goes through the registry. That is the worst shape a purge can take: the module
-## believes the combat debuff is gone while the rest of the game still has it.
-##
-## So this erases through the same reference the registry holds, exactly as fertility
-## does. `_live_instances` is read AFTER the erasure, not before, so `_prune` sees the
-## survivors -- reading it first meant the just-cleared ids counted as live and their
-## modifiers were never released.
-static func _purge(actor: Actor, cleared: Array[String]) -> void:
-	for index in range(actor.statuses.size() - 1, -1, -1):
-		if cleared.has(String(actor.statuses[index].id)):
-			actor.statuses.remove_at(index)
-	# The runtime sweep is instance-keyed (ADR 0902, P3), so this is the same
-	# reconcile every apply and expiry runs: what left the actor loses its record
-	# and its OWN source tag's modifiers; coexist siblings stay untouched.
-	_reconcile(actor)
-	actor.mark_stats_dirty()

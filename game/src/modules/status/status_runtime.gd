@@ -106,14 +106,14 @@ static func source_for_instance(status_id: StringName, instance_id: int) -> Stri
 ## It was read off `runtime.def`, and that made the amplifier channel structurally
 ## inert. `runtime.def` is the status BEING PULSED — `fire_immolation` — which authors
 ## no `sibling_gain` at all, so the branch never fired for any burn at any magnitude.
-## The count was gated just as wrong: `StatusApi._sibling_burns` refused unless the
+## The count was gated just as wrong: `StatusEngine.sibling_burns` refused unless the
 ## pulsing def was itself a `feed_siblings` amplifier, and an amplifier is a
 ## `sibling_amp` status that spends nothing, so the two conditions could never both
 ## hold. Measured over a `fire_pyre` on the actor: **AMPLIFIER DELTA = 0.000000**, with
 ## the burn spending an identical `0.041600` either way.
 ##
 ## The numbers therefore arrive from the amplifiers PRESENT ON THE ACTOR, aggregated by
-## [method StatusApi._amplifier_feed] and passed in. Only the caller can see the actor,
+## [method StatusEngine.amplifier_gain] and passed in. Only the caller can see the actor,
 ## which is the whole reason the aggregation is not in this file — and it is what keeps
 ## this function pure: it applies a curve, it does not look anything up.
 ##

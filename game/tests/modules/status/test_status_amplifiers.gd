@@ -118,7 +118,7 @@ func test_a_lone_burn_beside_a_pyre_spends_exactly_the_un_amplified_amount() -> 
 	var alone := _burn_spend(_actor(), MAGNITUDE, false)
 	var actor := _dressed([PYRE, BURN])
 	assert_eq(
-		StatusApi._sibling_burns(actor, _runtime_of(actor, BURN)),
+		StatusEngine.sibling_burns(actor, _runtime_of(actor, BURN)),
 		0,
 		"the only burn on the actor is the one pulsing, so nothing feeds the pyre"
 	)
@@ -196,13 +196,13 @@ func test_two_amplifiers_add_their_authored_gains_and_the_channel_still_saturate
 	# The AGGREGATE does collect both authored gains, which is the half that used to be
 	# unreachable — `sibling_gain` read off the pulsing def could never report a sum.
 	assert_almost_eq(
-		StatusApi._amplifier_gain(both_actor),
+		StatusEngine.amplifier_gain(both_actor),
 		_pyre_gain() + _wind_gain(),
 		"both amplifiers contribute their own gain, each clamped at its own cap",
 		1e-9
 	)
 	assert_eq(
-		StatusApi._amplifier_gain(both_actor) > StatusApi._amplifier_gain(one_actor),
+		StatusEngine.amplifier_gain(both_actor) > StatusEngine.amplifier_gain(one_actor),
 		true,
 		"and the reported gain is strictly larger than one amplifier's alone"
 	)
@@ -210,7 +210,7 @@ func test_two_amplifiers_add_their_authored_gains_and_the_channel_still_saturate
 	# either way. Asserted as a strict numeric equality: this is the claim that a second
 	# amplifier cannot run the channel away.
 	assert_almost_eq(
-		StatusApi._amplifier_cap(both_actor),
+		StatusEngine.amplifier_cap(both_actor),
 		_cap_of_actor(one_actor, []),
 		"widening the channel does not widen the ceiling that bounds it",
 		1e-9
@@ -319,12 +319,12 @@ func test_any_spending_status_is_a_sibling_and_an_amplifier_is_not() -> void:
 	var lone := _dressed([PYRE, BURN])
 	var paired := _dressed([PYRE, SIBLING, BURN])
 	assert_eq(
-		StatusApi._sibling_burns(paired, _runtime_of(paired, BURN)),
+		StatusEngine.sibling_burns(paired, _runtime_of(paired, BURN)),
 		1,
 		"the bleed is one feeding sibling"
 	)
 	assert_eq(
-		StatusApi._sibling_burns(lone, _runtime_of(lone, BURN)),
+		StatusEngine.sibling_burns(lone, _runtime_of(lone, BURN)),
 		0,
 		"and with nothing beside it the burn has none, which is the other half of the pair"
 	)
@@ -369,7 +369,7 @@ func test_any_spending_status_is_a_sibling_and_an_amplifier_is_not() -> void:
 	# amplifier or four — which is asserted, not assumed.
 	var crowded := _dressed([PYRE, WIND, PYRE, WIND, SIBLING, BURN])
 	assert_eq(
-		StatusApi._sibling_burns(crowded, _runtime_of(crowded, BURN)),
+		StatusEngine.sibling_burns(crowded, _runtime_of(crowded, BURN)),
 		1,
 		"more amplifiers cannot inflate the feeding-sibling count"
 	)
@@ -552,9 +552,9 @@ func _pulse_spend_of(actor: Actor, status_id: StringName) -> float:
 		return 0.0
 	var magnitude := StatusRuntime.pulse_magnitude(
 		runtime,
-		StatusApi._sibling_burns(actor, runtime),
-		StatusApi._amplifier_gain(actor),
-		StatusApi._amplifier_cap(actor)
+		StatusEngine.sibling_burns(actor, runtime),
+		StatusEngine.amplifier_gain(actor),
+		StatusEngine.amplifier_cap(actor)
 	)
 	return magnitude * float(runtime.def.payload.get("share_per_pulse", 0.0))
 
@@ -620,13 +620,13 @@ func _runtime_of(actor: Actor, status_id: StringName) -> StatusRuntime:
 func _gain_of(actor: Actor, amplifiers: Array = []) -> float:
 	for amplifier in amplifiers:
 		StatusApi.apply(actor, amplifier, 1.0)
-	return StatusApi._amplifier_gain(actor)
+	return StatusEngine.amplifier_gain(actor)
 
 
 func _cap_of_actor(actor: Actor, amplifiers: Array) -> float:
 	for amplifier in amplifiers:
 		StatusApi.apply(actor, amplifier, 1.0)
-	return StatusApi._amplifier_cap(actor)
+	return StatusEngine.amplifier_cap(actor)
 
 
 ## The authored numbers, read off the `.tres` the game ships. `fire_pyre` and

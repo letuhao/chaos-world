@@ -501,7 +501,7 @@ func test_a_trap_fires_from_presence_and_costs_health() -> void:
 	assert_eq(bool(spent.get("spent", false)), true, "presence fired it once the window closed")
 
 	# THE CONSEQUENCE. Health moved, and moved by the amount the status module's own
-	# pulse arithmetic charges — NOT by `magnitude` itself. `StatusApi._pulse` pays
+	# pulse arithmetic charges — NOT by `magnitude` itself. `StatusEngine.pulse` pays
 	# `magnitude * def.payload.share_per_pulse` per tick
 	# (`status/api.gd:783`), and the trap sets magnitude only (`domain_fixtures.gd:690`),
 	# so demanding `paid >= magnitude` asserted a term this module never authors and

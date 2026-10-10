@@ -121,7 +121,7 @@ const REWARDED_KEY := &"tribulation_blessing_paid"
 ##
 ## ## Why its OWN table rather than `StatusRuntime._by_actor`
 ##
-## `StatusApi._prune` erases every runtime key whose status the actor no longer carries, so a
+## `StatusEngine.prune` erases every runtime key whose status the actor no longer carries, so a
 ## marker parked in the runtime map would be swept the moment the blessing left the actor — the
 ## guard would evaporate with the thing it was guarding. This guard's lifetime is the ACTOR's
 ## (the session), not a status's, so it needs its own table.

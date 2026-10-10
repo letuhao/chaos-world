@@ -9,9 +9,11 @@ extends TestCase
 const SRC_ROOT := "res://src"
 const MAX_DEPTH := 8
 
-## The ONE per-instance ICD clock and its reader (alphabetical).
+## The ONE per-instance ICD clock and its reader (alphabetical). The reader is the
+## facade's `StatusEngine.icd_refusal`, which the api split moved to `status_engine.gd`.
 const ICD_CLOCK_FILES: Array[String] = [
 	"res://src/modules/status/api.gd",
+	"res://src/modules/status/status_engine.gd",
 	"res://src/modules/status/status_runtime.gd",
 ]
 
@@ -27,10 +29,12 @@ const ICD_VOCAB_FILES: Array[String] = [
 const FAMILY_FILES: Array[String] = ["res://src/modules/status/status_def.gd"]
 
 ## The ONE counter store and its facade verbs. The app funnel reaches the store through
-## `StatusApi.record_landed_blow`, never by naming `StatusCounters` itself.
+## `StatusApi.record_landed_blow`, never by naming `StatusCounters` itself. The meter feed
+## that advances a counter store also lives behind the facade, in `status_engine.gd`.
 const COUNTER_FILES: Array[String] = [
 	"res://src/modules/status/api.gd",
 	"res://src/modules/status/status_counters.gd",
+	"res://src/modules/status/status_engine.gd",
 ]
 
 ## The mind tree: its own roles, shapes and locks — never the new mechanisms.

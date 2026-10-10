@@ -82,7 +82,7 @@ static func _infect(source: Actor, candidate: Actor, def: StatusDef, hop_depth: 
 			"applied": false,
 			"hop": hop_depth,
 		}
-	var live := StatusApi._effect_by_instance(candidate, int(answer.get("instance_id", 0)))
+	var live := StatusEngine.effect_by_instance(candidate, int(answer.get("instance_id", 0)))
 	if live != null:
 		# Module scratch on the contract's own payload: the hop depth travels WITH the
 		# instance, so the next hop's cap reads it wherever the instance lands.

@@ -336,7 +336,7 @@ static func _potency_of(attacker: Actor, def: MindStatusDef) -> float:
 
 ## The live `StatusEffect` an authored mind def resolves to, or null when the
 ## constructor cannot make one. Built through the CONTRACT's own fields rather than
-## through `StatusApi._effect_for`, because a mind def is not a `StatusDef` and a
+## through `StatusEngine.effect_for`, because a mind def is not a `StatusDef` and a
 ## cast would be the exact "two content types shaped as one" coupling the split was
 ## meant to remove.
 static func _effect_for(def: MindStatusDef, magnitude: float) -> StatusEffect:
