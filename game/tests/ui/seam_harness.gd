@@ -234,6 +234,24 @@ static func _unwire_world_stores() -> void:
 	# state (ADR 0259), so it belongs in this function beside the polity store for exactly the
 	# reason DEF-0387 names.
 	SaveApi.install_store(WorldClock.WORLD_KEY, null)
+	# **The three economy ledgers too, and this one is DEF-0403.** The same block that
+	# installs the polity and clock stores also installs `WorldLedgerStore`s for `holdings`,
+	# `market` and `custody` (`item_workbench_app.gd:72-76`), and `EconomyBoot._store_for`
+	# prefers an INSTALLED save store over its own in-memory seam. Leaving them installed
+	# meant every later `EconomyBoot.install` handed the three facades the PREVIOUS mount's
+	# file-backed ledger, so a custody claim captured through one suite was still there for
+	# the next suite's fresh actor: each capture of that subject answered `already_captive`,
+	# and the refusal dictionary carries no `claim_id`, so four assertions in
+	# `test_economy_boot` raised "Invalid access to property or key 'claim_id'" instead of
+	# failing where they were written.
+	#
+	# The worldmap ledger rides the same install block and the same reason: its changed
+	# cells and its resume point are WORLD state, so they must not outlive the world that
+	# wrote them any more than the clock must.
+	SaveApi.install_store("holdings", null)
+	SaveApi.install_store("market", null)
+	SaveApi.install_store("custody", null)
+	SaveApi.install_store(WorldmapLedger.WORLD_KEY, null)
 	RelationsApi.set_store(null)
 	SectApi.set_world_store(null)
 	NationApi.set_world_store(null)
