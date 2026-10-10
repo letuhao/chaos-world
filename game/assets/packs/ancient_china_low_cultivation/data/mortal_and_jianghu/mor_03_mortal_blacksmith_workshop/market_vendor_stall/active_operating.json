@@ -1,0 +1,174 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_03_mortal_blacksmith_workshop.market_vendor_stall",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_03_mortal_blacksmith_workshop",
+  "asset_slug": "market_vendor_stall",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_03_mortal_blacksmith_workshop/market_vendor_stall/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "trade_goods",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.49,
+        0.444
+      ],
+      [
+        0.506,
+        0.414
+      ]
+    ],
+    "frac_zero": 0.6642,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.057,
+        0.383,
+        0.08,
+        0.0,
+        0.0
+      ],
+      [
+        0.178,
+        0.317,
+        0.699,
+        0.672,
+        0.288,
+        0.126
+      ],
+      [
+        0.498,
+        0.986,
+        1.0,
+        1.0,
+        0.801,
+        0.168
+      ],
+      [
+        0.481,
+        0.645,
+        0.999,
+        0.814,
+        0.697,
+        0.212
+      ],
+      [
+        0.126,
+        0.587,
+        0.885,
+        0.817,
+        0.399,
+        0.0
+      ],
+      [
+        0.061,
+        0.971,
+        1.0,
+        1.0,
+        0.523,
+        0.0
+      ],
+      [
+        0.011,
+        0.291,
+        0.584,
+        0.229,
+        0.042,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      36,
+      16
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 17,
+    "contact_reference_px": 17.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

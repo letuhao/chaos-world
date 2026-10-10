@@ -1,0 +1,190 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_03_mortal_blacksmith_workshop.thatched_dwelling",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_03_mortal_blacksmith_workshop",
+  "asset_slug": "thatched_dwelling",
+  "variant_slug": "rot_north_rear",
+  "name": "North Rear (Back Wall)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_03_mortal_blacksmith_workshop/thatched_dwelling/rot_north_rear.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "enter_dwelling",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.466,
+        0.788,
+        0.467
+      ],
+      [
+        0.583,
+        0.988,
+        0.614
+      ]
+    ],
+    "frac_zero": 0.6624,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.049,
+        0.66,
+        0.052,
+        0.0,
+        0.0
+      ],
+      [
+        0.203,
+        0.3,
+        0.765,
+        1.0,
+        0.764,
+        0.303,
+        0.229
+      ],
+      [
+        0.754,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.725
+      ],
+      [
+        0.877,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.877
+      ],
+      [
+        0.334,
+        0.981,
+        1.0,
+        1.0,
+        1.0,
+        0.992,
+        0.325
+      ],
+      [
+        0.014,
+        0.954,
+        1.0,
+        1.0,
+        1.0,
+        0.991,
+        0.084
+      ],
+      [
+        0.009,
+        0.324,
+        0.958,
+        0.963,
+        0.935,
+        0.42,
+        0.028
+      ]
+    ],
+    "crop_offset": [
+      80,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 115,
+    "contact_reference_px": 115.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

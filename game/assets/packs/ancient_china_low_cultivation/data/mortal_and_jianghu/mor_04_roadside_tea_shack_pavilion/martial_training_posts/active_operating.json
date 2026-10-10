@@ -1,0 +1,149 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_04_roadside_tea_shack_pavilion.martial_training_posts",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_04_roadside_tea_shack_pavilion",
+  "asset_slug": "martial_training_posts",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_04_roadside_tea_shack_pavilion/martial_training_posts/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "train_agility",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.582,
+        0.564
+      ],
+      [
+        0.572,
+        0.537
+      ]
+    ],
+    "frac_zero": 0.5876,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.128,
+        0.118,
+        0.33,
+        0.159,
+        0.0,
+        0.0
+      ],
+      [
+        0.166,
+        0.657,
+        1.0,
+        1.0,
+        0.835,
+        0.288,
+        0.0
+      ],
+      [
+        0.351,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.634,
+        0.094
+      ],
+      [
+        0.66,
+        0.973,
+        0.993,
+        0.985,
+        1.0,
+        0.825,
+        0.529
+      ],
+      [
+        0.061,
+        0.584,
+        0.63,
+        0.681,
+        0.784,
+        0.032,
+        0.0
+      ],
+      [
+        0.161,
+        0.87,
+        1.0,
+        1.0,
+        0.96,
+        0.041,
+        0.0
+      ],
+      [
+        0.0,
+        0.482,
+        0.82,
+        0.877,
+        0.662,
+        0.189,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 67,
+    "contact_reference_px": 67.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

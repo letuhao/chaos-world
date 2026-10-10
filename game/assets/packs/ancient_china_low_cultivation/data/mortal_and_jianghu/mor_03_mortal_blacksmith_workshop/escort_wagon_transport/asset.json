@@ -1,0 +1,785 @@
+{
+  "id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_03_mortal_blacksmith_workshop.escort_wagon_transport",
+  "archetype": "escort_wagon_transport_mor_03_mortal_blacksmith_workshop",
+  "name": "Mortal Blacksmith Workshop - Heavy Jianghu Escort Freight Cart",
+  "vietnamese_name": "Phàm Thiết Đả Thiết Phố - Xe Tiêu Cục Vận Chuyển Hàng",
+  "hanzi": "凡铁打铁铺 · 镖局护卫大车",
+  "category": "mor_03_mortal_blacksmith_workshop",
+  "category_code": "MOR-03",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_03_mortal_blacksmith_workshop",
+  "asset_class": "prop_container",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "inspect_cargo",
+  "gameplay_role": "prop_container entity supporting Mortal Blacksmith Workshop gameplay",
+  "destructible": true,
+  "material": "authentic mortal craftsmanship materials",
+  "cultivation_element": "water",
+  "prompt_summary": "Single isolated 2D RPG game prop of mortal blacksmith workshop - heavy jianghu escort freight cart, authentic mortal blacksmith workshop materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Mortal Settlements & Jianghu",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of heavy jianghu escort freight cart, authentic mortal craftsmanship materials, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese traditional carved rosewood joinery or Daoist storage implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under base only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, cauldron, furnace, ding, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_03_mortal_blacksmith_workshop/escort_wagon_transport/pristine_dormant.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.424,
+            0.857,
+            0.325
+          ],
+          [
+            0.448,
+            0.761,
+            0.284
+          ]
+        ],
+        "frac_zero": 0.7801,
+        "blocks": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 6,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.012,
+            0.292,
+            0.677,
+            0.276,
+            0.019,
+            0.0
+          ],
+          [
+            0.103,
+            0.891,
+            1.0,
+            0.978,
+            0.716,
+            0.195
+          ],
+          [
+            0.367,
+            0.987,
+            1.0,
+            0.949,
+            0.299,
+            0.02
+          ],
+          [
+            0.332,
+            1.0,
+            1.0,
+            1.0,
+            0.301,
+            0.0
+          ],
+          [
+            0.378,
+            0.915,
+            1.0,
+            0.907,
+            0.327,
+            0.0
+          ],
+          [
+            0.118,
+            0.919,
+            0.942,
+            0.949,
+            0.347,
+            0.0
+          ],
+          [
+            0.0,
+            0.229,
+            0.0,
+            0.365,
+            0.137,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          104,
+          17
+        ],
+        "trunk_columns": [
+          3
+        ],
+        "contact_px": 13,
+        "contact_reference_px": 13.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of heavy jianghu escort freight cart, authentic mortal craftsmanship materials, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese traditional carved rosewood joinery or Daoist storage implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under base only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, cauldron, furnace, ding, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_03_mortal_blacksmith_workshop/escort_wagon_transport/active_operating.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.516,
+            0.676,
+            0.168
+          ],
+          [
+            0.274,
+            0.815,
+            0.511
+          ]
+        ],
+        "frac_zero": 0.7454,
+        "blocks": [
+          [
+            true,
+            true,
+            false
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 5,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.208,
+            0.597,
+            0.252,
+            0.0,
+            0.004,
+            0.059
+          ],
+          [
+            0.327,
+            0.931,
+            1.0,
+            0.812,
+            0.262,
+            0.004,
+            0.048
+          ],
+          [
+            0.344,
+            0.991,
+            1.0,
+            0.682,
+            0.432,
+            0.168,
+            0.217
+          ],
+          [
+            0.172,
+            0.993,
+            1.0,
+            0.987,
+            0.922,
+            0.737,
+            0.161
+          ],
+          [
+            0.051,
+            0.916,
+            0.978,
+            1.0,
+            1.0,
+            0.758,
+            0.0
+          ],
+          [
+            0.0,
+            0.216,
+            0.607,
+            0.996,
+            1.0,
+            0.767,
+            0.208
+          ],
+          [
+            0.0,
+            0.0,
+            0.258,
+            0.462,
+            0.558,
+            0.01,
+            0.016
+          ]
+        ],
+        "crop_offset": [
+          85,
+          17
+        ],
+        "trunk_columns": [
+          3,
+          4
+        ],
+        "contact_px": 22,
+        "contact_reference_px": 22.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of heavy jianghu escort freight cart, authentic mortal craftsmanship materials, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese traditional carved rosewood joinery or Daoist storage implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under base only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, cauldron, furnace, ding, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_03_mortal_blacksmith_workshop/escort_wagon_transport/damaged_weathered.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.54,
+            0.886,
+            0.332
+          ],
+          [
+            0.676,
+            0.848,
+            0.284
+          ]
+        ],
+        "frac_zero": 0.7597,
+        "blocks": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 6,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.1,
+            0.458,
+            0.737,
+            0.276,
+            0.006,
+            0.0
+          ],
+          [
+            0.288,
+            1.0,
+            1.0,
+            0.933,
+            0.462,
+            0.263
+          ],
+          [
+            0.518,
+            1.0,
+            1.0,
+            0.941,
+            0.327,
+            0.094
+          ],
+          [
+            0.61,
+            1.0,
+            1.0,
+            0.979,
+            0.164,
+            0.0
+          ],
+          [
+            0.8,
+            1.0,
+            1.0,
+            0.979,
+            0.304,
+            0.0
+          ],
+          [
+            0.45,
+            1.0,
+            1.0,
+            0.896,
+            0.135,
+            0.0
+          ],
+          [
+            0.122,
+            0.555,
+            0.319,
+            0.518,
+            0.015,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          107,
+          17
+        ],
+        "trunk_columns": [
+          1
+        ],
+        "contact_px": 17,
+        "contact_reference_px": 17.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of heavy jianghu escort freight cart, authentic mortal craftsmanship materials, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese traditional carved rosewood joinery or Daoist storage implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under base only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, cauldron, furnace, ding, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_03_mortal_blacksmith_workshop/escort_wagon_transport/ruined_rubble.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.323,
+            0.889,
+            0.339
+          ],
+          [
+            0.595,
+            0.922,
+            0.65
+          ]
+        ],
+        "frac_zero": 0.6953,
+        "blocks": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 6,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.085,
+            0.465,
+            0.823,
+            0.195,
+            0.064,
+            0.0
+          ],
+          [
+            0.042,
+            0.599,
+            1.0,
+            1.0,
+            0.964,
+            0.271,
+            0.002
+          ],
+          [
+            0.066,
+            0.843,
+            1.0,
+            1.0,
+            0.825,
+            0.389,
+            0.243
+          ],
+          [
+            0.113,
+            0.892,
+            1.0,
+            1.0,
+            0.947,
+            0.495,
+            0.252
+          ],
+          [
+            0.588,
+            0.999,
+            1.0,
+            1.0,
+            1.0,
+            0.926,
+            0.471
+          ],
+          [
+            0.33,
+            0.99,
+            1.0,
+            1.0,
+            1.0,
+            0.915,
+            0.489
+          ],
+          [
+            0.016,
+            0.381,
+            0.605,
+            0.673,
+            0.605,
+            0.196,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          87,
+          21
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 90,
+        "contact_reference_px": 90.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          256
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "MOR-03",
+    "domain": "mortal_and_jianghu",
+    "interaction": "inspect_cargo",
+    "collision_behavior": "solid",
+    "element": "water",
+    "tier": 2
+  },
+  "category_id": "mor_03_mortal_blacksmith_workshop",
+  "domain_id": "mortal_and_jianghu",
+  "pinyin": "Fántiě Dǎtiěpù · Heavy Jianghu Escort Freight Cart",
+  "archetype_name": "Heavy Jianghu Escort Freight Cart",
+  "footprint_subcells": {
+    "w": 12,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 384,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 3,
+    "h": 2
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "ground"
+  },
+  "primary_material": "carved_wood",
+  "secondary_material": "polished_bronze",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Water affinity (Foundation Establishment (Trúc Cơ / 筑基))",
+  "elevation_tier": 2,
+  "mortal_realm_tier": "Foundation Establishment (Trúc Cơ / 筑基)",
+  "asset_slug": "escort_wagon_transport"
+}
