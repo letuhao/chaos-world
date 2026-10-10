@@ -31,12 +31,13 @@ func teardown() -> void:
 
 func test_remaining_families_have_overlay_methods() -> void:
 	# Production wires each catalog with an explicit `<Class>.set_overlay_roots`
-	# arm in `item_workbench_body.gd::_wire_content_roots`, so the wiring is read
-	# off that text rather than through `ClassDB`: the engine's class database
-	# does not resolve GDScript globals (`class_exists` is false for every real
-	# catalog), and every `ClassDB` spelling of this check fails on classes that
-	# compile, load and run. A missing arm here is the unwired family.
-	var body := _code_of("res://src/app/item_workbench_body.gd")
+	# arm in `item_workbench_wiring.gd::wire_content_roots` (moved out of the body
+	# when it hit the line ceiling), so the wiring is read off that text rather than
+	# through `ClassDB`: the engine's class database does not resolve GDScript globals
+	# (`class_exists` is false for every real catalog), and every `ClassDB` spelling of
+	# this check fails on classes that compile, load and run. A missing arm here is the
+	# unwired family.
+	var body := _code_of("res://src/app/item_workbench_wiring.gd")
 	assert_ne(body, "", "the production wiring source is readable")
 	var catalogs: Array[String] = [
 		"OptionCatalog",
@@ -67,12 +68,15 @@ func test_remaining_families_have_overlay_methods() -> void:
 
 
 func test_wire_content_roots_has_match_arms() -> void:
-	var body := _code_of("res://src/app/item_workbench_body.gd")
-	var start := body.find("func _wire_content_roots(")
+	var body := _code_of("res://src/app/item_workbench_wiring.gd")
+	var start := body.find("func wire_content_roots(")
 	assert_ne(start, -1, "the wiring function is still there")
 	if start < 0:
 		return
-	var stop := body.find("\nfunc ", start)
+	# Bounded by the next top-level function. `static func`, because every verb in the
+	# wiring file is static — a bound on `\nfunc ` finds nothing there and would leave
+	# the arm check below vacuous.
+	var stop := body.find("\nstatic func ", start + 1)
 	assert_ne(stop, -1, "and there is a function after it to bound the slice")
 	if stop < 0:
 		return
@@ -102,7 +106,7 @@ func test_wire_content_roots_has_match_arms() -> void:
 		assert_ne(
 			wiring.find('&"%s":' % family),
 			-1,
-			"_wire_content_roots should have a match arm for '%s'" % family
+			"wire_content_roots should have a match arm for '%s'" % family
 		)
 
 

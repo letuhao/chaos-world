@@ -8,8 +8,9 @@ extends TestCase
 ## this test asserts the wiring exists for every family that HAS a catalog.
 
 const FAMILIES_PATH := "res://../tools/arch/families.json"
-## Production's wiring table, read as text: the arms this suite asserts.
-const WIRING := "res://src/app/item_workbench_body.gd"
+## Production's wiring table, read as text: the arms this suite asserts. It lives in
+## `item_workbench_wiring.gd` — moved out of the body when that hit the line ceiling.
+const WIRING := "res://src/app/item_workbench_wiring.gd"
 
 ## The catalog class each content family wires through, or absent for a family that has
 ## none. A TABLE rather than a `match` returning from every arm: this is data the suite
@@ -90,7 +91,7 @@ func test_all_families_have_catalogs_or_are_skipped() -> void:
 
 func test_catalogs_have_set_overlay_roots() -> void:
 	# Production wires each family with an explicit `<Class>.set_overlay_roots`
-	# arm in `item_workbench_body.gd::_wire_content_roots`, so the wiring is read
+	# arm in `item_workbench_wiring.gd::wire_content_roots`, so the wiring is read
 	# off that text rather than through `ClassDB`: the engine's class database
 	# does not resolve GDScript globals (`class_exists` is false for every real
 	# catalog), and every `ClassDB` spelling of this check fails on classes that
@@ -107,7 +108,7 @@ func test_catalogs_have_set_overlay_roots() -> void:
 		if body.find("%s.set_overlay_roots(" % catalog_class) < 0:
 			missing.append(
 				(
-					"%s (no %s.set_overlay_roots arm in _wire_content_roots)"
+					"%s (no %s.set_overlay_roots arm in wire_content_roots)"
 					% [String(family), catalog_class]
 				)
 			)

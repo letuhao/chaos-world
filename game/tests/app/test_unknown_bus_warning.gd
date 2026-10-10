@@ -200,15 +200,17 @@ func test_a_malformed_row_is_not_reported_as_an_unknown_bus() -> void:
 ## `test_quest_production_completion.gd` reads its install seam. Without the strip the
 ## docblock above, which names both halves in prose, would satisfy the search by itself.
 func test_the_composition_root_warns_naming_the_bus_and_the_mod() -> void:
-	var body := _code_of("res://src/app/item_workbench_body.gd")
-	var start := body.find("func _wire_subscriptions(")
+	var body := _code_of("res://src/app/item_workbench_wiring.gd")
+	var start := body.find("func wire_subscriptions(")
 	assert_ne(start, -1, "the wiring function is still there")
 	if start < 0:
 		return
-	# Bounded by the next TOP-LEVEL `func`, not by the two-blank-line separator: comment
+	# Bounded by the next TOP-LEVEL function, not by the two-blank-line separator: comment
 	# stripping turns this function's own docblock into a dozen BLANK lines, so the
 	# separator a gdformat'd file would show is not present in the stripped text.
-	var stop := body.find("\nfunc ", start)
+	# `static func`, because every verb in the wiring file is static — a bound on
+	# `\nfunc ` finds nothing there and would leave the checks below vacuous.
+	var stop := body.find("\nstatic func ", start + 1)
 	assert_ne(stop, -1, "and there is a function after it to bound the slice")
 	if stop < 0:
 		return

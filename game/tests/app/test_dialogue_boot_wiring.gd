@@ -8,7 +8,9 @@ extends TestCase
 ## The attach list is read from the SOURCE rather than restated: a peer deleting the line
 ## fails here instead of shipping the wiring silently away.
 
-const BODY := "res://src/app/item_workbench_body.gd"
+## The attach list moved to its own file when the composition root hit the line ceiling,
+## so this reads THAT file. The claim is unchanged: a peer deleting the line fails here.
+const BODY := "res://src/app/item_workbench_wiring.gd"
 
 
 ## The composition root's attach list names the dialogue phase.

@@ -28,6 +28,8 @@ const KEY := "i"
 const ACTION := "nav_route_i"
 
 const BODY_FILE := "res://src/app/item_workbench_body.gd"
+## The content-family wiring table, which the body's ceiling moved out to its own file.
+const WIRING_FILE := "res://src/app/item_workbench_wiring.gd"
 const APP_FILE := "res://src/app/item_workbench_app.gd"
 const BOOT_FILE := "res://src/app/institution_boot.gd"
 const ROUTES_FILE := "res://src/app/screen_routes.gd"
@@ -158,7 +160,7 @@ func test_the_institution_boot_is_installed_from_the_composition_root() -> void:
 			call_sites += 1
 			assert_eq(
 				path,
-				BODY_FILE,
+				WIRING_FILE,
 				"and the ONE caller is the attach pipeline, beside EconomyBoot.install"
 			)
 	assert_eq(call_sites, 1, "install() has exactly one production call site")
@@ -217,9 +219,9 @@ func test_the_route_binder_binds_all_three_actor_scoped_seams() -> void:
 ## source rather than by calling it, because `_wire_content_roots` is private and the arm is
 ## what matters: a family that dispatches is a family a mod's content reaches.
 func test_the_institutions_family_is_wired_to_the_catalog_overlay_seam() -> void:
-	var body := FileAccess.get_file_as_string(BODY_FILE)
-	assert_ne(body, "", "the boot body is readable")
-	assert_eq(body.contains('&"institutions":'), true, "_wire_content_roots names the family")
+	var body := FileAccess.get_file_as_string(WIRING_FILE)
+	assert_ne(body, "", "the wiring file is readable")
+	assert_eq(body.contains('&"institutions":'), true, "wire_content_roots names the family")
 	assert_eq(
 		body.contains("InstitutionDefCatalog.set_overlay_roots"),
 		true,
@@ -455,12 +457,13 @@ func _actor(actor_id: StringName) -> Actor:
 	return actor
 
 
-## Every phase name the boot body's attach pipeline declares, read from its SOURCE rather
+## Every phase name the boot's attach pipeline declares, read from its SOURCE rather
 ## than by running it — the list is data the pipeline consumes, and a phase whose name is
-## spelled here but absent there is a phase that never runs.
+## spelled here but absent there is a phase that never runs. The list lives in
+## `item_workbench_wiring.gd` since the body split.
 func _attach_step_names() -> Array[StringName]:
 	var out: Array[StringName] = []
-	var body := FileAccess.get_file_as_string(BODY_FILE)
+	var body := FileAccess.get_file_as_string(WIRING_FILE)
 	for line in body.split("\n"):
 		var code := line.strip_edges()
 		if not code.begins_with('{"name": &"'):
