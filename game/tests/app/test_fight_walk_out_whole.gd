@@ -146,6 +146,11 @@ func test_a_won_fight_walks_the_hero_out_whole_and_not_worse() -> void:
 func test_a_lost_fight_is_not_walked_out_whole_and_the_death_stays_observable() -> void:
 	expect_assertions(4)
 	var hero := _hero()
+	# **The opponent is minted and sized BEFORE the hero is shrunk.** `_surviving_opponent`
+	# sizes it from the hero's OWN pool, so a hero already at one point produced an opponent
+	# with one point — which died to the hero's first press and decided the fight `hero_won`
+	# instead of the loss this case exists to pin.
+	var opponent := _surviving_opponent(hero)
 	# A hero with ONE point, sized through the `MAX_HEALTH` STAT rather than through
 	# `pool.maximum`, because `ActorPools.sync_core` rewrites `maximum` from the derived
 	# stats whenever they are read — so a hand-set `maximum` is overwritten before the blow is
@@ -154,7 +159,9 @@ func test_a_lost_fight_is_not_walked_out_whole_and_the_death_stays_observable() 
 	var pool := _hero_pools_at(hero, 1.0)
 	pool.change(1.0 - pool.current)
 
-	var loop := _loop(hero, _surviving_opponent(hero))
+	var loop := _loop(hero, opponent)
+	# Seed zero so the exchange is actually thrown rather than missed: the hero's blow lands
+	# on a pool that outlives it, and the always-landing answer takes the hero's one point.
 	loop.exchange(0)
 
 	assert_eq(String(loop.outcome()), FightLoop.OUTCOME_HERO_LOST, "the fight was lost outright")
@@ -305,8 +312,10 @@ func test_a_fight_that_was_never_decided_restores_nothing() -> void:
 	var pool := _resynced_health(hero)
 	# Trade one blow so the hero is genuinely hurt, and the fight is genuinely still live —
 	# the first version of this case fought a bare `50.0` opponent, which died on the press
-	# and decided the fight, so "nothing was restored" was true for the wrong reason.
-	loop.exchange(SEED)
+	# and decided the fight, so "nothing was restored" was true for the wrong reason. Seed
+	# zero here for the opposite reason to `SEED`: this case needs the exchange to SPEND, and
+	# a seeded double miss spent nothing.
+	loop.exchange(0)
 	var wounded := pool.current
 	assert_eq(wounded < pool.maximum, true, "the exchange spent the hero's own pool")
 	assert_eq(String(loop.outcome()), "", "and the fight is still live to walk away from")
@@ -434,9 +443,20 @@ func _loop(hero: Actor, opponent: Actor) -> FightLoop:
 
 ## Press until a verdict is decided, and stop. The counter moves on every pass against
 ## [constant MAX_PRESSES], so this terminates by construction.
+##
+## ## Why the deciding presses are seed ZERO and not [constant SEED]
+##
+## `SEED` is 7, and at this realm two stock builds contest at `p_hit = 0.5` exactly
+## (`(accuracy - evasion) / rate_scale`): the draws `(7, attacker.id)` produces land on the
+## MISS side for BOTH fixtures' ids. `_strike` also rebuilds its generator from the same
+## seed on every press, so all 80 presses threw the identical miss, `outcome()` stayed empty
+## and no verdict was ever reached — that is the shape that left this suite red. Seed zero is
+## the spine's documented "nothing random happens and every attack lands" path
+## (`CombatBand.roll` takes no draw for a certain hit), which is what a case that presses
+## until a verdict means to ask for. `SEED` keeps its job in the case that needs a MISS.
 func _win(loop: FightLoop) -> int:
 	var presses := 0
 	while presses < MAX_PRESSES and String(loop.outcome()) == "":
-		loop.exchange(SEED)
+		loop.exchange(0)
 		presses += 1
 	return presses
