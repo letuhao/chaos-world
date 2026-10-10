@@ -88,14 +88,16 @@ extends TestCase
 ##
 ## This suite is the per-arrival and census half: the load-bearing union assertion
 ## and the report that names what is stranded. The engine it walks — the authored
-## graph, the `_fixpoint` walk, and every shared helper — is in
-## `destiny_reach_walker.gd`, reached by `preload`. The exclusivity-group and
-## gate-shape rules live in `test_destiny_reach_exclusivity.gd`. The split is by
-## seam, not by size: both halves ask the SAME question of the SAME graph through
-## ONE walker, and neither re-implements the engine.
+## graph and every shared helper — is in `destiny_reach_walker.gd`, and the walk
+## itself is in `destiny_reach_walks.gd`, both reached by `preload`. The exclusivity-
+## group and gate-shape rules live in `test_destiny_reach_exclusivity.gd`. The split
+## is by seam, not by size: both halves ask the SAME question of the SAME graph
+## through ONE engine, and neither re-implements it.
 
-## The walker: the shipped graph, the fixpoint walk, and every shared helper.
+## The walker: the shipped graph, the gate answering and every shared helper.
 const Walker := preload("res://tests/modules/destiny/destiny_reach_walker.gd")
+## The walk: `reachable_from`, `reachable_bare`, the fixpoint and the census reads.
+const Walks := preload("res://tests/modules/destiny/destiny_reach_walks.gd")
 
 ## The exclusivity group whose members close each other. Read from the catalog so
 ## this suite covers a fourth arrival without editing itself.
@@ -185,7 +187,7 @@ func test_every_authored_fate_and_destiny_is_reachable_from_some_arrival() -> vo
 	# a fix here, the second is a `.tres` to open.
 	var walks: Dictionary = {}
 	for origin_id in arrivals:
-		var held := Walker.reachable_from(origin_id)
+		var held := Walks.reachable_from(origin_id)
 		assert_eq(
 			Walker.unreached_reason(held),
 			"",
@@ -296,7 +298,7 @@ func test_the_shipped_content_is_reachable_from_arrivals_reports_what_is_not() -
 	var total := Walker.shipped_size()
 	for origin_id in arrivals:
 		var missing := Walker.unreachable(
-			{origin_id: Walker.reachable_from(origin_id)}, arrivals, true
+			{origin_id: Walks.reachable_from(origin_id)}, arrivals, true
 		)
 		print(
 			(
@@ -306,7 +308,7 @@ func test_the_shipped_content_is_reachable_from_arrivals_reports_what_is_not() -
 		)
 	print("facts the authored content reads: %s" % Walker.fact_demand_report())
 	assert_eq(
-		Walker.stranded_ids(),
+		Walks.stranded_ids(),
 		[] as Array[String],
 		"the union of the arrival walks reaches the whole shipped catalog (DEF-0279)"
 	)

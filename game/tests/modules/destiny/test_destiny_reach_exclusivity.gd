@@ -28,8 +28,10 @@ extends TestCase
 ## individual rule still reads as legal — which is why each is stated directly
 ## rather than left to the fixpoint.
 
-## The walker: the shipped graph, the fixpoint walk, and every shared helper.
+## The walker: the shipped graph, the gate answering and every shared helper.
 const Walker := preload("res://tests/modules/destiny/destiny_reach_walker.gd")
+## The walk: `reachable_from`, `reachable_bare`, the fixpoint and the census reads.
+const Walks := preload("res://tests/modules/destiny/destiny_reach_walks.gd")
 
 ## The exclusivity group whose members close each other, read from the catalog.
 const ORIGIN_GROUP := &"origin"
@@ -183,7 +185,7 @@ func test_no_destiny_requires_a_fate_supplied_only_by_a_gate_that_waits_on_it() 
 ## `tournament_of_the_spirit_peaks.tres` pays this very destiny; but a rule that
 ## comes out right for the wrong reason is one content edit away from coming out
 ## wrong, and "every member is reachable" would then be reporting the tournament's
-## `pay` row rather than the arrival. Read [method Walker.reachable_bare] for the
+## `pay` row rather than the arrival. Read [method Walks.reachable_bare] for the
 ## division.
 func test_every_grouped_destiny_is_reachable_without_holding_a_sibling() -> void:
 	var groups := Walker.groups()
@@ -199,9 +201,9 @@ func test_every_grouped_destiny_is_reachable_without_holding_a_sibling() -> void
 			# kind: a prerequisite that is a SIBLING would show up in the loop below
 			# as a sibling held, which is the defect. See
 			# [method Walker.granted_by_arrival] for the fates an arrival brings with
-			# it, and [method Walker.reachable_bare] for why the member itself is
+			# it, and [method Walks.reachable_bare] for why the member itself is
 			# granted here rather than waited for.
-			var held := Walker.reachable_bare(
+			var held := Walks.reachable_bare(
 				Walker.strings(def.requires_fates),
 				[String(destiny_id)],
 				Walker.granted_by_arrival(destiny_id)
