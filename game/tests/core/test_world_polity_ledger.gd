@@ -460,7 +460,7 @@ func test_an_old_actor_payload_keeps_the_content_it_had_and_gains_no_stamp() -> 
 	# carries none — not a current-version one, which would assert that this save was
 	# written with a world polity ledger.
 	var legacy := Actor.from_dict({"version": 5, "id": "legacy_warden", "base": {Stat.WILL: 30.0}})
-	assert_eq(legacy.polity_version(), -1, "an old payload invents no stamp")
+	assert_eq(ActorSave.polity_version(legacy), -1, "an old payload invents no stamp")
 	var resaved := legacy.to_dict()
 	assert_eq(int(resaved["version"]), Actor.SCHEMA_VERSION, "and re-saves at the current version")
 	assert_eq(
@@ -472,23 +472,25 @@ func test_an_old_actor_payload_keeps_the_content_it_had_and_gains_no_stamp() -> 
 
 func test_a_stamped_payload_round_trips_its_stamp() -> void:
 	var actor := Actor.new(&"stamped", {Stat.PHYSIQUE: 10.0})
-	actor.set_polity_version(WorldPolityLedger.SCHEMA_VERSION)
+	ActorSave.set_polity_version(actor, WorldPolityLedger.SCHEMA_VERSION)
 	var restored := Actor.from_dict(actor.to_dict())
 	assert_eq(
-		restored.polity_version(),
+		ActorSave.polity_version(restored),
 		WorldPolityLedger.SCHEMA_VERSION,
 		"the stamp survives the payload and the JSON hop"
 	)
 	assert_eq(
-		(
-			Actor
-			. from_dict(JSON.parse_string(JSON.stringify(actor.to_dict())) as Dictionary)
-			. polity_version()
+		ActorSave.polity_version(
+			Actor.from_dict(JSON.parse_string(JSON.stringify(actor.to_dict())) as Dictionary)
 		),
 		WorldPolityLedger.SCHEMA_VERSION,
 		"through JSON too, which is what a file-backed save does"
 	)
-	assert_eq(Actor.new().polity_version(), -1, "and a body that was never told carries -1, not 0")
+	assert_eq(
+		ActorSave.polity_version(Actor.new()),
+		-1,
+		"and a body that was never told carries -1, not 0"
+	)
 
 
 func test_a_malformed_stamp_is_dropped_rather_than_coerced() -> void:
@@ -502,7 +504,7 @@ func test_a_malformed_stamp_is_dropped_rather_than_coerced() -> void:
 			"module_data": {"world_polity_version": bogus},
 		}
 		assert_eq(
-			Actor.from_dict(payload).polity_version(),
+			ActorSave.polity_version(Actor.from_dict(payload)),
 			-1,
 			"a %s stamp is dropped rather than coerced" % typeof(bogus)
 		)
@@ -518,7 +520,7 @@ func test_the_json_hop_returns_the_stamp_as_a_float_and_it_is_still_read() -> vo
 	# assertion the round-trip test would pass for the wrong reason and nobody would know
 	# which branch actually carried the stamp.
 	var actor := Actor.new(&"json_hop", {Stat.PHYSIQUE: 10.0})
-	actor.set_polity_version(WorldPolityLedger.SCHEMA_VERSION)
+	ActorSave.set_polity_version(actor, WorldPolityLedger.SCHEMA_VERSION)
 	var in_memory: Variant = (actor.to_dict()["module_data"] as Dictionary)["world_polity_version"]
 	assert_eq(typeof(in_memory), TYPE_INT, "in memory the stamp is an INT")
 	var from_disk: Variant = (
@@ -573,7 +575,7 @@ func test_a_malformed_module_slot_is_still_dropped_and_named() -> void:
 		# The stamp in the SAME payload is still restored, so the exemption is provably
 		# scoped to the one key rather than having disabled the guard wholesale.
 		assert_eq(
-			restored.polity_version(),
+			ActorSave.polity_version(restored),
 			WorldPolityLedger.SCHEMA_VERSION,
 			"and the stamp beside it still rides the versioned path"
 		)
@@ -585,7 +587,7 @@ func test_the_stamp_is_not_carried_as_a_dictionary() -> void:
 	# `set_polity_version` wrote `{"version": N}` and `to_dict` wrote a bare int, so the
 	# two ends of one round trip disagreed and the saved stamp was dropped on load.
 	var actor := Actor.new(&"shape", {Stat.PHYSIQUE: 10.0})
-	actor.set_polity_version(WorldPolityLedger.SCHEMA_VERSION)
+	ActorSave.set_polity_version(actor, WorldPolityLedger.SCHEMA_VERSION)
 	var slot: Variant = actor.module_data.get(ActorSave.POLITY_SLOT_KEY)
 	assert_eq(typeof(slot), TYPE_INT, "the live slot is a bare int in memory")
 	assert_eq(

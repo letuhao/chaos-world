@@ -202,7 +202,7 @@ func _init(p_id: StringName = &"", base: Dictionary = {}) -> void:
 	_context = StatContext.new(
 		stats.base_ref(), resources, traits, affinities, paths, components, meridians
 	)
-	stats.set_context(_context)
+	stats._set_context(_context)
 
 
 ## Resource pools every actor carries, mapped to the derived stat that
@@ -240,8 +240,10 @@ func _pools() -> ActorPools:
 
 
 ## The relationship/affinity delegate, minted on first use. The only place
-## `_affinity_helper` is assigned.
-func _affinities() -> ActorAffinity:
+## `_affinity_helper` is assigned, and the actor's PUBLIC door onto [ActorAffinity]:
+## the rules live there, so a caller reads them where they live rather than through a
+## one-line forward per verb — the actor's public surface has a budget (ADR 0942).
+func affinity_rules() -> ActorAffinity:
 	if _affinity_helper == null:
 		_affinity_helper = ActorAffinity.new(self)
 	return _affinity_helper
@@ -288,21 +290,10 @@ func tick_statuses(delta: float) -> void:
 		status_ticked.emit(entry.id, entry.magnitude)
 
 
-## Record `affinity` toward `partner_id`. The rules live in [ActorAffinity]; this is the
-## actor's own door onto them and it keeps the name every caller already uses.
-func set_relationship(partner_id: StringName, affinity: float) -> void:
-	_affinities().set_relationship(self, partner_id, affinity)
-
-
-## The standing this actor holds toward `partner_id`, `0.0` for a stranger.
-func affinity_with(partner_id: StringName) -> float:
-	return _affinities().affinity_with(self, partner_id)
-
-
 ## Set the element affinity `element_id` to `value`. The map publishes its own `changed`,
 ## so this one needs no invalidating of its own — see [ActorAffinity] for why.
 func set_affinity(element_id: StringName, value: float) -> void:
-	_affinities().set_affinity(self, element_id, value)
+	affinity_rules().set_affinity(self, element_id, value)
 
 
 func change_resource(pool_id: StringName, delta: float) -> void:
@@ -473,29 +464,6 @@ func to_dict() -> Dictionary:
 	if stamped is int and int(stamped) >= 0:
 		module_data_dict[String(POLITY_SLOT_KEY)] = int(stamped)
 	return payload
-
-
-## The world-slot stamp this actor carries, or -1 when it carries none. -1 rather than
-## zero because zero is a legal stamp and a caller comparing two stamps must be able to
-## tell "generation zero" from "never told".
-##
-## The RULE about the slot lives in [ActorSave]; this is the actor's own door onto it,
-## and it forwards rather than re-implementing so there is exactly one place that decides
-## what a malformed stamp reads as.
-func polity_version() -> int:
-	return ActorSave.polity_version(self)
-
-
-## Record the world-slot stamp this actor's save was written at. The only writer, so no
-## second caller can invent a stamp the world slot does not carry.
-##
-## The stamp is a BARE INT in `module_data`, which is what `polity_version()` reads,
-## what `to_dict` copies into `module_data` and what `_restore_versioned` restores:
-## an earlier Dictionary-wrapped spelling disagreed with all three of them on every
-## round trip, so `set_polity_version` wrote a slot nothing ever read. The write itself is
-## [ActorSave]'s, for the one-way-edge reason its docblock gives.
-func set_polity_version(version: int) -> void:
-	ActorSave.set_polity_version(self, version)
 
 
 ## Register the item-state serialization hook (ADR 0027). Called by the items module
@@ -671,14 +639,14 @@ static func _restore_versioned(data: Dictionary, actor: Actor, version: int) -> 
 	)
 	var restored_stamp := ActorSave.stamp_of(stamp_data)
 	if restored_stamp >= 0:
-		# Routed through `set_polity_version`, which owns this slot's assignment, rather
-		# than written into `module_data` a second time here. `set_module_data` is typed
-		# `(id, data: Dictionary)` and this stamp is deliberately NOT a dictionary - the
-		# payload carries an int, copied straight back - so passing one was a hard parse
+		# Routed through `ActorSave.set_polity_version`, which owns this slot's assignment,
+		# rather than written into `module_data` a second time here. `set_module_data` is
+		# typed `(id, data: Dictionary)` and this stamp is deliberately NOT a dictionary -
+		# the payload carries an int, copied straight back - so passing one was a hard parse
 		# error. GDScript attributes it upward, so the failure surfaced as
 		# `Could not resolve class LootContentTables` and then `DomainFixtures`, both
 		# innocent, then a failed load of everything importing Actor (DEF-0277).
-		actor.set_polity_version(restored_stamp)
+		ActorSave.set_polity_version(actor, restored_stamp)
 
 
 ## The wound ledger's raw payload, read through the component the body path binds it
@@ -717,25 +685,13 @@ func _paths_dict() -> Dictionary:
 	return out
 
 
-## ## The authored starting age for the body this actor wears, in years.
+## ## The authored starting age for the body this actor wears (ADR 0258 §2)
 ##
-## ## Why it reads the body plan at all
-##
-## ADR 0258 §2: "a reborn body starts at the authored starting age for its SPECIES". So the
-## number is CONTENT — `RaceDef.starting_age_years`, tuned per race — and this is the one
-## read of it, beside `RealmLifespan._baseline_of`'s reading of the same component for the
-## same one-way-edge reason (`core` may not name a module class, so the slot id is a
-## literal and the module fills it at conception).
-##
-## A `0.0` reading is not a claim that a species is born on day zero; it is the
-## "no body plan attached" answer, and it resolves to [constant STARTING_AGE_YEARS], which
-## is the same number — so the two cases a caller has to tell apart, "a newborn" and "a
-## body with no species", cost a caller nothing here and are told apart by reading the
-## component directly.
-func starting_age_years() -> float:
-	if component(RACE_DEF_COMPONENT) == null:
-		return STARTING_AGE_YEARS
-	return maxf(0.0, float(_starting_age_of(component(RACE_DEF_COMPONENT))))
+## The number is CONTENT — `RaceDef.starting_age_years`, tuned per race — and the read is
+## `race_projection.gd`'s: it applies the authored number to `age_years` on attach. This
+## file's own `starting_age_years()` was a second read of the same field with no caller
+## left once that landed, and it was removed with the public-method budget (ADR 0942).
+## [constant STARTING_AGE_YEARS] remains the no-body-plan answer `age_years` starts at.
 
 
 ## ## Restore `age_years` from a payload, or leave it at the authored starting age.
@@ -766,11 +722,3 @@ static func _restore_age(data: Dictionary, actor: Actor) -> void:
 	if not is_finite(years) or years < 0.0:
 		return
 	actor.age_years = years
-
-
-## The `starting_age_years` field off a body plan, read through [method Object.get] so a
-## foreign or stale component with no such field answers `0.0` rather than being a hard
-## property access. `core` names no module class, so the field is spelled as a literal
-## here exactly as `RealmLifespan` spells its slot id.
-func _starting_age_of(def: RefCounted) -> Variant:
-	return def.get(&"starting_age_years")

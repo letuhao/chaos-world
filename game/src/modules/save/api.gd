@@ -96,8 +96,8 @@ static func persist(actor: Actor, difficulty_id: String = "", slot: StringName =
 	# ## this is where a save's world and its stamp are made consistent with each other.
 	# ## Writing it on the actor instead would let a body carry a stamp about a world it
 	# ## never saw, which is a second copy of a save-shape fact that could disagree.
-	if actor != null and actor.polity_version() < 0:
-		actor.set_polity_version(WorldPolityLedger.SCHEMA_VERSION)
+	if actor != null and ActorSave.polity_version(actor) < 0:
+		ActorSave.set_polity_version(actor, WorldPolityLedger.SCHEMA_VERSION)
 		payload = actor.to_dict()
 	var generation := SaveStore.generation(target) + 1
 	var envelope := SaveSlot.build(payload, world, difficulty_id, generation)

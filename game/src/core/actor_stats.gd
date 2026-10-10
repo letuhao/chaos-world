@@ -107,7 +107,11 @@ func from_dict(data: Dictionary) -> void:
 	mark_dirty()
 
 
-func set_context(context: StatContext) -> void:
+## The stat context (realm, path, …) the fold reads. `_` because the ONLY caller is the
+## actor that mints this sheet: a public setter would be a second, legitimately reachable
+## way to change what every stat means, and the public-method budget is a design
+## constraint here (ADR 0942).
+func _set_context(context: StatContext) -> void:
 	_context = context
 	_context.derived = _derived
 	mark_dirty()
@@ -115,11 +119,6 @@ func set_context(context: StatContext) -> void:
 
 func add_provider(provider: StatProvider) -> void:
 	_providers.append(provider)
-	mark_dirty()
-
-
-func clear_providers() -> void:
-	_providers.clear()
 	mark_dirty()
 
 

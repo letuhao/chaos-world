@@ -98,7 +98,7 @@ func test_karmic_debt_raises_difficulty() -> void:
 	var clean := Tribulation.new(Tribulation.LIGHTNING, 3, 1.0)
 	clean.start(Actor.new(&"hero"), &"earth_immortal")
 	var indebted := Actor.new(&"hero")
-	indebted.set_relationship(&"rival", -5.0)
+	indebted.affinity_rules().set_relationship(indebted, &"rival", -5.0)
 	var tribulation := Tribulation.new(Tribulation.LIGHTNING, 3, 1.0)
 	tribulation.start(indebted, &"earth_immortal")
 	assert_eq(tribulation.difficulty > clean.difficulty, true, "debt makes it harder")

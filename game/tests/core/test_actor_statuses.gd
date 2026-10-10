@@ -29,6 +29,8 @@ func test_permanent_status_survives_tick() -> void:
 
 func test_relationships() -> void:
 	var actor := Actor.new(&"hero")
-	actor.set_relationship(&"partner", 42.0)
-	assert_almost_eq(actor.affinity_with(&"partner"), 42.0, "affinity set")
-	assert_almost_eq(actor.affinity_with(&"stranger"), 0.0, "unknown affinity")
+	actor.affinity_rules().set_relationship(actor, &"partner", 42.0)
+	assert_almost_eq(actor.affinity_rules().affinity_with(actor, &"partner"), 42.0, "affinity set")
+	assert_almost_eq(
+		actor.affinity_rules().affinity_with(actor, &"stranger"), 0.0, "unknown affinity"
+	)
