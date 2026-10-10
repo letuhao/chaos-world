@@ -1,0 +1,618 @@
+{
+  "id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_11_torrential_monsoon_downpour.scorched_cinder_vent",
+  "archetype": "scorched_cinder_vent_haz_11_torrential_monsoon_downpour",
+  "name": "Torrential Monsoon Downpour - Smoking Brimstone Fire Vent",
+  "vietnamese_name": "Khuynh Bồn Bạo Vũ - Khe Nham Thạch Khói Lửa",
+  "hanzi": "倾盆暴雨 · 喷硫熔浆气孔",
+  "category": "haz_11_torrential_monsoon_downpour",
+  "category_code": "HAZ-11",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_11_torrential_monsoon_downpour",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "obstacle",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "gather_sulfur",
+  "gameplay_role": "prop_workstation entity supporting Torrential Monsoon Downpour gameplay",
+  "destructible": true,
+  "material": "authentic mortal craftsmanship materials",
+  "cultivation_element": "fire",
+  "prompt_summary": "Single isolated 2D RPG game prop of torrential monsoon downpour - smoking brimstone fire vent, authentic torrential monsoon downpour materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Environmental Hazards & Phenomena",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of smoking brimstone fire vent, authentic mortal craftsmanship materials, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_11_torrential_monsoon_downpour/scorched_cinder_vent/pristine_dormant.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.741,
+            0.421
+          ],
+          [
+            0.709,
+            0.686
+          ]
+        ],
+        "frac_zero": 0.646,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          5,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.734,
+            0.999,
+            0.988,
+            0.447,
+            0.0
+          ],
+          [
+            0.084,
+            0.901,
+            0.996,
+            0.302,
+            0.0
+          ],
+          [
+            0.417,
+            0.919,
+            1.0,
+            0.17,
+            0.0
+          ],
+          [
+            0.699,
+            0.967,
+            1.0,
+            0.731,
+            0.536
+          ],
+          [
+            0.452,
+            1.0,
+            1.0,
+            0.974,
+            0.211
+          ],
+          [
+            0.278,
+            0.992,
+            1.0,
+            0.851,
+            0.185
+          ],
+          [
+            0.241,
+            0.753,
+            0.937,
+            0.667,
+            0.184
+          ]
+        ],
+        "crop_offset": [
+          51,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3
+        ],
+        "contact_px": 99,
+        "contact_reference_px": 99.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of smoking brimstone fire vent, authentic mortal craftsmanship materials, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_11_torrential_monsoon_downpour/scorched_cinder_vent/active_operating.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.754,
+            0.538
+          ],
+          [
+            0.62,
+            0.586
+          ]
+        ],
+        "frac_zero": 0.5995,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.486,
+            0.929,
+            1.0,
+            0.921,
+            0.73,
+            0.375
+          ],
+          [
+            0.107,
+            0.798,
+            1.0,
+            0.753,
+            0.05,
+            0.003
+          ],
+          [
+            0.755,
+            0.908,
+            1.0,
+            0.623,
+            0.135,
+            0.0
+          ],
+          [
+            0.355,
+            0.996,
+            1.0,
+            1.0,
+            0.318,
+            0.0
+          ],
+          [
+            0.326,
+            0.871,
+            1.0,
+            0.882,
+            0.378,
+            0.0
+          ],
+          [
+            0.485,
+            0.998,
+            1.0,
+            0.997,
+            0.601,
+            0.0
+          ],
+          [
+            0.061,
+            0.341,
+            0.514,
+            0.73,
+            0.263,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          43,
+          16
+        ],
+        "trunk_columns": [
+          2,
+          3
+        ],
+        "contact_px": 50,
+        "contact_reference_px": 50.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of smoking brimstone fire vent, authentic mortal craftsmanship materials, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_11_torrential_monsoon_downpour/scorched_cinder_vent/damaged_weathered.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.575,
+            0.388
+          ],
+          [
+            0.776,
+            0.662
+          ]
+        ],
+        "frac_zero": 0.6715,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          5,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.782,
+            1.0,
+            0.083,
+            0.0
+          ],
+          [
+            0.0,
+            0.752,
+            1.0,
+            0.093,
+            0.0
+          ],
+          [
+            0.272,
+            0.791,
+            1.0,
+            0.451,
+            0.0
+          ],
+          [
+            0.677,
+            1.0,
+            1.0,
+            0.999,
+            0.174
+          ],
+          [
+            0.491,
+            1.0,
+            1.0,
+            0.93,
+            0.025
+          ],
+          [
+            0.562,
+            1.0,
+            1.0,
+            0.933,
+            0.239
+          ],
+          [
+            0.345,
+            0.875,
+            0.928,
+            0.726,
+            0.22
+          ]
+        ],
+        "crop_offset": [
+          52,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3
+        ],
+        "contact_px": 111,
+        "contact_reference_px": 111.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of smoking brimstone fire vent, authentic mortal craftsmanship materials, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_11_torrential_monsoon_downpour/scorched_cinder_vent/ruined_rubble.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.512,
+            0.724
+          ],
+          [
+            0.685,
+            0.606
+          ]
+        ],
+        "frac_zero": 0.5605,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.022,
+            0.739,
+            1.0,
+            1.0,
+            1.0,
+            0.655,
+            0.0
+          ],
+          [
+            0.004,
+            0.187,
+            0.953,
+            1.0,
+            1.0,
+            0.544,
+            0.0
+          ],
+          [
+            0.0,
+            0.515,
+            1.0,
+            1.0,
+            0.701,
+            0.218,
+            0.0
+          ],
+          [
+            0.325,
+            0.686,
+            1.0,
+            1.0,
+            0.576,
+            0.07,
+            0.0
+          ],
+          [
+            0.35,
+            0.815,
+            1.0,
+            1.0,
+            0.845,
+            0.262,
+            0.0
+          ],
+          [
+            0.565,
+            1.0,
+            1.0,
+            1.0,
+            0.999,
+            0.561,
+            0.073
+          ],
+          [
+            0.15,
+            0.471,
+            0.701,
+            0.692,
+            0.337,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          31,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3
+        ],
+        "contact_px": 59,
+        "contact_reference_px": 59.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "HAZ-11",
+    "domain": "hazards_and_phenomena",
+    "interaction": "gather_sulfur",
+    "collision_behavior": "obstacle",
+    "element": "fire",
+    "tier": 3
+  },
+  "category_id": "haz_11_torrential_monsoon_downpour",
+  "domain_id": "hazards_and_phenomena",
+  "pinyin": "Qīngpén Bàoyǔ · Smoking Brimstone Fire Vent",
+  "archetype_name": "Smoking Brimstone Fire Vent",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "obstacle",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "carved_wood",
+  "secondary_material": "polished_bronze",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Fire affinity (Core Formation (Kết Đan / 结丹))",
+  "elevation_tier": 3,
+  "mortal_realm_tier": "Core Formation (Kết Đan / 结丹)",
+  "asset_slug": "scorched_cinder_vent"
+}

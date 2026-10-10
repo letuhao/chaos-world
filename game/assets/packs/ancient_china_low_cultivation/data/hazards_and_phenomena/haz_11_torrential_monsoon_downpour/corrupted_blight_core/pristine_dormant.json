@@ -1,0 +1,172 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_11_torrential_monsoon_downpour.corrupted_blight_core",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_11_torrential_monsoon_downpour",
+  "asset_slug": "corrupted_blight_core",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_11_torrential_monsoon_downpour/corrupted_blight_core/pristine_dormant.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "cleanse_blight",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.711,
+        0.654
+      ],
+      [
+        0.53,
+        0.516
+      ]
+    ],
+    "frac_zero": 0.58,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.04,
+        0.426,
+        0.914,
+        0.766,
+        0.196,
+        0.023
+      ],
+      [
+        0.142,
+        0.778,
+        0.989,
+        0.986,
+        0.694,
+        0.047
+      ],
+      [
+        0.793,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.774
+      ],
+      [
+        0.628,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.592
+      ],
+      [
+        0.271,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.196
+      ],
+      [
+        0.106,
+        0.714,
+        0.968,
+        0.958,
+        0.715,
+        0.088
+      ],
+      [
+        0.0,
+        0.0,
+        0.268,
+        0.253,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      32,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 14,
+    "contact_reference_px": 14.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

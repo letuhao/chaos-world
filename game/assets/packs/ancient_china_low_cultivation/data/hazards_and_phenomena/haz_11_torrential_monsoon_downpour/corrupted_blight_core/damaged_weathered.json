@@ -1,0 +1,177 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_11_torrential_monsoon_downpour.corrupted_blight_core",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_11_torrential_monsoon_downpour",
+  "asset_slug": "corrupted_blight_core",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_11_torrential_monsoon_downpour/corrupted_blight_core/damaged_weathered.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "cleanse_blight",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.625,
+        0.568
+      ],
+      [
+        0.762,
+        0.758
+      ]
+    ],
+    "frac_zero": 0.5328,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.173,
+        0.55,
+        1.0,
+        0.631,
+        0.387,
+        0.057
+      ],
+      [
+        0.036,
+        0.294,
+        0.931,
+        0.733,
+        0.151,
+        0.043
+      ],
+      [
+        0.389,
+        0.996,
+        1.0,
+        1.0,
+        0.937,
+        0.19
+      ],
+      [
+        0.55,
+        1.0,
+        1.0,
+        1.0,
+        0.965,
+        0.408
+      ],
+      [
+        0.454,
+        1.0,
+        1.0,
+        1.0,
+        0.942,
+        0.315
+      ],
+      [
+        0.68,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.53
+      ],
+      [
+        0.094,
+        0.727,
+        0.959,
+        0.937,
+        0.546,
+        0.107
+      ]
+    ],
+    "crop_offset": [
+      35,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 102,
+    "contact_reference_px": 102.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,657 @@
+{
+  "id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_12_solar_scorching_aridity.boiling_mud_vent",
+  "archetype": "boiling_mud_vent_haz_12_solar_scorching_aridity",
+  "name": "Solar Scorching Aridity - Bubbling Volcanic Mud Vent",
+  "vietnamese_name": "Liệt Dương Tiêu Chích - Lỗ Bùn Nóng Sôi Sục",
+  "hanzi": "烈阳焦炙 · 滚沸泥浆气眼",
+  "category": "haz_12_solar_scorching_aridity",
+  "category_code": "HAZ-12",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_12_solar_scorching_aridity",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "obstacle",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "inspect_hazard",
+  "gameplay_role": "prop_workstation entity supporting Solar Scorching Aridity gameplay",
+  "destructible": true,
+  "material": "compact mineral soil with fine clay granules",
+  "cultivation_element": "fire",
+  "prompt_summary": "Single isolated 2D RPG game prop of solar scorching aridity - bubbling volcanic mud vent, authentic solar scorching aridity materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Environmental Hazards & Phenomena",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of bubbling volcanic mud vent, compact mineral soil with fine clay granules, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_12_solar_scorching_aridity/boiling_mud_vent/pristine_dormant.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.727,
+            0.619
+          ],
+          [
+            0.607,
+            0.769
+          ]
+        ],
+        "frac_zero": 0.5229,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.143,
+            0.396,
+            0.564,
+            0.585,
+            0.12,
+            0.0,
+            0.0
+          ],
+          [
+            0.457,
+            0.914,
+            1.0,
+            1.0,
+            0.896,
+            0.167,
+            0.0
+          ],
+          [
+            0.778,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.876,
+            0.0
+          ],
+          [
+            0.533,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.593,
+            0.0
+          ],
+          [
+            0.634,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.936,
+            0.333
+          ],
+          [
+            0.146,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.952,
+            0.12
+          ],
+          [
+            0.011,
+            0.172,
+            0.117,
+            0.339,
+            0.803,
+            0.251,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          31,
+          16
+        ],
+        "trunk_columns": [
+          4
+        ],
+        "contact_px": 41,
+        "contact_reference_px": 41.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of bubbling volcanic mud vent, compact mineral soil with fine clay granules, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_12_solar_scorching_aridity/boiling_mud_vent/active_operating.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.466,
+            0.402
+          ],
+          [
+            0.749,
+            0.794
+          ]
+        ],
+        "frac_zero": 0.5394,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.079,
+            0.656,
+            0.51,
+            0.382,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.315,
+            1.0,
+            0.677,
+            0.491,
+            0.098,
+            0.0
+          ],
+          [
+            0.019,
+            0.641,
+            1.0,
+            0.996,
+            0.65,
+            0.25,
+            0.0
+          ],
+          [
+            0.132,
+            0.947,
+            1.0,
+            1.0,
+            1.0,
+            0.615,
+            0.026
+          ],
+          [
+            0.511,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.969,
+            0.375
+          ],
+          [
+            0.573,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.625
+          ],
+          [
+            0.08,
+            0.552,
+            0.79,
+            0.949,
+            0.897,
+            0.428,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          21,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 132,
+        "contact_reference_px": 132.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of bubbling volcanic mud vent, compact mineral soil with fine clay granules, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_12_solar_scorching_aridity/boiling_mud_vent/damaged_weathered.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.564,
+            0.625
+          ],
+          [
+            0.742,
+            0.782
+          ]
+        ],
+        "frac_zero": 0.5039,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.082,
+            0.42,
+            0.718,
+            0.135,
+            0.09,
+            0.0
+          ],
+          [
+            0.001,
+            0.657,
+            1.0,
+            1.0,
+            0.979,
+            0.351,
+            0.0
+          ],
+          [
+            0.275,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.872,
+            0.165
+          ],
+          [
+            0.326,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.832,
+            0.242
+          ],
+          [
+            0.732,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.982,
+            0.633
+          ],
+          [
+            0.499,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.49
+          ],
+          [
+            0.187,
+            0.453,
+            0.671,
+            0.902,
+            0.609,
+            0.225,
+            0.004
+          ]
+        ],
+        "crop_offset": [
+          24,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 77,
+        "contact_reference_px": 77.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of bubbling volcanic mud vent, compact mineral soil with fine clay granules, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_12_solar_scorching_aridity/boiling_mud_vent/ruined_rubble.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.592,
+            0.378
+          ],
+          [
+            0.776,
+            0.801
+          ]
+        ],
+        "frac_zero": 0.5041,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.684,
+            0.442,
+            0.007,
+            0.026,
+            0.0,
+            0.0
+          ],
+          [
+            0.078,
+            0.817,
+            0.88,
+            0.415,
+            0.453,
+            0.099,
+            0.0
+          ],
+          [
+            0.168,
+            0.979,
+            1.0,
+            1.0,
+            0.97,
+            0.594,
+            0.322
+          ],
+          [
+            0.381,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.42
+          ],
+          [
+            0.78,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.839
+          ],
+          [
+            0.473,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.995,
+            0.44
+          ],
+          [
+            0.106,
+            0.474,
+            0.743,
+            0.896,
+            0.716,
+            0.588,
+            0.053
+          ]
+        ],
+        "crop_offset": [
+          17,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 110,
+        "contact_reference_px": 110.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "HAZ-12",
+    "domain": "hazards_and_phenomena",
+    "interaction": "inspect_hazard",
+    "collision_behavior": "obstacle",
+    "element": "fire",
+    "tier": 2
+  },
+  "category_id": "haz_12_solar_scorching_aridity",
+  "domain_id": "hazards_and_phenomena",
+  "pinyin": "Lièyáng Jiāozhì · Bubbling Volcanic Mud Vent",
+  "archetype_name": "Bubbling Volcanic Mud Vent",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "obstacle",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "earthen_loam",
+  "secondary_material": "mineral_silt",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Fire affinity (Foundation Establishment (Trúc Cơ / 筑基))",
+  "elevation_tier": 2,
+  "mortal_realm_tier": "Foundation Establishment (Trúc Cơ / 筑基)",
+  "asset_slug": "boiling_mud_vent"
+}

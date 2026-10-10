@@ -1,0 +1,96 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_11_torrential_monsoon_downpour.yin_frost_fissure",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_11_torrential_monsoon_downpour",
+  "asset_slug": "yin_frost_fissure",
+  "variant_slug": "facing_east_profile",
+  "name": "East Facing Profile",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_11_torrential_monsoon_downpour/yin_frost_fissure/facing_east_profile.png",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "endure_cold",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.382,
+        0.801,
+        0.462
+      ]
+    ],
+    "frac_zero": 0.8926,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.585,
+        0.142
+      ],
+      [
+        0.544,
+        0.997,
+        0.643
+      ],
+      [
+        0.635,
+        0.908,
+        0.444
+      ]
+    ],
+    "crop_offset": [
+      146,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 72,
+    "contact_reference_px": 72.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

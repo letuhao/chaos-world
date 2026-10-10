@@ -1,0 +1,175 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_12_solar_scorching_aridity.corrupted_blight_core",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_12_solar_scorching_aridity",
+  "asset_slug": "corrupted_blight_core",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_12_solar_scorching_aridity/corrupted_blight_core/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "cleanse_blight",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.562,
+        0.528
+      ],
+      [
+        0.548,
+        0.663
+      ]
+    ],
+    "frac_zero": 0.6338,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.13,
+        0.454,
+        0.676,
+        0.734,
+        0.0,
+        0.0
+      ],
+      [
+        0.072,
+        0.86,
+        0.93,
+        0.836,
+        0.29,
+        0.0
+      ],
+      [
+        0.137,
+        0.933,
+        1.0,
+        0.744,
+        0.741,
+        0.048
+      ],
+      [
+        0.244,
+        0.964,
+        1.0,
+        1.0,
+        0.807,
+        0.037
+      ],
+      [
+        0.493,
+        0.62,
+        1.0,
+        1.0,
+        0.572,
+        0.684
+      ],
+      [
+        0.383,
+        0.797,
+        1.0,
+        1.0,
+        0.811,
+        0.436
+      ],
+      [
+        0.0,
+        0.024,
+        0.66,
+        0.648,
+        0.032,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      41,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 42,
+    "contact_reference_px": 42.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

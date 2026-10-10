@@ -1,0 +1,184 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_11_torrential_monsoon_downpour.corrupted_blight_core",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_11_torrential_monsoon_downpour",
+  "asset_slug": "corrupted_blight_core",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_11_torrential_monsoon_downpour/corrupted_blight_core/ruined_rubble.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "cleanse_blight",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.394,
+        0.396
+      ],
+      [
+        0.752,
+        0.736
+      ]
+    ],
+    "frac_zero": 0.5762,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.251,
+        0.857,
+        0.703,
+        0.163,
+        0.174,
+        0.0
+      ],
+      [
+        0.0,
+        0.026,
+        0.618,
+        0.532,
+        0.383,
+        0.08,
+        0.0
+      ],
+      [
+        0.0,
+        0.647,
+        0.811,
+        0.848,
+        0.684,
+        0.009,
+        0.0
+      ],
+      [
+        0.199,
+        0.7,
+        0.994,
+        1.0,
+        0.807,
+        0.086,
+        0.0
+      ],
+      [
+        0.45,
+        1.0,
+        1.0,
+        1.0,
+        0.937,
+        0.461,
+        0.119
+      ],
+      [
+        0.744,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.867,
+        0.056
+      ],
+      [
+        0.188,
+        0.712,
+        0.649,
+        1.0,
+        0.718,
+        0.22,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      30,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 67,
+    "contact_reference_px": 67.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_11_torrential_monsoon_downpour.miasma_cloud_swirl",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_11_torrential_monsoon_downpour",
+  "asset_slug": "miasma_cloud_swirl",
+  "variant_slug": "subtle_ambient",
+  "name": "Subtle Ambient Intensity",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_11_torrential_monsoon_downpour/miasma_cloud_swirl/subtle_ambient.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.0,
+        0.009
+      ],
+      [
+        0.182,
+        0.261
+      ]
+    ],
+    "frac_zero": 0.7512,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.001,
+        0.011,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.012,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.017,
+        0.015,
+        0.013
+      ],
+      [
+        0.003,
+        0.184,
+        0.321,
+        0.045,
+        0.0
+      ],
+      [
+        0.142,
+        0.403,
+        0.755,
+        0.459,
+        0.196
+      ],
+      [
+        0.058,
+        0.184,
+        0.016,
+        0.378,
+        0.166
+      ]
+    ],
+    "crop_offset": [
+      48,
+      58
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 21,
+    "contact_reference_px": 21.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
