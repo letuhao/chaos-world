@@ -20,6 +20,9 @@ const FLOOR_SCRIPT_PATH := "res://src/ui/screens/floor_screen.gd"
 const DROP_ROW_SCRIPT_PATH := "res://src/ui/panels/floor_drop_row.gd"
 const AUCTION_SCRIPT_PATH := "res://src/ui/screens/auction_screen.gd"
 const ROOT_SCRIPT_PATH := "res://src/app/item_workbench_app.gd"
+## The root's ROUTES half. The binding arms moved there when the app hit gdlint's
+## line ceiling, so a census of "which route binds which seam" reads the PAIR.
+const ROUTES_SCRIPT_PATH := "res://src/app/item_workbench_routes.gd"
 
 const FLOOR_ROUTE := &"floor"
 const AUCTION_ROUTE := &"auction"

@@ -198,7 +198,9 @@ func test_the_floor_route_is_published_and_bound_to_a_key() -> void:
 ## rather than the wiring. Every scan goes through `_code_only`, for the reason
 ## `test_forage_surface.gd` strips comments before looking for `@onready`.
 func test_the_binding_arm_opens_the_floor_route_and_names_the_verbs() -> void:
-	var source := _code_only(ROOT_SCRIPT_PATH)
+	# BOTH files of the root: the binding arms moved to its routes half when the app hit
+	# gdlint's line ceiling, so a census of an ARM reads the pair.
+	var source := _code_only(ROOT_SCRIPT_PATH) + _code_only(ROUTES_SCRIPT_PATH)
 	assert_ne(source.is_empty(), true, "the composition root's source is readable")
 	assert_eq(source.count("ROUTE_FLOOR:"), 1, "the root binds the floor route exactly once")
 	# Scoped to the floor's OWN arm, not the whole match: `ROUTE_MARKET` hands its screen a

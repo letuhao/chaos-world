@@ -599,7 +599,12 @@ func test_the_composition_root_binds_the_custody_route_through_its_one_seam() ->
 
 	# text scan would be asserting the comment. `_code_only` strips them first.
 
-	var source := _code_only("res://src/app/item_workbench_app.gd")
+	# BOTH files of the root: the custody ARM and `_capturable_cast` moved to its routes
+	# half when the app hit gdlint's line ceiling, and the claim is about the pair.
+	var source := (
+		_code_only("res://src/app/item_workbench_app.gd")
+		+ _code_only("res://src/app/item_workbench_routes.gd")
+	)
 
 	assert_ne(source.is_empty(), true, "the composition root's source is readable")
 

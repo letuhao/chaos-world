@@ -259,7 +259,12 @@ func test_the_binding_arm_names_the_harvest_seam_the_screen_cannot_reach_itself(
 	# scan of this file is asserting the comment rather than the wiring. Every scan in
 	# this file goes through `_code_only`, for the same reason `test_ui_conventions`
 	# strips comments before looking for `@onready`.
-	var source := _code_only("res://src/app/item_workbench_app.gd")
+	# BOTH files of the root: the harvest arm moved to its routes half when the app hit
+	# gdlint's line ceiling, and the claim is about the pair.
+	var source := (
+		_code_only("res://src/app/item_workbench_app.gd")
+		+ _code_only("res://src/app/item_workbench_routes.gd")
+	)
 	assert_ne(source.is_empty(), true, "the composition root's source is readable")
 	assert_eq(
 		source.count("bind_harvest"),

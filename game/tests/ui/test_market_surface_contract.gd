@@ -266,13 +266,14 @@ func test_both_routes_are_published_and_bound_to_a_key() -> void:
 ## seams. An unwired screen would refuse `no_market_seam` / `no_auction_seam` forever
 ## and every other case in this file would be measuring a seam nobody injected.
 ##
-## Read CODE, not the file: `item_workbench_app.gd` documents these routes at length in
-## docstrings that name every seam too, so a raw text scan would be asserting the
-## comment rather than the wiring. Every scan in this file goes through `_code_only`,
-## for the same reason `test_forage_surface.gd` strips comments before looking for
-## `@onready`.
+## Read CODE, not the files: the root's docstrings name every seam too, so a raw text
+## scan would be asserting the comment rather than the wiring. BOTH files of the root
+## are read — its routes half carries the binding arms since the app hit the line
+## ceiling, and the claim is about the PAIR: an arm and the verbs it binds. Every scan
+## in this file goes through `_code_only`, for the same reason `test_forage_surface.gd`
+## strips comments before looking for `@onready`.
 func test_the_binding_arms_inject_the_seams_the_screens_cannot_reach_themselves() -> void:
-	var source := _code_only(ROOT_SCRIPT_PATH)
+	var source := _code_only(ROOT_SCRIPT_PATH) + _code_only(ROUTES_SCRIPT_PATH)
 	assert_ne(source.is_empty(), true, "the composition root's source is readable")
 	assert_eq(source.count("ROUTE_MARKET:"), 1, "the root binds the market route exactly once")
 	assert_eq(source.count("ROUTE_AUCTION:"), 1, "and the auction route exactly once")

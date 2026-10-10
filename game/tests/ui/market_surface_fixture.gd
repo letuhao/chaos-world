@@ -84,6 +84,9 @@ const AUCTION_SCRIPT_PATH := "res://src/ui/screens/auction_screen.gd"
 const SHOP_ROW_SCRIPT_PATH := "res://src/ui/panels/market_row.gd"
 const LOT_ROW_SCRIPT_PATH := "res://src/ui/panels/auction_lot_row.gd"
 const ROOT_SCRIPT_PATH := "res://src/app/item_workbench_app.gd"
+## The root's ROUTES half. The binding arms moved there when the app hit gdlint's
+## line ceiling, so a census of "which route binds which seam" reads the PAIR.
+const ROUTES_SCRIPT_PATH := "res://src/app/item_workbench_routes.gd"
 
 const MARKET_ROUTE := &"market"
 const AUCTION_ROUTE := &"auction"
