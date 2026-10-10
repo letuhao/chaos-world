@@ -95,6 +95,27 @@ func _opponent(id: StringName = &"ward") -> Actor:
 	return actor
 
 
+## A FLAT ACCURACY investment that makes a seeded blow SURE to land, so a case that exists
+## to assert what a LANDED blow does does not depend on a coin.
+##
+## `p_hit = clampf(maxf(0.0, accuracy - evasion) / rate_scale, 0.0, 1.0)` (ADR 0877). Two
+## stock commonborn read `(0.0065 - 0.0015) / 0.01` — exactly `0.5` — so ONE seeded blow
+## is a coin flip, and a miss returns at S2 (`spine.gd:155`) before the seam: `resolve_calls`
+## stays 0, the amount is 0.0, no duel is recorded, and the case's `%d`/`%.1f` message reads
+## as a balance surprise rather than as the draw it was. That is BL-0947's ten failures.
+##
+## A FLAT on `ACCURACY` is legal content — neither half of the contest is capped, the
+## `[0, 1]` clamp is on the OUTPUT — so the blow these cases want is made LEGITIMATE rather
+## than by weakening ADR 0877's parity rule. `0.02` is several times the
+## `0.005 + evasion` it has to clear, so it cannot drift on a small retune of `rate_scale`.
+## The miss case below is unaffected: it drives its miss through a pool already at zero,
+## which no accuracy can land through.
+func _sure_landing(actor: Actor) -> void:
+	actor.stats.add_modifier(
+		StatModifier.new(Stat.ACCURACY, Stat.Op.FLAT, 0.02, &"spine_routing_sure_landing")
+	)
+
+
 ## A `commonborn` stood at `realm_id`, with the shipped `emberblood.tres` fire affinity
 ## of 2.0 so `element_power_fire` is non-zero and a qi hit has both of its terms.
 ##
@@ -165,10 +186,15 @@ func test_a_player_facing_blow_reaches_the_damage_seam() -> void:
 	var attacker := _player()
 	var defender := _opponent()
 	CombatBoot.install(attacker)
+	# The blow this case is about must LAND, or every assertion below measures the miss
+	# instead (BL-0947).
+	_sure_landing(attacker)
 	var recorder := RecordingMechanism.new()
 	CombatEngineApi.bind_mechanism(attacker, recorder)
 	var report := CombatBoot.strike(attacker, defender, SEED)
-	assert_eq(bool(report["ok"]), true, "the installed resolver landed a blow")
+	# What this asserts is that the resolver ANSWERED rather than refusing — `strike` sets
+	# `ok` merely because one is installed, which is how a missed blow read as a landed one.
+	assert_eq(bool(report["ok"]), true, "the installed resolver answered rather than refusing")
 	var answer: Dictionary = report["result"]
 	assert_eq(String(answer["model"]), "combat_engine", "and it says which model answered")
 	assert_eq(recorder.resolve_calls, 1, "the spine invoked `resolve` exactly once")
@@ -272,6 +298,8 @@ func test_a_killing_blow_still_records_the_duel_won() -> void:
 	var attacker := _player()
 	var defender := _opponent()
 	CombatBoot.install(attacker)
+	# A killing blow is a LANDED blow, so the case needs a sure one (BL-0947).
+	_sure_landing(attacker)
 	var pool: ResourcePool = defender.resource(&"health")
 	pool.current = 1.0
 	var report := CombatBoot.strike(attacker, defender, SEED)
