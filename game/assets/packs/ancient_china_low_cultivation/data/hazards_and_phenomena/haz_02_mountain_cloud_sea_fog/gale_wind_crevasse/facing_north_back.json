@@ -1,0 +1,161 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_02_mountain_cloud_sea_fog.gale_wind_crevasse",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_02_mountain_cloud_sea_fog",
+  "asset_slug": "gale_wind_crevasse",
+  "variant_slug": "facing_north_back",
+  "name": "North Facing View",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_02_mountain_cloud_sea_fog/gale_wind_crevasse/facing_north_back.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.191,
+        0.797,
+        0.191
+      ],
+      [
+        0.634,
+        0.956,
+        0.646
+      ]
+    ],
+    "frac_zero": 0.7067,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.274,
+        0.772,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.032,
+        0.721,
+        0.931,
+        0.457,
+        0.154,
+        0.0
+      ],
+      [
+        0.059,
+        0.571,
+        0.991,
+        1.0,
+        0.801,
+        0.269,
+        0.0
+      ],
+      [
+        0.092,
+        0.877,
+        1.0,
+        1.0,
+        1.0,
+        0.695,
+        0.089
+      ],
+      [
+        0.614,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.993,
+        0.458
+      ],
+      [
+        0.486,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.518
+      ],
+      [
+        0.042,
+        0.473,
+        0.796,
+        0.853,
+        0.766,
+        0.355,
+        0.027
+      ]
+    ],
+    "crop_offset": [
+      83,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 99,
+    "contact_reference_px": 99.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

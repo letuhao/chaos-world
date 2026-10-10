@@ -1,0 +1,123 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_02_mountain_cloud_sea_fog.illusion_mist_emitter",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_02_mountain_cloud_sea_fog",
+  "asset_slug": "illusion_mist_emitter",
+  "variant_slug": "subtle_ambient",
+  "name": "Subtle Ambient Intensity",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_02_mountain_cloud_sea_fog/illusion_mist_emitter/subtle_ambient.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.179,
+        0.357
+      ],
+      [
+        0.222,
+        0.339
+      ]
+    ],
+    "frac_zero": 0.8029,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      5
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.322,
+        0.229,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.233,
+        0.808,
+        0.582,
+        0.174,
+        0.0
+      ],
+      [
+        0.229,
+        0.034,
+        0.485,
+        0.815,
+        0.893,
+        0.439
+      ],
+      [
+        0.478,
+        0.563,
+        0.083,
+        0.216,
+        0.19,
+        0.0
+      ],
+      [
+        0.0,
+        0.042,
+        0.09,
+        0.18,
+        0.566,
+        0.188
+      ]
+    ],
+    "crop_offset": [
+      37,
+      60
+    ],
+    "trunk_columns": [
+      4
+    ],
+    "contact_px": 14,
+    "contact_reference_px": 14.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

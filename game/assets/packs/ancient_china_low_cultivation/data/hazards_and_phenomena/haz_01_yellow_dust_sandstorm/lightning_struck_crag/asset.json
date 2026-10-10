@@ -1,0 +1,765 @@
+{
+  "id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_01_yellow_dust_sandstorm.lightning_struck_crag",
+  "archetype": "lightning_struck_crag_haz_01_yellow_dust_sandstorm",
+  "name": "Yellow Dust Sandstorm - Conductive Lightning Strike Crag",
+  "vietnamese_name": "Đại Mạc Hoàng Sa Bạo - Mỏm Đá Sét Đánh Nhiễm Điện",
+  "hanzi": "大漠黄沙暴 · 焦黑引雷孤石",
+  "category": "haz_01_yellow_dust_sandstorm",
+  "category_code": "HAZ-01",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_01_yellow_dust_sandstorm",
+  "asset_class": "landmark_mountain",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "gather_lightning_ash",
+  "gameplay_role": "landmark_mountain entity supporting Yellow Dust Sandstorm gameplay",
+  "destructible": false,
+  "material": "stratified pale karst limestone and loose mineral scree",
+  "cultivation_element": "thunder",
+  "prompt_summary": "Single isolated 2D top-down world-map natural landmark sprite of yellow dust sandstorm - conductive lightning strike crag, authentic yellow dust sandstorm materials, East Asian Xianxia craftsmanship, steep high-angle top-down RPG map perspective, rocky summit crest and stepped cliff strata dominant from overhead, natural mountain geology, zero diorama grass pedestal, fine dark #263A35 ink contours, solid pure white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Environmental Hazards & Phenomena",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "facing_south_front",
+      "name": "South Facing View",
+      "prompt_modifier": "summit crest and southern stepped cliff strata descending toward camera",
+      "variant_id": "facing_south_front",
+      "variant_name": "South Facing View",
+      "description": "summit crest and southern stepped cliff strata descending toward camera",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of conductive lightning strike crag, stratified pale karst limestone and loose mineral scree, summit crest and southern stepped cliff strata descending toward camera, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, summit crest and upper rock terraces fully visible from above, stepped crag shelves and gnarled cliff pine seen from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_01_yellow_dust_sandstorm/lightning_struck_crag/facing_south_front.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.606,
+            0.608
+          ],
+          [
+            0.78,
+            0.704
+          ]
+        ],
+        "frac_zero": 0.5021,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.497,
+            0.975,
+            1.0,
+            0.773,
+            0.117,
+            0.0
+          ],
+          [
+            0.289,
+            0.441,
+            0.976,
+            1.0,
+            0.671,
+            0.338,
+            0.007
+          ],
+          [
+            0.106,
+            0.684,
+            1.0,
+            1.0,
+            0.743,
+            0.392,
+            0.151
+          ],
+          [
+            0.319,
+            0.997,
+            1.0,
+            1.0,
+            1.0,
+            0.653,
+            0.351
+          ],
+          [
+            0.731,
+            1.0,
+            1.0,
+            0.998,
+            1.0,
+            0.923,
+            0.125
+          ],
+          [
+            0.634,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.615,
+            0.0
+          ],
+          [
+            0.077,
+            0.636,
+            0.777,
+            0.86,
+            0.645,
+            0.094,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          26,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 100,
+        "contact_reference_px": 100.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "facing_north_back",
+      "name": "North Facing View",
+      "prompt_modifier": "sheer northern rock face and upper summit plateau surface dominant from overhead",
+      "variant_id": "facing_north_back",
+      "variant_name": "North Facing View",
+      "description": "sheer northern rock face and upper summit plateau surface dominant from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of conductive lightning strike crag, stratified pale karst limestone and loose mineral scree, sheer northern rock face and upper summit plateau surface dominant from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, sheer northern crag face and upper summit plateau surface fully visible from above, weathered northern rock terraces descending away from summit, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_01_yellow_dust_sandstorm/lightning_struck_crag/facing_north_back.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.548,
+            0.52
+          ],
+          [
+            0.725,
+            0.667
+          ]
+        ],
+        "frac_zero": 0.5662,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.001,
+            0.337,
+            0.555,
+            0.533,
+            0.153,
+            0.0,
+            0.0
+          ],
+          [
+            0.099,
+            0.499,
+            1.0,
+            0.999,
+            0.37,
+            0.314,
+            0.0
+          ],
+          [
+            0.381,
+            0.717,
+            1.0,
+            1.0,
+            0.781,
+            0.15,
+            0.0
+          ],
+          [
+            0.341,
+            0.969,
+            1.0,
+            1.0,
+            1.0,
+            0.604,
+            0.281
+          ],
+          [
+            0.739,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.661,
+            0.0
+          ],
+          [
+            0.526,
+            1.0,
+            1.0,
+            1.0,
+            0.983,
+            0.265,
+            0.0
+          ],
+          [
+            0.007,
+            0.345,
+            0.781,
+            0.687,
+            0.268,
+            0.011,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          31,
+          16
+        ],
+        "trunk_columns": [
+          2,
+          3
+        ],
+        "contact_px": 55,
+        "contact_reference_px": 55.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "facing_west_left",
+      "name": "West Facing Profile",
+      "prompt_modifier": "elongated rock ridge running North-South, western cliff strata visible from overhead",
+      "variant_id": "facing_west_left",
+      "variant_name": "West Facing Profile",
+      "description": "elongated rock ridge running North-South, western cliff strata visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of conductive lightning strike crag, stratified pale karst limestone and loose mineral scree, elongated rock ridge running North-South, western cliff strata visible from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, landmark rotated 90 degrees with elongated rock spine running North-South, western stepped cliff strata and summit crest visible from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_01_yellow_dust_sandstorm/lightning_struck_crag/facing_west_left.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.623,
+            0.403
+          ],
+          [
+            0.81,
+            0.69
+          ]
+        ],
+        "frac_zero": 0.5702,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.172,
+            0.932,
+            0.846,
+            0.5,
+            0.155,
+            0.0
+          ],
+          [
+            0.277,
+            0.599,
+            0.984,
+            0.369,
+            0.521,
+            0.031
+          ],
+          [
+            0.083,
+            0.638,
+            1.0,
+            0.645,
+            0.513,
+            0.276
+          ],
+          [
+            0.335,
+            0.996,
+            0.999,
+            1.0,
+            0.935,
+            0.233
+          ],
+          [
+            0.846,
+            1.0,
+            0.938,
+            1.0,
+            1.0,
+            0.507
+          ],
+          [
+            0.619,
+            1.0,
+            1.0,
+            1.0,
+            0.987,
+            0.071
+          ],
+          [
+            0.178,
+            0.792,
+            0.931,
+            0.909,
+            0.297,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          34,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3
+        ],
+        "contact_px": 107,
+        "contact_reference_px": 107.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "facing_east_profile",
+      "name": "East Facing Profile",
+      "prompt_modifier": "elongated rock ridge running North-South, eastern cliff strata visible from overhead",
+      "variant_id": "facing_east_profile",
+      "variant_name": "East Facing Profile",
+      "description": "elongated rock ridge running North-South, eastern cliff strata visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of conductive lightning strike crag, stratified pale karst limestone and loose mineral scree, elongated rock ridge running North-South, eastern cliff strata visible from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, landmark rotated 90 degrees with elongated rock spine running North-South, eastern stepped cliff strata and summit crest visible from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_01_yellow_dust_sandstorm/lightning_struck_crag/facing_east_profile.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.324,
+            0.677
+          ],
+          [
+            0.806,
+            0.71
+          ]
+        ],
+        "frac_zero": 0.5804,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.009,
+            0.242,
+            0.809,
+            0.81,
+            0.014
+          ],
+          [
+            0.0,
+            0.279,
+            0.758,
+            1.0,
+            0.649,
+            0.397
+          ],
+          [
+            0.143,
+            0.43,
+            0.91,
+            1.0,
+            0.765,
+            0.205
+          ],
+          [
+            0.111,
+            0.796,
+            0.999,
+            1.0,
+            1.0,
+            0.384
+          ],
+          [
+            0.688,
+            1.0,
+            1.0,
+            1.0,
+            0.999,
+            0.589
+          ],
+          [
+            0.769,
+            1.0,
+            1.0,
+            1.0,
+            0.988,
+            0.213
+          ],
+          [
+            0.214,
+            0.849,
+            0.911,
+            0.788,
+            0.334,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          34,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3
+        ],
+        "contact_px": 104,
+        "contact_reference_px": 104.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "HAZ-01",
+    "domain": "hazards_and_phenomena",
+    "interaction": "gather_lightning_ash",
+    "collision_behavior": "solid",
+    "element": "thunder",
+    "tier": 3
+  },
+  "category_id": "haz_01_yellow_dust_sandstorm",
+  "domain_id": "hazards_and_phenomena",
+  "pinyin": "Dàmò Huángshābào · Conductive Lightning Strike Crag",
+  "archetype_name": "Conductive Lightning Strike Crag",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "ground"
+  },
+  "primary_material": "weathered_karst_limestone",
+  "secondary_material": "crag_scree",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Thunder affinity (Core Formation (Kết Đan / 结丹))",
+  "elevation_tier": 3,
+  "mortal_realm_tier": "Core Formation (Kết Đan / 结丹)",
+  "asset_slug": "lightning_struck_crag"
+}
