@@ -171,7 +171,7 @@ func test_every_routed_press_is_recorded_and_one_press_is_one_row() -> void:
 	stage.interact("quest_board")
 	stage.interact("herb_common")
 	var rows := stage.interactions()
-	assert_eq(rows.size(), 2, "two presses, two filed answers: %s" % rows)
+	assert_eq(rows.size(), 2, "two presses, two filed answers: %s" % [rows])
 	assert_eq(
 		String((rows[1] as Dictionary)["target"]),
 		"herb_common",
@@ -183,9 +183,14 @@ func test_every_routed_press_is_recorded_and_one_press_is_one_row() -> void:
 		"with the last answer on the read model"
 	)
 	assert_eq(
-		String((stage.summary()["last_interaction"] as Dictionary)["target"]),
+		String(stage.summary()["last_interaction_target"]),
 		"herb_common",
-		"and published there too, so a screen can read a press without calling in"
+		(
+			"and published there too, so a screen can read a press without calling in — "
+			+ "FLATTENED, per the summary's own contract: a nested row reads as null "
+			+ "through ADR 0038's primitives-only rule, which is why the last press is "
+			+ "four scalars rather than the accessor's dictionary"
+		)
 	)
 
 

@@ -513,10 +513,10 @@ func test_authored_boss_vitality_does_not_track_the_realm_power_table() -> void:
 		power_spread / vitality_spread > 10.0,
 		true,
 		(
-			"realm power grows %.1fx while authored boss vitality grows %.1fx, so absolute"
-			+ (
-				" damage cannot be safe against boss pools (ADR 0165)"
-				% [power_spread, vitality_spread]
+			(
+				"realm power grows %.1fx while authored boss vitality grows %.1fx, so absolute"
+				+ " damage cannot be safe against boss pools (ADR 0165)"
 			)
+			% [power_spread, vitality_spread]
 		)
 	)

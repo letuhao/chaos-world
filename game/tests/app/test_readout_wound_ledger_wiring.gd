@@ -188,11 +188,11 @@ func test_a_second_strike_raises_the_severity_on_the_same_channel() -> void:
 		float(second[meridian]) > float(first[meridian]),
 		true,
 		(
-			"the second strike RAISED '%s' from %.4f to %.4f: the cache exists so a wound "
-			+ (
-				"accumulates, and it cannot without the bound ledger"
-				% [meridian, float(first[meridian]), float(second[meridian])]
+			(
+				"the second strike RAISED '%s' from %.4f to %.4f: the cache exists so a wound "
+				+ "accumulates, and it cannot without the bound ledger"
 			)
+			% [meridian, float(first[meridian]), float(second[meridian])]
 		)
 	)
 	# The rendered sentence is what a player reads, so it is asserted as TEXT and not only
