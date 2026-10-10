@@ -226,7 +226,7 @@ static func set_world_store(store: RefCounted) -> void:
 static func attach(actor: Actor) -> void:
 	if actor == null:
 		return
-	var ledger := _normalized(actor)
+	var ledger := SectLedger.normalized(actor)
 	actor.set_module_data(MODULE_KEY, SectProjection.apply(actor, ledger))
 
 
@@ -264,7 +264,7 @@ static func join(actor: Actor, sect_id: StringName) -> Dictionary:
 	ledger["standing_cap"] = claim.standing_cap
 	ledger["obligation"] = def.member_obligation_lines()
 	_regard(actor, def.id, CAUSE_SWORN)
-	_persist(actor, ledger, "join")
+	SectLedger.persist(actor, ledger, "join")
 	return SectPayloads.ok(ledger)
 
 
@@ -334,12 +334,12 @@ static func found(
 	# transmission is `sect` content (ADR 0084). Written on the returned ledger rather
 	# than passed in, so the row and this key cannot come from two versions of it.
 	ledger["doctrine"] = String(doctrine.id)
-	_record(ledger, "found", def.id, String(doctrine.id))
+	SectLedger.record(ledger, "found", def.id, String(doctrine.id))
 	# Founding is a stronger act than swearing: you are the one the sect answers to,
 	# so it moves regard under the DEED cause rather than the membership one. Same
 	# ledger, same `apply_cause` path — only the authored id differs.
 	_regard(actor, def.id, CAUSE_FOUNDED)
-	_persist(actor, ledger, "found")
+	SectLedger.persist(actor, ledger, "found")
 	var bus := SectProjection.events()
 	bus.membership_changed.emit(String(actor.id), def.id, true, "")
 	bus.claim_changed.emit(String(actor.id), def.id, top.id, "found")
@@ -378,13 +378,13 @@ static func leave(actor: Actor) -> Dictionary:
 		return SectPayloads.refuse(NOT_A_MEMBER, read)
 	var ledger := read.duplicate(true)
 	var sect_id := SectState.institution(ledger)
-	_record(ledger, "leave", sect_id, "")
+	SectLedger.record(ledger, "leave", sect_id, "")
 	_regard(actor, sect_id, CAUSE_LEFT)
 	# `SectState.empty()` rather than a hand-cleared dictionary: the skeleton is
 	# authored in exactly one place, so a new ledger key cannot be half-written here.
 	var cleared := SectState.normalize({})
 	cleared["history"] = ledger["history"]
-	_persist(actor, cleared, "leave")
+	SectLedger.persist(actor, cleared, "leave")
 	return SectPayloads.ok(cleared)
 
 
@@ -408,8 +408,8 @@ static func move_standing(actor: Actor, amount: int) -> Dictionary:
 	if applied == 0:
 		# A refused verb writes nothing: the ledger is byte-for-byte as found.
 		return {"ok": false, "reason": NO_CHANGE, "applied": 0, "ledger": read}
-	_write_claim(ledger, claim)
-	_persist(actor, ledger, "standing", applied)
+	SectLedger.write_claim(ledger, claim)
+	SectLedger.persist(actor, ledger, "standing", applied)
 	# The ledger `_persist` actually wrote, not the one handed in: the projection
 	# rewrites the grant record as part of the rebuild, so the pre-write copy would
 	# be stale the moment the rebuild ran — which is the same reason `_persist`
@@ -489,13 +489,13 @@ static func promote(
 	# membership and office lines on `found`); a promotion that did not would leave
 	# `SectGate`'s `duty_owed` gate reading zero for every office holder on earth.
 	ledger["obligation"] = SectDuty.open_office(ledger["obligation"] as Dictionary, office)
-	_record(ledger, "promote" if not force else "promote_forced", office.id, "")
+	SectLedger.record(ledger, "promote" if not force else "promote_forced", office.id, "")
 	# Holding an office is PUBLIC recognition, which is the one thing ADR 0083
 	# separates from the claim: the world hears you were seated even where the sect
 	# gave you no standing to sit it on. A forced promotion records the same act —
 	# the seat is taken either way, and the world does not know it was political.
 	_regard(actor, sect_id, CAUSE_HELD_OFFICE)
-	_persist(actor, ledger, "promote")
+	SectLedger.persist(actor, ledger, "promote")
 	# LAST, once the seat it describes is actually written (ADR 0137: the owning module
 	# records the fact when the action succeeds). Nothing above this line is reachable
 	# on a refused promotion, so a refusal records nothing at all.
@@ -607,8 +607,8 @@ static func advance_succession(
 			if not SectSuccession.may_step(office, held):
 				return SectPayloads.period_not_elapsed(read, office, held)
 			SectSuccession.step(ledger, office)
-	_record(ledger, "succession_%s" % String(action), office.id, "")
-	_persist(actor, ledger, "succession")
+	SectLedger.record(ledger, "succession_%s" % String(action), office.id, "")
+	SectLedger.persist(actor, ledger, "succession")
 	return SectPayloads.ok(ledger)
 
 
@@ -697,9 +697,9 @@ static func teach(
 	# that changed: standing, fit, position and the founder's lines are all the
 	# student's. The teacher's record of the lesson is that they are still standing.
 	written["history"] = (s_ledger["history"] as Array).duplicate(true)
-	_record(written, "taught", doctrine.id, "%d periods" % periods)
-	_persist(teacher, t_ledger, "teach")
-	_persist(student, written, "taught")
+	SectLedger.record(written, "taught", doctrine.id, "%d periods" % periods)
+	SectLedger.persist(teacher, t_ledger, "teach")
+	SectLedger.persist(student, written, "taught")
 	return SectPayloads.taught(written, gained, tax)
 
 
@@ -808,15 +808,15 @@ static func declare_schism(
 	}
 	var claim := SectState.claim(ledger)
 	var applied := claim.move_standing(-price)
-	_write_claim(ledger, claim)
-	_record(ledger, "schism", seceding_id, "%d unassigned" % unassigned)
+	SectLedger.write_claim(ledger, claim)
+	SectLedger.record(ledger, "schism", seceding_id, "%d unassigned" % unassigned)
 	# A split is the loudest political act a sect member can take, so it moves regard
 	# under the DEED cause — the same authored id `found` uses, because the world
 	# reads "this person made something" rather than distinguishing the two. It is
 	# recorded against the SECEDING half, which is the institution the act is about:
 	# the parent did not divide itself.
 	_regard(actor, seceding_id, CAUSE_FOUNDED)
-	_persist(actor, ledger, "schism", applied)
+	SectLedger.persist(actor, ledger, "schism", applied)
 	return SectPayloads.schism(ledger, parent_id, half_id, bill, unassigned, applied)
 
 
@@ -848,7 +848,7 @@ static func gate(actor: Actor, requirement: Dictionary) -> Dictionary:
 static func state(actor: Actor) -> Dictionary:
 	if actor == null:
 		return SectState.empty()
-	return _normalized(actor)
+	return SectLedger.normalized(actor)
 
 
 ## The whole read model, in one call. Delegates to `SectReadModel.summary`,
@@ -864,7 +864,7 @@ static func state(actor: Actor) -> Dictionary:
 static func summary(actor: Actor) -> Dictionary:
 	if actor == null:
 		return SectReadModel.summary(SectState.empty(), SectCatalog.instance())
-	return SectReadModel.summary(_normalized(actor), SectCatalog.instance())
+	return SectReadModel.summary(SectLedger.normalized(actor), SectCatalog.instance())
 
 
 # --- Internals -------------------------------------------------------------
@@ -926,10 +926,10 @@ static func _expel(actor: Actor, position_id: StringName, force: bool = false) -
 		return SectPayloads.refuse(NOT_A_MEMBER, read)
 	var ledger := read.duplicate(true)
 	var cleared := SectState.normalize({})
-	_record(ledger, "expelled", office.id, "")
+	SectLedger.record(ledger, "expelled", office.id, "")
 	cleared["history"] = ledger["history"]
 	_regard(actor, sect_id, CAUSE_EXPELLED)
-	_persist(actor, cleared, "expelled")
+	SectLedger.persist(actor, cleared, "expelled")
 	return SectPayloads.ok(cleared)
 
 
@@ -944,33 +944,6 @@ static func _claim(actor: Actor) -> Dictionary:
 		attach(actor)
 		pending = actor.get_module_data(MODULE_KEY)
 	return SectState.normalize(pending)
-
-
-static func _normalized(actor: Actor) -> Dictionary:
-	return SectState.normalize(
-		actor.get_module_data(MODULE_KEY), SectCatalog.instance().known_position_ids()
-	)
-
-
-## Append one line to the bounded explanation of how the member got here.
-##
-## A trail, never an audit log: `SectState.HISTORY_LIMIT` caps it so a save cannot
-## grow without limit, and a refused verb never reaches this — it writes nothing at
-## all (ADR 0084). `detail` is a string rather than a number so `force` and an
-## ordinary promotion stay distinguishable to whoever reads the trail later.
-static func _record(ledger: Dictionary, kind: String, id: StringName, detail: String) -> void:
-	var history: Array = ledger["history"]
-	if history.size() >= SectState.HISTORY_LIMIT:
-		return
-	history.append({"kind": kind, "id": String(id), "detail": detail})
-
-
-static func _write_claim(ledger: Dictionary, claim: InstitutionClaim) -> void:
-	var payload := claim.to_dict()
-	ledger["position"] = String(payload["position"])
-	ledger["standing"] = int(payload["standing"])
-	ledger["standing_cap"] = int(payload["standing_cap"])
-	ledger["obligation"] = payload["obligation"]
 
 
 ## The world leg of [method declare_schism]: record the pair's `schism` stance on
@@ -1000,34 +973,3 @@ static func _declare_world_schism(parent_id: StringName, half_id: String) -> Str
 	if reason == InstitutionRelation.R_ALREADY_DECLARED:
 		return ""
 	return reason
-
-
-## Persist, rebuild the projection, then announce. The three effects are one
-## operation because a half-applied change — stats without a ledger, a ledger
-## without stats — is the one state a player cannot recover from.
-##
-## The RETURN VALUE is persisted, never the argument: `SectProjection.apply` rewrites
-## `applied_standing` / `granted_percent` as part of the rebuild, so the ledger handed
-## in is stale the moment the projection runs.
-static func _persist(
-	actor: Actor, ledger: Dictionary, kind: String, standing_delta: int = 0
-) -> void:
-	var written := SectProjection.apply(actor, ledger)
-	var sect_id := SectState.institution(written)
-	var bus := SectProjection.events()
-	bus.claim_changed.emit(String(actor.id), sect_id, SectState.position(written), kind)
-	match kind:
-		"join":
-			bus.membership_changed.emit(String(actor.id), sect_id, true, "")
-		"leave", "expelled":
-			# An expulsion ends a membership the same way a resignation does, and a
-			# consumer reading only this signal must not be able to tell that the two
-			# are different — the ledger is where that distinction lives (ADR 0084:
-			# "may this member expel another" is an authored question, and the cause
-			# that was applied is the answer to it).
-			bus.membership_changed.emit(String(actor.id), sect_id, false, "")
-		_:
-			if standing_delta != 0:
-				bus.standing_changed.emit(
-					String(actor.id), sect_id, standing_delta, SectState.standing(written)
-				)

@@ -124,9 +124,9 @@ static func serve(actor: Actor, periods: int = 1) -> Dictionary:
 			discharged += 1
 	if paid <= 0:
 		return _report(false, R_NOTHING_OWED, 0, 0, _still_owed(claim), false)
-	SectApi._write_claim(ledger, claim)
-	SectApi._record(ledger, "served", &"", "%d periods, %d terms" % [paid, discharged])
-	SectApi._persist(actor, ledger, "served")
+	SectLedger.write_claim(ledger, claim)
+	SectLedger.record(ledger, "served", &"", "%d periods, %d terms" % [paid, discharged])
+	SectLedger.persist(actor, ledger, "served")
 	# LAST, once the settlement it describes has actually landed — the same order
 	# `app/CharacterCreationFlow` records `character_created` in. A fact that claims a
 	# discharge the ledger does not carry is the ADR 0066 shape. Guarded by the crossing
