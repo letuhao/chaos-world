@@ -1,0 +1,90 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_26_sleeping_demon_lotus_leaves.withering_spent",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_26_sleeping_demon_lotus_leaves",
+  "asset_slug": "withering_spent",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_26_sleeping_demon_lotus_leaves/withering_spent/ruined_rubble.png",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "none",
+  "interactive_verb": "clear_debris",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.611
+      ]
+    ],
+    "frac_zero": 0.6426,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.254,
+        0.782,
+        0.526
+      ],
+      [
+        0.514,
+        0.842,
+        0.552
+      ],
+      [
+        0.567,
+        0.938,
+        0.451
+      ]
+    ],
+    "crop_offset": [
+      20,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 78,
+    "contact_reference_px": 78.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
