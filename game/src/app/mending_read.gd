@@ -41,7 +41,7 @@ static func for_actor(actor: Actor) -> Dictionary:
 		_rite(standing),
 		_forbidden_art(actor, standing),
 		_karmic_virtue(actor),
-		_secret_realm(),
+		_secret_realm(actor),
 		_mentor(actor),
 		_dual_aid(actor),
 		{
@@ -105,8 +105,19 @@ static func _karmic_virtue(actor: Actor) -> Dictionary:
 
 
 ## The secret realm (S9): a one-time site inside a domain run. Its availability is a
-## PROPERTY OF A RUN, not of the actor, so it reads unavailable here and says where to find it.
-static func _secret_realm() -> Dictionary:
+## PROPERTY OF A RUN, so it is read from the domain summary's own site rows — an UNSPENT site
+## in the current run makes it available, and outside a run (or with every site spent) it says
+## where to find one.
+static func _secret_realm(actor: Actor) -> Dictionary:
+	var sites: Dictionary = DomainApi.summary(actor).get("sites", {})
+	for row in sites.get("sites", []):
+		if not bool((row as Dictionary).get("spent", false)):
+			return _row(
+				"secret_realm",
+				true,
+				"danger and time",
+				String((row as Dictionary).get("room_id", ""))
+			)
 	return _row("secret_realm", false, "danger and time", "found in a domain, spent once")
 
 
