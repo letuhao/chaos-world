@@ -296,7 +296,7 @@ static func _is_known_resource(resource: String, resources: Dictionary, state: D
 		UNKNOWN_RESOURCE,
 		(
 			"'%s' is not a resource this mod declares and no pool core owns it; %s"
-			% [resource, RESOURCE_HINT % String(state["mod_id"])]
+			% [resource, L.t(RESOURCE_HINT) % String(state["mod_id"])]
 		)
 	)
 	return false

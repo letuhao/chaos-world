@@ -235,10 +235,10 @@ func _meta_text() -> String:
 		parts.append("rarity: %s" % rarity)
 	var closes := int(_view.get("closes_after", 0))
 	if closes > 0:
-		parts.append(CLOSES_TEXT % closes)
+		parts.append(L.t(CLOSES_TEXT) % closes)
 	var seller := String(_view.get("seller_id", ""))
 	if seller != "":
-		parts.append(SELLER_TEXT % seller)
+		parts.append(L.t(SELLER_TEXT) % seller)
 	return META_SEP.join(parts)
 
 

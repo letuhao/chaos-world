@@ -213,7 +213,7 @@ func _purse_text() -> String:
 	var purse := int(_view.get("purse", 0))
 	parts.append("purse %d" % purse)
 	var buys := int(_buy_count())
-	parts.append(BUYS_TEXT % buys if buys > 0 else NO_BUYS_TEXT)
+	parts.append(L.t(BUYS_TEXT) % buys if buys > 0 else NO_BUYS_TEXT)
 	return META_SEP.join(parts)
 
 

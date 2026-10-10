@@ -221,7 +221,7 @@ func _promise_text() -> String:
 		return ""
 	var parts: Array[String] = []
 	if bool(_view.get("repairs", false)):
-		parts.append(REPAIRS_TEXT % _rate_text(float(_view.get("repair_per_period", 0.0))))
+		parts.append(L.t(REPAIRS_TEXT) % _rate_text(float(_view.get("repair_per_period", 0.0))))
 	if bool(_view.get("shelters", false)):
 		parts.append(SHELTERS_TEXT)
 	if parts.is_empty():
@@ -248,14 +248,14 @@ func _cost_text() -> String:
 	if _view.is_empty():
 		return ""
 	var coins := int(_cost.get("coins", 0))
-	var parts: Array[String] = [COIN_TEXT_PLURAL % coins if coins > 0 else NO_ITEMS]
+	var parts: Array[String] = [L.t(COIN_TEXT_PLURAL) % coins if coins > 0 else NO_ITEMS]
 	var wanted := _counts(_cost.get("items", {}))
 	var missing := _counts(_cost.get("missing", {}))
 	for def_id in wanted.keys():
 		var need := int(wanted[def_id])
 		var short := int(missing.get(def_id, 0))
-		var item := ITEM_TEXT % [need, def_id]
-		parts.append(item if short <= 0 else "%s (%s)" % [item, MISSING_TEXT % short])
+		var item := L.t(ITEM_TEXT) % [need, def_id]
+		parts.append(item if short <= 0 else "%s (%s)" % [item, L.t(MISSING_TEXT) % short])
 	return "  ".join(parts)
 
 
@@ -270,7 +270,7 @@ func _state_text() -> String:
 		return L.t(RAISED_MARK) % healed
 	var floor := String(_view.get("realm_floor", ""))
 	var line := (
-		FLOOR_TEXT % floor
+		L.t(FLOOR_TEXT) % floor
 		if not floor.is_empty() and not bool(_view.get("reachable", true))
 		else L.t(NO_FLOOR)
 	)

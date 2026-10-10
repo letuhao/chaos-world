@@ -218,7 +218,7 @@ func _boundary_text() -> String:
 func _harm_text() -> String:
 	if _payload.is_empty():
 		return ""
-	var share := MAGNITUDE_TEMPLATE % _damage_share
+	var share := L.t(MAGNITUDE_TEMPLATE) % _damage_share
 	if _status_id.is_empty():
 		return L.t("LOC_UI_PANELS_2A19B25A84") % [_kind_name(), share]
 	return L.t("LOC_UI_PANELS_50ABC461B3") % [_kind_name(), _status_id, share]
@@ -232,7 +232,7 @@ func _window_text() -> String:
 		return ""
 	return (
 		"window %s, then burns for %s"
-		% [WINDOW_TEMPLATE % _telegraph_s, WINDOW_TEMPLATE % _duration_s]
+		% [L.t(WINDOW_TEMPLATE) % _telegraph_s, L.t(WINDOW_TEMPLATE) % _duration_s]
 	)
 
 
