@@ -80,6 +80,10 @@ var _selected_location: StringName = &""
 ## Drained by [method _drain_retired]. Bounded at one generation: every rebuild retires
 ## a fresh set and drains the previous one first.
 var _retired: Array[Node] = []
+## True while this screen is inside [method _on_node_pressed], which runs inside the pressed
+## button's own emit and can reach [method _clear_graph] twice. The drain is held until that
+## emission has returned, or it frees the button that is still emitting.
+var _inside_selection := false
 ## Resolves the world's clock through the root's callables. Its own file because
 ## drawing a graph and reading a clock are two reasons to change this screen.
 var _world: WorldPulseReader = WorldPulseReader.new()
@@ -308,7 +312,9 @@ func _rebuild_graph() -> void:
 func _clear_graph() -> void:
 	if _map_area == null:
 		return
-	_drain_retired()
+	# Only outside the press that reaches this twice: see `_inside_selection`.
+	if not _inside_selection:
+		_drain_retired()
 	# Freed immediately, not queued. `queue_free()` defers to the end of the frame
 	# and the headless test runner never processes a frame, so every deferred node
 	# stayed parented to `_map_area` while the next `_rebuild_graph()` added a fresh
@@ -569,20 +575,30 @@ func _edges_summary() -> Array[Dictionary]:
 # --- Input ------------------------------------------------------------------
 
 
-## A node was pressed: remember the choice, show it, and say where it went.
+## ## The repaint after the emit is load-bearing and was missing
 ##
-## **The repaint after the emit is load-bearing and was missing.** `location_selected`
-## had no production consumer, so nothing below ever changed this screen and the
-## omission was invisible; now that the composition root mounts the stage at the chosen
-## place, the map would otherwise keep highlighting the node it HAPPENED to pick while
-## the hero stood somewhere else — a map that lies about where the player is. The
-## repaint is therefore unconditional rather than only on success: a refused journey
-## must leave no highlight either, and the stage answers a refusal by naming it.
+## `location_selected` had no production consumer, so nothing below ever changed this screen
+## and the omission was invisible; now that the composition root mounts the stage at the
+## chosen place, the map would otherwise keep highlighting the node it HAPPENED to pick while
+## the hero stood somewhere else — a map that lies about where the player is. The repaint is
+## therefore unconditional rather than only on success: a refused journey must leave no
+## highlight either, and the stage answers a refusal by naming it.
+##
+## ## And the WHOLE handler is wrapped for the retire
+##
+## This body runs inside the pressed button's own `emit`, and it reaches `_clear_graph` TWICE
+## — once through the app's `location_selected` handler, once through the repaint below. The
+## second `_clear_graph` would drain the generation the first one just retired, whose button
+## is this very button and is therefore still LOCKED: "Attempted to free a locked object",
+## measured three times in one `--suite world_live_wiring` run. So the drain is held until the
+## emission this handler is part of has returned.
 func _on_node_pressed(location_id: StringName) -> void:
+	_inside_selection = true
 	_selected_location = location_id
 	_update_info_panel()
 	location_selected.emit(location_id)
 	refresh()
+	_inside_selection = false
 
 
 func _on_node_hovered(location_id: StringName) -> void:
