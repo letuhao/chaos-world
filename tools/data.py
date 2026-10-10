@@ -502,6 +502,25 @@ RUNTIME_ROUTES: dict[str, Route] = {
         "app/economy_boot.gd calls ForageApi.harvest through a screen's action; "
         "app/economy_boot.gd binds ForageGranary.deliver",
     ),
+    # `doctrine` is the registrable System framework (ADR 0267). A System's board
+    # is reachable when a caller can list its rows, price one, and redeem it. The
+    # four verbs below are the minimum a board screen needs: `rules` enumerates
+    # registered Systems, `boards` lists a System's rows, `price` quotes one row,
+    # and `redeem` spends the framework currency on it. Without this entry the
+    # board is shipped content reachable from nothing — the exact defect ADR 0226
+    # was written about.
+    "doctrine": Route(
+        "modules/doctrine/api.gd",
+        ("static func boards(", "static func price(", "static func redeem(", "static func rules("),
+        "doctrine_board",
+        "a registered System's board row, reachable through DoctrineApi",
+        (
+            ("DoctrineApi.boards(",),
+            ("DoctrineApi.price(",),
+            ("DoctrineApi.redeem(",),
+        ),
+        "app/item_workbench_app.gd wires DoctrineApi; ui/screens/ shows the board",
+    ),
 }
 # Authored encounter content is what makes a boss reachable: `LootApi.enter_domain`
 # resolves an encounter by domain id and spawns `encounter.boss_ids`.

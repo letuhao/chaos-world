@@ -1,0 +1,184 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_27_paper_making_talisman_mill.village_water_well",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_27_paper_making_talisman_mill",
+  "asset_slug": "village_water_well",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_27_paper_making_talisman_mill/village_water_well/ruined_rubble.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "draw_water",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.39,
+        0.515
+      ],
+      [
+        0.826,
+        0.803
+      ]
+    ],
+    "frac_zero": 0.5294,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.489,
+        0.407,
+        0.065,
+        0.0
+      ],
+      [
+        0.0,
+        0.277,
+        0.758,
+        0.992,
+        0.694,
+        0.212,
+        0.0
+      ],
+      [
+        0.13,
+        0.567,
+        0.985,
+        0.922,
+        0.762,
+        0.6,
+        0.263
+      ],
+      [
+        0.524,
+        0.978,
+        1.0,
+        1.0,
+        1.0,
+        0.771,
+        0.066
+      ],
+      [
+        0.852,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.748
+      ],
+      [
+        0.631,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.925,
+        0.261
+      ],
+      [
+        0.086,
+        0.72,
+        0.877,
+        0.85,
+        0.896,
+        0.309,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      23,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 137,
+    "contact_reference_px": 137.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

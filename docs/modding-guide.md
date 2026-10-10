@@ -2,6 +2,8 @@
 
 A mod is a directory or `.pck` with a `mod.json` manifest. It can add content (items, worlds, characters, elements), register modules, add cultivation paths, register screens, subscribe to events, and hook boot phases. Mods cannot change layer rules, the loader, or the locked skeleton (ADR 0184).
 
+For the quest / event / story content schemas, the shared gate grammar, and how a mod adds or overrides progression content, see [`content-definitions.md`](content-definitions.md).
+
 ## Manifest
 
 Required fields:

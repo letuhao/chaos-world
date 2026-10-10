@@ -356,6 +356,14 @@
         "core"
       ]
     },
+    "story": {
+      "deps": [
+        "contracts",
+        "core",
+        "destiny",
+        "quest"
+      ]
+    },
     "techniques": {
       "deps": [
         "contracts",

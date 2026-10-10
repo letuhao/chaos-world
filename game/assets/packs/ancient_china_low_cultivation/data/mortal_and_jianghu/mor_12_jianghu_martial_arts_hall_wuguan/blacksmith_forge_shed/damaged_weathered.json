@@ -1,0 +1,185 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_12_jianghu_martial_arts_hall_wuguan.blacksmith_forge_shed",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_12_jianghu_martial_arts_hall_wuguan",
+  "asset_slug": "blacksmith_forge_shed",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_12_jianghu_martial_arts_hall_wuguan/blacksmith_forge_shed/damaged_weathered.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "forge_iron",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.578,
+        0.598
+      ],
+      [
+        0.77,
+        0.793
+      ]
+    ],
+    "frac_zero": 0.5044,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.14,
+        0.192,
+        0.372,
+        0.281,
+        0.0,
+        0.0
+      ],
+      [
+        0.033,
+        0.881,
+        1.0,
+        1.0,
+        0.961,
+        0.448,
+        0.0
+      ],
+      [
+        0.307,
+        0.991,
+        1.0,
+        1.0,
+        1.0,
+        0.717,
+        0.229
+      ],
+      [
+        0.635,
+        1.0,
+        0.93,
+        0.953,
+        0.98,
+        0.951,
+        0.375
+      ],
+      [
+        0.654,
+        1.0,
+        0.895,
+        0.977,
+        0.927,
+        0.978,
+        0.41
+      ],
+      [
+        0.487,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.947,
+        0.144
+      ],
+      [
+        0.111,
+        0.623,
+        0.86,
+        0.916,
+        0.821,
+        0.455,
+        0.025
+      ]
+    ],
+    "crop_offset": [
+      24,
+      18
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 142,
+    "contact_reference_px": 142.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

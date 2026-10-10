@@ -1,0 +1,185 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_10_arhat_hall_with_500_statues.sacred_turtle_fountain",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_10_arhat_hall_with_500_statues",
+  "asset_slug": "sacred_turtle_fountain",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_10_arhat_hall_with_500_statues/sacred_turtle_fountain/damaged_weathered.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "make_wish",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.666,
+        0.662
+      ],
+      [
+        0.669,
+        0.694
+      ]
+    ],
+    "frac_zero": 0.5036,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.017,
+        0.31,
+        0.499,
+        0.469,
+        0.546,
+        0.245,
+        0.014
+      ],
+      [
+        0.214,
+        0.948,
+        1.0,
+        1.0,
+        1.0,
+        0.948,
+        0.126
+      ],
+      [
+        0.441,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.381
+      ],
+      [
+        0.523,
+        0.965,
+        1.0,
+        1.0,
+        1.0,
+        0.939,
+        0.535
+      ],
+      [
+        0.0,
+        0.785,
+        1.0,
+        1.0,
+        1.0,
+        0.748,
+        0.091
+      ],
+      [
+        0.078,
+        0.978,
+        1.0,
+        1.0,
+        1.0,
+        0.992,
+        0.059
+      ],
+      [
+        0.089,
+        0.456,
+        0.728,
+        0.752,
+        0.8,
+        0.509,
+        0.098
+      ]
+    ],
+    "crop_offset": [
+      17,
+      27
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 97,
+    "contact_reference_px": 97.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

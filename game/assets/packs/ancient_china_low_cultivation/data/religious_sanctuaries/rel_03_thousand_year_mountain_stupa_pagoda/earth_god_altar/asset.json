@@ -1,0 +1,524 @@
+{
+  "id": "ancient_china_low_cultivation.religious_sanctuaries.rel_03_thousand_year_mountain_stupa_pagoda.earth_god_altar",
+  "archetype": "earth_god_altar_rel_03_thousand_year_mountain_stupa_pagoda",
+  "name": "Thousand-Year Mountain Stupa Pagoda - Rural Stone Altar to the Earth God",
+  "vietnamese_name": "Mật Thiềm Chuyên Tháp - Miếu Thổ Địa Bằng Đá Mộc",
+  "hanzi": "密檐砖塔 · 路隅矮石土地庙",
+  "category": "rel_03_thousand_year_mountain_stupa_pagoda",
+  "category_code": "REL-03",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_03_thousand_year_mountain_stupa_pagoda",
+  "asset_class": "structure_temple",
+  "type": "building",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "offer_incense",
+  "gameplay_role": "structure_temple entity supporting Thousand-Year Mountain Stupa Pagoda gameplay",
+  "destructible": false,
+  "material": "seasoned camphor timber framing and glazed ceramic roof tiles",
+  "cultivation_element": "earth",
+  "prompt_summary": "Single isolated 2D top-down RPG map building sprite of thousand-year mountain stupa pagoda - rural stone altar to the earth god, glazed dark ceramic roof tiles, steep high-angle top-down RPG map perspective (~65-70 degrees downward tilt), roof dominant overhead (75%-80% of height), foreshortened walls beneath eaves, gouache hand-painted, fine dark #263A35 ink contours, flat baseline, solid pure white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Daoist, Buddhist & Folk Religious Sites",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "rot_south_facade",
+      "name": "South Facade (Front Entrance)",
+      "prompt_modifier": "front entrance visible foreshortened beneath eaves, steep overhead map view",
+      "variant_id": "rot_south_facade",
+      "variant_name": "South Facade (Front Entrance)",
+      "description": "front entrance visible foreshortened beneath eaves, steep overhead map view",
+      "prompt": "Single isolated 2D top-down world-map building sprite of rural stone altar to the earth god, seasoned camphor timber framing and glazed ceramic roof tiles, front entrance visible foreshortened beneath eaves, steep overhead map view, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, roof ridge running East-West with broad southern roof surface broad glazed ceramic roof tiles and curved dougong eaves dominant and fully visible overhead (70%-80% of height),  foreshortened front walls and entrance visible beneath eaves at bottom-center, stone courtyard steps descending at bottom, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_03_thousand_year_mountain_stupa_pagoda/earth_god_altar/rot_south_facade.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.7
+          ]
+        ],
+        "frac_zero": 0.5967,
+        "blocks": [
+          [
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false
+          ]
+        ],
+        "block_cell_count": 1,
+        "anchor_cell": [
+          0,
+          0
+        ],
+        "sub_grid": [
+          3,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.553,
+            0.733,
+            0.511
+          ],
+          [
+            0.771,
+            1.0,
+            0.741
+          ],
+          [
+            0.538,
+            0.942,
+            0.493
+          ]
+        ],
+        "crop_offset": [
+          17,
+          16
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2
+        ],
+        "contact_px": 72,
+        "contact_reference_px": 72.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.15": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.35": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          128,
+          128
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_north_rear",
+      "name": "North Rear (Back Wall)",
+      "prompt_modifier": "rear roof slope dominant overhead, solid back wall beneath eaves, zero front entrance steps",
+      "variant_id": "rot_north_rear",
+      "variant_name": "North Rear (Back Wall)",
+      "description": "rear roof slope dominant overhead, solid back wall beneath eaves, zero front entrance steps",
+      "prompt": "Single isolated 2D top-down world-map building sprite of rural stone altar to the earth god, seasoned camphor timber framing and glazed ceramic roof tiles, rear roof slope dominant overhead, solid back wall beneath eaves, solid continuous rear wall, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, roof ridge running East-West with broad northern rear roof surface broad glazed ceramic roof tiles and curved dougong eaves dominant and fully visible overhead (70%-80% of height),  solid unbroken timber lattice back wall and stone foundation foreshortened beneath eaves at bottom, completely windowless and doorless flat rear wall flush on level ground, clean horizontal baseline, back exterior view, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, front entrance door, open doorway, entrance steps, stairs, portal, door plaque, front veranda, open portal, descending stairs, central doorway, porch, arched entryway, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_03_thousand_year_mountain_stupa_pagoda/earth_god_altar/rot_north_rear.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.692
+          ]
+        ],
+        "frac_zero": 0.6015,
+        "blocks": [
+          [
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false
+          ]
+        ],
+        "block_cell_count": 1,
+        "anchor_cell": [
+          0,
+          0
+        ],
+        "sub_grid": [
+          3,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.571,
+            0.725,
+            0.516
+          ],
+          [
+            0.787,
+            1.0,
+            0.729
+          ],
+          [
+            0.492,
+            0.942,
+            0.444
+          ]
+        ],
+        "crop_offset": [
+          17,
+          16
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2
+        ],
+        "contact_px": 64,
+        "contact_reference_px": 64.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.15": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.35": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          128,
+          128
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_west_flank",
+      "name": "West Flank (Left Profile)",
+      "prompt_modifier": "ridge oriented North-South, western roof slope and gable end visible from overhead",
+      "variant_id": "rot_west_flank",
+      "variant_name": "West Flank (Left Profile)",
+      "description": "ridge oriented North-South, western roof slope and gable end visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map building sprite of rural stone altar to the earth god, seasoned camphor timber framing and glazed ceramic roof tiles, ridge oriented North-South, western roof slope and gable end visible from overhead, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, building rotated 90 degrees with roof ridge running North-South, western roof slope and high-angle triangular dougong timber gable end dominant and fully visible overhead, western side wall foreshortened beneath eaves at bottom, side window or railing, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center, annexed side structure, attached side pavilion, extra side gate, secondary structure, side tower, courtyard wing, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_03_thousand_year_mountain_stupa_pagoda/earth_god_altar/rot_west_flank.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.676
+          ]
+        ],
+        "frac_zero": 0.6942,
+        "blocks": [
+          [
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false
+          ]
+        ],
+        "block_cell_count": 1,
+        "anchor_cell": [
+          0,
+          0
+        ],
+        "sub_grid": [
+          3,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.507,
+            0.685,
+            0.044
+          ],
+          [
+            0.822,
+            0.992,
+            0.309
+          ],
+          [
+            0.677,
+            0.862,
+            0.106
+          ]
+        ],
+        "crop_offset": [
+          27,
+          17
+        ],
+        "trunk_columns": [
+          0,
+          1
+        ],
+        "contact_px": 54,
+        "contact_reference_px": 54.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.15": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.35": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          128,
+          128
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_east_flank",
+      "name": "East Flank (Right Profile)",
+      "prompt_modifier": "ridge oriented North-South, eastern roof slope and gable end visible from overhead",
+      "variant_id": "rot_east_flank",
+      "variant_name": "East Flank (Right Profile)",
+      "description": "ridge oriented North-South, eastern roof slope and gable end visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map building sprite of rural stone altar to the earth god, seasoned camphor timber framing and glazed ceramic roof tiles, ridge oriented North-South, eastern roof slope and gable end visible from overhead, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, building rotated 90 degrees with roof ridge running North-South, eastern roof slope and high-angle triangular dougong timber gable end dominant and fully visible overhead, eastern side wall foreshortened beneath eaves at bottom, side window or railing, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center, annexed side structure, attached side pavilion, extra side gate, secondary structure, side tower, courtyard wing, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_03_thousand_year_mountain_stupa_pagoda/earth_god_altar/rot_east_flank.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.548
+          ]
+        ],
+        "frac_zero": 0.691,
+        "blocks": [
+          [
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false
+          ]
+        ],
+        "block_cell_count": 1,
+        "anchor_cell": [
+          0,
+          0
+        ],
+        "sub_grid": [
+          3,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.27,
+            0.765,
+            0.079
+          ],
+          [
+            0.671,
+            1.0,
+            0.65
+          ],
+          [
+            0.286,
+            0.874,
+            0.266
+          ]
+        ],
+        "crop_offset": [
+          17,
+          17
+        ],
+        "trunk_columns": [
+          1
+        ],
+        "contact_px": 52,
+        "contact_reference_px": 52.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.15": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.35": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          128,
+          128
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "REL-03",
+    "domain": "religious_sanctuaries",
+    "interaction": "offer_incense",
+    "collision_behavior": "solid",
+    "element": "earth",
+    "tier": 2
+  },
+  "category_id": "rel_03_thousand_year_mountain_stupa_pagoda",
+  "domain_id": "religious_sanctuaries",
+  "pinyin": "Mìyán Zhuāntǎ · Rural Stone Altar to the Earth God",
+  "archetype_name": "Rural Stone Altar to the Earth God",
+  "footprint_subcells": {
+    "w": 4,
+    "h": 4
+  },
+  "footprint_px": {
+    "w": 128,
+    "h": 128
+  },
+  "cell_span": {
+    "w": 1,
+    "h": 1
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "structure"
+  },
+  "primary_material": "timber_frame",
+  "secondary_material": "glazed_ceramic_tile",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Earth affinity (Foundation Establishment (Trúc Cơ / 筑基))",
+  "elevation_tier": 2,
+  "mortal_realm_tier": "Foundation Establishment (Trúc Cơ / 筑基)",
+  "asset_slug": "earth_god_altar"
+}

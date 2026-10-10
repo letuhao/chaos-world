@@ -248,4 +248,4 @@ func test_every_refusal_reason_is_declared() -> void:
 		ItemTeardown.REASON_UNKNOWN_MATERIAL,
 	]:
 		assert_eq(reasons.has(reason), true, "%s is declared" % reason)
-	assert_eq(reasons.size() == reasons.size(), true, "the vocabulary is readable")
+	assert_eq(reasons.is_empty(), false, "the vocabulary is readable")

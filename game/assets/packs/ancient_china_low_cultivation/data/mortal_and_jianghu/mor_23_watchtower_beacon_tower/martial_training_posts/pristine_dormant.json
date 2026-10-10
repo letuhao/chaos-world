@@ -1,0 +1,130 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_23_watchtower_beacon_tower.martial_training_posts",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_23_watchtower_beacon_tower",
+  "asset_slug": "martial_training_posts",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_23_watchtower_beacon_tower/martial_training_posts/pristine_dormant.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "train_agility",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.574,
+        0.539
+      ],
+      [
+        0.403,
+        0.339
+      ]
+    ],
+    "frac_zero": 0.7382,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.223,
+        0.422,
+        0.18,
+        0.0
+      ],
+      [
+        0.542,
+        0.928,
+        1.0,
+        0.693,
+        0.108
+      ],
+      [
+        0.327,
+        0.987,
+        1.0,
+        0.933,
+        0.567
+      ],
+      [
+        0.201,
+        0.954,
+        1.0,
+        0.929,
+        0.191
+      ],
+      [
+        0.0,
+        0.697,
+        0.866,
+        0.441,
+        0.0
+      ],
+      [
+        0.034,
+        0.675,
+        0.945,
+        0.485,
+        0.0
+      ],
+      [
+        0.0,
+        0.228,
+        0.227,
+        0.111,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      49,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 23,
+    "contact_reference_px": 23.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

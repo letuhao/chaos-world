@@ -1,0 +1,177 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_10_arhat_hall_with_500_statues.temple_bell_tower",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_10_arhat_hall_with_500_statues",
+  "asset_slug": "temple_bell_tower",
+  "variant_slug": "rot_west_flank",
+  "name": "West Flank (Left Profile)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_10_arhat_hall_with_500_statues/temple_bell_tower/rot_west_flank.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "strike_bell",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.625,
+        0.644
+      ],
+      [
+        0.825,
+        0.831
+      ]
+    ],
+    "frac_zero": 0.5572,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.237,
+        0.227,
+        0.505,
+        0.196,
+        0.346,
+        0.006
+      ],
+      [
+        0.314,
+        1.0,
+        1.0,
+        1.0,
+        0.852,
+        0.0
+      ],
+      [
+        0.352,
+        1.0,
+        1.0,
+        1.0,
+        0.887,
+        0.0
+      ],
+      [
+        0.591,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.173
+      ],
+      [
+        0.786,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.542
+      ],
+      [
+        0.666,
+        1.0,
+        1.0,
+        1.0,
+        0.916,
+        0.527
+      ],
+      [
+        0.269,
+        0.774,
+        0.955,
+        0.863,
+        0.641,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      40,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 136,
+    "contact_reference_px": 136.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

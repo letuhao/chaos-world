@@ -1,0 +1,159 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_28_potters_kiln_clay_pit.ruined_burned_hovel",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_28_potters_kiln_clay_pit",
+  "asset_slug": "ruined_burned_hovel",
+  "variant_slug": "rot_north_rear",
+  "name": "North Rear (Back Wall)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_28_potters_kiln_clay_pit/ruined_burned_hovel/rot_north_rear.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "scavenge_debris",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.537,
+        0.789,
+        0.516
+      ],
+      [
+        0.484,
+        0.966,
+        0.487
+      ]
+    ],
+    "frac_zero": 0.6845,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.002,
+        0.0,
+        0.092,
+        0.558,
+        0.003,
+        0.0,
+        0.003
+      ],
+      [
+        0.468,
+        0.795,
+        0.938,
+        1.0,
+        0.862,
+        0.815,
+        0.253
+      ],
+      [
+        0.543,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.975,
+        0.343
+      ],
+      [
+        0.716,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.659
+      ],
+      [
+        0.193,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.933,
+        0.003
+      ],
+      [
+        0.001,
+        0.557,
+        1.0,
+        1.0,
+        0.998,
+        0.356,
+        0.009
+      ],
+      [
+        0.0,
+        0.333,
+        0.812,
+        0.958,
+        0.776,
+        0.122,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      83,
+      18
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 119,
+    "contact_reference_px": 119.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,16 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "en"
+messages = {
+"LOC_STORY_THE_LONG_ACCOUNT_CHAPTER_1_DESCRIPTION": "A house owes what a clerk forgot to write down.",
+"LOC_STORY_THE_LONG_ACCOUNT_CHAPTER_1_DISPLAY_NAME": "The Open Ledger",
+"LOC_STORY_THE_LONG_ACCOUNT_CHAPTER_2_DESCRIPTION": "Hold the station long enough and the debt becomes yours to settle.",
+"LOC_STORY_THE_LONG_ACCOUNT_CHAPTER_2_DISPLAY_NAME": "The Station You Held",
+"LOC_STORY_THE_LONG_ACCOUNT_CHAPTER_3_DESCRIPTION": "Terms drafted in your hand bind whoever signs them next.",
+"LOC_STORY_THE_LONG_ACCOUNT_CHAPTER_3_DISPLAY_NAME": "The Terms You Drafted",
+"LOC_STORY_THE_LONG_ACCOUNT_CHAPTER_4_DESCRIPTION": "A severed calling still answers when the account is finally closed.",
+"LOC_STORY_THE_LONG_ACCOUNT_CHAPTER_4_DISPLAY_NAME": "The Severed Calling",
+"LOC_STORY_THE_LONG_ACCOUNT_DESCRIPTION": "Four debts, one ledger, and the hand that finally signs it.",
+"LOC_STORY_THE_LONG_ACCOUNT_DISPLAY_NAME": "The Long Account",
+}

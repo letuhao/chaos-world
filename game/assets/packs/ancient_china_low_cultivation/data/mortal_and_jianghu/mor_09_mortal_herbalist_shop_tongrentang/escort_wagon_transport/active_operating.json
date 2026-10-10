@@ -1,0 +1,189 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_09_mortal_herbalist_shop_tongrentang.escort_wagon_transport",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_09_mortal_herbalist_shop_tongrentang",
+  "asset_slug": "escort_wagon_transport",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_09_mortal_herbalist_shop_tongrentang/escort_wagon_transport/active_operating.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "inspect_cargo",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.334,
+        0.537,
+        0.247
+      ],
+      [
+        0.484,
+        0.873,
+        0.457
+      ]
+    ],
+    "frac_zero": 0.7637,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.237,
+        0.2,
+        0.076,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.212,
+        0.348,
+        0.596,
+        0.367,
+        0.266,
+        0.019,
+        0.0
+      ],
+      [
+        0.471,
+        0.584,
+        0.738,
+        0.813,
+        0.562,
+        0.217,
+        0.0
+      ],
+      [
+        0.24,
+        0.844,
+        1.0,
+        0.993,
+        0.95,
+        0.349,
+        0.0
+      ],
+      [
+        0.382,
+        0.812,
+        1.0,
+        0.97,
+        0.844,
+        0.253,
+        0.062
+      ],
+      [
+        0.324,
+        0.988,
+        1.0,
+        0.97,
+        0.94,
+        0.195,
+        0.0
+      ],
+      [
+        0.0,
+        0.249,
+        0.679,
+        0.456,
+        0.394,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      95,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 26,
+    "contact_reference_px": 26.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

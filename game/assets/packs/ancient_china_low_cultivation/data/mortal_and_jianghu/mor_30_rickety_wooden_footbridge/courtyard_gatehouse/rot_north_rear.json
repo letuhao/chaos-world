@@ -1,0 +1,198 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_30_rickety_wooden_footbridge.courtyard_gatehouse",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_30_rickety_wooden_footbridge",
+  "asset_slug": "courtyard_gatehouse",
+  "variant_slug": "rot_north_rear",
+  "name": "North Rear (Back Wall)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_30_rickety_wooden_footbridge/courtyard_gatehouse/rot_north_rear.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "open_gate",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.546,
+        0.78,
+        0.54
+      ],
+      [
+        0.645,
+        1.0,
+        0.648
+      ]
+    ],
+    "frac_zero": 0.6356,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      8,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.142,
+        0.088,
+        0.018,
+        0.53,
+        0.038,
+        0.049,
+        0.161,
+        0.0
+      ],
+      [
+        0.355,
+        0.999,
+        0.983,
+        1.0,
+        0.973,
+        0.992,
+        0.477,
+        0.0
+      ],
+      [
+        0.322,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.434,
+        0.0
+      ],
+      [
+        0.505,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.633,
+        0.0
+      ],
+      [
+        0.75,
+        0.993,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.878,
+        0.273
+      ],
+      [
+        0.005,
+        0.676,
+        1.0,
+        1.0,
+        1.0,
+        0.774,
+        0.018,
+        0.0
+      ],
+      [
+        0.0,
+        0.808,
+        1.0,
+        1.0,
+        1.0,
+        0.924,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      77,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 156,
+    "contact_reference_px": 156.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

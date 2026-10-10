@@ -1,0 +1,185 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_06_incense_burner_cauldron_ding.temple_bell_tower",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_06_incense_burner_cauldron_ding",
+  "asset_slug": "temple_bell_tower",
+  "variant_slug": "rot_north_rear",
+  "name": "North Rear (Back Wall)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_06_incense_burner_cauldron_ding/temple_bell_tower/rot_north_rear.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "strike_bell",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.664,
+        0.647
+      ],
+      [
+        0.773,
+        0.764
+      ]
+    ],
+    "frac_zero": 0.4534,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.374,
+        0.409,
+        0.271,
+        0.252,
+        0.272,
+        0.428,
+        0.325
+      ],
+      [
+        0.336,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.233
+      ],
+      [
+        0.263,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.162
+      ],
+      [
+        0.324,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.233
+      ],
+      [
+        0.553,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.499
+      ],
+      [
+        0.522,
+        0.993,
+        1.0,
+        1.0,
+        1.0,
+        0.95,
+        0.514
+      ],
+      [
+        0.015,
+        0.676,
+        0.779,
+        0.897,
+        0.764,
+        0.653,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      19
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 161,
+    "contact_reference_px": 161.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_10_arhat_hall_with_500_statues.maoshan_talisman_altar",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_10_arhat_hall_with_500_statues",
+  "asset_slug": "maoshan_talisman_altar",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_10_arhat_hall_with_500_statues/maoshan_talisman_altar/pristine_dormant.png",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "cast_ritual",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.695,
+        0.694
+      ]
+    ],
+    "frac_zero": 0.8047,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.496,
+        0.838,
+        0.457
+      ],
+      [
+        0.713,
+        1.0,
+        0.699
+      ],
+      [
+        0.52,
+        1.0,
+        0.513
+      ]
+    ],
+    "crop_offset": [
+      80,
+      20
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 79,
+    "contact_reference_px": 79.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

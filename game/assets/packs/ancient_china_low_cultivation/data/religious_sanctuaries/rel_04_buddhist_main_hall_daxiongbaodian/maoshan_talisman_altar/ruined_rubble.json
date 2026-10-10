@@ -1,0 +1,125 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_04_buddhist_main_hall_daxiongbaodian.maoshan_talisman_altar",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_04_buddhist_main_hall_daxiongbaodian",
+  "asset_slug": "maoshan_talisman_altar",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_04_buddhist_main_hall_daxiongbaodian/maoshan_talisman_altar/ruined_rubble.png",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "cast_ritual",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.638,
+        0.665
+      ]
+    ],
+    "frac_zero": 0.8054,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      4,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.479,
+        0.812,
+        0.542,
+        0.0
+      ],
+      [
+        0.684,
+        1.0,
+        0.768,
+        0.177
+      ],
+      [
+        0.314,
+        0.887,
+        0.527,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      78,
+      18
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 73,
+    "contact_reference_px": 73.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

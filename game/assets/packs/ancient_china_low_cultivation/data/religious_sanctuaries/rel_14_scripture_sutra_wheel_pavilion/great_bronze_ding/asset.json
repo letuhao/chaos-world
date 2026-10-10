@@ -1,0 +1,765 @@
+{
+  "id": "ancient_china_low_cultivation.religious_sanctuaries.rel_14_scripture_sutra_wheel_pavilion.great_bronze_ding",
+  "archetype": "great_bronze_ding_rel_14_scripture_sutra_wheel_pavilion",
+  "name": "Scripture Sutra Wheel Pavilion - Grand Temple Courtyard Incense Ding",
+  "vietnamese_name": "Chuyển Kinh Luân Các - Đỉnh Đồng Hương Nghi Ngút Khói",
+  "hanzi": "转经金轮藏阁 · 庭中三足青铜巨鼎",
+  "category": "rel_14_scripture_sutra_wheel_pavilion",
+  "category_code": "REL-14",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_14_scripture_sutra_wheel_pavilion",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "burn_incense",
+  "gameplay_role": "prop_workstation entity supporting Scripture Sutra Wheel Pavilion gameplay",
+  "destructible": true,
+  "material": "seasoned camphor timber framing and glazed ceramic roof tiles",
+  "cultivation_element": "earth",
+  "prompt_summary": "Single isolated 2D RPG game prop of scripture sutra wheel pavilion - grand temple courtyard incense ding, authentic scripture sutra wheel pavilion materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Daoist, Buddhist & Folk Religious Sites",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of grand temple courtyard incense ding, seasoned camphor timber framing and glazed ceramic roof tiles, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_14_scripture_sutra_wheel_pavilion/great_bronze_ding/pristine_dormant.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.525,
+            0.524
+          ],
+          [
+            0.443,
+            0.466
+          ]
+        ],
+        "frac_zero": 0.6661,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.002,
+            0.179,
+            0.179,
+            0.004,
+            0.0
+          ],
+          [
+            0.0,
+            0.769,
+            0.869,
+            0.865,
+            0.751,
+            0.0
+          ],
+          [
+            0.475,
+            0.994,
+            1.0,
+            1.0,
+            0.99,
+            0.457
+          ],
+          [
+            0.233,
+            0.893,
+            1.0,
+            1.0,
+            0.882,
+            0.268
+          ],
+          [
+            0.058,
+            0.865,
+            1.0,
+            1.0,
+            0.895,
+            0.062
+          ],
+          [
+            0.0,
+            0.551,
+            0.991,
+            0.995,
+            0.571,
+            0.0
+          ],
+          [
+            0.0,
+            0.036,
+            0.255,
+            0.355,
+            0.117,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          32,
+          16
+        ],
+        "trunk_columns": [
+          3
+        ],
+        "contact_px": 12,
+        "contact_reference_px": 12.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of grand temple courtyard incense ding, seasoned camphor timber framing and glazed ceramic roof tiles, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_14_scripture_sutra_wheel_pavilion/great_bronze_ding/active_operating.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.515,
+            0.499
+          ],
+          [
+            0.472,
+            0.485
+          ]
+        ],
+        "frac_zero": 0.651,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.007,
+            0.286,
+            0.411,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.127,
+            0.364,
+            1.0,
+            0.996,
+            0.341,
+            0.049,
+            0.0
+          ],
+          [
+            0.594,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.743,
+            0.219
+          ],
+          [
+            0.007,
+            0.681,
+            0.977,
+            0.951,
+            0.7,
+            0.035,
+            0.0
+          ],
+          [
+            0.226,
+            0.553,
+            0.958,
+            0.938,
+            0.634,
+            0.095,
+            0.0
+          ],
+          [
+            0.331,
+            0.637,
+            0.623,
+            0.607,
+            0.698,
+            0.351,
+            0.0
+          ],
+          [
+            0.0,
+            0.085,
+            0.69,
+            0.675,
+            0.608,
+            0.069,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          30,
+          17
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4
+        ],
+        "contact_px": 82,
+        "contact_reference_px": 82.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of grand temple courtyard incense ding, seasoned camphor timber framing and glazed ceramic roof tiles, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_14_scripture_sutra_wheel_pavilion/great_bronze_ding/damaged_weathered.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.559,
+            0.555
+          ],
+          [
+            0.697,
+            0.471
+          ]
+        ],
+        "frac_zero": 0.6051,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.146,
+            0.257,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.051,
+            0.844,
+            0.944,
+            0.971,
+            0.797,
+            0.184,
+            0.0
+          ],
+          [
+            0.467,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.588,
+            0.037
+          ],
+          [
+            0.369,
+            0.973,
+            1.0,
+            1.0,
+            0.995,
+            0.518,
+            0.188
+          ],
+          [
+            0.258,
+            0.915,
+            1.0,
+            1.0,
+            0.942,
+            0.292,
+            0.0
+          ],
+          [
+            0.399,
+            1.0,
+            1.0,
+            0.997,
+            0.663,
+            0.0,
+            0.0
+          ],
+          [
+            0.003,
+            0.678,
+            0.982,
+            0.306,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          29,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2
+        ],
+        "contact_px": 61,
+        "contact_reference_px": 61.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of grand temple courtyard incense ding, seasoned camphor timber framing and glazed ceramic roof tiles, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_14_scripture_sutra_wheel_pavilion/great_bronze_ding/ruined_rubble.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.554,
+            0.557
+          ],
+          [
+            0.44,
+            0.5
+          ]
+        ],
+        "frac_zero": 0.6459,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.106,
+            0.139,
+            0.186,
+            0.101,
+            0.0,
+            0.0
+          ],
+          [
+            0.054,
+            0.694,
+            0.967,
+            0.957,
+            0.791,
+            0.046,
+            0.0
+          ],
+          [
+            0.74,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.858,
+            0.156
+          ],
+          [
+            0.089,
+            0.842,
+            1.0,
+            1.0,
+            0.89,
+            0.162,
+            0.0
+          ],
+          [
+            0.0,
+            0.79,
+            1.0,
+            1.0,
+            0.88,
+            0.177,
+            0.0
+          ],
+          [
+            0.0,
+            0.541,
+            0.996,
+            1.0,
+            0.76,
+            0.331,
+            0.0
+          ],
+          [
+            0.0,
+            0.059,
+            0.268,
+            0.306,
+            0.055,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          30,
+          17
+        ],
+        "trunk_columns": [],
+        "contact_px": 11,
+        "contact_reference_px": 11.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "REL-14",
+    "domain": "religious_sanctuaries",
+    "interaction": "burn_incense",
+    "collision_behavior": "solid",
+    "element": "earth",
+    "tier": 2
+  },
+  "category_id": "rel_14_scripture_sutra_wheel_pavilion",
+  "domain_id": "religious_sanctuaries",
+  "pinyin": "Zhuànjīnglún · Grand Temple Courtyard Incense Ding",
+  "archetype_name": "Grand Temple Courtyard Incense Ding",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "ground"
+  },
+  "primary_material": "timber_frame",
+  "secondary_material": "glazed_ceramic_tile",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Earth affinity (Foundation Establishment (Trúc Cơ / 筑基))",
+  "elevation_tier": 2,
+  "mortal_realm_tier": "Foundation Establishment (Trúc Cơ / 筑基)",
+  "asset_slug": "great_bronze_ding"
+}

@@ -1,0 +1,757 @@
+{
+  "id": "ancient_china_low_cultivation.religious_sanctuaries.rel_02_zhengyi_maoshan_altar_table.sacred_turtle_fountain",
+  "archetype": "sacred_turtle_fountain_rel_02_zhengyi_maoshan_altar_table",
+  "name": "Zhengyi / Maoshan Altar Table - Carved Stone Bixi Turtle Fountain",
+  "vietnamese_name": "Mao Sơn Cửu Thiên Pháp Đàn - Tượng Rùa Bích Hi Phun Nước",
+  "hanzi": "茅山九天法坛 · 赑屃驮碑灵池",
+  "category": "rel_02_zhengyi_maoshan_altar_table",
+  "category_code": "REL-02",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_02_zhengyi_maoshan_altar_table",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "make_wish",
+  "gameplay_role": "prop_workstation entity supporting Zhengyi / Maoshan Altar Table gameplay",
+  "destructible": true,
+  "material": "authentic mortal craftsmanship materials",
+  "cultivation_element": "earth",
+  "prompt_summary": "Single isolated 2D RPG game prop of zhengyi / maoshan altar table - carved stone bixi turtle fountain, authentic zhengyi / maoshan altar table materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Daoist, Buddhist & Folk Religious Sites",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of carved stone bixi turtle fountain, authentic mortal craftsmanship materials, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_02_zhengyi_maoshan_altar_table/sacred_turtle_fountain/pristine_dormant.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.538,
+            0.531
+          ],
+          [
+            0.768,
+            0.763
+          ]
+        ],
+        "frac_zero": 0.6567,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          5,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.207,
+            0.809,
+            0.077,
+            0.0
+          ],
+          [
+            0.029,
+            0.578,
+            1.0,
+            0.366,
+            0.007
+          ],
+          [
+            0.472,
+            1.0,
+            1.0,
+            1.0,
+            0.382
+          ],
+          [
+            0.864,
+            1.0,
+            1.0,
+            1.0,
+            0.861
+          ],
+          [
+            0.892,
+            1.0,
+            1.0,
+            1.0,
+            0.847
+          ],
+          [
+            0.619,
+            1.0,
+            1.0,
+            1.0,
+            0.553
+          ],
+          [
+            0.023,
+            0.451,
+            0.838,
+            0.323,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          51,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2
+        ],
+        "contact_px": 57,
+        "contact_reference_px": 57.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of carved stone bixi turtle fountain, authentic mortal craftsmanship materials, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_02_zhengyi_maoshan_altar_table/sacred_turtle_fountain/active_operating.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.483,
+            0.453
+          ],
+          [
+            0.646,
+            0.56
+          ]
+        ],
+        "frac_zero": 0.6248,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.275,
+            0.639,
+            0.541,
+            0.253,
+            0.0,
+            0.0
+          ],
+          [
+            0.003,
+            0.24,
+            0.959,
+            0.797,
+            0.262,
+            0.0,
+            0.0
+          ],
+          [
+            0.023,
+            0.833,
+            0.997,
+            0.976,
+            0.798,
+            0.337,
+            0.0
+          ],
+          [
+            0.209,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.126,
+            0.0
+          ],
+          [
+            0.314,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.208,
+            0.031
+          ],
+          [
+            0.297,
+            0.905,
+            1.0,
+            1.0,
+            0.912,
+            0.009,
+            0.0
+          ],
+          [
+            0.0,
+            0.267,
+            0.762,
+            0.637,
+            0.165,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          30,
+          17
+        ],
+        "trunk_columns": [
+          2,
+          3
+        ],
+        "contact_px": 62,
+        "contact_reference_px": 62.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of carved stone bixi turtle fountain, authentic mortal craftsmanship materials, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_02_zhengyi_maoshan_altar_table/sacred_turtle_fountain/damaged_weathered.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.533,
+            0.455
+          ],
+          [
+            0.757,
+            0.693
+          ]
+        ],
+        "frac_zero": 0.6046,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.039,
+            0.76,
+            0.355,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.355,
+            1.0,
+            0.813,
+            0.052,
+            0.0
+          ],
+          [
+            0.35,
+            0.978,
+            1.0,
+            1.0,
+            0.794,
+            0.062
+          ],
+          [
+            0.811,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.504
+          ],
+          [
+            0.855,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.598
+          ],
+          [
+            0.455,
+            1.0,
+            1.0,
+            1.0,
+            0.92,
+            0.164
+          ],
+          [
+            0.031,
+            0.361,
+            0.799,
+            0.653,
+            0.15,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          32,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3
+        ],
+        "contact_px": 67,
+        "contact_reference_px": 67.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of carved stone bixi turtle fountain, authentic mortal craftsmanship materials, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_02_zhengyi_maoshan_altar_table/sacred_turtle_fountain/ruined_rubble.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.445,
+            0.46
+          ],
+          [
+            0.726,
+            0.73
+          ]
+        ],
+        "frac_zero": 0.5717,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.582,
+            0.842,
+            0.029,
+            0.0,
+            0.0
+          ],
+          [
+            0.013,
+            0.215,
+            0.988,
+            1.0,
+            0.379,
+            0.058,
+            0.0
+          ],
+          [
+            0.043,
+            0.603,
+            1.0,
+            1.0,
+            0.954,
+            0.32,
+            0.0
+          ],
+          [
+            0.236,
+            0.839,
+            1.0,
+            1.0,
+            1.0,
+            0.532,
+            0.023
+          ],
+          [
+            0.65,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.924,
+            0.245
+          ],
+          [
+            0.507,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.835,
+            0.227
+          ],
+          [
+            0.025,
+            0.404,
+            0.651,
+            0.802,
+            0.554,
+            0.158,
+            0.005
+          ]
+        ],
+        "crop_offset": [
+          27,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 65,
+        "contact_reference_px": 65.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "REL-02",
+    "domain": "religious_sanctuaries",
+    "interaction": "make_wish",
+    "collision_behavior": "solid",
+    "element": "earth",
+    "tier": 2
+  },
+  "category_id": "rel_02_zhengyi_maoshan_altar_table",
+  "domain_id": "religious_sanctuaries",
+  "pinyin": "Jiǔtiān Fǎtán · Carved Stone Bixi Turtle Fountain",
+  "archetype_name": "Carved Stone Bixi Turtle Fountain",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "ground"
+  },
+  "primary_material": "carved_wood",
+  "secondary_material": "polished_bronze",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Earth affinity (Foundation Establishment (Trúc Cơ / 筑基))",
+  "elevation_tier": 2,
+  "mortal_realm_tier": "Foundation Establishment (Trúc Cơ / 筑基)",
+  "asset_slug": "sacred_turtle_fountain"
+}

@@ -97,6 +97,48 @@ func test_layer_deps_are_implicitly_satisfied() -> void:
 	assert_eq(reg.order()["ok"], true, "and they never count as unknown")
 
 
+## Every base module a base module depends on must itself be in BASE_DEPS.
+##
+## This is the invariant that was broken: `destiny`, `items`, `social` and six
+## others named `foundation` as a dependency while `foundation` was absent from
+## the mirror. `order()` never noticed because it walks only `_registered`, so
+## the dangling base-to-base edge stayed invisible until a MOD depended on the
+## missing module and was refused with `unknown_dependency`.
+func test_base_deps_are_closed_under_dependency() -> void:
+	var offenders: Array[String] = []
+	for name in ModuleRegistry.BASE_DEPS:
+		for dep in ModuleRegistry.BASE_DEPS[name]:
+			if ModuleRegistry.BASE_DEPS.has(String(dep)):
+				continue
+			if ModuleRegistry.LAYER_DEPS.has(String(dep)):
+				continue
+			offenders.append("%s -> %s" % [name, dep])
+	assert_eq(offenders, [], "every dependency a base module declares is itself a base module")
+
+
+## A mod may depend on any base module, including one that nothing else depends on.
+##
+## The six modules this repo was missing (`base_grant`, `clan_building`,
+## `consumables`, `dialogue`, `foundation`, `worldmap`) all declare only the
+## implicit layer deps, so a mod that built on one of them was refused even
+## though the module was loaded and its facade reachable. Asserting per-name
+## rather than on one example keeps a future mirror gap from hiding behind a
+## single green case.
+func test_mod_may_depend_on_every_base_module() -> void:
+	for base_name in ModuleRegistry.BASE_DEPS:
+		var reg := _reg()
+		var out := reg.register(
+			"mod_%s" % base_name, REAL_API, PackedStringArray([String(base_name)])
+		)
+		assert_eq(out["ok"], true, "mod depending on '%s' registers" % base_name)
+		var ordered := reg.order()
+		assert_eq(
+			ordered["ok"],
+			true,
+			"'%s' resolves as a dep: %s %s" % [base_name, ordered["reason"], ordered["detail"]]
+		)
+
+
 func test_order_is_deterministic() -> void:
 	var first := _reg()
 	var second := _reg()

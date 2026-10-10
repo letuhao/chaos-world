@@ -1,0 +1,810 @@
+{
+  "id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_30_rickety_wooden_footbridge.thatched_dwelling",
+  "archetype": "thatched_dwelling_mor_30_rickety_wooden_footbridge",
+  "name": "Rickety Wooden Footbridge - Rustic Vernacular Thatched Dwelling",
+  "vietnamese_name": "Lâm Khê Hủ Mộc Kiều - Nhà Mái Tranh Vách Nứa",
+  "hanzi": "临溪朽木桥 · 乡土茅草民居",
+  "category": "mor_30_rickety_wooden_footbridge",
+  "category_code": "MOR-30",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_30_rickety_wooden_footbridge",
+  "asset_class": "structure_cottage",
+  "type": "building",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "enter_dwelling",
+  "gameplay_role": "structure_cottage entity supporting Rickety Wooden Footbridge gameplay",
+  "destructible": false,
+  "material": "authentic bamboo and woven thatch eaves",
+  "cultivation_element": "water",
+  "prompt_summary": "Single isolated 2D top-down RPG map building sprite of rickety wooden footbridge - rustic vernacular thatched dwelling, thatched straw roof eaves, steep high-angle top-down RPG map perspective (~65-70 degrees downward tilt), roof dominant overhead (75%-80% of height), foreshortened walls beneath eaves, gouache hand-painted, fine dark #263A35 ink contours, flat baseline, solid pure white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Mortal Settlements & Jianghu",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "rot_south_facade",
+      "name": "South Facade (Front Entrance)",
+      "prompt_modifier": "front entrance visible foreshortened beneath eaves, steep overhead map view",
+      "variant_id": "rot_south_facade",
+      "variant_name": "South Facade (Front Entrance)",
+      "description": "front entrance visible foreshortened beneath eaves, steep overhead map view",
+      "prompt": "Single isolated 2D top-down world-map building sprite of rustic vernacular thatched dwelling, authentic bamboo and woven thatch eaves, front entrance visible foreshortened beneath eaves, steep overhead map view, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, roof ridge running East-West with broad southern roof surface authentic uniform golden thatched straw roof surface dominant and fully visible overhead (70%-80% of height), split bamboo ridge rafters and thick straw eaves seen from above, foreshortened front walls and entrance visible beneath eaves at bottom-center, stone courtyard steps descending at bottom, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "ceramic tiles, glazed tiles, blue roof tiles, dark roof tiles, terracotta tiles, dougong brackets, imperial palace, temple hall, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_30_rickety_wooden_footbridge/thatched_dwelling/rot_south_facade.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.448,
+            0.801,
+            0.315
+          ],
+          [
+            0.595,
+            0.963,
+            0.506
+          ]
+        ],
+        "frac_zero": 0.6866,
+        "blocks": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 6,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.172,
+            0.648,
+            0.007,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.359,
+            0.917,
+            1.0,
+            0.636,
+            0.0,
+            0.0
+          ],
+          [
+            0.721,
+            0.964,
+            1.0,
+            1.0,
+            0.975,
+            0.798,
+            0.44
+          ],
+          [
+            0.841,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.536
+          ],
+          [
+            0.795,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.567
+          ],
+          [
+            0.249,
+            0.766,
+            1.0,
+            1.0,
+            1.0,
+            0.729,
+            0.01
+          ],
+          [
+            0.0,
+            0.087,
+            0.745,
+            0.933,
+            0.55,
+            0.034,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          81,
+          17
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4
+        ],
+        "contact_px": 76,
+        "contact_reference_px": 76.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_north_rear",
+      "name": "North Rear (Back Wall)",
+      "prompt_modifier": "rear roof slope dominant overhead, solid back wall beneath eaves, zero front entrance steps",
+      "variant_id": "rot_north_rear",
+      "variant_name": "North Rear (Back Wall)",
+      "description": "rear roof slope dominant overhead, solid back wall beneath eaves, zero front entrance steps",
+      "prompt": "Single isolated 2D top-down world-map building sprite of rustic vernacular thatched dwelling, authentic bamboo and woven thatch eaves, rear roof slope dominant overhead, solid back wall beneath eaves, solid continuous rear wall, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, roof ridge running East-West with broad northern rear roof surface authentic uniform golden thatched straw roof surface dominant and fully visible overhead (70%-80% of height), split bamboo ridge rafters and thick straw eaves seen from above, solid unbroken timber lattice back wall and stone foundation foreshortened beneath eaves at bottom, completely windowless and doorless flat rear wall flush on level ground, clean horizontal baseline, back exterior view, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "ceramic tiles, glazed tiles, blue roof tiles, dark roof tiles, terracotta tiles, dougong brackets, imperial palace, temple hall, front entrance door, open doorway, entrance steps, stairs, portal, door plaque, front veranda, open portal, descending stairs, central doorway, porch, arched entryway, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_30_rickety_wooden_footbridge/thatched_dwelling/rot_north_rear.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.643,
+            0.813,
+            0.642
+          ],
+          [
+            0.508,
+            0.982,
+            0.494
+          ]
+        ],
+        "frac_zero": 0.6547,
+        "blocks": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 6,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.011,
+            0.0,
+            0.099,
+            0.682,
+            0.045,
+            0.001,
+            0.03
+          ],
+          [
+            0.759,
+            0.928,
+            0.968,
+            1.0,
+            0.952,
+            0.935,
+            0.704
+          ],
+          [
+            0.812,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.745
+          ],
+          [
+            0.755,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.667
+          ],
+          [
+            0.454,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.844,
+            0.115
+          ],
+          [
+            0.0,
+            0.723,
+            1.0,
+            1.0,
+            1.0,
+            0.701,
+            0.0
+          ],
+          [
+            0.0,
+            0.131,
+            0.942,
+            0.934,
+            0.863,
+            0.031,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          83,
+          17
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4
+        ],
+        "contact_px": 102,
+        "contact_reference_px": 102.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_west_flank",
+      "name": "West Flank (Left Profile)",
+      "prompt_modifier": "ridge oriented North-South, western roof slope and gable end visible from overhead",
+      "variant_id": "rot_west_flank",
+      "variant_name": "West Flank (Left Profile)",
+      "description": "ridge oriented North-South, western roof slope and gable end visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map building sprite of rustic vernacular thatched dwelling, authentic bamboo and woven thatch eaves, ridge oriented North-South, western roof slope and gable end visible from overhead, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, building rotated 90 degrees with roof ridge running North-South, western roof slope and high-angle triangular thatched timber gable end dominant and fully visible overhead, western side wall foreshortened beneath eaves at bottom, side window or railing, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "ceramic tiles, glazed tiles, blue roof tiles, dark roof tiles, terracotta tiles, dougong brackets, imperial palace, temple hall, symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center, annexed side structure, attached side pavilion, extra side gate, secondary structure, side tower, courtyard wing, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_30_rickety_wooden_footbridge/thatched_dwelling/rot_west_flank.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.491,
+            0.808,
+            0.336
+          ],
+          [
+            0.428,
+            0.959,
+            0.668
+          ]
+        ],
+        "frac_zero": 0.7001,
+        "blocks": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 6,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.107,
+            0.675,
+            0.027,
+            0.0,
+            0.0
+          ],
+          [
+            0.285,
+            0.303,
+            0.87,
+            1.0,
+            0.758,
+            0.0,
+            0.0
+          ],
+          [
+            0.881,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.315,
+            0.303
+          ],
+          [
+            0.854,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.886
+          ],
+          [
+            0.408,
+            0.951,
+            1.0,
+            1.0,
+            1.0,
+            0.964,
+            0.467
+          ],
+          [
+            0.001,
+            0.337,
+            1.0,
+            1.0,
+            1.0,
+            0.788,
+            0.226
+          ],
+          [
+            0.0,
+            0.121,
+            0.701,
+            0.893,
+            0.72,
+            0.162,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          87,
+          17
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4
+        ],
+        "contact_px": 78,
+        "contact_reference_px": 78.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_east_flank",
+      "name": "East Flank (Right Profile)",
+      "prompt_modifier": "ridge oriented North-South, eastern roof slope and gable end visible from overhead",
+      "variant_id": "rot_east_flank",
+      "variant_name": "East Flank (Right Profile)",
+      "description": "ridge oriented North-South, eastern roof slope and gable end visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map building sprite of rustic vernacular thatched dwelling, authentic bamboo and woven thatch eaves, ridge oriented North-South, eastern roof slope and gable end visible from overhead, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, building rotated 90 degrees with roof ridge running North-South, eastern roof slope and high-angle triangular thatched timber gable end dominant and fully visible overhead, eastern side wall foreshortened beneath eaves at bottom, side window or railing, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "ceramic tiles, glazed tiles, blue roof tiles, dark roof tiles, terracotta tiles, dougong brackets, imperial palace, temple hall, symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center, annexed side structure, attached side pavilion, extra side gate, secondary structure, side tower, courtyard wing, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_30_rickety_wooden_footbridge/thatched_dwelling/rot_east_flank.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.376,
+            0.787,
+            0.508
+          ],
+          [
+            0.457,
+            0.929,
+            0.545
+          ]
+        ],
+        "frac_zero": 0.683,
+        "blocks": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 6,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          8,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.006,
+            0.628,
+            0.139,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.101,
+            0.161,
+            0.705,
+            1.0,
+            0.893,
+            0.334,
+            0.33,
+            0.0
+          ],
+          [
+            0.43,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.913,
+            0.0
+          ],
+          [
+            0.387,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.897,
+            0.203
+          ],
+          [
+            0.214,
+            0.956,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.411,
+            0.0
+          ],
+          [
+            0.196,
+            0.65,
+            1.0,
+            1.0,
+            1.0,
+            0.78,
+            0.087,
+            0.0
+          ],
+          [
+            0.0,
+            0.048,
+            0.493,
+            0.815,
+            0.798,
+            0.22,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          79,
+          17
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4
+        ],
+        "contact_px": 77,
+        "contact_reference_px": 77.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          256
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "MOR-30",
+    "domain": "mortal_and_jianghu",
+    "interaction": "enter_dwelling",
+    "collision_behavior": "solid",
+    "element": "water",
+    "tier": 1
+  },
+  "category_id": "mor_30_rickety_wooden_footbridge",
+  "domain_id": "mortal_and_jianghu",
+  "pinyin": "Xiǔmùqiáo · Rustic Vernacular Thatched Dwelling",
+  "archetype_name": "Rustic Vernacular Thatched Dwelling",
+  "footprint_subcells": {
+    "w": 12,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 384,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 3,
+    "h": 2
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "structure"
+  },
+  "primary_material": "bamboo",
+  "secondary_material": "thatched_straw",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Water affinity (Qi Refining (Luyện Khí / 练气))",
+  "elevation_tier": 1,
+  "mortal_realm_tier": "Qi Refining (Luyện Khí / 练气)",
+  "asset_slug": "thatched_dwelling"
+}

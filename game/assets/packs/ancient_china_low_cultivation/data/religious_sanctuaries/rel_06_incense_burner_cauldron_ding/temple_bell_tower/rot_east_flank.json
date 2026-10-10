@@ -1,0 +1,177 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_06_incense_burner_cauldron_ding.temple_bell_tower",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_06_incense_burner_cauldron_ding",
+  "asset_slug": "temple_bell_tower",
+  "variant_slug": "rot_east_flank",
+  "name": "East Flank (Right Profile)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_06_incense_burner_cauldron_ding/temple_bell_tower/rot_east_flank.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "strike_bell",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.621,
+        0.604
+      ],
+      [
+        0.821,
+        0.817
+      ]
+    ],
+    "frac_zero": 0.5503,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.282,
+        0.16,
+        0.357,
+        0.106,
+        0.292,
+        0.185
+      ],
+      [
+        0.367,
+        1.0,
+        1.0,
+        1.0,
+        0.963,
+        0.028
+      ],
+      [
+        0.282,
+        1.0,
+        1.0,
+        1.0,
+        0.893,
+        0.0
+      ],
+      [
+        0.667,
+        1.0,
+        1.0,
+        1.0,
+        0.995,
+        0.323
+      ],
+      [
+        0.78,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.604
+      ],
+      [
+        0.688,
+        1.0,
+        1.0,
+        1.0,
+        0.983,
+        0.549
+      ],
+      [
+        0.204,
+        0.7,
+        0.907,
+        0.843,
+        0.706,
+        0.002
+      ]
+    ],
+    "crop_offset": [
+      38,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 139,
+    "contact_reference_px": 139.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

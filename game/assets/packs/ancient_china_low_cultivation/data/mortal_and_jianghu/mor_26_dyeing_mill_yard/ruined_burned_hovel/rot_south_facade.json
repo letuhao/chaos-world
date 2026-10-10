@@ -1,0 +1,159 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_26_dyeing_mill_yard.ruined_burned_hovel",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_26_dyeing_mill_yard",
+  "asset_slug": "ruined_burned_hovel",
+  "variant_slug": "rot_south_facade",
+  "name": "South Facade (Front Entrance)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_26_dyeing_mill_yard/ruined_burned_hovel/rot_south_facade.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "scavenge_debris",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.438,
+        0.813,
+        0.406
+      ],
+      [
+        0.577,
+        0.959,
+        0.565
+      ]
+    ],
+    "frac_zero": 0.68,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.002,
+        0.204,
+        0.645,
+        0.099,
+        0.0,
+        0.0
+      ],
+      [
+        0.12,
+        0.425,
+        0.975,
+        0.909,
+        0.869,
+        0.259,
+        0.095
+      ],
+      [
+        0.462,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.325
+      ],
+      [
+        0.646,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.571
+      ],
+      [
+        0.574,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.99,
+        0.542
+      ],
+      [
+        0.198,
+        0.926,
+        1.0,
+        1.0,
+        0.985,
+        0.791,
+        0.079
+      ],
+      [
+        0.0,
+        0.081,
+        0.775,
+        0.909,
+        0.733,
+        0.007,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      81,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 102,
+    "contact_reference_px": 102.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

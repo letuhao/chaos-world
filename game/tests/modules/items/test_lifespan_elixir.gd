@@ -23,6 +23,11 @@ const ELIXIR := &"lifespan_extension_elixir"
 const RACE := &"commonborn"
 const DAYS_PER_YEAR := 365.0
 
+## The authored table, loaded once. Two cases below were each `load()`ing the same
+## `.tres`, which gdlint reports as `duplicated-load` and which was also a second and
+## third trip through the resource cache for a file the suite needs in every case.
+const LIFESPAN_TABLE := preload("res://src/core/realm_lifespan_table.tres")
+
 
 func setup() -> void:
 	pass
@@ -85,7 +90,7 @@ func test_the_elixir_is_authored_with_the_extend_lifespan_option() -> void:
 
 func test_the_elixir_raises_the_authored_lifespan() -> void:
 	var actor := _body(50.0)
-	var table := load("res://src/core/realm_lifespan_table.tres") as RealmLifespan
+	var table := LIFESPAN_TABLE
 	assert_ne(table, null, "the lifespan table loads")
 	if table == null:
 		return
@@ -123,7 +128,7 @@ func test_the_elixir_is_consumed_once() -> void:
 
 func test_the_elixir_has_no_effect_on_a_body_already_past_its_span() -> void:
 	var actor := _body(0.0)
-	var table := load("res://src/core/realm_lifespan_table.tres") as RealmLifespan
+	var table := LIFESPAN_TABLE
 	assert_ne(table, null, "the lifespan table loads")
 	if table == null:
 		return
@@ -149,7 +154,7 @@ func test_the_elixir_has_no_effect_on_a_body_already_past_its_span() -> void:
 
 func test_the_elixir_does_not_make_expiry_survivable() -> void:
 	var actor := _body(50.0)
-	var table := load("res://src/core/realm_lifespan_table.tres") as RealmLifespan
+	var table := LIFESPAN_TABLE
 	assert_ne(table, null, "the lifespan table loads")
 	if table == null:
 		return

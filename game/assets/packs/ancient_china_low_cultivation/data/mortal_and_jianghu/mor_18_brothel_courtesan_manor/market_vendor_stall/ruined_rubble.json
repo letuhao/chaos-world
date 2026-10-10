@@ -1,0 +1,183 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_18_brothel_courtesan_manor.market_vendor_stall",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_18_brothel_courtesan_manor",
+  "asset_slug": "market_vendor_stall",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_18_brothel_courtesan_manor/market_vendor_stall/ruined_rubble.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "trade_goods",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.429,
+        0.54
+      ],
+      [
+        0.523,
+        0.509
+      ]
+    ],
+    "frac_zero": 0.6262,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.001,
+        0.036,
+        0.176,
+        0.323,
+        0.217,
+        0.0
+      ],
+      [
+        0.05,
+        0.24,
+        0.412,
+        0.829,
+        0.734,
+        0.23,
+        0.021
+      ],
+      [
+        0.561,
+        0.986,
+        1.0,
+        0.995,
+        0.991,
+        0.347,
+        0.021
+      ],
+      [
+        0.39,
+        0.932,
+        1.0,
+        0.777,
+        0.837,
+        0.33,
+        0.0
+      ],
+      [
+        0.151,
+        0.799,
+        1.0,
+        1.0,
+        0.76,
+        0.088,
+        0.0
+      ],
+      [
+        0.059,
+        0.717,
+        1.0,
+        0.703,
+        0.859,
+        0.152,
+        0.0
+      ],
+      [
+        0.0,
+        0.009,
+        0.515,
+        0.491,
+        0.461,
+        0.032,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      30,
+      18
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 22,
+    "contact_reference_px": 22.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

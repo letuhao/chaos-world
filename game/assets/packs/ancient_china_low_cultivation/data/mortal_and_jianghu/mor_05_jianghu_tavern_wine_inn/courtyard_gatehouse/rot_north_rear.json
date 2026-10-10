@@ -1,0 +1,191 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_05_jianghu_tavern_wine_inn.courtyard_gatehouse",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_05_jianghu_tavern_wine_inn",
+  "asset_slug": "courtyard_gatehouse",
+  "variant_slug": "rot_north_rear",
+  "name": "North Rear (Back Wall)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_05_jianghu_tavern_wine_inn/courtyard_gatehouse/rot_north_rear.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "open_gate",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.495,
+        0.82,
+        0.493
+      ],
+      [
+        0.637,
+        0.96,
+        0.637
+      ]
+    ],
+    "frac_zero": 0.6548,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.008,
+        0.0,
+        0.24,
+        0.544,
+        0.208,
+        0.0,
+        0.009
+      ],
+      [
+        0.431,
+        0.714,
+        0.953,
+        1.0,
+        0.911,
+        0.728,
+        0.379
+      ],
+      [
+        0.387,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.304
+      ],
+      [
+        0.506,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.432
+      ],
+      [
+        0.711,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.69
+      ],
+      [
+        0.047,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        0.918,
+        0.001
+      ],
+      [
+        0.089,
+        0.541,
+        0.781,
+        0.898,
+        0.728,
+        0.567,
+        0.03
+      ]
+    ],
+    "crop_offset": [
+      81,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 170,
+    "contact_reference_px": 170.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

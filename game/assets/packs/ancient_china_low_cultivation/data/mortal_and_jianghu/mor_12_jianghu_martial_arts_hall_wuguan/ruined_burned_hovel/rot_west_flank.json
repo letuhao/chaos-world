@@ -1,0 +1,160 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_12_jianghu_martial_arts_hall_wuguan.ruined_burned_hovel",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_12_jianghu_martial_arts_hall_wuguan",
+  "asset_slug": "ruined_burned_hovel",
+  "variant_slug": "rot_west_flank",
+  "name": "West Flank (Left Profile)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_12_jianghu_martial_arts_hall_wuguan/ruined_burned_hovel/rot_west_flank.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "scavenge_debris",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.492,
+        0.814,
+        0.504
+      ],
+      [
+        0.514,
+        0.954,
+        0.535
+      ]
+    ],
+    "frac_zero": 0.6952,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.224,
+        0.194,
+        0.552,
+        0.169,
+        0.148,
+        0.0
+      ],
+      [
+        0.0,
+        0.706,
+        1.0,
+        1.0,
+        1.0,
+        0.331,
+        0.0
+      ],
+      [
+        0.523,
+        0.978,
+        1.0,
+        1.0,
+        1.0,
+        0.901,
+        0.019
+      ],
+      [
+        0.681,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        0.946,
+        0.412
+      ],
+      [
+        0.284,
+        0.99,
+        1.0,
+        1.0,
+        1.0,
+        0.715,
+        0.0
+      ],
+      [
+        0.103,
+        0.794,
+        1.0,
+        1.0,
+        1.0,
+        0.472,
+        0.0
+      ],
+      [
+        0.0,
+        0.37,
+        0.756,
+        0.918,
+        0.672,
+        0.073,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      89,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 119,
+    "contact_reference_px": 119.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -546,6 +546,25 @@ def base_deps_drift() -> list[str]:
     BASE_DEPS is a static mirror of registry.json with layer deps stripped.
     test_module_registry asserts the seam, but there is no tools arch check
     that fails when they drift. This reads both and reports any difference.
+
+    ## Why absence is its own finding
+
+    The first version compared `base_deps.get(name, set())` against the registry
+    deps. That conflates two different states: "this module has no dependencies"
+    and "this module is not in the mirror at all". For a module whose registry
+    deps are only the implicit layers, both read as the empty set, so the
+    comparison passed while the mirror was missing the module entirely.
+
+    That is not a cosmetic gap. `_is_satisfied` in `module_registry.gd` answers
+    from `BASE_DEPS`, so a module absent from the mirror is not a base module as
+    far as the registry is concerned, and a mod declaring a dependency on it is
+    refused with `unknown_dependency`. Six modules sat in that state
+    (`base_grant`, `clan_building`, `consumables`, `dialogue`, `foundation`,
+    `worldmap`) while nine base modules named `foundation` as a dependency. The
+    guard that exists to catch exactly this could not see it.
+
+    So membership is checked before the sets are compared, and a one-sided
+    module is reported as missing rather than as an empty dependency list.
     """
     findings: list[str] = []
     registry_path = SRC_DIR / "modules" / "mods" / "module_registry.gd"
@@ -563,10 +582,20 @@ def base_deps_drift() -> list[str]:
         base_deps[name] = deps
     registry = rules.load_registry()
     for name in sorted(set(base_deps) | set(registry)):
-        base = base_deps.get(name, set())
         reg = set(registry.get(name, []))
         # Strip layer deps from registry (BASE_DEPS excludes them).
         reg -= {"contracts", "core"}
+        if name not in base_deps:
+            findings.append(
+                f"BASE_DEPS is missing '{name}' entirely; registry.json has "
+                f"{sorted(reg)} — a module absent from the mirror is not a base "
+                "module to the registry, so a mod that depends on it is refused"
+            )
+            continue
+        if name not in registry:
+            findings.append(f"BASE_DEPS lists '{name}' but registry.json does not declare it")
+            continue
+        base = base_deps[name]
         if base != reg:
             findings.append(
                 f"BASE_DEPS drift: {name}: BASE_DEPS has {sorted(base)}, "

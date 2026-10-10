@@ -1,0 +1,183 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_12_ancestral_spirit_tablet_chamber.mountain_buddhist_stupa",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_12_ancestral_spirit_tablet_chamber",
+  "asset_slug": "mountain_buddhist_stupa",
+  "variant_slug": "rot_west_flank",
+  "name": "West Flank (Left Profile)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_12_ancestral_spirit_tablet_chamber/mountain_buddhist_stupa/rot_west_flank.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "circumambulate",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.521,
+        0.504
+      ],
+      [
+        0.618,
+        0.609
+      ]
+    ],
+    "frac_zero": 0.5841,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.05,
+        0.208,
+        0.414,
+        0.0,
+        0.0
+      ],
+      [
+        0.281,
+        0.438,
+        0.821,
+        0.996,
+        0.864,
+        0.023,
+        0.0
+      ],
+      [
+        0.613,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.536,
+        0.0
+      ],
+      [
+        0.195,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.991,
+        0.579
+      ],
+      [
+        0.222,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.55,
+        0.0
+      ],
+      [
+        0.041,
+        0.846,
+        1.0,
+        1.0,
+        1.0,
+        0.536,
+        0.0
+      ],
+      [
+        0.0,
+        0.076,
+        0.824,
+        0.709,
+        0.458,
+        0.055,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      22,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 79,
+    "contact_reference_px": 79.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

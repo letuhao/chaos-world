@@ -1,0 +1,191 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_15_village_water_well_pavilion.courtyard_gatehouse",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_15_village_water_well_pavilion",
+  "asset_slug": "courtyard_gatehouse",
+  "variant_slug": "rot_south_facade",
+  "name": "South Facade (Front Entrance)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_15_village_water_well_pavilion/courtyard_gatehouse/rot_south_facade.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "open_gate",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.529,
+        0.784,
+        0.525
+      ],
+      [
+        0.579,
+        0.96,
+        0.598
+      ]
+    ],
+    "frac_zero": 0.6566,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.053,
+        0.003,
+        0.047,
+        0.5,
+        0.031,
+        0.005,
+        0.06
+      ],
+      [
+        0.401,
+        0.955,
+        0.964,
+        1.0,
+        0.952,
+        0.95,
+        0.358
+      ],
+      [
+        0.377,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.334
+      ],
+      [
+        0.53,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.52
+      ],
+      [
+        0.653,
+        0.979,
+        1.0,
+        1.0,
+        1.0,
+        0.972,
+        0.679
+      ],
+      [
+        0.0,
+        0.895,
+        1.0,
+        1.0,
+        1.0,
+        0.876,
+        0.0
+      ],
+      [
+        0.0,
+        0.364,
+        0.793,
+        0.875,
+        0.792,
+        0.425,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      80,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 94,
+    "contact_reference_px": 94.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

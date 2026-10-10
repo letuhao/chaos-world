@@ -1,0 +1,667 @@
+{
+  "id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_13_river_ferry_wharves_warehouses.martial_training_posts",
+  "archetype": "martial_training_posts_mor_13_river_ferry_wharves_warehouses",
+  "name": "River Ferry Wharves & Warehouses - Plum Blossom Agility Wood Stakes",
+  "vietnamese_name": "Tào Vận Hóa Sạn Mã Đầu - Cọc Gỗ Mai Hoa Luyện Võ",
+  "hanzi": "漕运货栈码头 · 梅花木桩练功场",
+  "category": "mor_13_river_ferry_wharves_warehouses",
+  "category_code": "MOR-13",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_13_river_ferry_wharves_warehouses",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "obstacle",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "train_agility",
+  "gameplay_role": "prop_workstation entity supporting River Ferry Wharves & Warehouses gameplay",
+  "destructible": true,
+  "material": "clear flowing mountain spring water over smooth stones",
+  "cultivation_element": "water",
+  "prompt_summary": "Single isolated 2D RPG game prop of river ferry wharves & warehouses - plum blossom agility wood stakes, authentic river ferry wharves & warehouses materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Mortal Settlements & Jianghu",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of plum blossom agility wood stakes, clear flowing mountain spring water over smooth stones, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_13_river_ferry_wharves_warehouses/martial_training_posts/pristine_dormant.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.635,
+            0.615
+          ],
+          [
+            0.782,
+            0.812
+          ]
+        ],
+        "frac_zero": 0.4615,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.176,
+            0.731,
+            0.38,
+            0.427,
+            0.629,
+            0.044
+          ],
+          [
+            0.02,
+            0.7,
+            1.0,
+            0.954,
+            0.583,
+            0.518,
+            0.389
+          ],
+          [
+            0.4,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.917,
+            0.148
+          ],
+          [
+            0.593,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.978,
+            0.33
+          ],
+          [
+            0.788,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.751
+          ],
+          [
+            0.478,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.425
+          ],
+          [
+            0.003,
+            0.473,
+            0.863,
+            0.973,
+            0.8,
+            0.396,
+            0.002
+          ]
+        ],
+        "crop_offset": [
+          21,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 127,
+        "contact_reference_px": 127.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of plum blossom agility wood stakes, clear flowing mountain spring water over smooth stones, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_13_river_ferry_wharves_warehouses/martial_training_posts/active_operating.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.55,
+            0.598
+          ],
+          [
+            0.807,
+            0.83
+          ]
+        ],
+        "frac_zero": 0.4578,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.016,
+            0.557,
+            0.431,
+            0.308,
+            0.56,
+            0.028
+          ],
+          [
+            0.004,
+            0.42,
+            0.999,
+            0.922,
+            0.624,
+            0.548,
+            0.514
+          ],
+          [
+            0.184,
+            0.974,
+            1.0,
+            1.0,
+            1.0,
+            0.866,
+            0.204
+          ],
+          [
+            0.412,
+            0.995,
+            1.0,
+            1.0,
+            1.0,
+            0.966,
+            0.446
+          ],
+          [
+            0.851,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.751
+          ],
+          [
+            0.487,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.683
+          ],
+          [
+            0.034,
+            0.586,
+            0.918,
+            0.973,
+            0.917,
+            0.496,
+            0.037
+          ]
+        ],
+        "crop_offset": [
+          19,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 139,
+        "contact_reference_px": 139.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of plum blossom agility wood stakes, clear flowing mountain spring water over smooth stones, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_13_river_ferry_wharves_warehouses/martial_training_posts/damaged_weathered.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.684,
+            0.496
+          ],
+          [
+            0.801,
+            0.808
+          ]
+        ],
+        "frac_zero": 0.4642,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.733,
+            0.354,
+            0.083,
+            0.364,
+            0.167,
+            0.0
+          ],
+          [
+            0.245,
+            0.989,
+            0.991,
+            0.912,
+            0.545,
+            0.136,
+            0.018
+          ],
+          [
+            0.544,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.771,
+            0.432
+          ],
+          [
+            0.768,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.93,
+            0.304
+          ],
+          [
+            0.896,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.695
+          ],
+          [
+            0.426,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.491
+          ],
+          [
+            0.01,
+            0.499,
+            0.891,
+            0.969,
+            0.878,
+            0.462,
+            0.005
+          ]
+        ],
+        "crop_offset": [
+          20,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 128,
+        "contact_reference_px": 128.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of plum blossom agility wood stakes, clear flowing mountain spring water over smooth stones, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_13_river_ferry_wharves_warehouses/martial_training_posts/ruined_rubble.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.612,
+            0.609
+          ],
+          [
+            0.817,
+            0.787
+          ]
+        ],
+        "frac_zero": 0.4496,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.09,
+            0.21,
+            0.705,
+            0.277,
+            0.604,
+            0.058
+          ],
+          [
+            0.098,
+            0.849,
+            0.88,
+            0.958,
+            0.822,
+            0.467,
+            0.453
+          ],
+          [
+            0.524,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.784,
+            0.186
+          ],
+          [
+            0.574,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.952,
+            0.289
+          ],
+          [
+            0.838,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.675
+          ],
+          [
+            0.613,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.999,
+            0.55
+          ],
+          [
+            0.044,
+            0.547,
+            0.962,
+            0.981,
+            0.836,
+            0.353,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          19,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 127,
+        "contact_reference_px": 127.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "MOR-13",
+    "domain": "mortal_and_jianghu",
+    "interaction": "train_agility",
+    "collision_behavior": "obstacle",
+    "element": "water",
+    "tier": 1
+  },
+  "category_id": "mor_13_river_ferry_wharves_warehouses",
+  "domain_id": "mortal_and_jianghu",
+  "pinyin": "Cáoyùn Mǎtóu · Plum Blossom Agility Wood Stakes",
+  "archetype_name": "Plum Blossom Agility Wood Stakes",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "obstacle",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "liquid_water",
+  "secondary_material": "riverbed_pebbles",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Water affinity (Qi Refining (Luyện Khí / 练气))",
+  "elevation_tier": 1,
+  "mortal_realm_tier": "Qi Refining (Luyện Khí / 练气)",
+  "asset_slug": "martial_training_posts"
+}

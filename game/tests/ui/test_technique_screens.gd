@@ -13,6 +13,10 @@ const LOADOUT_SCENE := "res://src/ui/screens/technique_loadout.tscn"
 const MORTAL := &"qi_refining"
 const SPIRIT := &"spirit_condensation"
 
+## The facade's own script, preloaded once: two cases below read its declared surface
+## to assert no activation verb reached it, and each was `load()`ing the same file.
+const API := preload("res://src/modules/techniques/api.gd")
+
 var _screen: UiScreen = null
 
 
@@ -507,7 +511,7 @@ func test_the_cast_reached_the_facade_no_further() -> void:
 	# The cast had to be reachable without growing the facade, so it is reached the way
 	# `TechniqueUpkeep` is: as a component the facade NAMES.
 	var published: Array[String] = []
-	for method in load("res://src/modules/techniques/api.gd").get_script_method_list():
+	for method in API.get_script_method_list():
 		var method_name := String(method.get("name", ""))
 		if not method_name.begins_with("_") and not published.has(method_name):
 			published.append(method_name)
@@ -686,7 +690,7 @@ func test_a_passive_still_gets_the_module_s_own_refusal_not_no_target() -> void:
 ## deleted the width cap that used to make "still exactly twelve" the claim here.
 func test_binding_a_target_added_no_facade_method() -> void:
 	var published: Array[String] = []
-	for method in load("res://src/modules/techniques/api.gd").get_script_method_list():
+	for method in API.get_script_method_list():
 		var method_name := String(method.get("name", ""))
 		if not method_name.begins_with("_") and not published.has(method_name):
 			published.append(method_name)

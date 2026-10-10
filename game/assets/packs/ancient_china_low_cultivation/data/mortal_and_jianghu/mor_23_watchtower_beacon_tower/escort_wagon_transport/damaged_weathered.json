@@ -1,0 +1,175 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_23_watchtower_beacon_tower.escort_wagon_transport",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_23_watchtower_beacon_tower",
+  "asset_slug": "escort_wagon_transport",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_23_watchtower_beacon_tower/escort_wagon_transport/damaged_weathered.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "inspect_cargo",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.467,
+        0.799,
+        0.488
+      ],
+      [
+        0.235,
+        0.903,
+        0.299
+      ]
+    ],
+    "frac_zero": 0.8107,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.032,
+        0.104,
+        0.501,
+        0.049,
+        0.028
+      ],
+      [
+        0.377,
+        0.979,
+        1.0,
+        0.978,
+        0.107
+      ],
+      [
+        0.765,
+        1.0,
+        1.0,
+        1.0,
+        0.679
+      ],
+      [
+        0.089,
+        0.955,
+        0.874,
+        0.737,
+        0.031
+      ],
+      [
+        0.06,
+        0.842,
+        1.0,
+        0.625,
+        0.0
+      ],
+      [
+        0.0,
+        0.617,
+        1.0,
+        0.439,
+        0.0
+      ],
+      [
+        0.028,
+        0.696,
+        0.59,
+        0.479,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      117,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 31,
+    "contact_reference_px": 31.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

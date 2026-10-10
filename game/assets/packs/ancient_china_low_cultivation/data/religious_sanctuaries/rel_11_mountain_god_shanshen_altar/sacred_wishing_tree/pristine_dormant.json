@@ -1,0 +1,258 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_11_mountain_god_shanshen_altar.sacred_wishing_tree",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_11_mountain_god_shanshen_altar",
+  "asset_slug": "sacred_wishing_tree",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_11_mountain_god_shanshen_altar/sacred_wishing_tree/pristine_dormant.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "tie_prayer_ribbon",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.178,
+        0.754,
+        0.239
+      ],
+      [
+        0.314,
+        0.832,
+        0.354
+      ],
+      [
+        0.542,
+        0.969,
+        0.466
+      ]
+    ],
+    "frac_zero": 0.5542,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.006,
+        0.428,
+        0.873,
+        0.44,
+        0.01,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.02,
+        0.589,
+        0.984,
+        0.963,
+        1.0,
+        0.605,
+        0.032,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.037,
+        0.407,
+        0.847,
+        0.887,
+        0.73,
+        0.902,
+        0.9,
+        0.493,
+        0.005,
+        0.0
+      ],
+      [
+        0.0,
+        0.521,
+        0.842,
+        0.696,
+        0.665,
+        0.686,
+        0.546,
+        0.596,
+        0.392,
+        0.128,
+        0.0
+      ],
+      [
+        0.006,
+        0.193,
+        0.114,
+        0.517,
+        0.965,
+        0.837,
+        0.607,
+        0.514,
+        0.816,
+        0.844,
+        0.356
+      ],
+      [
+        0.132,
+        0.409,
+        0.474,
+        0.936,
+        1.0,
+        0.95,
+        0.449,
+        0.192,
+        0.488,
+        0.294,
+        0.046
+      ],
+      [
+        0.048,
+        0.196,
+        0.57,
+        1.0,
+        1.0,
+        1.0,
+        0.809,
+        0.202,
+        0.278,
+        0.01,
+        0.0
+      ],
+      [
+        0.036,
+        0.149,
+        0.754,
+        1.0,
+        1.0,
+        0.977,
+        0.783,
+        0.485,
+        0.387,
+        0.207,
+        0.0
+      ],
+      [
+        0.032,
+        0.343,
+        0.932,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.959,
+        0.654,
+        0.0,
+        0.0
+      ],
+      [
+        0.281,
+        0.905,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.355,
+        0.0
+      ],
+      [
+        0.014,
+        0.376,
+        0.683,
+        0.861,
+        0.91,
+        0.935,
+        0.9,
+        0.664,
+        0.289,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      25,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 198,
+    "contact_reference_px": 198.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        2,
+        2,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,247 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_11_mountain_god_shanshen_altar.sacred_wishing_tree",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_11_mountain_god_shanshen_altar",
+  "asset_slug": "sacred_wishing_tree",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_11_mountain_god_shanshen_altar/sacred_wishing_tree/damaged_weathered.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "tie_prayer_ribbon",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.142,
+        0.746,
+        0.249
+      ],
+      [
+        0.494,
+        0.867,
+        0.441
+      ],
+      [
+        0.675,
+        0.986,
+        0.552
+      ]
+    ],
+    "frac_zero": 0.5497,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      10,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.179,
+        0.67,
+        0.799,
+        0.224,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.021,
+        0.791,
+        0.886,
+        0.879,
+        0.929,
+        0.19,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.104,
+        0.778,
+        0.973,
+        0.762,
+        0.752,
+        0.902,
+        0.711,
+        0.114,
+        0.0
+      ],
+      [
+        0.047,
+        0.423,
+        0.5,
+        0.494,
+        0.766,
+        0.665,
+        0.49,
+        0.641,
+        0.687,
+        0.048
+      ],
+      [
+        0.67,
+        0.652,
+        0.497,
+        0.632,
+        0.903,
+        0.786,
+        0.396,
+        0.612,
+        0.858,
+        0.607
+      ],
+      [
+        0.133,
+        0.287,
+        0.62,
+        0.917,
+        1.0,
+        0.98,
+        0.603,
+        0.067,
+        0.07,
+        0.0
+      ],
+      [
+        0.0,
+        0.348,
+        0.968,
+        0.995,
+        1.0,
+        0.996,
+        0.544,
+        0.763,
+        0.715,
+        0.021
+      ],
+      [
+        0.009,
+        0.664,
+        0.991,
+        0.985,
+        1.0,
+        0.985,
+        0.826,
+        0.384,
+        0.471,
+        0.115
+      ],
+      [
+        0.195,
+        0.857,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.95,
+        0.597,
+        0.134
+      ],
+      [
+        0.604,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.772,
+        0.077
+      ],
+      [
+        0.052,
+        0.525,
+        0.792,
+        0.964,
+        0.986,
+        0.979,
+        0.773,
+        0.388,
+        0.075,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      37,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 190,
+    "contact_reference_px": 190.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        2,
+        1,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,274 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_09_dragon_king_water_shrine.daoist_temple_hall",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_09_dragon_king_water_shrine",
+  "asset_slug": "daoist_temple_hall",
+  "variant_slug": "rot_west_flank",
+  "name": "West Flank (Left Profile)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_09_dragon_king_water_shrine/daoist_temple_hall/rot_west_flank.png",
+  "footprint_cells": [
+    4,
+    3
+  ],
+  "canvas_px": [
+    512,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "worship_dao",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.316,
+        0.671,
+        0.572,
+        0.225
+      ],
+      [
+        0.838,
+        1.0,
+        1.0,
+        0.652
+      ],
+      [
+        0.579,
+        0.935,
+        0.92,
+        0.531
+      ]
+    ],
+    "frac_zero": 0.6442,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 12,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      9,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.103,
+        0.422,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.132,
+        0.494,
+        0.242,
+        0.688,
+        0.928,
+        0.3,
+        0.32,
+        0.477,
+        0.0
+      ],
+      [
+        0.006,
+        0.945,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.472,
+        0.0
+      ],
+      [
+        0.174,
+        0.905,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.44,
+        0.023
+      ],
+      [
+        0.614,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.993,
+        0.093
+      ],
+      [
+        0.773,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.317
+      ],
+      [
+        0.562,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.93,
+        0.295
+      ],
+      [
+        0.744,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.669
+      ],
+      [
+        0.529,
+        0.973,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.99,
+        0.505
+      ],
+      [
+        0.0,
+        0.854,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.432,
+        0.006
+      ],
+      [
+        0.0,
+        0.461,
+        0.495,
+        0.894,
+        0.833,
+        0.736,
+        0.503,
+        0.287,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      113,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 152,
+    "contact_reference_px": 152.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      384
+    ]
+  }
+}

@@ -1,0 +1,246 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_03_thousand_year_mountain_stupa_pagoda.sacred_wishing_tree",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_03_thousand_year_mountain_stupa_pagoda",
+  "asset_slug": "sacred_wishing_tree",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_03_thousand_year_mountain_stupa_pagoda/sacred_wishing_tree/pristine_dormant.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "tie_prayer_ribbon",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.21,
+        0.751,
+        0.296
+      ],
+      [
+        0.387,
+        0.957,
+        0.474
+      ],
+      [
+        0.604,
+        0.968,
+        0.609
+      ]
+    ],
+    "frac_zero": 0.556,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      10,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.202,
+        0.806,
+        0.673,
+        0.134,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.228,
+        0.969,
+        1.0,
+        0.958,
+        0.89,
+        0.215,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.164,
+        0.683,
+        0.84,
+        0.817,
+        0.59,
+        0.571,
+        0.492,
+        0.079,
+        0.0
+      ],
+      [
+        0.34,
+        0.88,
+        0.495,
+        0.462,
+        0.901,
+        0.857,
+        0.593,
+        0.804,
+        0.774,
+        0.035
+      ],
+      [
+        0.114,
+        0.408,
+        0.425,
+        0.596,
+        1.0,
+        1.0,
+        0.611,
+        0.469,
+        0.443,
+        0.236
+      ],
+      [
+        0.062,
+        0.444,
+        0.514,
+        0.997,
+        1.0,
+        1.0,
+        0.833,
+        0.314,
+        0.152,
+        0.0
+      ],
+      [
+        0.271,
+        0.389,
+        0.502,
+        0.99,
+        1.0,
+        1.0,
+        0.794,
+        0.466,
+        0.521,
+        0.0
+      ],
+      [
+        0.007,
+        0.556,
+        0.858,
+        1.0,
+        1.0,
+        1.0,
+        0.969,
+        0.709,
+        0.172,
+        0.108
+      ],
+      [
+        0.327,
+        0.937,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.998,
+        0.514,
+        0.0
+      ],
+      [
+        0.253,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.563,
+        0.0
+      ],
+      [
+        0.0,
+        0.292,
+        0.742,
+        0.786,
+        0.908,
+        0.936,
+        0.741,
+        0.491,
+        0.046,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      43,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 188,
+    "contact_reference_px": 188.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        2,
+        2,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

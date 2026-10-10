@@ -1,0 +1,190 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_29_street_cobbler_tailor_booth.thatched_dwelling",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_29_street_cobbler_tailor_booth",
+  "asset_slug": "thatched_dwelling",
+  "variant_slug": "rot_east_flank",
+  "name": "East Flank (Right Profile)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_29_street_cobbler_tailor_booth/thatched_dwelling/rot_east_flank.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "enter_dwelling",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.408,
+        0.793,
+        0.332
+      ],
+      [
+        0.474,
+        0.962,
+        0.754
+      ]
+    ],
+    "frac_zero": 0.6981,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.056,
+        0.706,
+        0.025,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.087,
+        0.746,
+        1.0,
+        0.655,
+        0.046,
+        0.0
+      ],
+      [
+        0.841,
+        0.953,
+        1.0,
+        1.0,
+        1.0,
+        0.565,
+        0.116
+      ],
+      [
+        0.91,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.98,
+        0.544
+      ],
+      [
+        0.523,
+        0.855,
+        1.0,
+        1.0,
+        1.0,
+        0.968,
+        0.303
+      ],
+      [
+        0.016,
+        0.588,
+        1.0,
+        1.0,
+        1.0,
+        0.964,
+        0.294
+      ],
+      [
+        0.0,
+        0.136,
+        0.726,
+        0.845,
+        0.93,
+        0.571,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      88,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 110,
+    "contact_reference_px": 110.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

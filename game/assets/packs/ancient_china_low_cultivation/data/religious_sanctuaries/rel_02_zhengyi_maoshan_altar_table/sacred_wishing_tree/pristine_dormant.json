@@ -1,0 +1,257 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_02_zhengyi_maoshan_altar_table.sacred_wishing_tree",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_02_zhengyi_maoshan_altar_table",
+  "asset_slug": "sacred_wishing_tree",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_02_zhengyi_maoshan_altar_table/sacred_wishing_tree/pristine_dormant.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "tie_prayer_ribbon",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.184,
+        0.77,
+        0.201
+      ],
+      [
+        0.412,
+        0.65,
+        0.386
+      ],
+      [
+        0.475,
+        0.975,
+        0.359
+      ]
+    ],
+    "frac_zero": 0.5778,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.104,
+        0.591,
+        0.803,
+        0.224,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.061,
+        0.71,
+        1.0,
+        0.989,
+        0.984,
+        0.246,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.02,
+        0.329,
+        0.961,
+        0.81,
+        0.805,
+        0.981,
+        0.847,
+        0.178,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.558,
+        0.959,
+        0.885,
+        0.532,
+        0.785,
+        0.915,
+        0.984,
+        0.594,
+        0.005,
+        0.0
+      ],
+      [
+        0.048,
+        0.452,
+        0.479,
+        0.537,
+        0.953,
+        0.573,
+        0.557,
+        0.364,
+        0.851,
+        0.569,
+        0.089
+      ],
+      [
+        0.613,
+        0.674,
+        0.434,
+        0.448,
+        0.295,
+        0.915,
+        0.246,
+        0.575,
+        0.88,
+        0.65,
+        0.364
+      ],
+      [
+        0.0,
+        0.427,
+        0.335,
+        0.793,
+        0.978,
+        0.632,
+        0.23,
+        0.137,
+        0.082,
+        0.024,
+        0.0
+      ],
+      [
+        0.0,
+        0.057,
+        0.735,
+        1.0,
+        1.0,
+        0.958,
+        0.751,
+        0.248,
+        0.141,
+        0.013,
+        0.0
+      ],
+      [
+        0.0,
+        0.155,
+        0.728,
+        1.0,
+        1.0,
+        1.0,
+        0.975,
+        0.724,
+        0.362,
+        0.002,
+        0.0
+      ],
+      [
+        0.109,
+        0.843,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.974,
+        0.247,
+        0.0
+      ],
+      [
+        0.0,
+        0.266,
+        0.691,
+        0.858,
+        0.931,
+        0.948,
+        0.933,
+        0.611,
+        0.189,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      25,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 195,
+    "contact_reference_px": 195.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        2,
+        2,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

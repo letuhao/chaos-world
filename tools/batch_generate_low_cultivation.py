@@ -89,7 +89,7 @@ def audit_colour(dom: str, sub: str) -> dict:
                 blue += 1
             elif deg < 50 or deg >= 330:
                 warm += 1
-    pct = (lambda n: round(n / total * 100, 1) if total else 0.0)
+    pct = lambda n: round(n / total * 100, 1) if total else 0.0
     cyan_p, green_p, blue_p = pct(cyan), pct(green), pct(blue)
     loose = dom in COLD_OK_DOMAINS
     flag = cyan_p > (30 if loose else 12) or green_p > (30 if loose else 15) or blue_p > 65

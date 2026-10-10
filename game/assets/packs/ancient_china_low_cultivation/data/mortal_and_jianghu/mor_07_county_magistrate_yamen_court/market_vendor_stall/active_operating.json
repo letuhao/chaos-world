@@ -1,0 +1,174 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_07_county_magistrate_yamen_court.market_vendor_stall",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_07_county_magistrate_yamen_court",
+  "asset_slug": "market_vendor_stall",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_07_county_magistrate_yamen_court/market_vendor_stall/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "trade_goods",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.514,
+        0.516
+      ],
+      [
+        0.563,
+        0.376
+      ]
+    ],
+    "frac_zero": 0.6498,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.001,
+        0.178,
+        0.188,
+        0.165,
+        0.119,
+        0.0
+      ],
+      [
+        0.104,
+        0.609,
+        0.664,
+        0.937,
+        0.633,
+        0.072
+      ],
+      [
+        0.592,
+        0.979,
+        1.0,
+        1.0,
+        0.98,
+        0.466
+      ],
+      [
+        0.129,
+        0.853,
+        1.0,
+        0.899,
+        0.723,
+        0.162
+      ],
+      [
+        0.162,
+        0.861,
+        1.0,
+        0.999,
+        0.682,
+        0.018
+      ],
+      [
+        0.298,
+        0.921,
+        0.989,
+        0.9,
+        0.453,
+        0.0
+      ],
+      [
+        0.032,
+        0.111,
+        0.546,
+        0.029,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      31,
+      17
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 28,
+    "contact_reference_px": 28.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,246 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_09_dragon_king_water_shrine.sacred_wishing_tree",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_09_dragon_king_water_shrine",
+  "asset_slug": "sacred_wishing_tree",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_09_dragon_king_water_shrine/sacred_wishing_tree/active_operating.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "tie_prayer_ribbon",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.232,
+        0.773,
+        0.193
+      ],
+      [
+        0.504,
+        0.94,
+        0.526
+      ],
+      [
+        0.472,
+        0.952,
+        0.612
+      ]
+    ],
+    "frac_zero": 0.5407,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      10,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.37,
+        0.808,
+        0.613,
+        0.119,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.301,
+        0.941,
+        0.891,
+        0.993,
+        0.766,
+        0.057,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.361,
+        0.789,
+        0.883,
+        0.618,
+        0.739,
+        0.789,
+        0.805,
+        0.114,
+        0.0
+      ],
+      [
+        0.012,
+        0.366,
+        0.504,
+        0.825,
+        0.809,
+        0.746,
+        0.678,
+        0.453,
+        0.562,
+        0.051
+      ],
+      [
+        0.592,
+        0.777,
+        0.646,
+        0.998,
+        0.992,
+        0.959,
+        0.516,
+        0.711,
+        0.667,
+        0.328
+      ],
+      [
+        0.083,
+        0.398,
+        0.676,
+        0.935,
+        1.0,
+        1.0,
+        0.956,
+        0.487,
+        0.049,
+        0.0
+      ],
+      [
+        0.007,
+        0.381,
+        0.825,
+        1.0,
+        1.0,
+        1.0,
+        0.995,
+        0.789,
+        0.65,
+        0.108
+      ],
+      [
+        0.284,
+        0.645,
+        0.595,
+        0.993,
+        1.0,
+        1.0,
+        0.942,
+        0.438,
+        0.693,
+        0.577
+      ],
+      [
+        0.07,
+        0.498,
+        0.953,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.941,
+        0.696,
+        0.056
+      ],
+      [
+        0.002,
+        0.823,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.859,
+        0.023
+      ],
+      [
+        0.0,
+        0.045,
+        0.43,
+        0.683,
+        0.808,
+        0.868,
+        0.899,
+        0.801,
+        0.159,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      36,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 171,
+    "contact_reference_px": 171.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        2,
+        2,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

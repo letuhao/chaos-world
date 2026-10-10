@@ -1,0 +1,185 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_09_dragon_king_water_shrine.sacred_turtle_fountain",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_09_dragon_king_water_shrine",
+  "asset_slug": "sacred_turtle_fountain",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_09_dragon_king_water_shrine/sacred_turtle_fountain/pristine_dormant.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "make_wish",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.702,
+        0.705
+      ],
+      [
+        0.688,
+        0.725
+      ]
+    ],
+    "frac_zero": 0.5122,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.123,
+        0.582,
+        0.649,
+        0.646,
+        0.628,
+        0.149,
+        0.0
+      ],
+      [
+        0.314,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.403,
+        0.0
+      ],
+      [
+        0.87,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.935,
+        0.375
+      ],
+      [
+        0.026,
+        0.705,
+        0.689,
+        0.687,
+        0.785,
+        0.085,
+        0.0
+      ],
+      [
+        0.126,
+        0.754,
+        0.979,
+        0.983,
+        0.828,
+        0.179,
+        0.0
+      ],
+      [
+        0.539,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.768,
+        0.0
+      ],
+      [
+        0.298,
+        0.892,
+        1.0,
+        1.0,
+        0.998,
+        0.441,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      30,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 160,
+    "contact_reference_px": 160.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

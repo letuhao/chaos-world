@@ -1,0 +1,287 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_12_jianghu_martial_arts_hall_wuguan.wine_tavern_pavilion",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_12_jianghu_martial_arts_hall_wuguan",
+  "asset_slug": "wine_tavern_pavilion",
+  "variant_slug": "rot_west_flank",
+  "name": "West Flank (Left Profile)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_12_jianghu_martial_arts_hall_wuguan/wine_tavern_pavilion/rot_west_flank.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "order_drink",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.308,
+        0.73,
+        0.349
+      ],
+      [
+        0.833,
+        1.0,
+        0.831
+      ],
+      [
+        0.413,
+        0.945,
+        0.483
+      ]
+    ],
+    "frac_zero": 0.4696,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 9,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.044,
+        0.053,
+        0.0,
+        0.091,
+        0.516,
+        0.0,
+        0.0,
+        0.108,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.047,
+        0.919,
+        0.738,
+        0.858,
+        0.994,
+        0.726,
+        0.802,
+        0.626,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.892,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.497,
+        0.0,
+        0.0
+      ],
+      [
+        0.296,
+        0.407,
+        0.964,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.902,
+        0.457,
+        0.0
+      ],
+      [
+        0.402,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.817,
+        0.0
+      ],
+      [
+        0.688,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.971,
+        0.254
+      ],
+      [
+        0.268,
+        0.994,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.667,
+        0.308
+      ],
+      [
+        0.125,
+        0.949,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.582,
+        0.0
+      ],
+      [
+        0.0,
+        0.435,
+        0.97,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.972,
+        0.311,
+        0.0
+      ],
+      [
+        0.0,
+        0.002,
+        0.535,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.213,
+        0.014,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.361,
+        0.581,
+        0.861,
+        0.878,
+        0.75,
+        0.613,
+        0.192,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      24,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 189,
+    "contact_reference_px": 189.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

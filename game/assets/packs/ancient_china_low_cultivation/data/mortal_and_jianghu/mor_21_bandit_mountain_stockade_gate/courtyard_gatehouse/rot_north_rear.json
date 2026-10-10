@@ -1,0 +1,206 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_21_bandit_mountain_stockade_gate.courtyard_gatehouse",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_21_bandit_mountain_stockade_gate",
+  "asset_slug": "courtyard_gatehouse",
+  "variant_slug": "rot_north_rear",
+  "name": "North Rear (Back Wall)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_21_bandit_mountain_stockade_gate/courtyard_gatehouse/rot_north_rear.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "open_gate",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.661,
+        0.842,
+        0.659
+      ],
+      [
+        0.642,
+        0.981,
+        0.64
+      ]
+    ],
+    "frac_zero": 0.5551,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      9,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.328,
+        0.617,
+        0.476,
+        0.451,
+        0.453,
+        0.463,
+        0.576,
+        0.438,
+        0.0
+      ],
+      [
+        0.245,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.385,
+        0.0
+      ],
+      [
+        0.277,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.428,
+        0.0
+      ],
+      [
+        0.458,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.643,
+        0.0
+      ],
+      [
+        0.717,
+        0.981,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.994,
+        0.861,
+        0.269
+      ],
+      [
+        0.0,
+        0.547,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.644,
+        0.002,
+        0.0
+      ],
+      [
+        0.0,
+        0.608,
+        0.945,
+        0.923,
+        0.916,
+        0.95,
+        0.722,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      61,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 178,
+    "contact_reference_px": 178.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

@@ -1,0 +1,656 @@
+{
+  "id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_22_mortuary_coffin_maker_shop.martial_training_posts",
+  "archetype": "martial_training_posts_mor_22_mortuary_coffin_maker_shop",
+  "name": "Mortuary & Coffin Maker Shop - Plum Blossom Agility Wood Stakes",
+  "vietnamese_name": "Nghĩa Trang Quan Mộc Phố - Cọc Gỗ Mai Hoa Luyện Võ",
+  "hanzi": "义庄棺木铺 · 梅花木桩练功场",
+  "category": "mor_22_mortuary_coffin_maker_shop",
+  "category_code": "MOR-22",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_22_mortuary_coffin_maker_shop",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "obstacle",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "train_agility",
+  "gameplay_role": "prop_workstation entity supporting Mortuary & Coffin Maker Shop gameplay",
+  "destructible": true,
+  "material": "authentic mortal craftsmanship materials",
+  "cultivation_element": "wood",
+  "prompt_summary": "Single isolated 2D RPG game prop of mortuary & coffin maker shop - plum blossom agility wood stakes, authentic mortuary & coffin maker shop materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Mortal Settlements & Jianghu",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of plum blossom agility wood stakes, authentic mortal craftsmanship materials, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_22_mortuary_coffin_maker_shop/martial_training_posts/pristine_dormant.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.609,
+            0.619
+          ],
+          [
+            0.541,
+            0.569
+          ]
+        ],
+        "frac_zero": 0.5391,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.257,
+            0.244,
+            0.514,
+            0.252,
+            0.395,
+            0.013
+          ],
+          [
+            0.122,
+            0.671,
+            1.0,
+            1.0,
+            1.0,
+            0.717,
+            0.106
+          ],
+          [
+            0.307,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.279
+          ],
+          [
+            0.577,
+            0.947,
+            1.0,
+            1.0,
+            1.0,
+            0.927,
+            0.563
+          ],
+          [
+            0.06,
+            0.623,
+            1.0,
+            1.0,
+            1.0,
+            0.652,
+            0.061
+          ],
+          [
+            0.24,
+            0.822,
+            0.9,
+            0.48,
+            0.925,
+            0.962,
+            0.175
+          ],
+          [
+            0.087,
+            0.179,
+            0.224,
+            0.0,
+            0.168,
+            0.639,
+            0.028
+          ]
+        ],
+        "crop_offset": [
+          16,
+          22
+        ],
+        "trunk_columns": [
+          5
+        ],
+        "contact_px": 22,
+        "contact_reference_px": 22.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of plum blossom agility wood stakes, authentic mortal craftsmanship materials, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_22_mortuary_coffin_maker_shop/martial_training_posts/active_operating.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.563,
+            0.479
+          ],
+          [
+            0.639,
+            0.721
+          ]
+        ],
+        "frac_zero": 0.5295,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.097,
+            0.586,
+            0.562,
+            0.141,
+            0.007,
+            0.0,
+            0.0
+          ],
+          [
+            0.396,
+            0.451,
+            0.843,
+            0.898,
+            0.791,
+            0.29,
+            0.014
+          ],
+          [
+            0.115,
+            0.825,
+            1.0,
+            1.0,
+            1.0,
+            0.757,
+            0.143
+          ],
+          [
+            0.187,
+            0.539,
+            0.801,
+            0.813,
+            0.93,
+            0.51,
+            0.339
+          ],
+          [
+            0.289,
+            0.974,
+            0.956,
+            0.97,
+            0.941,
+            0.677,
+            0.206
+          ],
+          [
+            0.391,
+            0.98,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.661
+          ],
+          [
+            0.0,
+            0.282,
+            0.77,
+            0.97,
+            0.857,
+            0.495,
+            0.059
+          ]
+        ],
+        "crop_offset": [
+          19,
+          17
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 119,
+        "contact_reference_px": 119.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of plum blossom agility wood stakes, authentic mortal craftsmanship materials, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_22_mortuary_coffin_maker_shop/martial_training_posts/damaged_weathered.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.632,
+            0.711
+          ],
+          [
+            0.689,
+            0.739
+          ]
+        ],
+        "frac_zero": 0.4683,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.286,
+            0.231,
+            0.487,
+            0.533,
+            0.541,
+            0.089
+          ],
+          [
+            0.171,
+            0.797,
+            1.0,
+            1.0,
+            1.0,
+            0.772,
+            0.279
+          ],
+          [
+            0.411,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.194
+          ],
+          [
+            0.568,
+            0.945,
+            1.0,
+            1.0,
+            0.987,
+            0.888,
+            0.505
+          ],
+          [
+            0.271,
+            0.767,
+            1.0,
+            1.0,
+            0.993,
+            0.751,
+            0.241
+          ],
+          [
+            0.293,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.349
+          ],
+          [
+            0.046,
+            0.582,
+            0.767,
+            0.991,
+            0.743,
+            0.596,
+            0.067
+          ]
+        ],
+        "crop_offset": [
+          20,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 149,
+        "contact_reference_px": 149.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of plum blossom agility wood stakes, authentic mortal craftsmanship materials, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_22_mortuary_coffin_maker_shop/martial_training_posts/ruined_rubble.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.481,
+            0.491
+          ],
+          [
+            0.754,
+            0.722
+          ]
+        ],
+        "frac_zero": 0.5233,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.018,
+            0.127,
+            0.427,
+            0.71,
+            0.205,
+            0.0
+          ],
+          [
+            0.014,
+            0.713,
+            0.877,
+            0.917,
+            0.445,
+            0.502,
+            0.113
+          ],
+          [
+            0.278,
+            0.992,
+            0.968,
+            0.938,
+            0.851,
+            0.393,
+            0.308
+          ],
+          [
+            0.211,
+            0.792,
+            0.927,
+            0.775,
+            0.79,
+            0.319,
+            0.016
+          ],
+          [
+            0.458,
+            0.995,
+            1.0,
+            1.0,
+            1.0,
+            0.915,
+            0.107
+          ],
+          [
+            0.602,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.5
+          ],
+          [
+            0.048,
+            0.572,
+            0.93,
+            0.939,
+            0.848,
+            0.335,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          20,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 128,
+        "contact_reference_px": 128.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "MOR-22",
+    "domain": "mortal_and_jianghu",
+    "interaction": "train_agility",
+    "collision_behavior": "obstacle",
+    "element": "wood",
+    "tier": 1
+  },
+  "category_id": "mor_22_mortuary_coffin_maker_shop",
+  "domain_id": "mortal_and_jianghu",
+  "pinyin": "Yìzhuāng Guānmùpù · Plum Blossom Agility Wood Stakes",
+  "archetype_name": "Plum Blossom Agility Wood Stakes",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "obstacle",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "carved_wood",
+  "secondary_material": "polished_bronze",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Wood affinity (Qi Refining (Luyện Khí / 练气))",
+  "elevation_tier": 1,
+  "mortal_realm_tier": "Qi Refining (Luyện Khí / 练气)",
+  "asset_slug": "martial_training_posts"
+}

@@ -1,0 +1,179 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_09_dragon_king_water_shrine.great_bronze_ding",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_09_dragon_king_water_shrine",
+  "asset_slug": "great_bronze_ding",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_09_dragon_king_water_shrine/great_bronze_ding/ruined_rubble.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "burn_incense",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.637,
+        0.64
+      ],
+      [
+        0.479,
+        0.505
+      ]
+    ],
+    "frac_zero": 0.5716,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.298,
+        0.422,
+        0.209,
+        0.184,
+        0.297,
+        0.545,
+        0.148
+      ],
+      [
+        0.16,
+        1.0,
+        0.996,
+        0.995,
+        1.0,
+        0.884,
+        0.0
+      ],
+      [
+        0.172,
+        1.0,
+        0.991,
+        0.996,
+        1.0,
+        0.903,
+        0.004
+      ],
+      [
+        0.76,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.661
+      ],
+      [
+        0.219,
+        0.86,
+        1.0,
+        1.0,
+        0.996,
+        0.8,
+        0.113
+      ],
+      [
+        0.0,
+        0.368,
+        0.548,
+        0.874,
+        0.646,
+        0.454,
+        0.0
+      ],
+      [
+        0.0,
+        0.066,
+        0.005,
+        0.14,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      20,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 2,
+    "contact_reference_px": 2.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

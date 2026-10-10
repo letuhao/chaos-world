@@ -1,0 +1,184 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_20_gambling_den_dice_parlor.blacksmith_forge_shed",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_20_gambling_den_dice_parlor",
+  "asset_slug": "blacksmith_forge_shed",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_20_gambling_den_dice_parlor/blacksmith_forge_shed/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "forge_iron",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.687,
+        0.507
+      ],
+      [
+        0.765,
+        0.701
+      ]
+    ],
+    "frac_zero": 0.4837,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.034,
+        0.479,
+        0.799,
+        0.261,
+        0.01,
+        0.0,
+        0.0
+      ],
+      [
+        0.302,
+        0.91,
+        1.0,
+        1.0,
+        0.927,
+        0.633,
+        0.036
+      ],
+      [
+        0.565,
+        0.991,
+        1.0,
+        0.869,
+        0.919,
+        0.943,
+        0.491
+      ],
+      [
+        0.187,
+        0.838,
+        1.0,
+        0.982,
+        0.826,
+        0.635,
+        0.408
+      ],
+      [
+        0.64,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        0.914,
+        0.264
+      ],
+      [
+        0.559,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.327
+      ],
+      [
+        0.008,
+        0.535,
+        0.836,
+        0.936,
+        0.823,
+        0.339,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      21
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 129,
+    "contact_reference_px": 129.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

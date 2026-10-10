@@ -1,0 +1,802 @@
+{
+  "id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_06_escort_agency_compound_biaoju.courtyard_gatehouse",
+  "archetype": "courtyard_gatehouse_mor_06_escort_agency_compound_biaoju",
+  "name": "Escort Agency Compound (Biaoju) - Traditional Timber Compound Gate",
+  "vietnamese_name": "Long Hổ Tiêu Cục - Cổng Ngõ Sân Vườn Gỗ Mộc",
+  "hanzi": "龙虎镖局 · 门楼木制院门",
+  "category": "mor_06_escort_agency_compound_biaoju",
+  "category_code": "MOR-06",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_06_escort_agency_compound_biaoju",
+  "asset_class": "structure_building",
+  "type": "building",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "open_gate",
+  "gameplay_role": "structure_building entity supporting Escort Agency Compound (Biaoju) gameplay",
+  "destructible": false,
+  "material": "seasoned camphor timber framing and glazed ceramic roof tiles",
+  "cultivation_element": "fire",
+  "prompt_summary": "Single isolated 2D top-down RPG map building sprite of escort agency compound (biaoju) - traditional timber compound gate, glazed dark ceramic roof tiles, steep high-angle top-down RPG map perspective (~65-70 degrees downward tilt), roof dominant overhead (75%-80% of height), foreshortened walls beneath eaves, gouache hand-painted, fine dark #263A35 ink contours, flat baseline, solid pure white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Mortal Settlements & Jianghu",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "rot_south_facade",
+      "name": "South Facade (Front Entrance)",
+      "prompt_modifier": "front entrance visible foreshortened beneath eaves, steep overhead map view",
+      "variant_id": "rot_south_facade",
+      "variant_name": "South Facade (Front Entrance)",
+      "description": "front entrance visible foreshortened beneath eaves, steep overhead map view",
+      "prompt": "Single isolated 2D top-down world-map building sprite of traditional timber compound gate, seasoned camphor timber framing and glazed ceramic roof tiles, front entrance visible foreshortened beneath eaves, steep overhead map view, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, roof ridge running East-West with broad southern roof surface broad glazed ceramic roof tiles and curved dougong eaves dominant and fully visible overhead (70%-80% of height),  foreshortened front walls and entrance visible beneath eaves at bottom-center, stone courtyard steps descending at bottom, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_06_escort_agency_compound_biaoju/courtyard_gatehouse/rot_south_facade.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.566,
+            0.819,
+            0.562
+          ],
+          [
+            0.594,
+            0.975,
+            0.613
+          ]
+        ],
+        "frac_zero": 0.6426,
+        "blocks": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 6,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.173,
+            0.162,
+            0.185,
+            0.568,
+            0.187,
+            0.17,
+            0.167
+          ],
+          [
+            0.375,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.339
+          ],
+          [
+            0.354,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.33
+          ],
+          [
+            0.503,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.509
+          ],
+          [
+            0.684,
+            0.988,
+            1.0,
+            1.0,
+            1.0,
+            0.998,
+            0.712
+          ],
+          [
+            0.0,
+            0.865,
+            1.0,
+            1.0,
+            1.0,
+            0.911,
+            0.0
+          ],
+          [
+            0.005,
+            0.445,
+            0.867,
+            0.903,
+            0.841,
+            0.452,
+            0.028
+          ]
+        ],
+        "crop_offset": [
+          79,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 103,
+        "contact_reference_px": 103.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_north_rear",
+      "name": "North Rear (Back Wall)",
+      "prompt_modifier": "rear roof slope dominant overhead, solid back wall beneath eaves, zero front entrance steps",
+      "variant_id": "rot_north_rear",
+      "variant_name": "North Rear (Back Wall)",
+      "description": "rear roof slope dominant overhead, solid back wall beneath eaves, zero front entrance steps",
+      "prompt": "Single isolated 2D top-down world-map building sprite of traditional timber compound gate, seasoned camphor timber framing and glazed ceramic roof tiles, rear roof slope dominant overhead, solid back wall beneath eaves, solid continuous rear wall, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, roof ridge running East-West with broad northern rear roof surface broad glazed ceramic roof tiles and curved dougong eaves dominant and fully visible overhead (70%-80% of height),  solid unbroken timber lattice back wall and stone foundation foreshortened beneath eaves at bottom, completely windowless and doorless flat rear wall flush on level ground, clean horizontal baseline, back exterior view, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, front entrance door, open doorway, entrance steps, stairs, portal, door plaque, front veranda, open portal, descending stairs, central doorway, porch, arched entryway, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_06_escort_agency_compound_biaoju/courtyard_gatehouse/rot_north_rear.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.595,
+            0.835,
+            0.576
+          ],
+          [
+            0.666,
+            0.974,
+            0.66
+          ]
+        ],
+        "frac_zero": 0.6261,
+        "blocks": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 6,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          8,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.227,
+            0.214,
+            0.274,
+            0.57,
+            0.271,
+            0.219,
+            0.222,
+            0.0
+          ],
+          [
+            0.419,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.384,
+            0.0
+          ],
+          [
+            0.389,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.355,
+            0.0
+          ],
+          [
+            0.52,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.512,
+            0.0
+          ],
+          [
+            0.756,
+            0.996,
+            1.0,
+            1.0,
+            1.0,
+            0.995,
+            0.785,
+            0.062
+          ],
+          [
+            0.016,
+            0.983,
+            1.0,
+            1.0,
+            1.0,
+            0.955,
+            0.01,
+            0.0
+          ],
+          [
+            0.086,
+            0.71,
+            0.822,
+            0.935,
+            0.84,
+            0.748,
+            0.091,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          80,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 170,
+        "contact_reference_px": 170.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_west_flank",
+      "name": "West Flank (Left Profile)",
+      "prompt_modifier": "ridge oriented North-South, western roof slope and gable end visible from overhead",
+      "variant_id": "rot_west_flank",
+      "variant_name": "West Flank (Left Profile)",
+      "description": "ridge oriented North-South, western roof slope and gable end visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map building sprite of traditional timber compound gate, seasoned camphor timber framing and glazed ceramic roof tiles, ridge oriented North-South, western roof slope and gable end visible from overhead, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, building rotated 90 degrees with roof ridge running North-South, western roof slope and high-angle triangular dougong timber gable end dominant and fully visible overhead, western side wall foreshortened beneath eaves at bottom, side window or railing, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center, annexed side structure, attached side pavilion, extra side gate, secondary structure, side tower, courtyard wing, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_06_escort_agency_compound_biaoju/courtyard_gatehouse/rot_west_flank.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.515,
+            0.8,
+            0.477
+          ],
+          [
+            0.726,
+            0.991,
+            0.705
+          ]
+        ],
+        "frac_zero": 0.6972,
+        "blocks": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 6,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.121,
+            0.014,
+            0.452,
+            0.143,
+            0.049,
+            0.101
+          ],
+          [
+            0.447,
+            0.982,
+            0.998,
+            0.981,
+            0.986,
+            0.155
+          ],
+          [
+            0.386,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.074
+          ],
+          [
+            0.458,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.19
+          ],
+          [
+            0.604,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.427
+          ],
+          [
+            0.646,
+            1.0,
+            1.0,
+            1.0,
+            0.957,
+            0.581
+          ],
+          [
+            0.208,
+            0.969,
+            0.969,
+            0.969,
+            0.899,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          99,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 135,
+        "contact_reference_px": 135.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_east_flank",
+      "name": "East Flank (Right Profile)",
+      "prompt_modifier": "ridge oriented North-South, eastern roof slope and gable end visible from overhead",
+      "variant_id": "rot_east_flank",
+      "variant_name": "East Flank (Right Profile)",
+      "description": "ridge oriented North-South, eastern roof slope and gable end visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map building sprite of traditional timber compound gate, seasoned camphor timber framing and glazed ceramic roof tiles, ridge oriented North-South, eastern roof slope and gable end visible from overhead, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, building rotated 90 degrees with roof ridge running North-South, eastern roof slope and high-angle triangular dougong timber gable end dominant and fully visible overhead, eastern side wall foreshortened beneath eaves at bottom, side window or railing, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center, annexed side structure, attached side pavilion, extra side gate, secondary structure, side tower, courtyard wing, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_06_escort_agency_compound_biaoju/courtyard_gatehouse/rot_east_flank.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.509,
+            0.822,
+            0.518
+          ],
+          [
+            0.534,
+            0.957,
+            0.649
+          ]
+        ],
+        "frac_zero": 0.7031,
+        "blocks": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 6,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.284,
+            0.335,
+            0.431,
+            0.304,
+            0.02
+          ],
+          [
+            0.016,
+            0.785,
+            1.0,
+            1.0,
+            0.983,
+            0.0
+          ],
+          [
+            0.614,
+            0.988,
+            1.0,
+            1.0,
+            1.0,
+            0.497
+          ],
+          [
+            0.751,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.762
+          ],
+          [
+            0.348,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.446
+          ],
+          [
+            0.137,
+            0.843,
+            1.0,
+            1.0,
+            0.924,
+            0.405
+          ],
+          [
+            0.0,
+            0.521,
+            0.845,
+            0.845,
+            0.821,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          96,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 111,
+        "contact_reference_px": 111.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            2,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            2,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          2,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          384,
+          256
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "MOR-06",
+    "domain": "mortal_and_jianghu",
+    "interaction": "open_gate",
+    "collision_behavior": "solid",
+    "element": "fire",
+    "tier": 1
+  },
+  "category_id": "mor_06_escort_agency_compound_biaoju",
+  "domain_id": "mortal_and_jianghu",
+  "pinyin": "Lónghǔ Biāojú · Traditional Timber Compound Gate",
+  "archetype_name": "Traditional Timber Compound Gate",
+  "footprint_subcells": {
+    "w": 12,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 384,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 3,
+    "h": 2
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "structure"
+  },
+  "primary_material": "timber_frame",
+  "secondary_material": "glazed_ceramic_tile",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Fire affinity (Qi Refining (Luyện Khí / 练气))",
+  "elevation_tier": 1,
+  "mortal_realm_tier": "Qi Refining (Luyện Khí / 练气)",
+  "asset_slug": "courtyard_gatehouse"
+}

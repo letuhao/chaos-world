@@ -1,0 +1,737 @@
+{
+  "id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_23_watchtower_beacon_tower.village_water_well",
+  "archetype": "village_water_well_mor_23_watchtower_beacon_tower",
+  "name": "Watchtower & Beacon Tower - Stone Wellhead with Windlass Bucket",
+  "vietnamese_name": "Phong Hỏa Phong Toại Đài - Giếng Nước Làng Bằng Đá",
+  "hanzi": "烽火烽燧台 · 辘轳水井石圈",
+  "category": "mor_23_watchtower_beacon_tower",
+  "category_code": "MOR-23",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_23_watchtower_beacon_tower",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "draw_water",
+  "gameplay_role": "prop_workstation entity supporting Watchtower & Beacon Tower gameplay",
+  "destructible": true,
+  "material": "authentic mortal craftsmanship materials",
+  "cultivation_element": "wind",
+  "prompt_summary": "Single isolated 2D RPG game prop of watchtower & beacon tower - stone wellhead with windlass bucket, authentic watchtower & beacon tower materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Mortal Settlements & Jianghu",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of stone wellhead with windlass bucket, authentic mortal craftsmanship materials, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_23_watchtower_beacon_tower/village_water_well/pristine_dormant.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.587,
+            0.524
+          ],
+          [
+            0.524,
+            0.515
+          ]
+        ],
+        "frac_zero": 0.6949,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          5,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.181,
+            0.523,
+            0.192,
+            0.0
+          ],
+          [
+            0.609,
+            0.913,
+            1.0,
+            0.747,
+            0.062
+          ],
+          [
+            0.261,
+            0.978,
+            1.0,
+            0.977,
+            0.671
+          ],
+          [
+            0.153,
+            0.975,
+            1.0,
+            0.938,
+            0.125
+          ],
+          [
+            0.0,
+            0.719,
+            0.991,
+            0.567,
+            0.0
+          ],
+          [
+            0.143,
+            0.959,
+            1.0,
+            0.82,
+            0.047
+          ],
+          [
+            0.0,
+            0.549,
+            0.925,
+            0.727,
+            0.045
+          ]
+        ],
+        "crop_offset": [
+          47,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3
+        ],
+        "contact_px": 77,
+        "contact_reference_px": 77.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of stone wellhead with windlass bucket, authentic mortal craftsmanship materials, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_23_watchtower_beacon_tower/village_water_well/active_operating.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.56,
+            0.533
+          ],
+          [
+            0.642,
+            0.587
+          ]
+        ],
+        "frac_zero": 0.6722,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          5,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.263,
+            0.392,
+            0.231,
+            0.0
+          ],
+          [
+            0.483,
+            0.888,
+            1.0,
+            0.738,
+            0.135
+          ],
+          [
+            0.343,
+            0.989,
+            1.0,
+            0.938,
+            0.507
+          ],
+          [
+            0.058,
+            0.896,
+            0.997,
+            0.849,
+            0.069
+          ],
+          [
+            0.023,
+            0.739,
+            0.927,
+            0.545,
+            0.012
+          ],
+          [
+            0.632,
+            1.0,
+            1.0,
+            1.0,
+            0.544
+          ],
+          [
+            0.255,
+            0.873,
+            0.97,
+            0.751,
+            0.185
+          ]
+        ],
+        "crop_offset": [
+          48,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3
+        ],
+        "contact_px": 109,
+        "contact_reference_px": 109.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of stone wellhead with windlass bucket, authentic mortal craftsmanship materials, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_23_watchtower_beacon_tower/village_water_well/damaged_weathered.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.619,
+            0.551
+          ],
+          [
+            0.571,
+            0.613
+          ]
+        ],
+        "frac_zero": 0.6588,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.231,
+            0.455,
+            0.357,
+            0.0,
+            0.0
+          ],
+          [
+            0.729,
+            0.939,
+            1.0,
+            0.856,
+            0.039,
+            0.0
+          ],
+          [
+            0.371,
+            1.0,
+            1.0,
+            1.0,
+            0.831,
+            0.258
+          ],
+          [
+            0.134,
+            0.982,
+            1.0,
+            0.976,
+            0.186,
+            0.0
+          ],
+          [
+            0.007,
+            0.862,
+            0.935,
+            0.775,
+            0.112,
+            0.0
+          ],
+          [
+            0.175,
+            1.0,
+            1.0,
+            0.995,
+            0.604,
+            0.0
+          ],
+          [
+            0.0,
+            0.671,
+            0.931,
+            0.817,
+            0.079,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          46,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3
+        ],
+        "contact_px": 83,
+        "contact_reference_px": 83.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of stone wellhead with windlass bucket, authentic mortal craftsmanship materials, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_23_watchtower_beacon_tower/village_water_well/ruined_rubble.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.519,
+            0.528
+          ],
+          [
+            0.646,
+            0.658
+          ]
+        ],
+        "frac_zero": 0.662,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.06,
+            0.298,
+            0.287,
+            0.0,
+            0.0
+          ],
+          [
+            0.308,
+            0.778,
+            1.0,
+            0.75,
+            0.068,
+            0.0
+          ],
+          [
+            0.45,
+            0.984,
+            1.0,
+            0.991,
+            0.689,
+            0.01
+          ],
+          [
+            0.094,
+            0.95,
+            1.0,
+            0.963,
+            0.149,
+            0.0
+          ],
+          [
+            0.037,
+            0.714,
+            1.0,
+            0.712,
+            0.09,
+            0.0
+          ],
+          [
+            0.536,
+            1.0,
+            1.0,
+            1.0,
+            0.772,
+            0.135
+          ],
+          [
+            0.247,
+            0.89,
+            0.961,
+            0.875,
+            0.314,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          46,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3
+        ],
+        "contact_px": 114,
+        "contact_reference_px": 114.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "MOR-23",
+    "domain": "mortal_and_jianghu",
+    "interaction": "draw_water",
+    "collision_behavior": "solid",
+    "element": "wind",
+    "tier": 1
+  },
+  "category_id": "mor_23_watchtower_beacon_tower",
+  "domain_id": "mortal_and_jianghu",
+  "pinyin": "Fēnghuǒ Fēngsuìtái · Stone Wellhead with Windlass Bucket",
+  "archetype_name": "Stone Wellhead with Windlass Bucket",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "ground"
+  },
+  "primary_material": "carved_wood",
+  "secondary_material": "polished_bronze",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Wind affinity (Qi Refining (Luyện Khí / 练气))",
+  "elevation_tier": 1,
+  "mortal_realm_tier": "Qi Refining (Luyện Khí / 练气)",
+  "asset_slug": "village_water_well"
+}

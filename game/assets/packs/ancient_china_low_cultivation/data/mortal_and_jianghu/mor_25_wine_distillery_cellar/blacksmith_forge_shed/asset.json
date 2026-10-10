@@ -1,0 +1,780 @@
+{
+  "id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_25_wine_distillery_cellar.blacksmith_forge_shed",
+  "archetype": "blacksmith_forge_shed_mor_25_wine_distillery_cellar",
+  "name": "Wine Distillery & Cellar - Open-Air Smithy Hearth & Anvil",
+  "vietnamese_name": "Lão Bạch Can Tửu Phường - Xưởng Rèn Sắt Thủ Công",
+  "hanzi": "老白干酒坊 · 铁匠露天炉砧",
+  "category": "mor_25_wine_distillery_cellar",
+  "category_code": "MOR-25",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_25_wine_distillery_cellar",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "forge_iron",
+  "gameplay_role": "prop_workstation entity supporting Wine Distillery & Cellar gameplay",
+  "destructible": true,
+  "material": "authentic mortal craftsmanship materials",
+  "cultivation_element": "ghost",
+  "prompt_summary": "Single isolated 2D RPG game prop of wine distillery & cellar - open-air smithy hearth & anvil, authentic wine distillery & cellar materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Mortal Settlements & Jianghu",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of open-air smithy hearth & anvil, authentic mortal craftsmanship materials, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_25_wine_distillery_cellar/blacksmith_forge_shed/pristine_dormant.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.514,
+            0.545
+          ],
+          [
+            0.493,
+            0.543
+          ]
+        ],
+        "frac_zero": 0.5898,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.085,
+            0.526,
+            0.3,
+            0.272,
+            0.063,
+            0.0
+          ],
+          [
+            0.057,
+            0.439,
+            0.951,
+            0.593,
+            0.793,
+            0.66,
+            0.077
+          ],
+          [
+            0.268,
+            0.829,
+            1.0,
+            0.999,
+            0.872,
+            0.584,
+            0.454
+          ],
+          [
+            0.415,
+            0.941,
+            0.923,
+            0.981,
+            0.871,
+            0.656,
+            0.03
+          ],
+          [
+            0.048,
+            0.876,
+            0.99,
+            1.0,
+            0.98,
+            0.408,
+            0.0
+          ],
+          [
+            0.008,
+            0.422,
+            0.896,
+            1.0,
+            0.949,
+            0.319,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.373,
+            0.691,
+            0.832,
+            0.114,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          21,
+          16
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4
+        ],
+        "contact_px": 88,
+        "contact_reference_px": 88.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of open-air smithy hearth & anvil, authentic mortal craftsmanship materials, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_25_wine_distillery_cellar/blacksmith_forge_shed/active_operating.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.567,
+            0.646
+          ],
+          [
+            0.618,
+            0.603
+          ]
+        ],
+        "frac_zero": 0.5468,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.065,
+            0.54,
+            0.838,
+            0.408,
+            0.005,
+            0.0
+          ],
+          [
+            0.029,
+            0.335,
+            0.94,
+            0.987,
+            0.664,
+            0.704,
+            0.15
+          ],
+          [
+            0.588,
+            0.992,
+            1.0,
+            1.0,
+            1.0,
+            0.926,
+            0.326
+          ],
+          [
+            0.479,
+            0.755,
+            1.0,
+            0.921,
+            0.89,
+            0.667,
+            0.217
+          ],
+          [
+            0.199,
+            0.943,
+            1.0,
+            1.0,
+            1.0,
+            0.676,
+            0.016
+          ],
+          [
+            0.056,
+            0.825,
+            1.0,
+            1.0,
+            0.995,
+            0.428,
+            0.0
+          ],
+          [
+            0.0,
+            0.419,
+            0.744,
+            0.828,
+            0.45,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          23,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 102,
+        "contact_reference_px": 102.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of open-air smithy hearth & anvil, authentic mortal craftsmanship materials, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_25_wine_distillery_cellar/blacksmith_forge_shed/damaged_weathered.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.596,
+            0.51
+          ],
+          [
+            0.622,
+            0.712
+          ]
+        ],
+        "frac_zero": 0.5332,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.074,
+            0.897,
+            0.594,
+            0.024,
+            0.016,
+            0.0
+          ],
+          [
+            0.029,
+            0.296,
+            0.891,
+            0.63,
+            0.737,
+            0.61,
+            0.054
+          ],
+          [
+            0.41,
+            0.962,
+            1.0,
+            1.0,
+            0.847,
+            0.688,
+            0.317
+          ],
+          [
+            0.524,
+            0.909,
+            1.0,
+            0.974,
+            0.968,
+            0.911,
+            0.166
+          ],
+          [
+            0.474,
+            0.979,
+            1.0,
+            1.0,
+            1.0,
+            0.879,
+            0.141
+          ],
+          [
+            0.268,
+            0.886,
+            1.0,
+            1.0,
+            1.0,
+            0.792,
+            0.505
+          ],
+          [
+            0.0,
+            0.023,
+            0.486,
+            0.592,
+            0.845,
+            0.186,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          23,
+          16
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4
+        ],
+        "contact_px": 93,
+        "contact_reference_px": 93.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of open-air smithy hearth & anvil, authentic mortal craftsmanship materials, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_25_wine_distillery_cellar/blacksmith_forge_shed/ruined_rubble.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.588,
+            0.624
+          ],
+          [
+            0.685,
+            0.542
+          ]
+        ],
+        "frac_zero": 0.5372,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.313,
+            0.468,
+            0.716,
+            0.213,
+            0.277,
+            0.0
+          ],
+          [
+            0.251,
+            0.893,
+            0.987,
+            0.987,
+            0.948,
+            0.826,
+            0.119
+          ],
+          [
+            0.523,
+            0.975,
+            0.697,
+            0.945,
+            0.996,
+            0.895,
+            0.377
+          ],
+          [
+            0.08,
+            0.652,
+            0.899,
+            0.908,
+            0.927,
+            0.497,
+            0.0
+          ],
+          [
+            0.566,
+            0.994,
+            1.0,
+            1.0,
+            1.0,
+            0.571,
+            0.0
+          ],
+          [
+            0.437,
+            0.978,
+            1.0,
+            1.0,
+            0.96,
+            0.32,
+            0.0
+          ],
+          [
+            0.0,
+            0.438,
+            0.634,
+            0.834,
+            0.31,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          22,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3
+        ],
+        "contact_px": 50,
+        "contact_reference_px": 50.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "MOR-25",
+    "domain": "mortal_and_jianghu",
+    "interaction": "forge_iron",
+    "collision_behavior": "solid",
+    "element": "ghost",
+    "tier": 1
+  },
+  "category_id": "mor_25_wine_distillery_cellar",
+  "domain_id": "mortal_and_jianghu",
+  "pinyin": "Lǎobáigān Jiǔfáng · Open-Air Smithy Hearth & Anvil",
+  "archetype_name": "Open-Air Smithy Hearth & Anvil",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "ground"
+  },
+  "primary_material": "carved_wood",
+  "secondary_material": "polished_bronze",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Ghost affinity (Qi Refining (Luyện Khí / 练气))",
+  "elevation_tier": 1,
+  "mortal_realm_tier": "Qi Refining (Luyện Khí / 练气)",
+  "asset_slug": "blacksmith_forge_shed"
+}

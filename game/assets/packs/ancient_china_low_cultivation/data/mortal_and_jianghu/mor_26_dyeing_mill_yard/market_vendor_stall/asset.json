@@ -1,0 +1,762 @@
+{
+  "id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_26_dyeing_mill_yard.market_vendor_stall",
+  "archetype": "market_vendor_stall_mor_26_dyeing_mill_yard",
+  "name": "Dyeing Mill Yard - Covered Bamboo Hawker Stall",
+  "vietnamese_name": "Nhiễm Bố Phường Thải Giá - Sạp Bán Hàng Che Mái Bạt",
+  "hanzi": "染布坊彩架 · 挑担市集货棚",
+  "category": "mor_26_dyeing_mill_yard",
+  "category_code": "MOR-26",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_26_dyeing_mill_yard",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "trade_goods",
+  "gameplay_role": "prop_workstation entity supporting Dyeing Mill Yard gameplay",
+  "destructible": true,
+  "material": "dense fibrous green bamboo with metallic sheen",
+  "cultivation_element": "wood",
+  "prompt_summary": "Single isolated 2D RPG game prop of dyeing mill yard - covered bamboo hawker stall, authentic dyeing mill yard materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Mortal Settlements & Jianghu",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of covered bamboo hawker stall, dense fibrous green bamboo with metallic sheen, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_26_dyeing_mill_yard/market_vendor_stall/pristine_dormant.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.454,
+            0.328
+          ],
+          [
+            0.474,
+            0.492
+          ]
+        ],
+        "frac_zero": 0.6626,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.018,
+            0.395,
+            0.267,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.204,
+            0.622,
+            0.493,
+            0.086,
+            0.215,
+            0.146,
+            0.036
+          ],
+          [
+            0.185,
+            0.675,
+            0.772,
+            0.959,
+            0.826,
+            0.269,
+            0.078
+          ],
+          [
+            0.211,
+            0.9,
+            0.997,
+            1.0,
+            0.957,
+            0.516,
+            0.005
+          ],
+          [
+            0.0,
+            0.477,
+            0.825,
+            0.948,
+            0.609,
+            0.071,
+            0.0
+          ],
+          [
+            0.0,
+            0.727,
+            0.995,
+            1.0,
+            0.958,
+            0.214,
+            0.0
+          ],
+          [
+            0.0,
+            0.205,
+            0.539,
+            0.344,
+            0.085,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          29,
+          19
+        ],
+        "trunk_columns": [
+          2
+        ],
+        "contact_px": 32,
+        "contact_reference_px": 32.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of covered bamboo hawker stall, dense fibrous green bamboo with metallic sheen, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_26_dyeing_mill_yard/market_vendor_stall/active_operating.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.439,
+            0.524
+          ],
+          [
+            0.563,
+            0.448
+          ]
+        ],
+        "frac_zero": 0.6313,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.001,
+            0.193,
+            0.489,
+            0.251,
+            0.001
+          ],
+          [
+            0.039,
+            0.271,
+            0.66,
+            1.0,
+            0.688,
+            0.215
+          ],
+          [
+            0.37,
+            0.857,
+            0.989,
+            1.0,
+            0.591,
+            0.148
+          ],
+          [
+            0.445,
+            0.905,
+            1.0,
+            0.9,
+            0.702,
+            0.093
+          ],
+          [
+            0.192,
+            0.819,
+            1.0,
+            0.886,
+            0.695,
+            0.278
+          ],
+          [
+            0.241,
+            0.855,
+            1.0,
+            0.977,
+            0.714,
+            0.218
+          ],
+          [
+            0.0,
+            0.081,
+            0.623,
+            0.082,
+            0.05,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          30,
+          17
+        ],
+        "trunk_columns": [
+          2
+        ],
+        "contact_px": 26,
+        "contact_reference_px": 26.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of covered bamboo hawker stall, dense fibrous green bamboo with metallic sheen, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_26_dyeing_mill_yard/market_vendor_stall/damaged_weathered.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.505,
+            0.474
+          ],
+          [
+            0.529,
+            0.502
+          ]
+        ],
+        "frac_zero": 0.5952,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.004,
+            0.118,
+            0.339,
+            0.006,
+            0.097,
+            0.0,
+            0.0
+          ],
+          [
+            0.202,
+            0.551,
+            0.669,
+            0.813,
+            0.919,
+            0.396,
+            0.079
+          ],
+          [
+            0.329,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.794,
+            0.274
+          ],
+          [
+            0.103,
+            0.79,
+            1.0,
+            0.928,
+            0.952,
+            0.841,
+            0.154
+          ],
+          [
+            0.006,
+            0.523,
+            0.947,
+            0.996,
+            0.705,
+            0.352,
+            0.036
+          ],
+          [
+            0.033,
+            0.801,
+            0.826,
+            1.0,
+            0.989,
+            0.383,
+            0.0
+          ],
+          [
+            0.0,
+            0.333,
+            0.484,
+            0.138,
+            0.539,
+            0.06,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          19,
+          26
+        ],
+        "trunk_columns": [
+          2
+        ],
+        "contact_px": 28,
+        "contact_reference_px": 28.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of covered bamboo hawker stall, dense fibrous green bamboo with metallic sheen, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_26_dyeing_mill_yard/market_vendor_stall/ruined_rubble.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.414,
+            0.489
+          ],
+          [
+            0.533,
+            0.343
+          ]
+        ],
+        "frac_zero": 0.6525,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.031,
+            0.174,
+            0.218,
+            0.252,
+            0.0
+          ],
+          [
+            0.157,
+            0.14,
+            0.345,
+            0.778,
+            0.605,
+            0.178,
+            0.014
+          ],
+          [
+            0.493,
+            0.968,
+            1.0,
+            1.0,
+            0.938,
+            0.267,
+            0.052
+          ],
+          [
+            0.381,
+            0.769,
+            1.0,
+            0.933,
+            0.855,
+            0.401,
+            0.0
+          ],
+          [
+            0.192,
+            0.645,
+            1.0,
+            0.988,
+            0.551,
+            0.095,
+            0.0
+          ],
+          [
+            0.06,
+            0.921,
+            0.956,
+            0.857,
+            0.243,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.306,
+            0.346,
+            0.186,
+            0.129,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          28,
+          18
+        ],
+        "trunk_columns": [],
+        "contact_px": 14,
+        "contact_reference_px": 14.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "MOR-26",
+    "domain": "mortal_and_jianghu",
+    "interaction": "trade_goods",
+    "collision_behavior": "solid",
+    "element": "wood",
+    "tier": 1
+  },
+  "category_id": "mor_26_dyeing_mill_yard",
+  "domain_id": "mortal_and_jianghu",
+  "pinyin": "Rǎnbùfáng Cǎijià · Covered Bamboo Hawker Stall",
+  "archetype_name": "Covered Bamboo Hawker Stall",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "ground"
+  },
+  "primary_material": "iron_bamboo",
+  "secondary_material": "foliage",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Wood affinity (Qi Refining (Luyện Khí / 练气))",
+  "elevation_tier": 1,
+  "mortal_realm_tier": "Qi Refining (Luyện Khí / 练气)",
+  "asset_slug": "market_vendor_stall"
+}

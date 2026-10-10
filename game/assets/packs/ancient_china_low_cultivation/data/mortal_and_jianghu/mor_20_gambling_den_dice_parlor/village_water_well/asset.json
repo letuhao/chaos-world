@@ -1,0 +1,785 @@
+{
+  "id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_20_gambling_den_dice_parlor.village_water_well",
+  "archetype": "village_water_well_mor_20_gambling_den_dice_parlor",
+  "name": "Gambling Den & Dice Parlor - Stone Wellhead with Windlass Bucket",
+  "vietnamese_name": "Tứ Phương Lục Hợp Đổ Phường - Giếng Nước Làng Bằng Đá",
+  "hanzi": "四方六合赌坊 · 辘轳水井石圈",
+  "category": "mor_20_gambling_den_dice_parlor",
+  "category_code": "MOR-20",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_20_gambling_den_dice_parlor",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "draw_water",
+  "gameplay_role": "prop_workstation entity supporting Gambling Den & Dice Parlor gameplay",
+  "destructible": true,
+  "material": "authentic mortal craftsmanship materials",
+  "cultivation_element": "ice",
+  "prompt_summary": "Single isolated 2D RPG game prop of gambling den & dice parlor - stone wellhead with windlass bucket, authentic gambling den & dice parlor materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Mortal Settlements & Jianghu",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of stone wellhead with windlass bucket, authentic mortal craftsmanship materials, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_20_gambling_den_dice_parlor/village_water_well/pristine_dormant.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.342,
+            0.571
+          ],
+          [
+            0.743,
+            0.748
+          ]
+        ],
+        "frac_zero": 0.5497,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.019,
+            0.475,
+            0.626,
+            0.279,
+            0.0
+          ],
+          [
+            0.166,
+            0.387,
+            0.311,
+            0.833,
+            0.875,
+            0.207,
+            0.0
+          ],
+          [
+            0.299,
+            0.786,
+            0.481,
+            0.688,
+            0.804,
+            0.767,
+            0.456
+          ],
+          [
+            0.157,
+            0.922,
+            1.0,
+            1.0,
+            0.962,
+            0.625,
+            0.037
+          ],
+          [
+            0.65,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.979,
+            0.287
+          ],
+          [
+            0.453,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.826,
+            0.006
+          ],
+          [
+            0.015,
+            0.535,
+            0.861,
+            0.936,
+            0.737,
+            0.189,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          24,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 117,
+        "contact_reference_px": 117.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of stone wellhead with windlass bucket, authentic mortal craftsmanship materials, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_20_gambling_den_dice_parlor/village_water_well/active_operating.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.513,
+            0.553
+          ],
+          [
+            0.756,
+            0.74
+          ]
+        ],
+        "frac_zero": 0.5438,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.213,
+            0.598,
+            0.23,
+            0.568,
+            0.118,
+            0.0
+          ],
+          [
+            0.098,
+            0.482,
+            0.984,
+            0.962,
+            0.856,
+            0.534,
+            0.0
+          ],
+          [
+            0.244,
+            0.793,
+            0.988,
+            0.897,
+            0.543,
+            0.647,
+            0.163
+          ],
+          [
+            0.083,
+            0.817,
+            0.985,
+            0.967,
+            0.781,
+            0.122,
+            0.0
+          ],
+          [
+            0.579,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.683,
+            0.0
+          ],
+          [
+            0.621,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.656,
+            0.0
+          ],
+          [
+            0.109,
+            0.701,
+            0.93,
+            0.965,
+            0.722,
+            0.112,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          29,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 124,
+        "contact_reference_px": 124.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of stone wellhead with windlass bucket, authentic mortal craftsmanship materials, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_20_gambling_den_dice_parlor/village_water_well/damaged_weathered.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.545,
+            0.696
+          ],
+          [
+            0.774,
+            0.76
+          ]
+        ],
+        "frac_zero": 0.4835,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.121,
+            0.205,
+            0.66,
+            0.53,
+            0.017
+          ],
+          [
+            0.049,
+            0.664,
+            0.991,
+            0.954,
+            0.968,
+            0.779,
+            0.58
+          ],
+          [
+            0.374,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.77,
+            0.2
+          ],
+          [
+            0.761,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.983,
+            0.116
+          ],
+          [
+            0.7,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.245
+          ],
+          [
+            0.43,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.945,
+            0.086
+          ],
+          [
+            0.006,
+            0.499,
+            0.817,
+            0.878,
+            0.819,
+            0.422,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          21,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 129,
+        "contact_reference_px": 129.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of stone wellhead with windlass bucket, authentic mortal craftsmanship materials, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_20_gambling_den_dice_parlor/village_water_well/ruined_rubble.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.518,
+            0.449
+          ],
+          [
+            0.789,
+            0.839
+          ]
+        ],
+        "frac_zero": 0.5083,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.075,
+            0.538,
+            0.044,
+            0.493,
+            0.429,
+            0.0
+          ],
+          [
+            0.092,
+            0.716,
+            0.94,
+            0.379,
+            0.528,
+            0.174,
+            0.0
+          ],
+          [
+            0.124,
+            0.822,
+            1.0,
+            0.977,
+            0.992,
+            0.396,
+            0.004
+          ],
+          [
+            0.418,
+            0.991,
+            1.0,
+            1.0,
+            1.0,
+            0.987,
+            0.361
+          ],
+          [
+            0.759,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.938
+          ],
+          [
+            0.563,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.457
+          ],
+          [
+            0.007,
+            0.66,
+            0.777,
+            0.786,
+            0.912,
+            0.467,
+            0.105
+          ]
+        ],
+        "crop_offset": [
+          21,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "contact_px": 133,
+        "contact_reference_px": 133.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "MOR-20",
+    "domain": "mortal_and_jianghu",
+    "interaction": "draw_water",
+    "collision_behavior": "solid",
+    "element": "ice",
+    "tier": 1
+  },
+  "category_id": "mor_20_gambling_den_dice_parlor",
+  "domain_id": "mortal_and_jianghu",
+  "pinyin": "Dǔfáng · Stone Wellhead with Windlass Bucket",
+  "archetype_name": "Stone Wellhead with Windlass Bucket",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "ground"
+  },
+  "primary_material": "carved_wood",
+  "secondary_material": "polished_bronze",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Ice affinity (Qi Refining (Luyện Khí / 练气))",
+  "elevation_tier": 1,
+  "mortal_realm_tier": "Qi Refining (Luyện Khí / 练气)",
+  "asset_slug": "village_water_well"
+}

@@ -1,0 +1,308 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_12_ancestral_spirit_tablet_chamber.daoist_temple_hall",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_12_ancestral_spirit_tablet_chamber",
+  "asset_slug": "daoist_temple_hall",
+  "variant_slug": "rot_north_rear",
+  "name": "North Rear (Back Wall)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_12_ancestral_spirit_tablet_chamber/daoist_temple_hall/rot_north_rear.png",
+  "footprint_cells": [
+    4,
+    3
+  ],
+  "canvas_px": [
+    512,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "worship_dao",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.449,
+        0.662,
+        0.659,
+        0.429
+      ],
+      [
+        0.676,
+        1.0,
+        1.0,
+        0.656
+      ],
+      [
+        0.542,
+        0.92,
+        0.918,
+        0.52
+      ]
+    ],
+    "frac_zero": 0.5485,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 12,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      12,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.082,
+        0.049,
+        0.0,
+        0.0,
+        0.005,
+        0.497,
+        0.041,
+        0.0,
+        0.0,
+        0.051,
+        0.103,
+        0.0
+      ],
+      [
+        0.145,
+        0.93,
+        0.674,
+        0.561,
+        0.615,
+        1.0,
+        0.68,
+        0.537,
+        0.662,
+        0.929,
+        0.161,
+        0.0
+      ],
+      [
+        0.003,
+        0.95,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.974,
+        0.006,
+        0.0
+      ],
+      [
+        0.0,
+        0.894,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.937,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.937,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.989,
+        0.013,
+        0.0
+      ],
+      [
+        0.046,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.12,
+        0.0
+      ],
+      [
+        0.263,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.344,
+        0.0
+      ],
+      [
+        0.812,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.88,
+        0.172
+      ],
+      [
+        0.092,
+        0.757,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.755,
+        0.129,
+        0.008
+      ],
+      [
+        0.0,
+        0.561,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.618,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.293,
+        0.446,
+        0.457,
+        0.873,
+        0.867,
+        0.928,
+        0.433,
+        0.433,
+        0.303,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      77,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "contact_px": 104,
+    "contact_reference_px": 104.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      384
+    ]
+  }
+}

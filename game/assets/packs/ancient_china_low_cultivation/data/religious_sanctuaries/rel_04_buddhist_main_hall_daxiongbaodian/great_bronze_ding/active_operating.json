@@ -1,0 +1,185 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_04_buddhist_main_hall_daxiongbaodian.great_bronze_ding",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_04_buddhist_main_hall_daxiongbaodian",
+  "asset_slug": "great_bronze_ding",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_04_buddhist_main_hall_daxiongbaodian/great_bronze_ding/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "burn_incense",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.632,
+        0.624
+      ],
+      [
+        0.804,
+        0.802
+      ]
+    ],
+    "frac_zero": 0.451,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.313,
+        0.735,
+        0.625,
+        0.736,
+        0.229,
+        0.0
+      ],
+      [
+        0.153,
+        0.719,
+        1.0,
+        1.0,
+        1.0,
+        0.649,
+        0.061
+      ],
+      [
+        0.207,
+        1.0,
+        0.965,
+        0.993,
+        0.981,
+        1.0,
+        0.049
+      ],
+      [
+        0.377,
+        1.0,
+        1.0,
+        0.998,
+        1.0,
+        1.0,
+        0.282
+      ],
+      [
+        0.72,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.719
+      ],
+      [
+        0.339,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.969,
+        0.279
+      ],
+      [
+        0.212,
+        0.685,
+        0.969,
+        0.972,
+        0.871,
+        0.651,
+        0.181
+      ]
+    ],
+    "crop_offset": [
+      17,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 181,
+    "contact_reference_px": 181.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

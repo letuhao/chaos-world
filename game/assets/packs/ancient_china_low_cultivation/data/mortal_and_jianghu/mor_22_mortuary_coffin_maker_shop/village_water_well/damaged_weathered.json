@@ -1,0 +1,185 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_22_mortuary_coffin_maker_shop.village_water_well",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_22_mortuary_coffin_maker_shop",
+  "asset_slug": "village_water_well",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_22_mortuary_coffin_maker_shop/village_water_well/damaged_weathered.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "draw_water",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.502,
+        0.357
+      ],
+      [
+        0.717,
+        0.751
+      ]
+    ],
+    "frac_zero": 0.5347,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.064,
+        0.737,
+        0.609,
+        0.1,
+        0.011,
+        0.049,
+        0.0
+      ],
+      [
+        0.326,
+        0.509,
+        0.573,
+        0.748,
+        0.814,
+        0.449,
+        0.03
+      ],
+      [
+        0.367,
+        0.811,
+        0.542,
+        0.391,
+        0.855,
+        0.347,
+        0.0
+      ],
+      [
+        0.064,
+        0.793,
+        0.9,
+        0.979,
+        0.964,
+        0.61,
+        0.108
+      ],
+      [
+        0.58,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.635
+      ],
+      [
+        0.477,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.988,
+        0.268
+      ],
+      [
+        0.009,
+        0.402,
+        0.715,
+        0.83,
+        0.889,
+        0.407,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      19,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 110,
+    "contact_reference_px": 110.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

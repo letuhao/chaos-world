@@ -1,0 +1,147 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_31_roadside_stele_milestones.martial_training_posts",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_31_roadside_stele_milestones",
+  "asset_slug": "martial_training_posts",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_31_roadside_stele_milestones/martial_training_posts/pristine_dormant.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "train_agility",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.457,
+        0.501
+      ],
+      [
+        0.62,
+        0.676
+      ]
+    ],
+    "frac_zero": 0.6109,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.062,
+        0.768,
+        0.732,
+        0.145,
+        0.005
+      ],
+      [
+        0.128,
+        0.4,
+        1.0,
+        1.0,
+        0.537,
+        0.22
+      ],
+      [
+        0.319,
+        0.532,
+        1.0,
+        0.993,
+        0.272,
+        0.072
+      ],
+      [
+        0.069,
+        0.518,
+        1.0,
+        0.98,
+        0.574,
+        0.197
+      ],
+      [
+        0.1,
+        0.626,
+        0.979,
+        0.969,
+        0.823,
+        0.002
+      ],
+      [
+        0.23,
+        0.896,
+        0.994,
+        0.985,
+        0.884,
+        0.291
+      ],
+      [
+        0.335,
+        0.743,
+        0.934,
+        0.929,
+        0.709,
+        0.314
+      ]
+    ],
+    "crop_offset": [
+      32,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 145,
+    "contact_reference_px": 145.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

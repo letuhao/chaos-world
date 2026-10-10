@@ -22,7 +22,7 @@ const LEDGER := preload("res://src/modules/doctrine/doctrine_ledger.gd")
 
 ## Every `KEY_*` constant the ledger declares, as a name -> value map.
 func _ledger_keys() -> Dictionary:
-	var script: Script = load("res://src/modules/doctrine/doctrine_ledger.gd")
+	var script: Script = LEDGER
 	var out := {}
 	for name in script.get_script_constant_map():
 		if String(name).begins_with("KEY_"):

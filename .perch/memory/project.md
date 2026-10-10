@@ -34,3 +34,34 @@ Also: always pass absolute render paths (Blender's CWD is not reliably the repo 
 Preview videos work end to end (2026-10-03). Two-step by design: `blender_cli.py run tools/char_preview.py` renders opaque frames to `out/walk_bg/bg_01..24.png`, then `powershell -File tools/char_preview.ps1` encodes `out/walk_preview.mp4` (1s, one cycle) and `out/walk_loop_x4.mp4` (4s, four cycles). Watch the 4s one: a jump once per second means the cycle does not loop. Use the transparent `out/walk/` sequence for compositing; the preview uses an opaque `#263A35` world because h.264 has no alpha.
 
 ffmpeg 8.0 is at `C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-8.0-full_build\bin\ffmpeg.exe`. Two traps: a `color=` filter source with no `-t`/frame limit never terminates (it burned 4300s CPU and wrote a 55 MB broken MP4 that stayed locked until the process was killed), and ffmpeg prints its banner to stderr which PowerShell treats as terminating under `$ErrorActionPreference = "Stop"`. Always probe with `ffprobe -count_frames` and compare against the expected frame count rather than trusting a successful write.
+
+## Story module + content-authoring guidance (BL-0068)
+
+### Story module + content-authoring guidance (BL-0068)
+
+Built 2026-10-10. `game/src/modules/story/` (api.gd, story_def.gd, story_chapter_def.gd, story_gate.gd, story_catalog.gd). Verified: `tools test --suite story` = 77 passed / 0 failed (2 suites), `tools arch` exit 0, `gdlint` clean.
+
+- Story owns NO state: no save schema, no write verbs. Chapters are derived from gates, so an unmet gate HIDES content and can never block play (that is BL-0068's "ignorable, coexists with sandbox").
+- `StoryGate` adds exactly one verb, `quest_done`; `fact` delegates to `WorldFact`, fate verbs to `DestinyApi.gate`. Needed because `QuestApi.complete` writes NO fact, so a chapter cannot gate on a quest via `fact`.
+- Chapters have no `grants` and no `on_enter` deliberately: the quest pays, and a second payer is this repo's recurring duplicated-rule defect.
+- `progress()` walks `chapters` POSITIONALLY and stops at the first failing gate. Branching is only visible via `offered()`. `progress().done` is STORY-level (needs `is_ending` + that gate), not chapter-level.
+- Guidance doc: `docs/content-definitions.md` (quest/event/story schemas, gate grammar, `.tres` rules, mod recipes, author checklist). Cross-linked from `docs/modding-guide.md`.
+- Example content: `game/data/story/stories/the_long_account.tres` chains 4 shipped quests; locale sink `game/locale/story.tres` (10 en rows). `tools i18n check` went 242 -> 232 problems (my 10 cleared, zero net new).
+
+Four gotchas learned the hard way, all now handled:
+1. `as Array[Dictionary]` on a plain Array returns NULL in Godot 4, not a converted array. Copy row by row. Assigning an untyped Array to a typed export is a FATAL runtime error that aborts a builder before its `return`, so a fixture silently installs null and looks like "no catalog".
+2. `expect_assertions(0)` does NOT exempt a test from the "asserted nothing" failure (`asserted <= 0` is checked first). A content test iterating shipped data must always assert, e.g. accumulate offenders then assert the list is empty.
+3. Adding a module requires mirroring deps into `BASE_DEPS` in `game/src/modules/mods/module_registry.gd` (registry.json minus layer deps) or `tools arch` fails on drift.
+4. A new content family needs its own `game/locale/<owner>.tres`; locale files load by directory scan so there is no list to append to, and `i18n extract` will not create the file.
+
+Pre-existing failure NOT mine and NOT fixed: `test_module_registry.gd::test_seed_list_resolves_in_registry_json` expects 52, got 46. Six modules (`base_grant`, `clan_building`, `consumables`, `dialogue`, `foundation`, `worldmap`) are in HEAD's registry.json but were never in HEAD's BASE_DEPS. Needs their real deps, which I did not want to guess.
+
+## Module registry / BASE_DEPS
+
+## Module registry / BASE_DEPS
+
+- `game/src/modules/mods/module_registry.gd` `BASE_DEPS` is a static mirror of `tools/arch/registry.json` with the implicit layer deps (`contracts`, `core`) stripped. `registry.json` is the source of truth, so a missing mirror entry is a mechanical fix, never a judgement call.
+- **Absence is not emptiness.** `_is_satisfied()` answers from `BASE_DEPS`, so a module missing from the mirror is *not a base module to the registry*: a mod declaring a dep on it is refused with `unknown_dependency`. `order()` only walks `_registered`, so dangling base-to-base edges stay invisible. On 2026-10-10 six modules sat in that state (`base_grant`, `clan_building`, `consumables`, `dialogue`, `foundation`, `worldmap`) while nine base modules depended on `foundation`.
+- `tools/arch/enforce.py:base_deps_drift()` used to compare `base_deps.get(name, set())` against registry deps, which conflates "absent" with "has no deps" and could never see the gap above. Fixed to check membership before comparing sets.
+- `tools test` exits nonzero on ANY `SCRIPT ERROR` in the log even when every test passes. A half-saved file from another concurrent session therefore reddens unrelated suites. Read `Results: N passed, M failed` before concluding a failure is yours.
+- This repo is worked on concurrently by other agents. `git stash` fails with "could not write index" (locked index) — do not touch git state to test causality. Instead toggle the edit with a file copy, or diff the implicated files against HEAD and check they are clean.

@@ -1,0 +1,245 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_12_ancestral_spirit_tablet_chamber.sacred_wishing_tree",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_12_ancestral_spirit_tablet_chamber",
+  "asset_slug": "sacred_wishing_tree",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_12_ancestral_spirit_tablet_chamber/sacred_wishing_tree/active_operating.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "tie_prayer_ribbon",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.19,
+        0.728,
+        0.256
+      ],
+      [
+        0.591,
+        0.993,
+        0.617
+      ],
+      [
+        0.483,
+        0.918,
+        0.386
+      ]
+    ],
+    "frac_zero": 0.5494,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      10,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.338,
+        0.829,
+        0.575,
+        0.081,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.238,
+        0.845,
+        0.8,
+        0.888,
+        0.788,
+        0.107,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.266,
+        0.862,
+        0.54,
+        0.712,
+        0.674,
+        0.507,
+        0.675,
+        0.449,
+        0.005
+      ],
+      [
+        0.109,
+        0.53,
+        0.282,
+        0.772,
+        0.964,
+        1.0,
+        0.956,
+        0.546,
+        0.736,
+        0.621
+      ],
+      [
+        0.607,
+        0.694,
+        0.578,
+        0.88,
+        1.0,
+        1.0,
+        0.987,
+        0.796,
+        0.326,
+        0.0
+      ],
+      [
+        0.133,
+        0.605,
+        0.965,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.799,
+        0.336
+      ],
+      [
+        0.033,
+        0.574,
+        0.955,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.978,
+        0.463,
+        0.04
+      ],
+      [
+        0.371,
+        0.594,
+        0.67,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.627,
+        0.0,
+        0.0
+      ],
+      [
+        0.12,
+        0.696,
+        0.99,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.918,
+        0.125,
+        0.0
+      ],
+      [
+        0.215,
+        0.554,
+        0.996,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.975,
+        0.14,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.24,
+        0.68,
+        0.773,
+        0.719,
+        0.55,
+        0.397,
+        0.002,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      35,
+      17
+    ],
+    "trunk_columns": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 96,
+    "contact_reference_px": 96.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        2,
+        1,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

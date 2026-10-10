@@ -1,0 +1,185 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_04_buddhist_main_hall_daxiongbaodian.sacred_turtle_fountain",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_04_buddhist_main_hall_daxiongbaodian",
+  "asset_slug": "sacred_turtle_fountain",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_04_buddhist_main_hall_daxiongbaodian/sacred_turtle_fountain/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "make_wish",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.661,
+        0.666
+      ],
+      [
+        0.68,
+        0.692
+      ]
+    ],
+    "frac_zero": 0.4764,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.327,
+        0.454,
+        0.433,
+        0.463,
+        0.32,
+        0.0
+      ],
+      [
+        0.195,
+        0.836,
+        1.0,
+        1.0,
+        1.0,
+        0.828,
+        0.155
+      ],
+      [
+        0.414,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.393
+      ],
+      [
+        0.581,
+        0.948,
+        0.985,
+        1.0,
+        0.981,
+        0.936,
+        0.6
+      ],
+      [
+        0.0,
+        0.843,
+        0.983,
+        1.0,
+        0.987,
+        0.793,
+        0.0
+      ],
+      [
+        0.194,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.169
+      ],
+      [
+        0.194,
+        0.549,
+        0.808,
+        0.871,
+        0.817,
+        0.581,
+        0.202
+      ]
+    ],
+    "crop_offset": [
+      16,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 183,
+    "contact_reference_px": 183.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="StoryDef" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://src/modules/story/story_def.gd" id="1_story"]
+[ext_resource type="Script" path="res://src/modules/story/story_chapter_def.gd" id="2_chapter"]
+
+[sub_resource type="Resource" id="Chapter_open_ledger"]
+script = ExtResource("2_chapter")
+chapter_id = &"open_ledger"
+display_name = "LOC_STORY_THE_LONG_ACCOUNT_CHAPTER_1_DISPLAY_NAME"
+description = "LOC_STORY_THE_LONG_ACCOUNT_CHAPTER_1_DESCRIPTION"
+requires = {}
+completion = {"verb": &"quest_done", "id": &"the_account_left_open"}
+
+[sub_resource type="Resource" id="Chapter_held_station"]
+script = ExtResource("2_chapter")
+chapter_id = &"held_station"
+display_name = "LOC_STORY_THE_LONG_ACCOUNT_CHAPTER_2_DISPLAY_NAME"
+description = "LOC_STORY_THE_LONG_ACCOUNT_CHAPTER_2_DESCRIPTION"
+requires = {"verb": &"quest_done", "id": &"the_account_left_open"}
+completion = {"verb": &"quest_done", "id": &"the_station_you_held"}
+
+[sub_resource type="Resource" id="Chapter_drafted_terms"]
+script = ExtResource("2_chapter")
+chapter_id = &"drafted_terms"
+display_name = "LOC_STORY_THE_LONG_ACCOUNT_CHAPTER_3_DISPLAY_NAME"
+description = "LOC_STORY_THE_LONG_ACCOUNT_CHAPTER_3_DESCRIPTION"
+requires = {"verb": &"any_of", "of": [{"verb": &"quest_done", "id": &"the_station_you_held"}, {"verb": &"quest_done", "id": &"the_returned_instrument"}]}
+completion = {"verb": &"quest_done", "id": &"the_terms_you_drafted"}
+
+[sub_resource type="Resource" id="Chapter_severed_calling"]
+script = ExtResource("2_chapter")
+chapter_id = &"severed_calling"
+display_name = "LOC_STORY_THE_LONG_ACCOUNT_CHAPTER_4_DISPLAY_NAME"
+description = "LOC_STORY_THE_LONG_ACCOUNT_CHAPTER_4_DESCRIPTION"
+requires = {"verb": &"quest_done", "id": &"the_terms_you_drafted"}
+completion = {"verb": &"quest_done", "id": &"the_severed_calling"}
+is_ending = true
+
+[resource]
+script = ExtResource("1_story")
+id = &"the_long_account"
+display_name = "LOC_STORY_THE_LONG_ACCOUNT_DISPLAY_NAME"
+description = "LOC_STORY_THE_LONG_ACCOUNT_DESCRIPTION"
+synopsis = "LOC_STORY_THE_LONG_ACCOUNT_SYNOPSIS"
+optional = true
+entry_chapter = &"open_ledger"
+chapters = Array[StoryChapterDef]([SubResource("Chapter_open_ledger"), SubResource("Chapter_held_station"), SubResource("Chapter_drafted_terms"), SubResource("Chapter_severed_calling")])

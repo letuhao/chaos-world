@@ -1,0 +1,184 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_32_night_watchman_shed_dageng.blacksmith_forge_shed",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_32_night_watchman_shed_dageng",
+  "asset_slug": "blacksmith_forge_shed",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_32_night_watchman_shed_dageng/blacksmith_forge_shed/ruined_rubble.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "forge_iron",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.578,
+        0.579
+      ],
+      [
+        0.693,
+        0.65
+      ]
+    ],
+    "frac_zero": 0.518,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.001,
+        0.121,
+        0.297,
+        0.356,
+        0.509,
+        0.347,
+        0.003
+      ],
+      [
+        0.279,
+        0.892,
+        0.999,
+        0.999,
+        0.862,
+        0.581,
+        0.325
+      ],
+      [
+        0.511,
+        0.983,
+        0.755,
+        0.751,
+        0.919,
+        0.89,
+        0.366
+      ],
+      [
+        0.137,
+        0.597,
+        0.964,
+        0.933,
+        0.642,
+        0.416,
+        0.062
+      ],
+      [
+        0.309,
+        0.957,
+        1.0,
+        1.0,
+        1.0,
+        0.646,
+        0.055
+      ],
+      [
+        0.608,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.947,
+        0.289
+      ],
+      [
+        0.017,
+        0.431,
+        0.831,
+        0.893,
+        0.577,
+        0.283,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      22,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 105,
+    "contact_reference_px": 105.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

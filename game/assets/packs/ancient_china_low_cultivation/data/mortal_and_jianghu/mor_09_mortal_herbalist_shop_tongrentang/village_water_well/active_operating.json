@@ -1,0 +1,177 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_09_mortal_herbalist_shop_tongrentang.village_water_well",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_09_mortal_herbalist_shop_tongrentang",
+  "asset_slug": "village_water_well",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_09_mortal_herbalist_shop_tongrentang/village_water_well/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "draw_water",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.476,
+        0.231
+      ],
+      [
+        0.679,
+        0.78
+      ]
+    ],
+    "frac_zero": 0.6177,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.019,
+        0.524,
+        0.522,
+        0.002,
+        0.0,
+        0.0
+      ],
+      [
+        0.162,
+        0.666,
+        0.567,
+        0.031,
+        0.172,
+        0.0
+      ],
+      [
+        0.478,
+        0.616,
+        0.574,
+        0.659,
+        0.396,
+        0.148
+      ],
+      [
+        0.108,
+        0.688,
+        0.992,
+        0.956,
+        0.691,
+        0.325
+      ],
+      [
+        0.416,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.608
+      ],
+      [
+        0.533,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.823
+      ],
+      [
+        0.054,
+        0.567,
+        0.658,
+        0.857,
+        0.743,
+        0.154
+      ]
+    ],
+    "crop_offset": [
+      32,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 120,
+    "contact_reference_px": 120.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

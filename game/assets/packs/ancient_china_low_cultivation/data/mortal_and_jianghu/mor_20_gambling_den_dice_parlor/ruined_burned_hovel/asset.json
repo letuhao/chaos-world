@@ -1,0 +1,689 @@
+{
+  "id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_20_gambling_den_dice_parlor.ruined_burned_hovel",
+  "archetype": "ruined_burned_hovel_mor_20_gambling_den_dice_parlor",
+  "name": "Gambling Den & Dice Parlor - Burned Wreckage Timber Frame",
+  "vietnamese_name": "Tứ Phương Lục Hợp Đổ Phường - Bộ Khung Nhà Cháy Đổ Nát",
+  "hanzi": "四方六合赌坊 · 兵火残毁破木屋",
+  "category": "mor_20_gambling_den_dice_parlor",
+  "category_code": "MOR-20",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_20_gambling_den_dice_parlor",
+  "asset_class": "structure_cottage",
+  "type": "building",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "obstacle",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "scavenge_debris",
+  "gameplay_role": "structure_cottage entity supporting Gambling Den & Dice Parlor gameplay",
+  "destructible": false,
+  "material": "authentic bamboo and woven thatch eaves",
+  "cultivation_element": "ice",
+  "prompt_summary": "Single isolated 2D top-down RPG map building sprite of gambling den & dice parlor - burned wreckage timber frame, thatched straw roof eaves, steep high-angle top-down RPG map perspective (~65-70 degrees downward tilt), roof dominant overhead (75%-80% of height), foreshortened walls beneath eaves, gouache hand-painted, fine dark #263A35 ink contours, flat baseline, solid pure white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Mortal Settlements & Jianghu",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "rot_south_facade",
+      "name": "South Facade (Front Entrance)",
+      "prompt_modifier": "front entrance visible foreshortened beneath eaves, steep overhead map view",
+      "variant_id": "rot_south_facade",
+      "variant_name": "South Facade (Front Entrance)",
+      "description": "front entrance visible foreshortened beneath eaves, steep overhead map view",
+      "prompt": "Single isolated 2D top-down world-map building sprite of burned wreckage timber frame, authentic bamboo and woven thatch eaves, front entrance visible foreshortened beneath eaves, steep overhead map view, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, roof ridge running East-West with broad southern roof surface authentic uniform golden thatched straw roof surface dominant and fully visible overhead (70%-80% of height), split bamboo ridge rafters and thick straw eaves seen from above, foreshortened front walls and entrance visible beneath eaves at bottom-center, stone courtyard steps descending at bottom, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "ceramic tiles, glazed tiles, blue roof tiles, dark roof tiles, terracotta tiles, dougong brackets, imperial palace, temple hall, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_20_gambling_den_dice_parlor/ruined_burned_hovel/rot_south_facade.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.459,
+            0.811,
+            0.448
+          ],
+          [
+            0.592,
+            0.96,
+            0.585
+          ]
+        ],
+        "frac_zero": 0.6793,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.069,
+            0.166,
+            0.58,
+            0.089,
+            0.041,
+            0.0
+          ],
+          [
+            0.104,
+            0.602,
+            1.0,
+            1.0,
+            1.0,
+            0.336,
+            0.067
+          ],
+          [
+            0.479,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.181
+          ],
+          [
+            0.64,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.457
+          ],
+          [
+            0.562,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.941,
+            0.505
+          ],
+          [
+            0.202,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.896,
+            0.033
+          ],
+          [
+            0.009,
+            0.223,
+            0.797,
+            0.94,
+            0.557,
+            0.083,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          84,
+          16
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4
+        ],
+        "contact_px": 94,
+        "contact_reference_px": 94.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "rot_north_rear",
+      "name": "North Rear (Back Wall)",
+      "prompt_modifier": "rear roof slope dominant overhead, solid back wall beneath eaves, zero front entrance steps",
+      "variant_id": "rot_north_rear",
+      "variant_name": "North Rear (Back Wall)",
+      "description": "rear roof slope dominant overhead, solid back wall beneath eaves, zero front entrance steps",
+      "prompt": "Single isolated 2D top-down world-map building sprite of burned wreckage timber frame, authentic bamboo and woven thatch eaves, rear roof slope dominant overhead, solid back wall beneath eaves, solid continuous rear wall, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, roof ridge running East-West with broad northern rear roof surface authentic uniform golden thatched straw roof surface dominant and fully visible overhead (70%-80% of height), split bamboo ridge rafters and thick straw eaves seen from above, solid unbroken timber lattice back wall and stone foundation foreshortened beneath eaves at bottom, completely windowless and doorless flat rear wall flush on level ground, clean horizontal baseline, back exterior view, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "ceramic tiles, glazed tiles, blue roof tiles, dark roof tiles, terracotta tiles, dougong brackets, imperial palace, temple hall, front entrance door, open doorway, entrance steps, stairs, portal, door plaque, front veranda, open portal, descending stairs, central doorway, porch, arched entryway, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_20_gambling_den_dice_parlor/ruined_burned_hovel/rot_north_rear.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.48,
+            0.779,
+            0.49
+          ],
+          [
+            0.736,
+            0.721,
+            0.746
+          ]
+        ],
+        "frac_zero": 0.6528,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          8,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.056,
+            0.585,
+            0.059,
+            0.003,
+            0.0,
+            0.0
+          ],
+          [
+            0.353,
+            0.684,
+            0.861,
+            1.0,
+            0.885,
+            0.672,
+            0.415,
+            0.0
+          ],
+          [
+            0.394,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.484,
+            0.0
+          ],
+          [
+            0.503,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.608,
+            0.0
+          ],
+          [
+            0.687,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.771,
+            0.0
+          ],
+          [
+            0.52,
+            0.988,
+            0.88,
+            0.281,
+            0.8,
+            0.993,
+            0.584,
+            0.203
+          ],
+          [
+            0.066,
+            0.883,
+            0.796,
+            0.0,
+            0.739,
+            0.907,
+            0.069,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          79,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2
+        ],
+        "contact_px": 67,
+        "contact_reference_px": 67.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            1,
+            0,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "rot_west_flank",
+      "name": "West Flank (Left Profile)",
+      "prompt_modifier": "ridge oriented North-South, western roof slope and gable end visible from overhead",
+      "variant_id": "rot_west_flank",
+      "variant_name": "West Flank (Left Profile)",
+      "description": "ridge oriented North-South, western roof slope and gable end visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map building sprite of burned wreckage timber frame, authentic bamboo and woven thatch eaves, ridge oriented North-South, western roof slope and gable end visible from overhead, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, building rotated 90 degrees with roof ridge running North-South, western roof slope and high-angle triangular thatched timber gable end dominant and fully visible overhead, western side wall foreshortened beneath eaves at bottom, side window or railing, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "ceramic tiles, glazed tiles, blue roof tiles, dark roof tiles, terracotta tiles, dougong brackets, imperial palace, temple hall, symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center, annexed side structure, attached side pavilion, extra side gate, secondary structure, side tower, courtyard wing, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_20_gambling_den_dice_parlor/ruined_burned_hovel/rot_west_flank.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.546,
+            0.837,
+            0.552
+          ],
+          [
+            0.474,
+            0.964,
+            0.479
+          ]
+        ],
+        "frac_zero": 0.6772,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.066,
+            0.181,
+            0.179,
+            0.623,
+            0.293,
+            0.214,
+            0.0
+          ],
+          [
+            0.14,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.897,
+            0.0
+          ],
+          [
+            0.419,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.996,
+            0.249
+          ],
+          [
+            0.672,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.994,
+            0.581
+          ],
+          [
+            0.194,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.88,
+            0.005
+          ],
+          [
+            0.021,
+            0.568,
+            1.0,
+            1.0,
+            0.999,
+            0.431,
+            0.0
+          ],
+          [
+            0.0,
+            0.288,
+            0.799,
+            0.945,
+            0.792,
+            0.079,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          84,
+          16
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4
+        ],
+        "contact_px": 117,
+        "contact_reference_px": 117.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "rot_east_flank",
+      "name": "East Flank (Right Profile)",
+      "prompt_modifier": "ridge oriented North-South, eastern roof slope and gable end visible from overhead",
+      "variant_id": "rot_east_flank",
+      "variant_name": "East Flank (Right Profile)",
+      "description": "ridge oriented North-South, eastern roof slope and gable end visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map building sprite of burned wreckage timber frame, authentic bamboo and woven thatch eaves, ridge oriented North-South, eastern roof slope and gable end visible from overhead, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, building rotated 90 degrees with roof ridge running North-South, eastern roof slope and high-angle triangular thatched timber gable end dominant and fully visible overhead, eastern side wall foreshortened beneath eaves at bottom, side window or railing, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "ceramic tiles, glazed tiles, blue roof tiles, dark roof tiles, terracotta tiles, dougong brackets, imperial palace, temple hall, symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center, annexed side structure, attached side pavilion, extra side gate, secondary structure, side tower, courtyard wing, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_20_gambling_den_dice_parlor/ruined_burned_hovel/rot_east_flank.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.411,
+            0.764,
+            0.448
+          ],
+          [
+            0.51,
+            0.963,
+            0.569
+          ]
+        ],
+        "frac_zero": 0.6848,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.01,
+            0.568,
+            0.036,
+            0.0,
+            0.0
+          ],
+          [
+            0.217,
+            0.276,
+            0.718,
+            1.0,
+            0.912,
+            0.451,
+            0.206
+          ],
+          [
+            0.472,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.348
+          ],
+          [
+            0.662,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.638
+          ],
+          [
+            0.474,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.99,
+            0.37
+          ],
+          [
+            0.169,
+            0.674,
+            0.953,
+            1.0,
+            0.998,
+            0.796,
+            0.124
+          ],
+          [
+            0.0,
+            0.0,
+            0.833,
+            0.806,
+            0.929,
+            0.057,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          81,
+          16
+        ],
+        "trunk_columns": [
+          2,
+          3,
+          4
+        ],
+        "contact_px": 97,
+        "contact_reference_px": 97.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "MOR-20",
+    "domain": "mortal_and_jianghu",
+    "interaction": "scavenge_debris",
+    "collision_behavior": "obstacle",
+    "element": "ice",
+    "tier": 2
+  },
+  "category_id": "mor_20_gambling_den_dice_parlor",
+  "domain_id": "mortal_and_jianghu",
+  "pinyin": "Dǔfáng · Burned Wreckage Timber Frame",
+  "archetype_name": "Burned Wreckage Timber Frame",
+  "footprint_subcells": {
+    "w": 12,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 384,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 3,
+    "h": 2
+  },
+  "collision": {
+    "type": "obstacle",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": false,
+    "height_layer": "structure"
+  },
+  "primary_material": "bamboo",
+  "secondary_material": "thatched_straw",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Ice affinity (Foundation Establishment (Trúc Cơ / 筑基))",
+  "elevation_tier": 2,
+  "mortal_realm_tier": "Foundation Establishment (Trúc Cơ / 筑基)",
+  "asset_slug": "ruined_burned_hovel"
+}

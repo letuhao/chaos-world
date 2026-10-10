@@ -52,6 +52,7 @@
     "sets": {"data_dir": "sets", "def_class": "SetDef", "module": "set_bonus"},
     "soul_arrivals": {"data_dir": "soul/arrivals", "def_class": "SoulDef", "module": "soul"},
     "statuses": {"data_dir": "statuses", "def_class": "StatusDef", "module": "status"},
+    "stories": {"data_dir": "story/stories", "def_class": "StoryDef", "module": "story"},
     "techniques": {"data_dir": "techniques", "def_class": "TechniqueDef", "module": "techniques"},
     "technique_magnitudes": {"data_dir": "techniques", "def_class": "TechniqueMagnitudeTable", "module": "techniques"},
     "world_factions": {"data_dir": "world/factions", "def_class": "WorldFactionDef", "module": "world"},

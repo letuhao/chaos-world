@@ -1,0 +1,1046 @@
+{
+  "id": "ancient_china_low_cultivation.religious_sanctuaries.rel_11_mountain_god_shanshen_altar.sacred_wishing_tree",
+  "archetype": "sacred_wishing_tree_rel_11_mountain_god_shanshen_altar",
+  "name": "Mountain God (Shanshen) Altar - Ancient Banyan Draped with Red Ribbons",
+  "vietnamese_name": "Sơn Thần Nham Khám - Cây Cổ Thụ Buộc Dải Lụa Đỏ",
+  "hanzi": "猎户山神岩龛 · 系满红丝愿树",
+  "category": "rel_11_mountain_god_shanshen_altar",
+  "category_code": "REL-11",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_11_mountain_god_shanshen_altar",
+  "asset_class": "flora_tree",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "collision_type": "obstacle",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "tie_prayer_ribbon",
+  "gameplay_role": "flora_tree entity supporting Mountain God (Shanshen) Altar gameplay",
+  "destructible": true,
+  "material": "weathered gnarled pine bark and resinous timber",
+  "cultivation_element": "earth",
+  "prompt_summary": "Single isolated 2D RPG game prop of mountain god (shanshen) altar - ancient banyan draped with red ribbons, authentic mountain god (shanshen) altar materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Daoist, Buddhist & Folk Religious Sites",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D top-down RPG map sprite of ancient banyan draped with red ribbons, weathered gnarled pine bark and resinous timber, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_11_mountain_god_shanshen_altar/sacred_wishing_tree/pristine_dormant.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.178,
+            0.754,
+            0.239
+          ],
+          [
+            0.314,
+            0.832,
+            0.354
+          ],
+          [
+            0.542,
+            0.969,
+            0.466
+          ]
+        ],
+        "frac_zero": 0.5542,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          2
+        ],
+        "sub_grid": [
+          11,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.006,
+            0.428,
+            0.873,
+            0.44,
+            0.01,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.02,
+            0.589,
+            0.984,
+            0.963,
+            1.0,
+            0.605,
+            0.032,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.037,
+            0.407,
+            0.847,
+            0.887,
+            0.73,
+            0.902,
+            0.9,
+            0.493,
+            0.005,
+            0.0
+          ],
+          [
+            0.0,
+            0.521,
+            0.842,
+            0.696,
+            0.665,
+            0.686,
+            0.546,
+            0.596,
+            0.392,
+            0.128,
+            0.0
+          ],
+          [
+            0.006,
+            0.193,
+            0.114,
+            0.517,
+            0.965,
+            0.837,
+            0.607,
+            0.514,
+            0.816,
+            0.844,
+            0.356
+          ],
+          [
+            0.132,
+            0.409,
+            0.474,
+            0.936,
+            1.0,
+            0.95,
+            0.449,
+            0.192,
+            0.488,
+            0.294,
+            0.046
+          ],
+          [
+            0.048,
+            0.196,
+            0.57,
+            1.0,
+            1.0,
+            1.0,
+            0.809,
+            0.202,
+            0.278,
+            0.01,
+            0.0
+          ],
+          [
+            0.036,
+            0.149,
+            0.754,
+            1.0,
+            1.0,
+            0.977,
+            0.783,
+            0.485,
+            0.387,
+            0.207,
+            0.0
+          ],
+          [
+            0.032,
+            0.343,
+            0.932,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.959,
+            0.654,
+            0.0,
+            0.0
+          ],
+          [
+            0.281,
+            0.905,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.355,
+            0.0
+          ],
+          [
+            0.014,
+            0.376,
+            0.683,
+            0.861,
+            0.91,
+            0.935,
+            0.9,
+            0.664,
+            0.289,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          25,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 198,
+        "contact_reference_px": 198.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            2,
+            2,
+            2
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D top-down RPG map sprite of ancient banyan draped with red ribbons, weathered gnarled pine bark and resinous timber, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_11_mountain_god_shanshen_altar/sacred_wishing_tree/active_operating.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.189,
+            0.76,
+            0.214
+          ],
+          [
+            0.525,
+            0.909,
+            0.445
+          ],
+          [
+            0.638,
+            0.988,
+            0.592
+          ]
+        ],
+        "frac_zero": 0.5296,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          2
+        ],
+        "sub_grid": [
+          10,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.173,
+            0.676,
+            0.674,
+            0.117,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.099,
+            0.893,
+            0.993,
+            1.0,
+            0.809,
+            0.118,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.296,
+            0.905,
+            0.973,
+            0.672,
+            0.655,
+            0.902,
+            0.783,
+            0.073,
+            0.0
+          ],
+          [
+            0.038,
+            0.378,
+            0.368,
+            0.873,
+            0.853,
+            0.597,
+            0.816,
+            0.66,
+            0.544,
+            0.048
+          ],
+          [
+            0.682,
+            0.753,
+            0.479,
+            0.94,
+            0.974,
+            0.791,
+            0.325,
+            0.492,
+            0.786,
+            0.459
+          ],
+          [
+            0.116,
+            0.295,
+            0.424,
+            1.0,
+            1.0,
+            0.999,
+            0.688,
+            0.298,
+            0.335,
+            0.0
+          ],
+          [
+            0.144,
+            0.675,
+            0.825,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.5,
+            0.593,
+            0.089
+          ],
+          [
+            0.317,
+            0.446,
+            0.955,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.674,
+            0.533,
+            0.538
+          ],
+          [
+            0.14,
+            0.673,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.961,
+            0.448,
+            0.016
+          ],
+          [
+            0.544,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.986,
+            0.322
+          ],
+          [
+            0.005,
+            0.405,
+            0.734,
+            0.906,
+            0.959,
+            0.973,
+            0.907,
+            0.638,
+            0.13,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          33,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 199,
+        "contact_reference_px": 199.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            2,
+            2,
+            2
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D top-down RPG map sprite of ancient banyan draped with red ribbons, weathered gnarled pine bark and resinous timber, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_11_mountain_god_shanshen_altar/sacred_wishing_tree/damaged_weathered.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.142,
+            0.746,
+            0.249
+          ],
+          [
+            0.494,
+            0.867,
+            0.441
+          ],
+          [
+            0.675,
+            0.986,
+            0.552
+          ]
+        ],
+        "frac_zero": 0.5497,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          2
+        ],
+        "sub_grid": [
+          10,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.179,
+            0.67,
+            0.799,
+            0.224,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.021,
+            0.791,
+            0.886,
+            0.879,
+            0.929,
+            0.19,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.104,
+            0.778,
+            0.973,
+            0.762,
+            0.752,
+            0.902,
+            0.711,
+            0.114,
+            0.0
+          ],
+          [
+            0.047,
+            0.423,
+            0.5,
+            0.494,
+            0.766,
+            0.665,
+            0.49,
+            0.641,
+            0.687,
+            0.048
+          ],
+          [
+            0.67,
+            0.652,
+            0.497,
+            0.632,
+            0.903,
+            0.786,
+            0.396,
+            0.612,
+            0.858,
+            0.607
+          ],
+          [
+            0.133,
+            0.287,
+            0.62,
+            0.917,
+            1.0,
+            0.98,
+            0.603,
+            0.067,
+            0.07,
+            0.0
+          ],
+          [
+            0.0,
+            0.348,
+            0.968,
+            0.995,
+            1.0,
+            0.996,
+            0.544,
+            0.763,
+            0.715,
+            0.021
+          ],
+          [
+            0.009,
+            0.664,
+            0.991,
+            0.985,
+            1.0,
+            0.985,
+            0.826,
+            0.384,
+            0.471,
+            0.115
+          ],
+          [
+            0.195,
+            0.857,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.95,
+            0.597,
+            0.134
+          ],
+          [
+            0.604,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.772,
+            0.077
+          ],
+          [
+            0.052,
+            0.525,
+            0.792,
+            0.964,
+            0.986,
+            0.979,
+            0.773,
+            0.388,
+            0.075,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          37,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 190,
+        "contact_reference_px": 190.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            2,
+            1,
+            2
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D top-down RPG map sprite of ancient banyan draped with red ribbons, weathered gnarled pine bark and resinous timber, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia herbal aesthetic, steep high-angle 3/4 top-down perspective looking down from above (65-75 degree angle), plant canopy, branching crown, bamboo culms and foliage viewed foreshortened from overhead, spread outward on ground plane, gouache hand-painted with dark #263A35 ink contours, flat grounded root base, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "eye-level view, flat front elevation, horizontal side profile, botanical plate, specimen drawing, side-scroller view, straight-on view, diorama, plant pot, planter, flowerbed border, dirt mound base, turf chunk, forest background, surrounding grass, garden scene, landscape, mountains, sky, multiple clumps, human hands, shears, tall upright crystals, decorative swirls, floating cloud swirls, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_11_mountain_god_shanshen_altar/sacred_wishing_tree/ruined_rubble.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.18,
+            0.755,
+            0.274
+          ],
+          [
+            0.47,
+            0.751,
+            0.364
+          ],
+          [
+            0.723,
+            0.985,
+            0.548
+          ]
+        ],
+        "frac_zero": 0.5666,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          2
+        ],
+        "sub_grid": [
+          10,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.193,
+            0.727,
+            0.716,
+            0.177,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.079,
+            0.845,
+            0.911,
+            0.938,
+            0.879,
+            0.182,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.072,
+            0.81,
+            0.963,
+            0.596,
+            0.721,
+            0.909,
+            0.845,
+            0.138,
+            0.0
+          ],
+          [
+            0.196,
+            0.697,
+            0.562,
+            0.894,
+            0.867,
+            0.519,
+            0.597,
+            0.523,
+            0.291,
+            0.0
+          ],
+          [
+            0.451,
+            0.598,
+            0.387,
+            0.479,
+            0.898,
+            0.693,
+            0.452,
+            0.724,
+            0.898,
+            0.519
+          ],
+          [
+            0.043,
+            0.11,
+            0.309,
+            0.693,
+            0.407,
+            0.938,
+            0.5,
+            0.305,
+            0.214,
+            0.01
+          ],
+          [
+            0.258,
+            0.876,
+            0.659,
+            0.999,
+            0.96,
+            0.982,
+            0.359,
+            0.085,
+            0.096,
+            0.0
+          ],
+          [
+            0.147,
+            0.981,
+            0.982,
+            1.0,
+            1.0,
+            0.848,
+            0.868,
+            0.544,
+            0.138,
+            0.0
+          ],
+          [
+            0.445,
+            0.933,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.942,
+            0.371,
+            0.0
+          ],
+          [
+            0.693,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.684,
+            0.0
+          ],
+          [
+            0.037,
+            0.453,
+            0.783,
+            0.936,
+            1.0,
+            0.973,
+            0.845,
+            0.411,
+            0.013,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          40,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 188,
+        "contact_reference_px": 188.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            0,
+            2,
+            2,
+            2
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "REL-11",
+    "domain": "religious_sanctuaries",
+    "interaction": "tie_prayer_ribbon",
+    "collision_behavior": "obstacle",
+    "element": "earth",
+    "tier": 3
+  },
+  "category_id": "rel_11_mountain_god_shanshen_altar",
+  "domain_id": "religious_sanctuaries",
+  "pinyin": "Shānshén Yánkān · Ancient Banyan Draped with Red Ribbons",
+  "archetype_name": "Ancient Banyan Draped with Red Ribbons",
+  "footprint_subcells": {
+    "w": 12,
+    "h": 12
+  },
+  "footprint_px": {
+    "w": 384,
+    "h": 384
+  },
+  "cell_span": {
+    "w": 3,
+    "h": 3
+  },
+  "collision": {
+    "type": "obstacle",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "ancient_pine_wood",
+  "secondary_material": "evergreen_needles",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Earth affinity (Core Formation (Kết Đan / 结丹))",
+  "elevation_tier": 3,
+  "mortal_realm_tier": "Core Formation (Kết Đan / 结丹)",
+  "asset_slug": "sacred_wishing_tree"
+}

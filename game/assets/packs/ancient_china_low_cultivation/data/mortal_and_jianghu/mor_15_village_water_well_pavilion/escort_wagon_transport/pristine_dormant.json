@@ -1,0 +1,189 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_15_village_water_well_pavilion.escort_wagon_transport",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_15_village_water_well_pavilion",
+  "asset_slug": "escort_wagon_transport",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_15_village_water_well_pavilion/escort_wagon_transport/pristine_dormant.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "inspect_cargo",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.498,
+        0.826,
+        0.468
+      ],
+      [
+        0.314,
+        0.928,
+        0.315
+      ]
+    ],
+    "frac_zero": 0.7327,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.256,
+        0.297,
+        0.442,
+        0.499,
+        0.0,
+        0.0
+      ],
+      [
+        0.533,
+        0.866,
+        1.0,
+        1.0,
+        0.916,
+        0.088,
+        0.0
+      ],
+      [
+        0.322,
+        0.992,
+        1.0,
+        1.0,
+        1.0,
+        0.897,
+        0.625
+      ],
+      [
+        0.0,
+        0.704,
+        0.957,
+        0.9,
+        0.663,
+        0.073,
+        0.0
+      ],
+      [
+        0.005,
+        0.717,
+        0.995,
+        0.976,
+        0.75,
+        0.0,
+        0.0
+      ],
+      [
+        0.011,
+        0.79,
+        1.0,
+        1.0,
+        0.962,
+        0.178,
+        0.0
+      ],
+      [
+        0.0,
+        0.174,
+        0.776,
+        0.927,
+        0.811,
+        0.092,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      90,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 104,
+    "contact_reference_px": 104.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

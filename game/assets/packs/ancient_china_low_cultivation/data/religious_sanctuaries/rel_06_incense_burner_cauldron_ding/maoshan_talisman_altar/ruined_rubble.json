@@ -1,0 +1,123 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_06_incense_burner_cauldron_ding.maoshan_talisman_altar",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_06_incense_burner_cauldron_ding",
+  "asset_slug": "maoshan_talisman_altar",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_06_incense_burner_cauldron_ding/maoshan_talisman_altar/ruined_rubble.png",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "cast_ritual",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.681,
+        0.741
+      ]
+    ],
+    "frac_zero": 0.7895,
+    "blocks": [
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 2,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.451,
+        0.942,
+        0.729
+      ],
+      [
+        0.796,
+        1.0,
+        0.716
+      ],
+      [
+        0.456,
+        0.824,
+        0.482
+      ]
+    ],
+    "crop_offset": [
+      79,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 82,
+    "contact_reference_px": 82.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      128
+    ]
+  }
+}

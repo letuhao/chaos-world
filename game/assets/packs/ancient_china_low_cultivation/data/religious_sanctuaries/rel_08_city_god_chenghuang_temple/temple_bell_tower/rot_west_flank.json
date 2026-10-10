@@ -1,0 +1,184 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_08_city_god_chenghuang_temple.temple_bell_tower",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_08_city_god_chenghuang_temple",
+  "asset_slug": "temple_bell_tower",
+  "variant_slug": "rot_west_flank",
+  "name": "West Flank (Left Profile)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_08_city_god_chenghuang_temple/temple_bell_tower/rot_west_flank.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "strike_bell",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.633,
+        0.635
+      ],
+      [
+        0.749,
+        0.748
+      ]
+    ],
+    "frac_zero": 0.5092,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.29,
+        0.276,
+        0.194,
+        0.406,
+        0.194,
+        0.408,
+        0.0
+      ],
+      [
+        0.313,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.703,
+        0.0
+      ],
+      [
+        0.253,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.635,
+        0.0
+      ],
+      [
+        0.325,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.717,
+        0.0
+      ],
+      [
+        0.582,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.92,
+        0.141
+      ],
+      [
+        0.366,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.612,
+        0.349
+      ],
+      [
+        0.059,
+        0.681,
+        0.829,
+        0.899,
+        0.672,
+        0.292,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 147,
+    "contact_reference_px": 147.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

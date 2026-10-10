@@ -1,0 +1,155 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_21_bandit_mountain_stockade_gate.martial_training_posts",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_21_bandit_mountain_stockade_gate",
+  "asset_slug": "martial_training_posts",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_21_bandit_mountain_stockade_gate/martial_training_posts/damaged_weathered.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "train_agility",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.556,
+        0.553
+      ],
+      [
+        0.731,
+        0.706
+      ]
+    ],
+    "frac_zero": 0.5146,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.331,
+        0.62,
+        0.566,
+        0.683,
+        0.151,
+        0.0
+      ],
+      [
+        0.106,
+        0.945,
+        1.0,
+        1.0,
+        1.0,
+        0.819,
+        0.058
+      ],
+      [
+        0.157,
+        0.691,
+        0.899,
+        0.829,
+        0.952,
+        0.684,
+        0.075
+      ],
+      [
+        0.176,
+        0.996,
+        0.729,
+        0.057,
+        0.578,
+        0.955,
+        0.065
+      ],
+      [
+        0.104,
+        0.977,
+        0.981,
+        0.72,
+        0.916,
+        0.902,
+        0.164
+      ],
+      [
+        0.703,
+        1.0,
+        0.998,
+        0.998,
+        1.0,
+        1.0,
+        0.62
+      ],
+      [
+        0.188,
+        0.677,
+        0.915,
+        1.0,
+        0.845,
+        0.655,
+        0.227
+      ]
+    ],
+    "crop_offset": [
+      18,
+      22
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 168,
+    "contact_reference_px": 168.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

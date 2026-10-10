@@ -65,9 +65,20 @@ def register(subparsers) -> None:
             "to be printed to, which is how a stale verdict survived in this gate."
         ),
     )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help=(
+            "hand the engine `--verbose`, which is what names the classes in the "
+            "exit-leak report (`N ObjectDB instances were leaked at exit`). Without it "
+            "the count is unattributable, and BL-0724 could only record a hypothesis; "
+            "with it the warning either names autoload-owned singletons (not a defect) "
+            "or a Control from `game/src` (a real leak)."
+        ),
+    )
 
 
-def _survives(scene: str, frames: int) -> tuple[bool, str]:
+def _survives(scene: str, frames: int, verbose: bool) -> tuple[bool, str]:
     """Phase one: does the engine stay alive at all?
 
     The half that caught BL-0359, where the shell killed the process on its first
@@ -83,7 +94,8 @@ def _survives(scene: str, frames: int) -> tuple[bool, str]:
     in the game instead of in the gate.
     """
     result = godot.run_godot(
-        ["--headless", "--path", str(GAME_DIR), "--quit-after", str(frames)],
+        ["--headless", "--path", str(GAME_DIR), "--quit-after", str(frames)]
+        + (["--verbose"] if verbose else []),
         tag="boot",
     )
     if result.returncode == 0:
@@ -97,7 +109,7 @@ def _survives(scene: str, frames: int) -> tuple[bool, str]:
     return False, f"{scene} exited {result.returncode} after {frames} frames{hint}"
 
 
-def _comes_up() -> tuple[bool, str, dict]:
+def _comes_up(verbose: bool) -> tuple[bool, str, dict]:
     """Phase two: does the shell come up with something on it, and can it be moved?
 
     Surviving is not arriving. `ItemWorkbenchApp._ready` returns quietly when it
@@ -113,7 +125,7 @@ def _comes_up() -> tuple[bool, str, dict]:
     press from a check that quietly stopped looking.
     """
     result = godot.run_godot(
-        ["--headless", "--path", str(GAME_DIR), "-s", PROBE],
+        ["--headless", "--path", str(GAME_DIR), "-s", PROBE] + (["--verbose"] if verbose else []),
         capture=True,
         tag="bootprobe",
     )
@@ -197,13 +209,13 @@ def run(args) -> int:
         raise ToolError("game/project.godot not found; create the Godot project first")
     scene = main_scene()
     failures: list[str] = []
-    survived, why = _survives(scene, args.frames)
+    survived, why = _survives(scene, args.frames, args.verbose)
     if survived:
         ok(f"main scene survived {args.frames} frames: {scene}")
     else:
         fail(f"the main scene did not boot: {why}")
         failures.append("crash")
-    came_up, why, report = _comes_up()
+    came_up, why, report = _comes_up(args.verbose)
     if came_up:
         ok("the shell came up with a live route, a bound actor and a mounted screen")
         ok(f"a real nav button press moved the game: {_nav_line(report)}")

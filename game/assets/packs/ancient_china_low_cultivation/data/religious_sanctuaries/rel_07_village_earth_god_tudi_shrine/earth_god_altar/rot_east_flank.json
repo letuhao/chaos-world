@@ -1,0 +1,119 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_07_village_earth_god_tudi_shrine.earth_god_altar",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_07_village_earth_god_tudi_shrine",
+  "asset_slug": "earth_god_altar",
+  "variant_slug": "rot_east_flank",
+  "name": "East Flank (Right Profile)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_07_village_earth_god_tudi_shrine/earth_god_altar/rot_east_flank.png",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "offer_incense",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.57
+      ]
+    ],
+    "frac_zero": 0.6888,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.28,
+        0.701,
+        0.061
+      ],
+      [
+        0.745,
+        1.0,
+        0.597
+      ],
+      [
+        0.414,
+        0.877,
+        0.309
+      ]
+    ],
+    "crop_offset": [
+      19,
+      18
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 65,
+    "contact_reference_px": 65.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

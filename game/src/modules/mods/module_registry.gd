@@ -20,15 +20,19 @@ const LAYER_DEPS := ["contracts", "core"]
 ## test_module_registry asserts the seam against registry.json.
 const BASE_DEPS := {
 	"anchor": ["items", "soul"],
+	"base_grant": [],
 	"bloodline": ["race"],
 	"body_cultivation": ["destiny", "foundation", "items", "race"],
 	"clan": ["bloodline", "race", "social"],
+	"clan_building": [],
 	"collection": ["destiny", "dual_cultivation", "fertility", "social"],
 	"combat": ["destiny", "loot", "status"],
 	"combat_engine": [],
 	"conflict": ["holdings"],
+	"consumables": [],
 	"custody": ["economy"],
 	"destiny": ["foundation"],
+	"dialogue": [],
 	"difficulty": [],
 	"doctrine": ["destiny", "economy", "items", "quest"],
 	"domain": ["foundation", "status"],
@@ -39,6 +43,7 @@ const BASE_DEPS := {
 	"event": ["destiny", "nation", "npc", "world"],
 	"fertility": ["bloodline", "dual_cultivation", "race", "social"],
 	"forage": ["holdings"],
+	"foundation": [],
 	"heavenly_tribulation": ["foundation", "status"],
 	"holdings": [],
 	"items": ["destiny", "foundation", "status"],
@@ -61,9 +66,11 @@ const BASE_DEPS := {
 	"socket": ["items"],
 	"soul": ["items"],
 	"status": [],
+	"story": ["destiny", "quest"],
 	"techniques": ["items"],
 	"world": [],
 	"world_spawn": ["world"],
+	"worldmap": [],
 }
 
 ## name -> {"api": String, "deps": Array}; base modules first, then registered.

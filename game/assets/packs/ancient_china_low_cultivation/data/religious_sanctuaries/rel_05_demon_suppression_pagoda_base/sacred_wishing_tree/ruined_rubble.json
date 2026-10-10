@@ -1,0 +1,246 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_05_demon_suppression_pagoda_base.sacred_wishing_tree",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_05_demon_suppression_pagoda_base",
+  "asset_slug": "sacred_wishing_tree",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_05_demon_suppression_pagoda_base/sacred_wishing_tree/ruined_rubble.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "tie_prayer_ribbon",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.252,
+        0.726,
+        0.21
+      ],
+      [
+        0.428,
+        0.966,
+        0.361
+      ],
+      [
+        0.685,
+        0.987,
+        0.593
+      ]
+    ],
+    "frac_zero": 0.5325,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      10,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.009,
+        0.286,
+        0.831,
+        0.642,
+        0.151,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.004,
+        0.386,
+        1.0,
+        0.889,
+        0.92,
+        0.72,
+        0.118,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.162,
+        0.665,
+        0.868,
+        0.689,
+        0.642,
+        0.655,
+        0.814,
+        0.311,
+        0.0
+      ],
+      [
+        0.443,
+        0.831,
+        0.515,
+        0.767,
+        0.881,
+        0.876,
+        0.586,
+        0.541,
+        0.453,
+        0.073
+      ],
+      [
+        0.206,
+        0.373,
+        0.643,
+        0.947,
+        1.0,
+        1.0,
+        0.956,
+        0.52,
+        0.531,
+        0.473
+      ],
+      [
+        0.119,
+        0.082,
+        0.176,
+        0.796,
+        1.0,
+        1.0,
+        0.641,
+        0.324,
+        0.471,
+        0.085
+      ],
+      [
+        0.239,
+        0.896,
+        0.369,
+        0.95,
+        1.0,
+        1.0,
+        0.751,
+        0.172,
+        0.184,
+        0.0
+      ],
+      [
+        0.155,
+        0.888,
+        0.931,
+        1.0,
+        1.0,
+        1.0,
+        0.914,
+        0.747,
+        0.558,
+        0.037
+      ],
+      [
+        0.541,
+        0.913,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.842,
+        0.226
+      ],
+      [
+        0.443,
+        0.981,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.836,
+        0.212
+      ],
+      [
+        0.0,
+        0.234,
+        0.705,
+        0.863,
+        0.992,
+        0.975,
+        0.893,
+        0.646,
+        0.065,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      33,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 190,
+    "contact_reference_px": 190.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        2,
+        2,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

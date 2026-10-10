@@ -1,0 +1,275 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_03_thousand_year_mountain_stupa_pagoda.daoist_temple_hall",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_03_thousand_year_mountain_stupa_pagoda",
+  "asset_slug": "daoist_temple_hall",
+  "variant_slug": "rot_east_flank",
+  "name": "East Flank (Right Profile)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_03_thousand_year_mountain_stupa_pagoda/daoist_temple_hall/rot_east_flank.png",
+  "footprint_cells": [
+    4,
+    3
+  ],
+  "canvas_px": [
+    512,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "worship_dao",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.423,
+        0.68,
+        0.637,
+        0.356
+      ],
+      [
+        0.773,
+        1.0,
+        1.0,
+        0.708
+      ],
+      [
+        0.581,
+        0.911,
+        0.925,
+        0.536
+      ]
+    ],
+    "frac_zero": 0.6295,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 12,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      9,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.065,
+        0.002,
+        0.0,
+        0.007,
+        0.437,
+        0.0,
+        0.0,
+        0.055,
+        0.007
+      ],
+      [
+        0.298,
+        0.791,
+        0.55,
+        0.644,
+        0.97,
+        0.518,
+        0.573,
+        0.854,
+        0.05
+      ],
+      [
+        0.11,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.827,
+        0.0
+      ],
+      [
+        0.025,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.738,
+        0.0
+      ],
+      [
+        0.185,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.846,
+        0.069
+      ],
+      [
+        0.468,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.953,
+        0.3
+      ],
+      [
+        0.86,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.82
+      ],
+      [
+        0.878,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.82
+      ],
+      [
+        0.461,
+        0.93,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.808,
+        0.422
+      ],
+      [
+        0.0,
+        0.941,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.734,
+        0.0
+      ],
+      [
+        0.008,
+        0.435,
+        0.399,
+        0.797,
+        0.839,
+        0.841,
+        0.457,
+        0.394,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      112,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 93,
+    "contact_reference_px": 93.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      384
+    ]
+  }
+}

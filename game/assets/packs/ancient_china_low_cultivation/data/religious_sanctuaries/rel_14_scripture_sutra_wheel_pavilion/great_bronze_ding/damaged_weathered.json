@@ -1,0 +1,182 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_14_scripture_sutra_wheel_pavilion.great_bronze_ding",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_14_scripture_sutra_wheel_pavilion",
+  "asset_slug": "great_bronze_ding",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_14_scripture_sutra_wheel_pavilion/great_bronze_ding/damaged_weathered.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "burn_incense",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.559,
+        0.555
+      ],
+      [
+        0.697,
+        0.471
+      ]
+    ],
+    "frac_zero": 0.6051,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.146,
+        0.257,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.051,
+        0.844,
+        0.944,
+        0.971,
+        0.797,
+        0.184,
+        0.0
+      ],
+      [
+        0.467,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.588,
+        0.037
+      ],
+      [
+        0.369,
+        0.973,
+        1.0,
+        1.0,
+        0.995,
+        0.518,
+        0.188
+      ],
+      [
+        0.258,
+        0.915,
+        1.0,
+        1.0,
+        0.942,
+        0.292,
+        0.0
+      ],
+      [
+        0.399,
+        1.0,
+        1.0,
+        0.997,
+        0.663,
+        0.0,
+        0.0
+      ],
+      [
+        0.003,
+        0.678,
+        0.982,
+        0.306,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      29,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2
+    ],
+    "contact_px": 61,
+    "contact_reference_px": 61.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

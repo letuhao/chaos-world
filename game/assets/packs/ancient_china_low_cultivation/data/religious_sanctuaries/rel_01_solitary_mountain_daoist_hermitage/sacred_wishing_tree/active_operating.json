@@ -1,0 +1,259 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_01_solitary_mountain_daoist_hermitage.sacred_wishing_tree",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_01_solitary_mountain_daoist_hermitage",
+  "asset_slug": "sacred_wishing_tree",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_01_solitary_mountain_daoist_hermitage/sacred_wishing_tree/active_operating.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "tie_prayer_ribbon",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.148,
+        0.695,
+        0.15
+      ],
+      [
+        0.512,
+        0.938,
+        0.44
+      ],
+      [
+        0.669,
+        0.978,
+        0.629
+      ]
+    ],
+    "frac_zero": 0.5227,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.133,
+        0.717,
+        0.768,
+        0.227,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.04,
+        0.78,
+        0.855,
+        0.966,
+        0.773,
+        0.116,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.562,
+        0.703,
+        0.668,
+        0.716,
+        0.582,
+        0.554,
+        0.034,
+        0.0,
+        0.0
+      ],
+      [
+        0.082,
+        0.692,
+        0.623,
+        0.553,
+        0.845,
+        0.743,
+        0.575,
+        0.781,
+        0.692,
+        0.047,
+        0.0
+      ],
+      [
+        0.063,
+        0.443,
+        0.451,
+        0.905,
+        0.993,
+        1.0,
+        0.349,
+        0.601,
+        0.318,
+        0.129,
+        0.0
+      ],
+      [
+        0.009,
+        0.415,
+        0.423,
+        0.974,
+        1.0,
+        1.0,
+        0.834,
+        0.365,
+        0.271,
+        0.027,
+        0.0
+      ],
+      [
+        0.214,
+        0.656,
+        0.965,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.848,
+        0.727,
+        0.398,
+        0.0
+      ],
+      [
+        0.331,
+        0.567,
+        0.983,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.948,
+        0.603,
+        0.554,
+        0.191
+      ],
+      [
+        0.183,
+        0.845,
+        0.983,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.974,
+        0.771,
+        0.149,
+        0.0
+      ],
+      [
+        0.617,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.726,
+        0.0
+      ],
+      [
+        0.066,
+        0.419,
+        0.723,
+        0.9,
+        0.982,
+        0.87,
+        0.853,
+        0.693,
+        0.594,
+        0.1,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      28,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "contact_px": 230,
+    "contact_reference_px": 230.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        2,
+        2,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

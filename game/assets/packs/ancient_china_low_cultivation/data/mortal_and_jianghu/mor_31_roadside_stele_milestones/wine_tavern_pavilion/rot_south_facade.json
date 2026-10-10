@@ -1,0 +1,285 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_31_roadside_stele_milestones.wine_tavern_pavilion",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_31_roadside_stele_milestones",
+  "asset_slug": "wine_tavern_pavilion",
+  "variant_slug": "rot_south_facade",
+  "name": "South Facade (Front Entrance)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_31_roadside_stele_milestones/wine_tavern_pavilion/rot_south_facade.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "order_drink",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.354,
+        0.678,
+        0.345
+      ],
+      [
+        0.76,
+        1.0,
+        0.748
+      ],
+      [
+        0.422,
+        0.939,
+        0.417
+      ]
+    ],
+    "frac_zero": 0.4712,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 9,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.022,
+        0.487,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.012,
+        0.424,
+        0.156,
+        0.179,
+        0.72,
+        0.998,
+        0.594,
+        0.119,
+        0.175,
+        0.393,
+        0.0
+      ],
+      [
+        0.0,
+        0.865,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.668,
+        0.0
+      ],
+      [
+        0.0,
+        0.752,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.548,
+        0.0
+      ],
+      [
+        0.0,
+        0.801,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.604,
+        0.0
+      ],
+      [
+        0.029,
+        0.958,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.826,
+        0.0
+      ],
+      [
+        0.478,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.381
+      ],
+      [
+        0.523,
+        0.706,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.989,
+        0.718,
+        0.577
+      ],
+      [
+        0.0,
+        0.115,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.972,
+        0.029,
+        0.0
+      ],
+      [
+        0.0,
+        0.282,
+        0.939,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.959,
+        0.961,
+        0.199,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.047,
+        0.44,
+        0.841,
+        0.839,
+        0.774,
+        0.21,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      18,
+      16
+    ],
+    "trunk_columns": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 127,
+    "contact_reference_px": 127.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

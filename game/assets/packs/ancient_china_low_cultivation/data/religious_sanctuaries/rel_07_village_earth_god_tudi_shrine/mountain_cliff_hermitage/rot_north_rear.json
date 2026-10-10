@@ -1,0 +1,191 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_07_village_earth_god_tudi_shrine.mountain_cliff_hermitage",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_07_village_earth_god_tudi_shrine",
+  "asset_slug": "mountain_cliff_hermitage",
+  "variant_slug": "rot_north_rear",
+  "name": "North Rear (Back Wall)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_07_village_earth_god_tudi_shrine/mountain_cliff_hermitage/rot_north_rear.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "seek_blessing",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.488,
+        0.747,
+        0.472
+      ],
+      [
+        0.626,
+        0.97,
+        0.618
+      ]
+    ],
+    "frac_zero": 0.6648,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.036,
+        0.0,
+        0.014,
+        0.431,
+        0.0,
+        0.0,
+        0.04
+      ],
+      [
+        0.44,
+        0.815,
+        0.854,
+        1.0,
+        0.813,
+        0.842,
+        0.33
+      ],
+      [
+        0.318,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.175
+      ],
+      [
+        0.376,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.251
+      ],
+      [
+        0.747,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.698
+      ],
+      [
+        0.141,
+        0.86,
+        1.0,
+        1.0,
+        1.0,
+        0.732,
+        0.149
+      ],
+      [
+        0.0,
+        0.617,
+        0.812,
+        0.935,
+        0.802,
+        0.54,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      81,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 146,
+    "contact_reference_px": 146.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

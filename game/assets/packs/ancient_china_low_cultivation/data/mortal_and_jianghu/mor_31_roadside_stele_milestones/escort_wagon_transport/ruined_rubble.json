@@ -1,0 +1,184 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_31_roadside_stele_milestones.escort_wagon_transport",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_31_roadside_stele_milestones",
+  "asset_slug": "escort_wagon_transport",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_31_roadside_stele_milestones/escort_wagon_transport/ruined_rubble.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "inspect_cargo",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.211,
+        0.954,
+        0.094
+      ],
+      [
+        0.613,
+        0.969,
+        0.567
+      ]
+    ],
+    "frac_zero": 0.7696,
+    "blocks": [
+      [
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 5,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.284,
+        0.885,
+        0.544,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.736,
+        1.0,
+        0.863,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.653,
+        1.0,
+        0.719,
+        0.0,
+        0.0
+      ],
+      [
+        0.046,
+        0.688,
+        1.0,
+        0.697,
+        0.248,
+        0.0
+      ],
+      [
+        0.281,
+        0.772,
+        1.0,
+        0.937,
+        0.624,
+        0.0
+      ],
+      [
+        0.706,
+        0.964,
+        1.0,
+        1.0,
+        0.898,
+        0.422
+      ],
+      [
+        0.601,
+        0.883,
+        0.942,
+        0.748,
+        0.451,
+        0.083
+      ]
+    ],
+    "crop_offset": [
+      105,
+      18
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 140,
+    "contact_reference_px": 140.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

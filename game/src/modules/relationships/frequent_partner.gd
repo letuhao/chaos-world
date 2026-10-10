@@ -32,9 +32,9 @@ const DC_EFFICIENCY_BONUS := {
 static func tier_for_interactions(total_interactions: int) -> int:
 	if total_interactions >= THRESHOLD_INTIMATE:
 		return TIER_INTIMATE
-	elif total_interactions >= THRESHOLD_CLOSE:
+	if total_interactions >= THRESHOLD_CLOSE:
 		return TIER_CLOSE
-	elif total_interactions >= THRESHOLD_FREQUENT:
+	if total_interactions >= THRESHOLD_FREQUENT:
 		return TIER_FREQUENT
 	return 0
 

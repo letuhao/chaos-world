@@ -1,0 +1,185 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_02_zhengyi_maoshan_altar_table.mountain_buddhist_stupa",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_02_zhengyi_maoshan_altar_table",
+  "asset_slug": "mountain_buddhist_stupa",
+  "variant_slug": "rot_south_facade",
+  "name": "South Facade (Front Entrance)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_02_zhengyi_maoshan_altar_table/mountain_buddhist_stupa/rot_south_facade.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "circumambulate",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.596,
+        0.582
+      ],
+      [
+        0.744,
+        0.817
+      ]
+    ],
+    "frac_zero": 0.5088,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.089,
+        0.018,
+        0.199,
+        0.505,
+        0.014,
+        0.098,
+        0.0
+      ],
+      [
+        0.266,
+        0.985,
+        0.999,
+        1.0,
+        0.979,
+        0.656,
+        0.0
+      ],
+      [
+        0.216,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.606,
+        0.0
+      ],
+      [
+        0.693,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.928,
+        0.415
+      ],
+      [
+        0.303,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.895,
+        0.134
+      ],
+      [
+        0.296,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.813,
+        0.002
+      ],
+      [
+        0.006,
+        0.54,
+        1.0,
+        1.0,
+        1.0,
+        0.518,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      25,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 126,
+    "contact_reference_px": 126.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

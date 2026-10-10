@@ -1,0 +1,119 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_06_incense_burner_cauldron_ding.joss_paper_furnace",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_06_incense_burner_cauldron_ding",
+  "asset_slug": "joss_paper_furnace",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_06_incense_burner_cauldron_ding/joss_paper_furnace/ruined_rubble.png",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "burn_paper",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.583
+      ]
+    ],
+    "frac_zero": 0.7078,
+    "blocks": [
+      [
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 1,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.222,
+        0.668,
+        0.151
+      ],
+      [
+        0.718,
+        1.0,
+        0.761
+      ],
+      [
+        0.63,
+        0.619,
+        0.156
+      ]
+    ],
+    "crop_offset": [
+      23,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 47,
+    "contact_reference_px": 47.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.0": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.15": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.35": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      128,
+      128
+    ]
+  }
+}

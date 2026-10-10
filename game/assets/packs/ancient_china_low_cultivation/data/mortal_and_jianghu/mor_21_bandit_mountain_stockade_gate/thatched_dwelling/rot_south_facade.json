@@ -1,0 +1,188 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_21_bandit_mountain_stockade_gate.thatched_dwelling",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_21_bandit_mountain_stockade_gate",
+  "asset_slug": "thatched_dwelling",
+  "variant_slug": "rot_south_facade",
+  "name": "South Facade (Front Entrance)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_21_bandit_mountain_stockade_gate/thatched_dwelling/rot_south_facade.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "enter_dwelling",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.48,
+        0.817,
+        0.317
+      ],
+      [
+        0.488,
+        0.881,
+        0.567
+      ]
+    ],
+    "frac_zero": 0.7165,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.492,
+        0.351,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.193,
+        0.555,
+        0.996,
+        0.99,
+        0.29,
+        0.03,
+        0.0
+      ],
+      [
+        0.64,
+        1.0,
+        1.0,
+        1.0,
+        0.999,
+        0.646,
+        0.0
+      ],
+      [
+        0.854,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.943,
+        0.553
+      ],
+      [
+        0.741,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.433
+      ],
+      [
+        0.171,
+        0.33,
+        0.999,
+        1.0,
+        0.88,
+        0.473,
+        0.329
+      ],
+      [
+        0.0,
+        0.008,
+        0.509,
+        0.679,
+        0.048,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      89,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 35,
+    "contact_reference_px": 35.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

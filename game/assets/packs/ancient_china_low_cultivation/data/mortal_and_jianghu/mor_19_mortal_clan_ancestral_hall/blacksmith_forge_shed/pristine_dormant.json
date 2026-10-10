@@ -1,0 +1,185 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_19_mortal_clan_ancestral_hall.blacksmith_forge_shed",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_19_mortal_clan_ancestral_hall",
+  "asset_slug": "blacksmith_forge_shed",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_19_mortal_clan_ancestral_hall/blacksmith_forge_shed/pristine_dormant.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "forge_iron",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.594,
+        0.59
+      ],
+      [
+        0.661,
+        0.664
+      ]
+    ],
+    "frac_zero": 0.5297,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.125,
+        0.082,
+        0.403,
+        0.113,
+        0.053,
+        0.0
+      ],
+      [
+        0.232,
+        0.833,
+        1.0,
+        1.0,
+        1.0,
+        0.688,
+        0.0
+      ],
+      [
+        0.34,
+        1.0,
+        0.994,
+        0.989,
+        1.0,
+        0.943,
+        0.034
+      ],
+      [
+        0.833,
+        1.0,
+        0.903,
+        0.909,
+        0.993,
+        1.0,
+        0.719
+      ],
+      [
+        0.049,
+        0.743,
+        0.886,
+        0.93,
+        0.906,
+        0.472,
+        0.019
+      ],
+      [
+        0.005,
+        0.882,
+        1.0,
+        1.0,
+        1.0,
+        0.526,
+        0.0
+      ],
+      [
+        0.098,
+        0.667,
+        0.853,
+        0.9,
+        0.795,
+        0.557,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      22,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 161,
+    "contact_reference_px": 161.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

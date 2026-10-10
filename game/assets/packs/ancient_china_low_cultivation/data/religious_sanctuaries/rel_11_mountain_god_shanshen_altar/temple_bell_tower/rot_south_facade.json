@@ -1,0 +1,185 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_11_mountain_god_shanshen_altar.temple_bell_tower",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_11_mountain_god_shanshen_altar",
+  "asset_slug": "temple_bell_tower",
+  "variant_slug": "rot_south_facade",
+  "name": "South Facade (Front Entrance)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_11_mountain_god_shanshen_altar/temple_bell_tower/rot_south_facade.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "strike_bell",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.657,
+        0.644
+      ],
+      [
+        0.739,
+        0.74
+      ]
+    ],
+    "frac_zero": 0.4665,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.228,
+        0.415,
+        0.308,
+        0.604,
+        0.307,
+        0.436,
+        0.153
+      ],
+      [
+        0.211,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.051
+      ],
+      [
+        0.216,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.075
+      ],
+      [
+        0.426,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.342
+      ],
+      [
+        0.565,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        0.957,
+        0.57
+      ],
+      [
+        0.097,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.964,
+        0.016
+      ],
+      [
+        0.098,
+        0.581,
+        0.792,
+        0.871,
+        0.776,
+        0.581,
+        0.052
+      ]
+    ],
+    "crop_offset": [
+      17,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 169,
+    "contact_reference_px": 169.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_23_watchtower_beacon_tower.martial_training_posts",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_23_watchtower_beacon_tower",
+  "asset_slug": "martial_training_posts",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_23_watchtower_beacon_tower/martial_training_posts/ruined_rubble.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "train_agility",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.51,
+        0.488
+      ],
+      [
+        0.474,
+        0.507
+      ]
+    ],
+    "frac_zero": 0.726,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.156,
+        0.419,
+        0.062,
+        0.0
+      ],
+      [
+        0.286,
+        0.814,
+        1.0,
+        0.615,
+        0.221
+      ],
+      [
+        0.316,
+        0.928,
+        1.0,
+        0.814,
+        0.202
+      ],
+      [
+        0.117,
+        0.914,
+        0.987,
+        0.737,
+        0.004
+      ],
+      [
+        0.215,
+        0.649,
+        0.863,
+        0.42,
+        0.236
+      ],
+      [
+        0.591,
+        0.544,
+        0.878,
+        0.678,
+        0.579
+      ],
+      [
+        0.099,
+        0.221,
+        0.439,
+        0.458,
+        0.331
+      ]
+    ],
+    "crop_offset": [
+      52,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 25,
+    "contact_reference_px": 25.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

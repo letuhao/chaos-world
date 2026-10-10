@@ -1,0 +1,190 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_07_village_earth_god_tudi_shrine.mountain_cliff_hermitage",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_07_village_earth_god_tudi_shrine",
+  "asset_slug": "mountain_cliff_hermitage",
+  "variant_slug": "rot_east_flank",
+  "name": "East Flank (Right Profile)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_07_village_earth_god_tudi_shrine/mountain_cliff_hermitage/rot_east_flank.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "seek_blessing",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.445,
+        0.776,
+        0.454
+      ],
+      [
+        0.514,
+        0.972,
+        0.647
+      ]
+    ],
+    "frac_zero": 0.712,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.001,
+        0.006,
+        0.111,
+        0.461,
+        0.0,
+        0.007,
+        0.0
+      ],
+      [
+        0.005,
+        0.791,
+        0.892,
+        0.99,
+        0.751,
+        0.516,
+        0.0
+      ],
+      [
+        0.473,
+        0.942,
+        1.0,
+        1.0,
+        1.0,
+        0.433,
+        0.0
+      ],
+      [
+        0.742,
+        0.992,
+        1.0,
+        1.0,
+        1.0,
+        0.522,
+        0.0
+      ],
+      [
+        0.401,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        0.831,
+        0.227
+      ],
+      [
+        0.14,
+        0.714,
+        1.0,
+        1.0,
+        1.0,
+        0.326,
+        0.023
+      ],
+      [
+        0.0,
+        0.408,
+        0.85,
+        0.939,
+        0.769,
+        0.102,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      94,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 120,
+    "contact_reference_px": 120.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

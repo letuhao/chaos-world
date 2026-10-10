@@ -1,0 +1,185 @@
+{
+  "asset_id": "ancient_china_low_cultivation.religious_sanctuaries.rel_04_buddhist_main_hall_daxiongbaodian.mountain_buddhist_stupa",
+  "domain": "religious_sanctuaries",
+  "sub_domain": "rel_04_buddhist_main_hall_daxiongbaodian",
+  "asset_slug": "mountain_buddhist_stupa",
+  "variant_slug": "rot_north_rear",
+  "name": "North Rear (Back Wall)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/religious_sanctuaries/rel_04_buddhist_main_hall_daxiongbaodian/mountain_buddhist_stupa/rot_north_rear.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "circumambulate",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.748,
+        0.737
+      ],
+      [
+        0.766,
+        0.774
+      ]
+    ],
+    "frac_zero": 0.4258,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.423,
+        0.562,
+        0.728,
+        0.674,
+        0.698,
+        0.601,
+        0.339
+      ],
+      [
+        0.375,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.19
+      ],
+      [
+        0.354,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.167
+      ],
+      [
+        0.438,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.299
+      ],
+      [
+        0.752,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.698
+      ],
+      [
+        0.216,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.977,
+        0.13
+      ],
+      [
+        0.114,
+        0.642,
+        0.764,
+        0.903,
+        0.733,
+        0.677,
+        0.038
+      ]
+    ],
+    "crop_offset": [
+      18,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 168,
+    "contact_reference_px": 168.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

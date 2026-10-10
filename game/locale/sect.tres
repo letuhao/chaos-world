@@ -3,28 +3,4 @@
 [resource]
 locale = "en"
 messages = {
-"LOC_SECT_DISCIPLE_DESCRIPTION_1": "The open door of the sect. Everyone who is sworn and holds no office sits here in all but name, and it recognises nothing at all, because recognition begins where office begins.",
-"LOC_SECT_DISCIPLE_DESCRIPTION_2": "Four readers keep the outer hall. The office is recognised on the mind alone and carries no authority over anybody, which is why it is not the step below the Steward.",
-"LOC_SECT_DISCIPLE_DESCRIPTION_3": "The one seat in the sect. It runs the hall, it holds the seal, and it is the only office here that may bar a door, so it is the only office anyone competes for.",
-"LOC_SECT_DISCIPLE_DESCRIPTION_4": "The watch of the outer gate. Two may hold it at once because a gate with one keeper is a gate with one point of failure, and this sect lost an archive to exactly that.",
-"LOC_SECT_DISCIPLE_DESCRIPTION_5": "A school of ledgers and quiet rooms. The Court teaches that comprehension is a discipline rather than a gift, and it is organised around one contested seat: everything it offers is offered by the Steward who holds the seal.",
-"LOC_SECT_DISCIPLE_DISPLAY_NAME_1": "Disciple",
-"LOC_SECT_DISCIPLE_DISPLAY_NAME_2": "Reader",
-"LOC_SECT_DISCIPLE_DISPLAY_NAME_3": "Steward",
-"LOC_SECT_DISCIPLE_DISPLAY_NAME_4": "Lantern Keeper",
-"LOC_SECT_DISCIPLE_DISPLAY_NAME_5": "The Jade Court",
-"LOC_SECT_IRON_VINE_DESCRIPTION": "Load and endurance. The Vine teaches that a body is a wall or it is weather, and which one it is today is decided by what was carried yesterday rather than by what is intended tomorrow.",
-"LOC_SECT_IRON_VINE_DISPLAY_NAME": "The Iron Practice",
-"LOC_SECT_STILL_WATER_DESCRIPTION": "Comprehension practised as a discipline rather than a gift. Every seat in the Jade Court sits with its breathing even because a man who cannot sit still has not yet learned to read.",
-"LOC_SECT_STILL_WATER_DISPLAY_NAME": "Still Water",
-"LOC_SECT_WARD_DESCRIPTION_1": "Every sworn member of the Iron Vine who holds no office is a Ward. It is the unbounded office of the house, and it recognises no stat at all, because what the Vine hands out is load and not edge.",
-"LOC_SECT_WARD_DESCRIPTION_2": "Three at a time, because a wall one body wide is a wall with a door in it. The Bulwark is recognised on endurance and carries the right to refuse entry, which is the second authority in this repo to be authored rather than ranked.",
-"LOC_SECT_WARD_DESCRIPTION_3": "The single seat of the Vine, and the only office with the right to expel. It is deliberately a seat rather than a rank: whoever holds it can be put out of the house by any three Bulwarks acting together, which is the one exit from a totem pole an institution needs.",
-"LOC_SECT_WARD_DESCRIPTION_4": "One seat, and this one is empty more often than not. It exists to be legible when vacant, which is why an absent holder is a visible row and never a zero.",
-"LOC_SECT_WARD_DESCRIPTION_5": "A school of load and endurance, organised around the Iron Root. It asks less of a member's ear than of their back, and it is the sect in this build whose teaching gate actually refuses: below a third affinity nothing here is taught at all.",
-"LOC_SECT_WARD_DISPLAY_NAME_1": "Ward",
-"LOC_SECT_WARD_DISPLAY_NAME_2": "Bulwark",
-"LOC_SECT_WARD_DISPLAY_NAME_3": "Iron Root",
-"LOC_SECT_WARD_DISPLAY_NAME_4": "Root Listener",
-"LOC_SECT_WARD_DISPLAY_NAME_5": "The Iron Vine",
 }

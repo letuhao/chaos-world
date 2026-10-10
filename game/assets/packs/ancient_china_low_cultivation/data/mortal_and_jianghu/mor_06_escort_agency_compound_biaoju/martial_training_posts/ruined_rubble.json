@@ -1,0 +1,148 @@
+{
+  "asset_id": "ancient_china_low_cultivation.mortal_and_jianghu.mor_06_escort_agency_compound_biaoju.martial_training_posts",
+  "domain": "mortal_and_jianghu",
+  "sub_domain": "mor_06_escort_agency_compound_biaoju",
+  "asset_slug": "martial_training_posts",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/mortal_and_jianghu/mor_06_escort_agency_compound_biaoju/martial_training_posts/ruined_rubble.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "train_agility",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.465,
+        0.425
+      ],
+      [
+        0.716,
+        0.776
+      ]
+    ],
+    "frac_zero": 0.5586,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.041,
+        0.433,
+        0.302,
+        0.1,
+        0.0,
+        0.0
+      ],
+      [
+        0.057,
+        0.547,
+        0.679,
+        0.794,
+        0.552,
+        0.102,
+        0.0
+      ],
+      [
+        0.085,
+        0.669,
+        0.962,
+        0.999,
+        0.894,
+        0.492,
+        0.002
+      ],
+      [
+        0.268,
+        0.945,
+        1.0,
+        1.0,
+        1.0,
+        0.776,
+        0.033
+      ],
+      [
+        0.696,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.987,
+        0.567
+      ],
+      [
+        0.487,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.941,
+        0.188
+      ],
+      [
+        0.006,
+        0.302,
+        0.652,
+        0.849,
+        0.708,
+        0.277,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      24,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 70,
+    "contact_reference_px": 70.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
