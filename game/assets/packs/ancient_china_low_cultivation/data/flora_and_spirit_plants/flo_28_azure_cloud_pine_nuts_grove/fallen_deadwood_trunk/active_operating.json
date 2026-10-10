@@ -1,0 +1,88 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_28_azure_cloud_pine_nuts_grove.fallen_deadwood_trunk",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_28_azure_cloud_pine_nuts_grove",
+  "asset_slug": "fallen_deadwood_trunk",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_28_azure_cloud_pine_nuts_grove/fallen_deadwood_trunk/active_operating.png",
+  "footprint_cells": [
+    2,
+    1
+  ],
+  "canvas_px": [
+    256,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "forage_mushrooms",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.557,
+        0.505
+      ]
+    ],
+    "frac_zero": 0.8421,
+    "blocks": [
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.24,
+        0.674,
+        0.116
+      ],
+      [
+        0.494,
+        0.656,
+        0.358
+      ],
+      [
+        0.682,
+        0.897,
+        0.408
+      ]
+    ],
+    "crop_offset": [
+      86,
+      17
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 74,
+    "contact_reference_px": 74.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

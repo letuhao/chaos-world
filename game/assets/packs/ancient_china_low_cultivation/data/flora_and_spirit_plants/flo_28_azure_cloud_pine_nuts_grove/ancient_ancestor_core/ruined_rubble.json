@@ -1,0 +1,287 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_28_azure_cloud_pine_nuts_grove.ancient_ancestor_core",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_28_azure_cloud_pine_nuts_grove",
+  "asset_slug": "ancient_ancestor_core",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_28_azure_cloud_pine_nuts_grove/ancient_ancestor_core/ruined_rubble.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "commune_spirit",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.167,
+        0.766,
+        0.226
+      ],
+      [
+        0.488,
+        0.683,
+        0.477
+      ],
+      [
+        0.444,
+        0.909,
+        0.36
+      ]
+    ],
+    "frac_zero": 0.572,
+    "blocks": [
+      [
+        false,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 8,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.054,
+        0.609,
+        0.83,
+        0.357,
+        0.001,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.053,
+        0.729,
+        0.999,
+        0.999,
+        1.0,
+        0.411,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.021,
+        0.413,
+        0.96,
+        0.651,
+        0.738,
+        0.801,
+        0.911,
+        0.16,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.068,
+        0.688,
+        0.837,
+        0.757,
+        0.832,
+        0.971,
+        0.992,
+        0.861,
+        0.182,
+        0.0
+      ],
+      [
+        0.205,
+        0.796,
+        0.779,
+        0.307,
+        0.933,
+        0.528,
+        0.637,
+        0.502,
+        0.831,
+        0.354,
+        0.0
+      ],
+      [
+        0.672,
+        0.971,
+        0.634,
+        0.547,
+        0.396,
+        0.842,
+        0.474,
+        0.575,
+        0.975,
+        0.917,
+        0.448
+      ],
+      [
+        0.075,
+        0.437,
+        0.425,
+        0.458,
+        0.85,
+        0.96,
+        0.473,
+        0.201,
+        0.31,
+        0.067,
+        0.0
+      ],
+      [
+        0.0,
+        0.176,
+        0.929,
+        0.854,
+        1.0,
+        0.74,
+        0.557,
+        0.464,
+        0.179,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.057,
+        0.892,
+        1.0,
+        1.0,
+        1.0,
+        0.96,
+        0.785,
+        0.462,
+        0.0,
+        0.0
+      ],
+      [
+        0.034,
+        0.748,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.766,
+        0.076,
+        0.0
+      ],
+      [
+        0.0,
+        0.078,
+        0.547,
+        0.902,
+        0.843,
+        0.798,
+        0.636,
+        0.529,
+        0.169,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 147,
+    "contact_reference_px": 147.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

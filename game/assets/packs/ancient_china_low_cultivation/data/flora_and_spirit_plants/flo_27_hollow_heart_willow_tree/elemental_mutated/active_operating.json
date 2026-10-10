@@ -1,0 +1,152 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_27_hollow_heart_willow_tree.elemental_mutated",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_27_hollow_heart_willow_tree",
+  "asset_slug": "elemental_mutated",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_27_hollow_heart_willow_tree/elemental_mutated/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "none",
+  "interactive_verb": "channel_element",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.461,
+        0.469
+      ],
+      [
+        0.533,
+        0.495
+      ]
+    ],
+    "frac_zero": 0.6112,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.044,
+        0.485,
+        0.488,
+        0.023,
+        0.0,
+        0.0
+      ],
+      [
+        0.054,
+        0.499,
+        0.979,
+        0.985,
+        0.496,
+        0.058,
+        0.0
+      ],
+      [
+        0.157,
+        0.817,
+        0.823,
+        0.888,
+        0.845,
+        0.144,
+        0.0
+      ],
+      [
+        0.751,
+        0.916,
+        0.578,
+        0.558,
+        0.888,
+        0.676,
+        0.156
+      ],
+      [
+        0.606,
+        0.818,
+        0.491,
+        0.64,
+        0.68,
+        0.56,
+        0.031
+      ],
+      [
+        0.124,
+        0.396,
+        0.628,
+        0.71,
+        0.224,
+        0.163,
+        0.0
+      ],
+      [
+        0.0,
+        0.303,
+        0.952,
+        0.939,
+        0.239,
+        0.005,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      31,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3
+    ],
+    "contact_px": 85,
+    "contact_reference_px": 85.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
