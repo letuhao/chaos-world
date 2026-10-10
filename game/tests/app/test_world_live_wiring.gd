@@ -239,7 +239,11 @@ func test_pressing_a_map_node_travels_the_hero() -> void:
 	var before := String(WorldSpawnApi.current(_app.actor()).get("location_id", ""))
 	assert_ne(before, "", "the hero arrived somewhere before travelling")
 	var elsewhere := _a_place_the_hero_is_not(before)
-	assert_ne(
+	# `assert_ne(is_empty(), false)` PASSES when the catalog is empty and fails when a
+	# place exists — the comparison was inverted, so the case was red exactly when the
+	# world had somewhere to travel to. Four places are authored under
+	# `game/data/world/locations/`, so the honest assertion is the other one.
+	assert_eq(
 		elsewhere.is_empty(), false, "an authored place this hero is not already standing in exists"
 	)
 	if elsewhere.is_empty():
@@ -408,6 +412,11 @@ func _a_place_the_hero_is_not(here: String) -> Dictionary:
 ## screen that publishes no control would then make the case vacuous. The `pressed`
 ## array carries the watch because a GDScript lambda captures by VALUE — a bare local
 ## `bool` would be copied into the closure and read back as `false` forever.
+##
+## `display_name` is the locale KEY the catalog publishes (the catalog's rows carry
+## `LOC_WORLD_*`), and the node's TEXT is the resolved label — `WorldMapScreen` sets
+## `button.name = display_name` and `button.text = L.t(display_name)`. So the comparison
+## resolves too, exactly as `test_world_map_screen.gd` documents for the same pair.
 func _press_node_for(screen: Node, display_name: String) -> bool:
 	var watched := [false]
 	var watch := func(_watched_id: StringName) -> void: watched[0] = true
@@ -415,7 +424,7 @@ func _press_node_for(screen: Node, display_name: String) -> bool:
 		screen.disconnect(&"location_selected", watch)
 	screen.connect(&"location_selected", watch)
 	for button in _node_buttons(screen, 0):
-		if String(button.text) != display_name:
+		if String(button.name) != display_name and String(button.text) != L.t(display_name):
 			continue
 		button.pressed.emit()
 		return bool(watched[0])

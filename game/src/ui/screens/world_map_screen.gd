@@ -76,6 +76,10 @@ var _edges: Array[Dictionary] = []
 var _current_location: StringName = &""
 var _locations: Array[Dictionary] = []
 var _selected_location: StringName = &""
+## Graph children detached but not yet freeable because one of them was mid-emit.
+## Drained by [method _drain_retired]. Bounded at one generation: every rebuild retires
+## a fresh set and drains the previous one first.
+var _retired: Array[Node] = []
 ## Resolves the world's clock through the root's callables. Its own file because
 ## drawing a graph and reading a clock are two reasons to change this screen.
 var _world: WorldPulseReader = WorldPulseReader.new()
@@ -304,18 +308,55 @@ func _rebuild_graph() -> void:
 func _clear_graph() -> void:
 	if _map_area == null:
 		return
+	_drain_retired()
 	# Freed immediately, not queued. `queue_free()` defers to the end of the frame
 	# and the headless test runner never processes a frame, so every deferred node
 	# stayed parented to `_map_area` while the next `_rebuild_graph()` added a fresh
 	# set on top — an unbounded per-refresh accumulation, and the only surviving
 	# `queue_free()` in `src/ui/`. Same rationale as `ScreenStack.pop()`.
+	#
+	# Detached then RETIRED, for the reason `ScreenStack.pop_to_root()` retires: a
+	# refresh reached from the node button's own `pressed` signal — the map's node
+	# button emits `location_selected`, the app routes it and calls `refresh()` — frees
+	# a `Control` that is MID-EMIT, and the engine refuses it ("Attempted to free a
+	# locked object") and leaves the whole generation standing. Measured on
+	# `--suite world_live_wiring`: three refusals at this line before the retire, zero
+	# after. A deferred free is not available either (no frames headless), so the
+	# generation is held on `_retired` until a clear that cannot be inside its emit: the
+	# next rebuild, or this screen's own deletion.
 	for child in _map_area.get_children():
 		if child != _map_graph:
 			_map_area.remove_child(child)
-			child.free()
+			_retire(child)
 	_node_buttons.clear()
 	_node_positions.clear()
 	_edges.clear()
+
+
+## Hand a detached child to the retired list. A node already freed by someone else is
+## skipped rather than double-freed.
+func _retire(node: Node) -> void:
+	if is_instance_valid(node):
+		_retired.append(node)
+
+
+## Free every retired child. Called only from entries that cannot be inside one of their
+## signals — [method _clear_graph] and [method _notification] — never from the rebuild
+## that a press reaches while the pressed button is still locked.
+func _drain_retired() -> void:
+	for node in _retired:
+		if is_instance_valid(node):
+			node.free()
+	_retired.clear()
+
+
+## A retired child is detached, so it is nobody's child: this deletion is the last chance
+## to free it. `NOTIFICATION_PREDELETE` rather than `_exit_tree()`, for the reason
+## `ScreenStack` records — exit-tree is the hook for LEAVING the tree and a plain `free()`
+## on a tree-attached screen never fires it.
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PREDELETE:
+		_drain_retired()
 
 
 func _group_by_tier() -> Dictionary:
