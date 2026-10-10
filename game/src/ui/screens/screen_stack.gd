@@ -24,6 +24,9 @@ const HOOK_SHOWN := &"on_screen_shown"
 
 var _screens: Array[Control] = []
 var _focus_route: String = ""
+## Screens [method pop_to_root] detached but could not free yet, drained on the next
+## entry that cannot be inside their own signal. See [method _retire].
+var _retired: Array[Control] = []
 
 
 ## Push `screen` on top of the stack and make it the live screen. Returns the
@@ -85,6 +88,7 @@ func push_registered(id: String) -> Control:
 func pop() -> Control:
 	if _screens.is_empty():
 		return null
+	_drain_retired()
 	var screen: Control = _screens.pop_back()
 	remove_child(screen)
 	screen.free()
@@ -99,13 +103,67 @@ func pop() -> Control:
 ## has to be visible in the body: `tests/arch_rules/test_no_unbounded_wait.gd`
 ## only credits a `pop_*` it can read inside the loop, since a call that shrinks
 ## the container somewhere else in the file says nothing about this loop.
+##
+## ## Why each screen is RETIRED here and not freed, unlike [method pop]
+##
+## This entry point is reached from INSIDE the live screen's own signal:
+## `WorldMapButton.pressed` -> the panel's verb -> the app's handler ->
+## `navigate_to` -> here. Freeing that screen now deletes a `Control` that is
+## mid-emit, and the engine refuses it twice — "Object is locked and can't be
+## freed", then "Attempted to free a locked object" — leaving the whole subtree
+## standing behind a red console line. `pop()` does not share the hazard: its
+## production caller is the engine's input dispatch, where the screen's hook has
+## already returned.
+##
+## A deferred free is not the answer either: the headless runner never processes a
+## frame, so `queue_free()` never runs there (`test_no_deferred_free.gd` measures
+## exactly that). So a popped screen is detached HERE and held on `_retired` until
+## an entry that cannot be inside its emit — the next navigation, or the stack's
+## own teardown. At most one screen is ever held: the next `pop_to_root()` drains
+## the previous one first, so this cannot accumulate the way the unfreed screens
+## did (AGENTS.md, the 67 GB `tests/ui` run).
 func pop_to_root() -> void:
+	_drain_retired()
 	while _screens.size() > 1:
 		var screen: Control = _screens.pop_back()
 		remove_child(screen)
-		screen.free()
+		_retire(screen)
 		_activate()
 		screen_popped.emit(screen)
+
+
+## Detach is done by the caller; hand `screen` to the retired list so a later entry
+## frees it outside the emit that retired it. A screen already freed by someone else
+## is skipped rather than double-freed.
+func _retire(screen: Control) -> void:
+	if is_instance_valid(screen):
+		_retired.append(screen)
+
+
+## Free every retired screen. Called only from entries that cannot be inside a
+## retired screen's own signal — [method pop], [method pop_to_root], [method
+## _exit_tree] — never from [method push], which a navigation reaches while the
+## screen it just retired is still locked inside its button's `pressed` emit.
+func _drain_retired() -> void:
+	for screen in _retired:
+		if is_instance_valid(screen):
+			screen.free()
+	_retired.clear()
+
+
+## A retired screen is detached, so it is nobody's child: this deletion is the last
+## chance to free it. Without it, one screen per stack survives every case that ends
+## right after a navigation — the harness builds a fresh stack per test, and the
+## headless runner shares one process across every suite.
+##
+## `NOTIFICATION_PREDELETE` rather than `_exit_tree()`: exit-tree is the hook for
+## LEAVING the tree, and the measured behaviour of `free()` on a tree-attached node is
+## that it never fires it (`test_a_stack_being_freed_drains_its_retired_screen` went
+## red on the exit-tree spelling). Predelete fires on the deletion itself, attached or
+## not, which is exactly when this list must be emptied.
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PREDELETE:
+		_drain_retired()
 
 
 ## The live screen, or null when the stack is empty.

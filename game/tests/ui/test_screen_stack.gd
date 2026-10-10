@@ -89,6 +89,59 @@ func test_pop_to_root_keeps_only_the_first_screen() -> void:
 	stack.free()
 
 
+# --- Retired screens: the emit lock ----------------------------------------
+
+
+## A navigation triggered by the LIVE screen's own button: `pressed` -> the app-style
+## handler -> `pop_to_root()`. Freeing the screen there deletes a `Control` that is
+## mid-emit, which the engine refuses ("Object is locked and can't be freed", then
+## "Attempted to free a locked object") and the subtree stands behind a red console
+## line. This pins both halves of the fix: the emit completes with the stack unwound,
+## and the retired screen is freed by the NEXT entry instead of inside its own signal.
+func test_pop_to_root_from_inside_a_screens_own_signal_retires_it() -> void:
+	var stack := _stack()
+	var root_screen := _screen("RootScreen")
+	stack.push(root_screen)
+	var visitor := _screen("VisitorScreen")
+	var button := Button.new()
+	button.name = "NavigateAway"
+	visitor.add_child(button)
+	var navigations := {"count": 0}
+	button.pressed.connect(
+		func() -> void:
+			navigations["count"] += 1
+			stack.pop_to_root()
+	)
+	stack.push(visitor)
+	# The write is inside the `while` test on purpose: the body shrinks `_screens`, so a
+	# bound read after the loop would be the loop-bounded-by-what-it-grows shape.
+	assert_eq(stack.depth(), 2, "two screens before the press")
+	button.pressed.emit()
+	assert_eq(navigations["count"], 1, "the handler ran inside the emit")
+	assert_eq(stack.depth(), 1, "the emit completed and the stack unwound")
+	assert_eq(stack.current() == root_screen, true, "the root screen is live")
+	assert_eq(is_instance_valid(visitor), true, "a screen retired mid-emit survives it")
+	# The next entry is a fresh emit chain, so the drain there cannot hit the lock.
+	stack.pop_to_root()
+	assert_eq(is_instance_valid(visitor), false, "and the next entry frees it")
+	stack.free()
+
+
+## The teardown half: a stack deleted while one screen is still retired must free it.
+## The harness builds a fresh stack per case and the headless runner shares one
+## process across every suite, so a screen left retired at teardown leaks for the life
+## of the run — the shape the 67 GB `tests/ui` incident was made of.
+func test_a_stack_being_freed_drains_its_retired_screen() -> void:
+	var stack := _stack()
+	stack.push(_screen("RootScreen"))
+	var visitor := _screen("VisitorScreen")
+	stack.push(visitor)
+	stack.pop_to_root()
+	assert_eq(is_instance_valid(visitor), true, "retired rather than freed in the emit")
+	stack.free()
+	assert_eq(is_instance_valid(visitor), false, "the stack's own teardown frees it")
+
+
 # --- Focus and input routing ----------------------------------------------
 
 
