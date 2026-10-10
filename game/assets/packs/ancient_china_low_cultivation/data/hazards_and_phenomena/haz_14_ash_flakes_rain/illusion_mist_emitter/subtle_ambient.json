@@ -1,0 +1,129 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_14_ash_flakes_rain.illusion_mist_emitter",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_14_ash_flakes_rain",
+  "asset_slug": "illusion_mist_emitter",
+  "variant_slug": "subtle_ambient",
+  "name": "Subtle Ambient Intensity",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_14_ash_flakes_rain/illusion_mist_emitter/subtle_ambient.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.092,
+        0.106
+      ],
+      [
+        0.14,
+        0.154
+      ]
+    ],
+    "frac_zero": 0.794,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.033,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.071,
+        0.22,
+        0.001,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.214,
+        0.81,
+        0.312,
+        0.012,
+        0.0
+      ],
+      [
+        0.0,
+        0.312,
+        0.669,
+        0.154,
+        0.065,
+        0.0
+      ],
+      [
+        0.02,
+        0.184,
+        0.087,
+        0.065,
+        0.07,
+        0.016
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.04,
+        0.304,
+        0.024
+      ]
+    ],
+    "crop_offset": [
+      33,
+      56
+    ],
+    "trunk_columns": [],
+    "contact_px": 19,
+    "contact_reference_px": 19.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

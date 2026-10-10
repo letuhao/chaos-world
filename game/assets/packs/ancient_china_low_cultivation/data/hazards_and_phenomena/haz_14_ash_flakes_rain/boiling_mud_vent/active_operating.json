@@ -1,0 +1,155 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_14_ash_flakes_rain.boiling_mud_vent",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_14_ash_flakes_rain",
+  "asset_slug": "boiling_mud_vent",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_14_ash_flakes_rain/boiling_mud_vent/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "inspect_hazard",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.514,
+        0.353
+      ],
+      [
+        0.802,
+        0.81
+      ]
+    ],
+    "frac_zero": 0.5319,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.792,
+        0.325,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.001,
+        0.306,
+        0.992,
+        0.744,
+        0.525,
+        0.282,
+        0.0
+      ],
+      [
+        0.122,
+        0.692,
+        1.0,
+        0.908,
+        0.441,
+        0.606,
+        0.0
+      ],
+      [
+        0.243,
+        0.964,
+        1.0,
+        1.0,
+        0.999,
+        0.661,
+        0.169
+      ],
+      [
+        0.671,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.976,
+        0.553
+      ],
+      [
+        0.703,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.613
+      ],
+      [
+        0.129,
+        0.662,
+        0.919,
+        0.981,
+        0.759,
+        0.424,
+        0.01
+      ]
+    ],
+    "crop_offset": [
+      20,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 140,
+    "contact_reference_px": 140.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,727 @@
+{
+  "id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_13_ghost_gate_wailing_gusts.unstable_talus_chute",
+  "archetype": "unstable_talus_chute_haz_13_ghost_gate_wailing_gusts",
+  "name": "Ghost Gate Wailing Gusts - Unstable Falling Stone Chute",
+  "vietnamese_name": "Quỷ Môn U Yết - Vùng Đá Lăn Sạt Lở",
+  "hanzi": "鬼门幽咽 · 易塌滑坠乱石堆",
+  "category": "haz_13_ghost_gate_wailing_gusts",
+  "category_code": "HAZ-13",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_13_ghost_gate_wailing_gusts",
+  "asset_class": "terrain_tile",
+  "type": "tile",
+  "alpha": "opaque",
+  "pivot": "center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "obstacle",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "terrain_tile entity supporting Ghost Gate Wailing Gusts gameplay",
+  "destructible": false,
+  "material": "compact mineral soil with fine clay granules",
+  "cultivation_element": "ghost",
+  "prompt_summary": "Seamless flat top-down ground terrain texture tile of ghost gate wailing gusts - unstable falling stone chute, authentic ghost gate wailing gusts materials, East Asian Xianxia craftsmanship, pure 90-degree top-down planar view, gouache watercolor hand-painted texture with fine mineral speckles, zero vertical perspective, edge-to-edge full canvas coverage.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Environmental Hazards & Phenomena",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "dry_temperate",
+      "name": "Dry Normal State",
+      "prompt_modifier": "standard dry earthen surface, clear natural grain",
+      "variant_id": "dry_temperate",
+      "variant_name": "Dry Normal State",
+      "description": "standard dry earthen surface, clear natural grain",
+      "prompt": "Seamless 2D ground texture map of ghost gate wailing gusts - unstable falling stone chute, compact mineral soil with fine clay granules, standard dry earthen surface, clear natural grain, painterly anime gouache, continuous uniform natural earth texture, monolithic unbroken flat ground plane, macro top-down perpendicular 90-degree satellite overhead view looking straight down at soil surface, edge-to-edge seamless soil texture filling 100% of canvas.",
+      "negative_prompt": "tiles, pavers, flagstones, stone slabs, paving, grid lines, tile seams, grout, cracks between tiles, subdivided stones, stepping stones, stone blocks, rock slabs, river stones, pebbles in a line, furrows, trenches, channels, walking path, stepping path, crater, arena, depression, circular hollow, ring of cliffs, surrounding rocks, border cliffs, perimeter rocks, border, frame, circular frame, ring of rocks, corner bushes, perimeter foliage, vignette, diorama, cliffs, canyon, pillars, columns, rock towers, elevation, horizon, sky, clouds, landscape, vista, distant view, perspective, 3D scene, chasm, ravine, valley, walls, UI, watermark, props, objects, buildings, trees",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_13_ghost_gate_wailing_gusts/unstable_talus_chute/dry_temperate.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0
+          ]
+        ],
+        "frac_zero": 0.0,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          8,
+          8
+        ],
+        "sub_fill": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "crop_offset": [
+          0,
+          0
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 256,
+        "contact_reference_px": 256.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "wet_monsoon",
+      "name": "Wet Saturated Rain",
+      "prompt_modifier": "darkened damp ground with reflective standing water puddles",
+      "variant_id": "wet_monsoon",
+      "variant_name": "Wet Saturated Rain",
+      "description": "darkened damp ground with reflective standing water puddles",
+      "prompt": "Seamless 2D ground texture map of ghost gate wailing gusts - unstable falling stone chute, compact mineral soil with fine clay granules, darkened damp ground with reflective standing water puddles, painterly anime gouache, continuous uniform natural earth texture, monolithic unbroken flat ground plane, macro top-down perpendicular 90-degree satellite overhead view looking straight down at soil surface, edge-to-edge seamless soil texture filling 100% of canvas.",
+      "negative_prompt": "tiles, pavers, flagstones, stone slabs, paving, grid lines, tile seams, grout, cracks between tiles, subdivided stones, stepping stones, stone blocks, rock slabs, river stones, pebbles in a line, furrows, trenches, channels, walking path, stepping path, crater, arena, depression, circular hollow, ring of cliffs, surrounding rocks, border cliffs, perimeter rocks, border, frame, circular frame, ring of rocks, corner bushes, perimeter foliage, vignette, diorama, cliffs, canyon, pillars, columns, rock towers, elevation, horizon, sky, clouds, landscape, vista, distant view, perspective, 3D scene, chasm, ravine, valley, walls, UI, watermark, props, objects, buildings, trees",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_13_ghost_gate_wailing_gusts/unstable_talus_chute/wet_monsoon.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0
+          ]
+        ],
+        "frac_zero": 0.0,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          8,
+          8
+        ],
+        "sub_fill": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "crop_offset": [
+          0,
+          0
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 256,
+        "contact_reference_px": 256.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "winter_snow_crust",
+      "name": "Winter Frost Crust",
+      "prompt_modifier": "fine white crystalline frost dusting over crevices",
+      "variant_id": "winter_snow_crust",
+      "variant_name": "Winter Frost Crust",
+      "description": "fine white crystalline frost dusting over crevices",
+      "prompt": "Seamless 2D ground texture map of ghost gate wailing gusts - unstable falling stone chute, compact mineral soil with fine clay granules, fine white crystalline frost dusting over crevices, painterly anime gouache, continuous uniform natural earth texture, monolithic unbroken flat ground plane, macro top-down perpendicular 90-degree satellite overhead view looking straight down at soil surface, edge-to-edge seamless soil texture filling 100% of canvas.",
+      "negative_prompt": "tiles, pavers, flagstones, stone slabs, paving, grid lines, tile seams, grout, cracks between tiles, subdivided stones, stepping stones, stone blocks, rock slabs, river stones, pebbles in a line, furrows, trenches, channels, walking path, stepping path, crater, arena, depression, circular hollow, ring of cliffs, surrounding rocks, border cliffs, perimeter rocks, border, frame, circular frame, ring of rocks, corner bushes, perimeter foliage, vignette, diorama, cliffs, canyon, pillars, columns, rock towers, elevation, horizon, sky, clouds, landscape, vista, distant view, perspective, 3D scene, chasm, ravine, valley, walls, UI, watermark, props, objects, buildings, trees",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_13_ghost_gate_wailing_gusts/unstable_talus_chute/winter_snow_crust.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0
+          ]
+        ],
+        "frac_zero": 0.0,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          8,
+          8
+        ],
+        "sub_fill": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "crop_offset": [
+          0,
+          0
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 256,
+        "contact_reference_px": 256.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "yin_corrupted",
+      "name": "Baleful Yin Corrupted",
+      "prompt_modifier": "scorched ash-grey blighted ground with wisps of dark violet miasma",
+      "variant_id": "yin_corrupted",
+      "variant_name": "Baleful Yin Corrupted",
+      "description": "scorched ash-grey blighted ground with wisps of dark violet miasma",
+      "prompt": "Seamless 2D ground texture map of ghost gate wailing gusts - unstable falling stone chute, compact mineral soil with fine clay granules, scorched ash-grey blighted ground with wisps of dark violet miasma, painterly anime gouache, continuous uniform natural earth texture, monolithic unbroken flat ground plane, macro top-down perpendicular 90-degree satellite overhead view looking straight down at soil surface, edge-to-edge seamless soil texture filling 100% of canvas.",
+      "negative_prompt": "tiles, pavers, flagstones, stone slabs, paving, grid lines, tile seams, grout, cracks between tiles, subdivided stones, stepping stones, stone blocks, rock slabs, river stones, pebbles in a line, furrows, trenches, channels, walking path, stepping path, crater, arena, depression, circular hollow, ring of cliffs, surrounding rocks, border cliffs, perimeter rocks, border, frame, circular frame, ring of rocks, corner bushes, perimeter foliage, vignette, diorama, cliffs, canyon, pillars, columns, rock towers, elevation, horizon, sky, clouds, landscape, vista, distant view, perspective, 3D scene, chasm, ravine, valley, walls, UI, watermark, props, objects, buildings, trees",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_13_ghost_gate_wailing_gusts/unstable_talus_chute/yin_corrupted.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0
+          ]
+        ],
+        "frac_zero": 0.0,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          8,
+          8
+        ],
+        "sub_fill": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "crop_offset": [
+          0,
+          0
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 256,
+        "contact_reference_px": 256.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "HAZ-13",
+    "domain": "hazards_and_phenomena",
+    "interaction": "examine",
+    "collision_behavior": "obstacle",
+    "element": "ghost",
+    "tier": 3
+  },
+  "category_id": "haz_13_ghost_gate_wailing_gusts",
+  "domain_id": "hazards_and_phenomena",
+  "pinyin": "Guǐmén Yōuyè · Unstable Falling Stone Chute",
+  "archetype_name": "Unstable Falling Stone Chute",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "obstacle",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "earthen_loam",
+  "secondary_material": "mineral_silt",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Ghost affinity (Core Formation (Kết Đan / 结丹))",
+  "elevation_tier": 3,
+  "mortal_realm_tier": "Core Formation (Kết Đan / 结丹)",
+  "asset_slug": "unstable_talus_chute"
+}

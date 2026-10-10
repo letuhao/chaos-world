@@ -1,0 +1,118 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_14_ash_flakes_rain.illusion_mist_emitter",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_14_ash_flakes_rain",
+  "asset_slug": "illusion_mist_emitter",
+  "variant_slug": "surging_torrent",
+  "name": "Surging Concentrated Torrent",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_14_ash_flakes_rain/illusion_mist_emitter/surging_torrent.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.156,
+        0.326
+      ],
+      [
+        0.252,
+        0.45
+      ]
+    ],
+    "frac_zero": 0.7714,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      5
+    ],
+    "sub_fill": [
+      [
+        0.033,
+        0.365,
+        0.183,
+        0.03,
+        0.0
+      ],
+      [
+        0.04,
+        0.052,
+        0.796,
+        0.395,
+        0.454
+      ],
+      [
+        0.088,
+        0.503,
+        0.959,
+        0.386,
+        0.002
+      ],
+      [
+        0.103,
+        0.231,
+        0.737,
+        0.402,
+        0.021
+      ],
+      [
+        0.0,
+        0.02,
+        0.028,
+        0.5,
+        0.321
+      ]
+    ],
+    "crop_offset": [
+      45,
+      100
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 27,
+    "contact_reference_px": 27.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
