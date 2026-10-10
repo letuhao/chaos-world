@@ -1,0 +1,147 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_22_weeping_cypress_grove.elemental_mutated",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_22_weeping_cypress_grove",
+  "asset_slug": "elemental_mutated",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_22_weeping_cypress_grove/elemental_mutated/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "none",
+  "interactive_verb": "channel_element",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.479,
+        0.556
+      ],
+      [
+        0.614,
+        0.578
+      ]
+    ],
+    "frac_zero": 0.5931,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.089,
+        0.704,
+        0.769,
+        0.068,
+        0.0
+      ],
+      [
+        0.021,
+        0.623,
+        0.838,
+        0.971,
+        0.666,
+        0.004
+      ],
+      [
+        0.169,
+        0.752,
+        0.772,
+        0.886,
+        0.945,
+        0.354
+      ],
+      [
+        0.655,
+        0.767,
+        0.699,
+        0.614,
+        0.889,
+        0.685
+      ],
+      [
+        0.659,
+        0.667,
+        0.752,
+        0.762,
+        0.604,
+        0.444
+      ],
+      [
+        0.272,
+        0.507,
+        0.992,
+        0.865,
+        0.619,
+        0.186
+      ],
+      [
+        0.021,
+        0.612,
+        0.964,
+        0.926,
+        0.505,
+        0.017
+      ]
+    ],
+    "crop_offset": [
+      32,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 108,
+    "contact_reference_px": 108.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

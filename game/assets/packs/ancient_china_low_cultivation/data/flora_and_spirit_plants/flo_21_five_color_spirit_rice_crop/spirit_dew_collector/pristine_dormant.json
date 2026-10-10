@@ -1,0 +1,83 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_21_five_color_spirit_rice_crop.spirit_dew_collector",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_21_five_color_spirit_rice_crop",
+  "asset_slug": "spirit_dew_collector",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_21_five_color_spirit_rice_crop/spirit_dew_collector/pristine_dormant.png",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "none",
+  "interactive_verb": "collect_dew",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.366
+      ]
+    ],
+    "frac_zero": 0.7081,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.125,
+        0.376,
+        0.087
+      ],
+      [
+        0.463,
+        0.879,
+        0.433
+      ],
+      [
+        0.069,
+        0.686,
+        0.169
+      ]
+    ],
+    "crop_offset": [
+      16,
+      18
+    ],
+    "trunk_columns": [
+      1
+    ],
+    "contact_px": 27,
+    "contact_reference_px": 27.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
