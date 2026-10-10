@@ -292,19 +292,34 @@ func test_the_map_covers_every_outcome_the_loop_publishes() -> void:
 		)
 
 
-## The drive's exact defect: a won fight re-pressed, which `_reject`/`_settle` reported
-## with the error tone while the words above it said "The fight is won."
-func test_a_won_fight_is_never_styled_as_an_error() -> void:
+## A LOST fight is styled as an error, and the sentence names the loss.
+##
+## The name used to read "a won fight is never styled as an error" — the won case is
+## asserted below, by `test_a_won_fight_reports_the_ok_tone`, and this body has always
+## been the loss: it pits a 1-HP hero against the anchor-sized opponent and expects
+## `hero_lost` with the error tone. The walk is bounded rather than a single exchange
+## because the seeded answer CAN MISS, and a miss is not a decision: a one-exchange
+## premise left the outcome empty and the case asserting nothing it could reach.
+func test_a_lost_fight_reads_as_an_error() -> void:
 	var hero := _hero()
 	var loop := _loop(hero)
 	_bound_loop = loop
 	var screen := _screen(hero)
-	loop.start_fight()
-	# Fight the hero CANNOT win, so the outcome is a real loss and the map is exercised
-	# from both ends.
+	var opened := loop.start_fight()
+	# The premise, asserted rather than assumed: an unopened fight refuses `exchange` by
+	# name and the outcome then stays empty, which reads as "the loss never happened"
+	# rather than as "the fight never started".
+	assert_eq(bool(opened.get("ok", false)), true, "the fight opens: %s" % str(opened))
+	# Fight the hero CANNOT win: 1 HP against a pool the anchor sized, so the first ANSWER
+	# that lands ends it. The walk is bounded because the seeded answer can miss, and a
+	# miss is not a decision; the health is set once and never re-healed, or the hero
+	# survives every answer and wins on attrition instead of losing.
 	hero.resource(&"health").maximum = 1.0
 	hero.resource(&"health").current = 1.0
-	loop.exchange(0)
+	var exchanges := 0
+	while String(loop.outcome()) == "" and exchanges < 60:
+		loop.exchange(0)
+		exchanges += 1
 	assert_eq(String(loop.outcome()), "hero_lost", "the hero's one point was spent")
 	screen.call("act_strike")
 	assert_eq(String(screen.summary().get("tone", "")), "error", "a loss reads as an error")
@@ -340,9 +355,14 @@ func test_the_verdict_words_and_the_tone_come_from_the_same_verdict() -> void:
 	_bound_loop = loop
 	var screen := _screen(hero)
 	loop.start_fight()
+	# A LOST fight, reached the same bounded way the tone cases reach theirs: one exchange
+	# is not a decision, because the seeded answer can miss.
 	hero.resource(&"health").maximum = 1.0
 	hero.resource(&"health").current = 1.0
-	loop.exchange(0)
+	var exchanges := 0
+	while String(loop.outcome()) == "" and exchanges < 60:
+		loop.exchange(0)
+		exchanges += 1
 	screen.call("act_strike")
 	var view := screen.summary()
 	assert_eq(

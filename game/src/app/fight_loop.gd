@@ -423,7 +423,19 @@ func exchange(seed_value: int = 0) -> Dictionary:
 	_cooldown = _interval_of(_hero)
 	var answer := {"ok": false, "reason": "no_opponent", "amount": 0.0, "crit": false}
 	if _health_of(_opponent) > 0.0:
-		answer = _strike(_opponent, _hero, seed_value + 1)
+		# ## Why the answer rides the SAME seed as the hero's blow
+		#
+		# One turn is one set of rolls (ADR 0126), so both sides of it are resolved from
+		# the caller's `seed_value`. The answer used to get `seed_value + 1`, which is a
+		# CONSTANT stream: an opponent whose first roll missed missed every exchange, the
+		# hero's pool was never touched, and the fight could only end `hero_won`. Measured
+		# on the anchor fight: three exchanges, an empty `{}` for the answer every time,
+		# `hero_health` pinned at 1.0, and a 1-HP hero still winning — while a caller that
+		# passed no seed at all got a hero who could never miss (`CombatBand.roll` treats a
+		# null generator as "the roll is not random", and seed `0` passes none). A caller
+		# who declares no randomness now gets none on either side, and one who seeds a turn
+		# gets the same reproducible fight it always did.
+		answer = _strike(_opponent, _hero, seed_value)
 		_opponent_cooldown = _interval_of(_opponent)
 		_opponent_blows += 1
 	var result := {
