@@ -15,7 +15,9 @@ extends RefCounted
 ## The six actions [DomainExploreScreen] offers, in the order a player meets them.
 ## Declared as data so the button row, the summary and the enabled map cannot disagree
 ## about the set.
-const IDS: Array[StringName] = [&"enter", &"visit", &"inspect", &"attempt", &"claim", &"leave"]
+const IDS: Array[StringName] = [
+	&"enter", &"visit", &"inspect", &"attempt", &"claim", &"reforge", &"leave"
+]
 
 ## The label each action's row carries. The KEYS are the labels' own keys, resolved at
 ## display time (ADR 0916).
@@ -25,6 +27,7 @@ const LABELS := {
 	&"inspect": "LOC_UI_SCREENS_1508A954EE",
 	&"attempt": "LOC_UI_SCREENS_682924E339",
 	&"claim": "LOC_UI_SCREENS_B6DA8450F0",
+	&"reforge": "LOC_UI_SCREENS_REFORGE_SITE",
 	&"leave": "LOC_UI_SCREENS_7E3520A973",
 }
 
@@ -42,6 +45,7 @@ const HANDLERS := {
 	&"inspect": "act_inspect",
 	&"attempt": "act_attempt",
 	&"claim": "act_claim",
+	&"reforge": "act_reforge",
 }
 
 
@@ -100,6 +104,12 @@ static func can_attempt(facts: Dictionary) -> bool:
 
 static func can_claim(facts: Dictionary) -> bool:
 	return gates(facts).can_act(&"claim_fixture")
+
+
+## The secret realm (BL-0951 / ADR 0939, S9 + S15): a one-time mending SITE, offered only
+## when the SELECTED fixture is of kind `secret_realm` and the seam reaches `reforge_site`.
+static func can_reforge(facts: Dictionary) -> bool:
+	return gates(facts).can_act(&"reforge_site")
 
 
 ## The gate set, pointed at the CURRENT state of its caller.
@@ -163,6 +173,10 @@ static func claim_reason(facts: Dictionary) -> String:
 	return gates(facts).reason_for(&"claim_fixture")
 
 
+static func reforge_reason(facts: Dictionary) -> String:
+	return gates(facts).reason_for(&"reforge_site")
+
+
 ## What each of the six verbs is right now. The panel's own halves are added by the
 ## screen, which owns the `ActionSet`.
 static func flags(facts: Dictionary) -> Dictionary:
@@ -173,6 +187,7 @@ static func flags(facts: Dictionary) -> Dictionary:
 		"inspect": can_inspect(facts),
 		"attempt": can_attempt(facts),
 		"claim": can_claim(facts),
+		"reforge": can_reforge(facts),
 	}
 
 

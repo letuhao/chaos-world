@@ -695,6 +695,21 @@ func act_claim() -> bool:
 	)
 
 
+## Reforge a scarred past realm at the selected secret realm SITE (BL-0951 / ADR 0939,
+## S9 + S15). The realm is the site's OWN authored target — the empty argument — because
+## `DomainSecretRealm` defaults it to the weakest scar when none is named, the same default
+## every avenue uses.
+func act_reforge() -> bool:
+	_bind_nodes()
+	if not DomainExploreVerbs.can_reforge(_facts()):
+		return _reject(DomainExploreVerbs.reforge_reason(_facts()))
+	return _settle_fixture(
+		_bridge().call_action(
+			&"reforge_site", [_actor, _selected_room_id(), _selected_fixture_id(), &""]
+		)
+	)
+
+
 func act(action: StringName) -> bool:
 	_bind_nodes()
 	var handler := String(DomainExploreVerbs.HANDLERS.get(action, ""))

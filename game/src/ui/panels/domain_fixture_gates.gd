@@ -47,6 +47,9 @@ const FIXTURE_VERB := {
 	"trap": &"inspect_fixture",
 	"puzzle": &"attempt_fixture",
 	"treasure": &"claim_fixture",
+	# BL-0951 / ADR 0939, S9 + S15: a one-time mending SITE, acted on by `DomainSecretRealm`
+	# through the bridge's `reforge_site` (the fourth kind `DomainFixtures.KINDS` closes over).
+	"secret_realm": &"reforge_site",
 }
 
 ## The three fixture verbs, in the order a player meets them on the row.
@@ -67,6 +70,7 @@ const AUTHORED_FALLBACK := {
 	&"inspect_fixture": "unknown_fixture",
 	&"attempt_fixture": "unknown_node",
 	&"claim_fixture": "missing_key",
+	&"reforge_site": "unknown_site",
 }
 
 ## What the screen must know about itself for a gate to answer. Passed in rather than
