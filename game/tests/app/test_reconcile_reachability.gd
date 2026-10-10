@@ -141,6 +141,35 @@ func _advance(count: int) -> Dictionary:
 	return _pulse.advance_periods(count)
 
 
+## ## A second mount in ONE frame is REUSED, not queued twice
+##
+## `stand_in_the_tree` parents the body through `call_deferred`, so two mounts inside one
+## frame both see a parentless body: the second queues its own `add_child`, and the flush
+## then refuses it with "Can't add child 'WorldStagePlayer' … already has a parent" — the
+## error this file's teardown documents at length, measured three suites away in
+## `test_reconcile_stamp.gd`. The fix makes the reuse check look INSIDE the standing entry
+## (the body is a child of the ENTRY, never of the playfield) and at the published body, so
+## the window between queueing and flushing is covered as well.
+##
+## Asserted on `reused`, which is the caller-visible half: before the fix the second call
+## minted a second entry and answered `reused: false`, and every reader that keys off it
+## believed a fresh mount had happened.
+func test_a_second_mount_in_one_frame_is_reused_rather_than_queued_twice() -> void:
+	expect_assertions(4)
+	WorldStage.release_the_tree(_body)
+	var first := WorldStage.stand_in_the_tree(_body)
+	assert_eq(bool(first["reused"]), false, "the first mount stands the body")
+	var second := WorldStage.stand_in_the_tree(_body)
+	assert_eq(bool(second["ok"]), true, "a second mount in the same frame still answers")
+	assert_eq(
+		bool(second["reused"]),
+		true,
+		"and answers REUSED — a second entry would have queued a second `add_child` for one body"
+	)
+	assert_eq(second["player"] == first["player"], true, "handing back the same body")
+	WorldStage.release_the_tree(_body)
+
+
 # --- 1. THE PRODUCTION CALLERS EXIST -------------------------------------------
 
 
