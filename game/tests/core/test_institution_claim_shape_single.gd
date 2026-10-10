@@ -34,6 +34,11 @@ extends TestCase
 ## discovered so a NEW quartet fails as "a second owner appeared" instead of quietly
 ## becoming the second owner.
 const CLAIM_OWNER := "res://src/core/institution_claim.gd"
+## The file that OWNS the sect claim write. Moved here by ded5dd41e (a lint split of
+## `sect/api.gd`, 1033 -> 975 lines): the rule below is about the writer, not about
+## which file the writer happens to live in, so the case names the writer's home
+## rather than the facade's.
+const WRITER_PATH := "res://src/modules/sect/sect_ledger.gd"
 
 ## The four names that make a claim a claim (ADR 0083). A file declaring all four as
 ## its own members IS a claim shape, whatever it calls itself.
@@ -208,10 +213,29 @@ func test_the_one_measured_divergence_from_the_claim_is_pinned() -> void:
 ## to `InstitutionClaim.to_dict` and writes back exactly what came out, so the four names
 ## are never spelled by this module.
 func test_a_module_writes_its_ledger_through_the_claim_not_through_the_four_names() -> void:
+	# ## The writer moved, and this case follows the WRITER, not the file name
+	#
+	# When this case was written the bridge sat in `sect/api.gd`. Commit ded5dd41e ("lint:
+	# split the sect ledger plumbing out of the facade", 1033 -> 975) moved
+	# `SectLedger.write_claim` into `sect/sect_ledger.gd`, so `claim.to_dict()` appears
+	# there now and appears ZERO times in the facade. The rule is unchanged -- a module
+	# reaches the quartet through `InstitutionClaim.to_dict` and never spells the four
+	# names -- so the assertion moves to the file that owns the write, and the "never
+	# constructs a claim of its own" half is asserted over BOTH.
+	#
+	# Pinned to an explicit PAIR rather than a walk of `modules/sect/`: a walk would go
+	# green on a second `to_dict()` appearing anywhere in the module, which is the very
+	# duplication (ADR 0066) this case exists to catch.
+	var writer := FileAccess.get_file_as_string(WRITER_PATH)
+	assert_ne(writer, "", "the claim writer is readable")
+	assert_eq(_calls(writer, "claim.to_dict()"), 1, "the writer persists the claim's own payload")
 	var body := FileAccess.get_file_as_string("res://src/modules/sect/api.gd")
 	assert_ne(body, "", "the facade is readable")
-	assert_eq(_calls(body, "claim.to_dict()"), 1, "the facade persists the claim's own payload")
-	assert_eq(_calls(body, "InstitutionClaim.new()"), 0, "and never constructs a claim of its own")
+	assert_eq(
+		_calls(body, "InstitutionClaim.new()") + _calls(writer, "InstitutionClaim.new()"),
+		0,
+		"neither the facade nor the writer constructs a claim of its own"
+	)
 	# `SectState.claim` is the module's reader, and it is a delegation for the same
 	# reason — asserted on the file rather than taken from its docstring.
 	var state := FileAccess.get_file_as_string("res://src/modules/sect/sect_state.gd")
