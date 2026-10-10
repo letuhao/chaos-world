@@ -2,6 +2,18 @@ class_name BodyTraining
 extends RefCounted
 
 const _ITEMS := preload("res://src/modules/items/api.gd")
+
+## How far one `strengthen` press raises the acupoints it is bound to, toward the realm's
+## ceiling (DEF-0402). **It is small on purpose.** The press is what advances the CHANNEL
+## (closed -> strengthened, then refinement to the cap), and it trains the acupoints as a
+## side effect — so a realm whose `refinement_cap` is high (the deep realms run to 29) needs
+## ~30 presses to reach its gate, and at the old 0.02 those 30 presses alone carried the
+## acupoints 0.6 past their 0.5 start, SATURATING them at the ceiling before the gate was
+## met. That collapsed the mandatory gate and the optional chase into one number and made
+## the authored `min_foundation` floors inert. At 0.01 the mandatory gate leaves the
+## acupoints short of the ceiling on every realm, so the chase buys something and the floors
+## bite.
+const POINT_TRAINING_STEP := 0.01
 ## The sitting's time price and the final band's cliff (BL-0951): every press below spends
 ## the body's life through the foundation facade, like every other module edge.
 const _FOUNDATION := preload("res://src/modules/foundation/api.gd")
@@ -278,4 +290,6 @@ static func _train_points(points: AcupointSet, channel_id: StringName, target: f
 		for point in points.points:
 			if point.id == definition.id:
 				point.clear_block()
-				point.quality = maxf(point.quality, minf(target, point.quality + 0.02))
+				point.quality = maxf(
+					point.quality, minf(target, point.quality + POINT_TRAINING_STEP)
+				)

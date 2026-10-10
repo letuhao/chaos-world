@@ -1,42 +1,35 @@
 extends TestCase
 
-## DEF-0402, MEASURED: the body's authored `min_foundation` floors are inert, and this is
-## WHY, from numbers rather than from prose.
+## DEF-0402, after the step fix: the body's mandatory gate no longer saturates the acupoints,
+## so the OPTIONAL chase buys something and the authored floors bite.
 ##
-## ## The measurement
+## ## What was wrong, and the fix that worked
 ##
-## A GATE-STOPPED walk (`train_channel` with `depth_cap = the target's required_refinement`)
-## departs at perfection 0.70 (core_formation) rising to 1.00 (dao_ancestor), while the
-## floors it must clear are 0.05..0.80. So even the MINIMAL legal walk clears every floor,
-## and the wall never bites on the body path. A SATURATED walk reads 1.0000 everywhere.
+## `BodyTraining._train_points` raised the acupoints 0.02 per `strengthen` press, and the
+## press ALSO advances the channel — so a realm whose `refinement_cap` is high (the deep
+## realms run to 29, ~31 presses to the gate) carried the acupoints 0.62 past their 0.5
+## start and SATURATED them at the ceiling before the gate was met. A gate-stopped walk then
+## departed at 0.74..1.00 and cleared every floor. The fix is `POINT_TRAINING_STEP = 0.01`:
+## the mandatory gate now leaves the acupoints at/near the gate floor, so a gate-stopped walk
+## departs low and the floors (0.05..0.80) bite, while a saturated walk still reaches 1.0000.
 ##
-## ## The mechanism (enriched, and it is not a step size)
+## **Raising `quality_target` was tried first and REJECTED:** widening the band that way also
+## raised the breakthrough chance, and `test_realm_profile.gd` caught it (72 failures) — the
+## ceiling is priced against the best quality a trained body can hold. The step is the fix
+## that touches neither the ceiling nor the chance band.
 ##
-## Perfection = `(quality - target.quality_required) / (source.quality_target -
-## target.quality_required)`, a 0.07-wide band. The MANDATORY work — the next realm's
-## channel gate, ~5..9 presses, each of which ALSO trains the acupoints 0.02 — already
-## carries the acupoints most of the way across that band before the gate is met. The band
-## is simply narrower than the mandatory overshoot, so there is nothing left for the
-## OPTIONAL chase to buy and no floor left to fail.
+## ## What this pins
 ##
-## ## The fix this measurement points at (a CONTENT pass, not this test)
-##
-## Widen the gate->ceiling band so the mandatory gate leaves a real chase: lower each seed's
-## `quality_required` or raise its `quality_target`, and/or slow the per-press acupoint step
-## so the channel gate is met with the acupoints nearer the floor. Either changes all 30
-## seeds and the body traversal, so it is its own slice — this test PINS the current
-## measurement so that slice has a before/after to move.
-##
-## The assertion is a RELATIONSHIP (a gate-stopped walk clears the floor), not a literal, so
-## a content change that widens the band flips it red and names the work.
+## The CHASE MATTERS: a gate-stopped walk departs strictly below a saturated one, on every
+## realm, and below half the band. A change that re-saturates the acupoints turns this red.
 
 const Play := preload("res://tests/modules/body_cultivation/body_play_fixture.gd")
 
-## One mid-ladder and one deep realm: the two ends of the measured range.
+## One mid-ladder realm whose floor is low (the walk clears) and one deep realm.
 const REALMS: Array[StringName] = [&"core_formation", &"dao_ancestor"]
 
 
-func test_a_gate_stopped_walk_still_clears_the_body_floor() -> void:
+func test_the_chase_matters_after_the_band_widened() -> void:
 	var play := Play.new()
 	for at in REALMS:
 		var target := RealmDefaults.ladder().next(at)
@@ -50,24 +43,30 @@ func test_a_gate_stopped_walk_still_clears_the_body_floor() -> void:
 		var stopped: Actor = play.actor(at)
 		for meridian_id in seed.required_meridians:
 			play.train_channel(stopped, meridian_id, seed, seed.required_refinement)
-		var perfection := BodyCultivationApi.departure_perfection(stopped, target.id)
+		var saturated: Actor = play.actor(at)
+		for meridian_id in seed.required_meridians:
+			play.train_channel(saturated, meridian_id, seed)
+		var gate_stopped := BodyCultivationApi.departure_perfection(stopped, target.id)
+		var full := BodyCultivationApi.departure_perfection(saturated, target.id)
 		assert_eq(
-			perfection >= seed.min_foundation,
+			gate_stopped < full,
 			true,
 			(
 				(
-					"%s: a gate-stopped walk departs at %.4f against a floor of %.4f, so the "
-					% [at, perfection, seed.min_foundation]
+					"%s: a gate-stopped walk departs at %.4f, strictly below the saturated "
+					% [at, gate_stopped]
 				)
-				+ "floor does NOT bite. This is DEF-0402's measurement; the fix is a content "
-				+ "pass that widens the gate->ceiling band (see this file's docstring)."
+				+ "%.4f — the optional chase buys something again (band %s)" % [full, target.id]
 			)
 		)
 		assert_eq(
-			perfection >= 0.5,
+			gate_stopped < 0.5,
 			true,
 			(
-				"%s: the mandatory gate alone carries the acupoints past half the band " % at
-				+ "(%.4f), which is why the chase buys almost nothing" % perfection
+				(
+					"%s: the mandatory gate leaves most of the band open (%.4f), so the floors "
+					% [at, gate_stopped]
+				)
+				+ "above it bite"
 			)
 		)
