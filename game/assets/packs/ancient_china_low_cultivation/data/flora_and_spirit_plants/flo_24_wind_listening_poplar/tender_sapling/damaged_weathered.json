@@ -1,0 +1,89 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_24_wind_listening_poplar.tender_sapling",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_24_wind_listening_poplar",
+  "asset_slug": "tender_sapling",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_24_wind_listening_poplar/tender_sapling/damaged_weathered.png",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "none",
+  "interactive_verb": "cultivate_sprout",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.517
+      ]
+    ],
+    "frac_zero": 0.7018,
+    "blocks": [
+      [
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      0,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.232,
+        0.601,
+        0.067
+      ],
+      [
+        0.717,
+        0.753,
+        0.602
+      ],
+      [
+        0.396,
+        0.789,
+        0.049
+      ]
+    ],
+    "crop_offset": [
+      24,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1
+    ],
+    "contact_px": 50,
+    "contact_reference_px": 50.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,285 @@
+{
+  "asset_id": "ancient_china_low_cultivation.flora_and_spirit_plants.flo_24_wind_listening_poplar.ancient_ancestor_core",
+  "domain": "flora_and_spirit_plants",
+  "sub_domain": "flo_24_wind_listening_poplar",
+  "asset_slug": "ancient_ancestor_core",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/flora_and_spirit_plants/flo_24_wind_listening_poplar/ancient_ancestor_core/damaged_weathered.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "commune_spirit",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.167,
+        0.771,
+        0.222
+      ],
+      [
+        0.675,
+        0.781,
+        0.648
+      ],
+      [
+        0.299,
+        0.83,
+        0.285
+      ]
+    ],
+    "frac_zero": 0.5602,
+    "blocks": [
+      [
+        false,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 8,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.05,
+        0.439,
+        0.551,
+        0.067,
+        0.001,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.642,
+        0.945,
+        0.999,
+        0.898,
+        0.276,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.052,
+        0.603,
+        0.85,
+        0.954,
+        0.978,
+        0.989,
+        0.612,
+        0.205,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.127,
+        0.892,
+        0.995,
+        0.975,
+        0.861,
+        0.998,
+        0.981,
+        0.558,
+        0.0,
+        0.0
+      ],
+      [
+        0.049,
+        0.545,
+        0.73,
+        0.978,
+        0.912,
+        0.976,
+        1.0,
+        0.742,
+        0.294,
+        0.095,
+        0.0
+      ],
+      [
+        0.525,
+        0.986,
+        0.996,
+        0.824,
+        0.875,
+        0.642,
+        0.663,
+        0.991,
+        0.98,
+        0.556,
+        0.0
+      ],
+      [
+        0.563,
+        0.854,
+        0.955,
+        0.537,
+        0.884,
+        0.877,
+        0.366,
+        0.738,
+        1.0,
+        0.813,
+        0.138
+      ],
+      [
+        0.004,
+        0.774,
+        0.82,
+        0.592,
+        0.062,
+        0.888,
+        0.297,
+        0.838,
+        0.911,
+        0.24,
+        0.013
+      ],
+      [
+        0.0,
+        0.189,
+        0.469,
+        0.783,
+        0.922,
+        0.999,
+        0.762,
+        0.402,
+        0.229,
+        0.01,
+        0.0
+      ],
+      [
+        0.0,
+        0.003,
+        0.686,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.865,
+        0.016,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.196,
+        0.751,
+        0.902,
+        0.93,
+        0.726,
+        0.237,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      29,
+      16
+    ],
+    "trunk_columns": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 132,
+    "contact_reference_px": 132.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}
