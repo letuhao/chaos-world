@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="tier_0"]
 script = ExtResource("2_tier")
 tier = 1
-label = "Gate"
+label = "LOC_LOOT_LOOT_BODY_TRUE_IMMORTAL_TRIAL_LABEL_1"
 realm = &"true_immortal"
 rarity = &"common"
 vitality = 9670.3
@@ -18,7 +18,7 @@ boss_tables = Array[Dictionary]([
 [sub_resource type="Resource" id="tier_1"]
 script = ExtResource("2_tier")
 tier = 2
-label = "Depths"
+label = "LOC_LOOT_LOOT_BODY_TRUE_IMMORTAL_TRIAL_LABEL_2"
 realm = &"true_immortal"
 rarity = &"rare"
 vitality = 15472.4

@@ -277,6 +277,9 @@ messages = {
 "LOC_UI_SCREENS_DE8312C223": "Known for good. This is the codex, not the loadout.",
 "LOC_UI_SCREENS_DED9163A97": "Elements: not awakened",
 "LOC_UI_SCREENS_DEF9280FED": "The other two are closed. Fates still have to be earned.",
+"LOC_UI_SCREENS_DEFY_HEAVENS": "Defy the heavens",
+"LOC_UI_SCREENS_DEFY_MENDED": "The heavens were defied and the past realm was mended",
+"LOC_UI_SCREENS_DEFY_SCARRED": "The heavens were defied and the scar deepened",
 "LOC_UI_SCREENS_E1D46249B9": "Survived the tribulation",
 "LOC_UI_SCREENS_E1FACAED67": "Take the ground, then work it.",
 "LOC_UI_SCREENS_E53E200983": "Loading %d of %d.",
@@ -314,7 +317,4 @@ messages = {
 "LOC_UI_SCREENS_FDADDB9CE3": "Inheritance",
 "LOC_UI_SCREENS_FE64ADD216": "Breakthrough",
 "LOC_UI_SCREENS_REFORGE_SITE": "Reforge",
-"LOC_UI_SCREENS_DEFY_HEAVENS": "Defy the heavens",
-"LOC_UI_SCREENS_DEFY_MENDED": "The heavens were defied and the past realm was mended",
-"LOC_UI_SCREENS_DEFY_SCARRED": "The heavens were defied and the scar deepened",
 }
