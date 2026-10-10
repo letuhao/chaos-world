@@ -171,7 +171,9 @@ func test_custom_bus_type_registered_and_resolved() -> void:
 	)
 	var resolved: RefCounted = _app.call("_resolve_events_bus", "MyCustomEvents")
 	assert_eq(resolved, custom_bus, "custom bus resolves to the factory's instance")
-	custom_bus.free()
+	# NO `free()`: a RefCounted is released by its reference count, so `free()` on one is
+	# the engine error "Attempted to free a RefCounted object" and frees nothing at all.
+	# What needed clearing is the REGISTRY entry, and `setup()` clears it for every case.
 
 
 func test_custom_bus_takes_priority_over_classdb() -> void:
@@ -181,7 +183,7 @@ func test_custom_bus_takes_priority_over_classdb() -> void:
 	RegistrationContext.register_events_bus("NpcEvents", func(): return custom_bus)
 	var resolved: RefCounted = _app.call("_resolve_events_bus", "NpcEvents")
 	assert_eq(resolved, custom_bus, "custom bus takes priority over ClassDB resolution")
-	custom_bus.free()
+	# No `free()` — see the note in `test_custom_bus_type_registered_and_resolved`.
 
 
 func test_unknown_bus_returns_null() -> void:
