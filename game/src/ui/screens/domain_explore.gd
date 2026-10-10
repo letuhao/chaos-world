@@ -39,14 +39,15 @@ extends UiScreen
 ## a row that vanishes reads to a player as "the actor does not have this", which is a
 ## different and wrong statement.
 ##
-## ## What is in [DomainExploreModel] and what is here
+## ## What is in [DomainExploreModel], [DomainExploreVerbs], and what is here
 ##
-## This file is the screen: the node tree, the six verbs, the gates that say why a verb is
-## refused, the outcomes, and `summary()`. What the place IS is [DomainExploreModel]'s —
-## reading the world and painting it are two reasons to change, the split
-## `world_pulse_reader.gd` already makes. The gates deliberately stayed here: a gate names
-## its refusal in the PLAYER's terms and reads [constant FIXTURE_VERB], so a gate is a
-## decision about what this screen OFFERS rather than a read of the world.
+## This file is the screen: the node tree, the six verbs, the outcomes and `summary()`.
+## What the place IS is [DomainExploreModel]'s — reading the world and painting it are two
+## reasons to change, the split `world_pulse_reader.gd` already makes. What a verb
+## OFFERS — the action table, the gates, the refusal each states, and the selector fills —
+## is [DomainExploreVerbs]'s, extracted when this file hit the thousand-line ceiling. A
+## gate reads the screen's FACTS rather than its widgets, so it is still a decision about
+## what this screen offers rather than a read of the world.
 ##
 ## Contract: `summary()` is the testable surface, primitives only, and `{}` with no actor.
 
@@ -70,41 +71,9 @@ extends UiScreen
 ## [DomainSeedWalk] for the bound and why the refusal is never swallowed.
 const DEFAULT_SEED := 20261003
 
-## The six actions this screen offers, in the order a player meets them. Declared as data
-## so the button row, the summary and the enabled map cannot disagree about the set.
-const ACTION_IDS: Array[StringName] = [
-	&"enter",
-	&"visit",
-	&"inspect",
-	&"attempt",
-	&"claim",
-	&"leave",
-]
-
-const ACTION_LABELS := {
-	&"enter": "LOC_UI_SCREENS_9EFF7ED921",
-	&"visit": "LOC_UI_SCREENS_2AA4D3E32A",
-	&"inspect": "LOC_UI_SCREENS_1508A954EE",
-	&"attempt": "LOC_UI_SCREENS_682924E339",
-	&"claim": "LOC_UI_SCREENS_B6DA8450F0",
-	&"leave": "LOC_UI_SCREENS_7E3520A973",
-}
-
-## Drive any action by id, so `tools ui drive --cmd` and a headless probe reach the same
-## code path a button press does.
-##
-## A TABLE rather than a chain of `match` arms, because this file already holds a hundred
-## lines of prose and a dispatch is the least interesting thing in it. An id this screen
-## does not offer is refused BY NAME rather than ignored, so a driver learns it asked
-## wrongly instead of seeing a silent no-op.
-const ACTION_HANDLERS := {
-	&"enter": "act_enter",
-	&"leave": "act_leave",
-	&"visit": "act_visit",
-	&"inspect": "act_inspect",
-	&"attempt": "act_attempt",
-	&"claim": "act_claim",
-}
+## The six actions this screen offers live in [DomainExploreVerbs] with the rest of the
+## verb layer: the order a player meets them, the label each row carries, and the handler
+## each id dispatches to.
 
 ## The three fixture kinds, as the MODULE publishes them, paired with the BRIDGE VERB
 ## that acts on each. A trap is INSPECTED, a puzzle is struck, a treasure is opened: a
@@ -328,13 +297,13 @@ func _summary() -> Dictionary:
 	place["bridge"] = seam.summary()
 	place["fixture_message"] = _fixture_message
 	place["fixture_tone"] = String(_fixture_tone)
-	place["header"] = _text_of(_header_label)
-	place["status"] = _text_of(_status_label)
-	place["map_text"] = _text_of(_map_label)
-	place["rooms_text"] = _text_of(_rooms_label)
-	place["population_text"] = _text_of(_population_label)
-	place["zones_text"] = _text_of(_zones_label)
-	place["fixture_text"] = _text_of(_fixture_label)
+	place["header"] = DomainExploreVerbs.text_of(_header_label)
+	place["status"] = DomainExploreVerbs.text_of(_status_label)
+	place["map_text"] = DomainExploreVerbs.text_of(_map_label)
+	place["rooms_text"] = DomainExploreVerbs.text_of(_rooms_label)
+	place["population_text"] = DomainExploreVerbs.text_of(_population_label)
+	place["zones_text"] = DomainExploreVerbs.text_of(_zones_label)
+	place["fixture_text"] = DomainExploreVerbs.text_of(_fixture_label)
 	place["enabled"] = _enabled()
 	place["actions"] = _actions.summary() if _actions != null else {}
 	# The roster, nested under the panel's own key rather than merged key by key: it
@@ -362,9 +331,9 @@ func _refresh_view() -> void:
 	if model == null:
 		return
 	model.refresh(_actor)
-	_fill_templates()
-	_fill_rooms()
-	_fill_fixtures()
+	DomainExploreVerbs.fill_templates(_template_option, model)
+	DomainExploreVerbs.fill_rooms(_room_option, model)
+	DomainExploreVerbs.fill_fixtures(_fixture_option, _node_option, model, _puzzle_nodes())
 	# The floor plan and the settlement are both functions of WHERE THE PLAYER IS LOOKING
 	# and WHAT THE MODULE PUBLISHED, so both are re-read on every refresh rather than
 	# cached at bind time — a panel that read once would show the room the player left,
@@ -497,12 +466,13 @@ func _render() -> void:
 	_population_label.text = L.t(String(lines.get("population", "Nobody is placed here yet")))
 	_zones_label.text = L.t(String(lines.get("zones", "No severe environment authored here")))
 	_fixture_label.text = L.t(String(lines.get("fixture", "No fixture in this room")))
-	_enter_button.disabled = not _can_enter()
-	_leave_button.disabled = not _can_leave()
-	_visit_button.disabled = not _can_visit()
-	_inspect_button.disabled = not _can_inspect()
-	_attempt_button.disabled = not _can_attempt()
-	_claim_button.disabled = not _can_claim()
+	var offered := _enabled()
+	_enter_button.disabled = not bool(offered["enter"])
+	_leave_button.disabled = not bool(offered["leave"])
+	_visit_button.disabled = not bool(offered["visit"])
+	_inspect_button.disabled = not bool(offered["inspect"])
+	_attempt_button.disabled = not bool(offered["attempt"])
+	_claim_button.disabled = not bool(offered["claim"])
 	_publish_actions()
 	_publish_message()
 	_sync_selections()
@@ -593,16 +563,16 @@ func _bind_nodes() -> void:
 	_telegraph = get_node_or_null("%Telegraph") as DomainTelegraphPanel
 	if _actions != null and not _actions.action_requested.is_connected(_on_action_requested):
 		_actions.action_requested.connect(_on_action_requested)
-	_connect_select(_template_option, _on_template_selected)
-	_connect_select(_room_option, _on_room_selected)
-	_connect_select(_fixture_option, _on_fixture_selected)
-	_connect_select(_node_option, _on_node_selected)
-	_connect_pressed(_enter_button, act_enter)
-	_connect_pressed(_leave_button, act_leave)
-	_connect_pressed(_visit_button, act_visit)
-	_connect_pressed(_inspect_button, act_inspect)
-	_connect_pressed(_attempt_button, act_attempt)
-	_connect_pressed(_claim_button, act_claim)
+	DomainExploreVerbs.connect_select(_template_option, _on_template_selected)
+	DomainExploreVerbs.connect_select(_room_option, _on_room_selected)
+	DomainExploreVerbs.connect_select(_fixture_option, _on_fixture_selected)
+	DomainExploreVerbs.connect_select(_node_option, _on_node_selected)
+	DomainExploreVerbs.connect_pressed(_enter_button, act_enter)
+	DomainExploreVerbs.connect_pressed(_leave_button, act_leave)
+	DomainExploreVerbs.connect_pressed(_visit_button, act_visit)
+	DomainExploreVerbs.connect_pressed(_inspect_button, act_inspect)
+	DomainExploreVerbs.connect_pressed(_attempt_button, act_attempt)
+	DomainExploreVerbs.connect_pressed(_claim_button, act_claim)
 
 
 # ── Actions. Each asks the bridge, then repaints from the untouched actor ─────────
@@ -619,8 +589,8 @@ func _bind_nodes() -> void:
 ## success for the same template every time.
 func act_enter() -> bool:
 	_bind_nodes()
-	if not _can_enter():
-		return _reject(_enter_reason())
+	if not DomainExploreVerbs.can_enter(_facts()):
+		return _reject(DomainExploreVerbs.enter_reason(_facts()))
 	var template_id := _selected_template_id()
 	var entered := _enter_with_a_generating_seed(StringName(template_id))
 	return _settle(entered, "Entered %s" % template_id)
@@ -630,9 +600,10 @@ func act_enter() -> bool:
 ## `enter` seam action — which is the only reason the walk needs no bridge reference, and
 ## the reason it can be driven by a test with one `Callable`.
 func _enter_with_a_generating_seed(template_id: StringName) -> Dictionary:
-	# Reached only through [method act_enter], which has already answered `_can_enter()`
-	# — so the seam is non-null by construction. Read through the accessor anyway, so a
-	# future caller reaching the walk without the gate gets a refusal, not a crash.
+	# Reached only through [method act_enter], which has already answered
+	# [method DomainExploreVerbs.can_enter] — so the seam is non-null by construction.
+	# Read through the accessor anyway, so a future caller reaching the walk without the
+	# gate gets a refusal, not a crash.
 	var seam := _bridge()
 	if seam == null:
 		return {"ok": false, "reason": "no_inventory_bridge"}
@@ -651,7 +622,7 @@ func _enter_with_a_generating_seed(template_id: StringName) -> Dictionary:
 ## Leave the domain. The discovered set survives, so nothing the player found is lost.
 func act_leave() -> bool:
 	_bind_nodes()
-	if not _can_leave():
+	if not DomainExploreVerbs.can_leave(_facts()):
 		return _reject("no_map")
 	return _settle(_bridge().call_action(&"leave", [_actor]), "Left the domain")
 
@@ -665,8 +636,8 @@ func act_leave() -> bool:
 ## room happened to be selected before.
 func act_visit() -> bool:
 	_bind_nodes()
-	if not _can_visit():
-		return _reject(_visit_reason())
+	if not DomainExploreVerbs.can_visit(_facts()):
+		return _reject(DomainExploreVerbs.visit_reason(_facts()))
 	var reached := _bridge().call_action(&"visit", [_actor, _selected_room_id(), &""])
 	return _settle(reached, "Reached %s" % String(_selected_room_id()))
 
@@ -692,8 +663,8 @@ func act_visit() -> bool:
 ## second reading of the same fixture.
 func act_inspect() -> bool:
 	_bind_nodes()
-	if not _can_inspect():
-		return _reject(_inspect_reason())
+	if not DomainExploreVerbs.can_inspect(_facts()):
+		return _reject(DomainExploreVerbs.inspect_reason(_facts()))
 	var read := _bridge().call_action(
 		&"inspect_fixture", [_actor, _selected_room_id(), _selected_fixture_id()]
 	)
@@ -704,8 +675,8 @@ func act_inspect() -> bool:
 ## health, and the module names the node it expected — which is shown, not swallowed.
 func act_attempt() -> bool:
 	_bind_nodes()
-	if not _can_attempt():
-		return _reject(_attempt_reason())
+	if not DomainExploreVerbs.can_attempt(_facts()):
+		return _reject(DomainExploreVerbs.attempt_reason(_facts()))
 	var struck := _bridge().call_action(
 		&"attempt_fixture", [_actor, _selected_room_id(), _selected_fixture_id(), _puzzle_node_id()]
 	)
@@ -715,8 +686,8 @@ func act_attempt() -> bool:
 ## Open a treasure. Refused by name at every gate, in the order a player meets them.
 func act_claim() -> bool:
 	_bind_nodes()
-	if not _can_claim():
-		return _reject(_claim_reason())
+	if not DomainExploreVerbs.can_claim(_facts()):
+		return _reject(DomainExploreVerbs.claim_reason(_facts()))
 	return _settle_fixture(
 		_bridge().call_action(
 			&"claim_fixture", [_actor, _selected_room_id(), _selected_fixture_id()]
@@ -726,7 +697,7 @@ func act_claim() -> bool:
 
 func act(action: StringName) -> bool:
 	_bind_nodes()
-	var handler := String(ACTION_HANDLERS.get(action, ""))
+	var handler := String(DomainExploreVerbs.HANDLERS.get(action, ""))
 	if handler.is_empty():
 		return _reject("unknown_action")
 	return bool(call(handler))
@@ -775,239 +746,74 @@ func select_node(node_id: StringName) -> bool:
 
 
 # ── Enabled state. Each verb states its OWN refusal rather than a bare "disabled" ──
+#
+# The gates themselves live in [DomainExploreVerbs]; what is here is the FACTS they read
+# and the panel half this screen owns.
 
 
-func _can_enter() -> bool:
+## The facts a verb's gate reads, gathered ONCE per read. The gates hold no screen, no
+## node and no bridge, so every read they need arrives here as a value — which is what
+## stops a helper reaching past this screen's own `_bind_nodes` for a second answer about
+## what a button offers.
+func _facts() -> Dictionary:
 	var seam := _bridge()
-	return (
-		_actor != null
-		and seam != null
-		and seam.has(&"enter")
-		and _view().is_empty()
-		and not _template_id().is_empty()
-	)
-
-
-func _can_leave() -> bool:
-	var seam := _bridge()
-	return _live() and seam != null and seam.has(&"leave")
-
-
-## `Visit` needs a run, the verb, and a room the MODULE actually holds.
-##
-## The pending-room check is what turns a refused [method select_room] into a refusal of
-## the verb rather than a silent walk into the previous room: a pending id means the
-## caller named a room this run does not have, so the verb must say so by name.
-func _can_visit() -> bool:
-	if not _pending_room().is_empty():
-		return false
-	var seam := _bridge()
-	return _live() and seam != null and seam.has(&"visit") and not _selected_room_id().is_empty()
-
-
-func _can_inspect() -> bool:
-	return _gates().can_act(&"inspect_fixture")
-
-
-func _can_attempt() -> bool:
-	return _gates().can_attempt()
-
-
-func _can_claim() -> bool:
-	return _gates().can_act(&"claim_fixture")
-
-
-## Whether a run is active and the bridge can reach the verb at all.
-func _live() -> bool:
-	return _actor != null and _bridge() != null and not _view().is_empty()
-
-
-## The gate set, pointed at the CURRENT state of this screen.
-##
-## Built fresh on each read and never cached, for the same reason the telegraph is re-read
-## every refresh: a cached gate answers about the moment it was minted, so a selection that
-## moved would leave a button enabled against a fixture that is no longer selected. The
-## object holds no widget and no bridge — only the four facts a decision needs — which is
-## what lets a screen ask a question without reaching past its own `_bind_nodes`.
-func _gates() -> DomainFixtureGates:
-	var gates := DomainFixtureGates.new()
-	var seam := _bridge()
-	gates.evaluate(
-		_live(),
-		(func(action: StringName) -> bool: return seam != null and seam.has(action)) as Callable,
-		_fixture_kind(),
-		_selected_fixture_id(),
-		_puzzle_nodes()
-	)
-	return gates
-
-
-func _enter_reason() -> String:
-	var seam := _bridge()
-	if _actor == null or seam == null:
-		return "no_actor"
-	if not seam.has(&"enter"):
-		return "no_inventory_bridge"
-	if _template_id().is_empty():
-		return "no_such_template"
-	return "no_map"
-
-
-func _visit_reason() -> String:
-	if not _live():
-		return "no_map"
-	var seam := _bridge()
-	if seam == null or not seam.has(&"visit"):
-		return "no_inventory_bridge"
-	return "unknown_room"
-
-
-## A refusal of the READ rather than of an action. `unknown_fixture` is the honest
-## fallback: `inspect` touches nothing and refuses nothing an actor could have caused,
-## so the only reasons it can carry are "this seam is not wired" and "this fixture is
-## not the one the verb reads".
-func _inspect_reason() -> String:
-	return _gates().reason_for(&"inspect_fixture")
-
-
-## `authors_nothing_to_grant` is checked BEFORE the gate, and stays here rather than moving
-## with the rest: it is not a bridge fact but a fact about the AUTHORED nodes, so it reads
-## the selection directly. Everything after it is the gate's own answer.
-func _attempt_reason() -> String:
-	if _puzzle_nodes().is_empty():
-		return "authors_nothing_to_grant"
-	return _gates().reason_for(&"attempt_fixture")
-
-
-func _claim_reason() -> String:
-	return _gates().reason_for(&"claim_fixture")
+	var selection := _selection()
+	return {
+		"has_actor": _actor != null,
+		"seam": seam,
+		"view_empty": _view().is_empty(),
+		"template_id": _template_id(),
+		"pending": String(selection.get("pending", "")),
+		"room_id": String(selection.get("room", "")),
+		"fixture_id": String(selection.get("fixture", "")),
+		"fixture_kind": _fixture_kind(),
+		"nodes": _node_options(),
+	}
 
 
 ## What each action is right now, and what the ActionSet row itself thinks. Both halves
 ## are published so a test can compare them rather than trust either one.
 ##
-## The panel's own flags are read through ONE explicitly typed local. `summary()` is a
+## The panel's own flags are read through ONE explicitly typed local: `summary()` is a
 ## `Dictionary`, so `get()` answers a `Variant`, and a ternary over a Variant and a
 ## literal infers Variant for the whole expression — which this project treats as a parse
-## error. Coerced here so the ternary below compares two dictionaries.
+## error.
 func _enabled() -> Dictionary:
-	var flags: Dictionary = {}
+	var flags := DomainExploreVerbs.flags(_facts())
+	var panel: Dictionary = {}
 	if _actions != null:
-		flags = _actions.summary().get("enabled", {}) as Dictionary
-	return {
-		"enter": _can_enter(),
-		"leave": _can_leave(),
-		"visit": _can_visit(),
-		"inspect": _can_inspect(),
-		"attempt": _can_attempt(),
-		"claim": _can_claim(),
-		"panel_enter": bool(flags.get("enter", false)),
-		"panel_visit": bool(flags.get("visit", false)),
-		"panel_leave": bool(flags.get("leave", false)),
-	}
+		panel = _actions.summary().get("enabled", {}) as Dictionary
+	flags["panel_enter"] = bool(panel.get("enter", false))
+	flags["panel_visit"] = bool(panel.get("visit", false))
+	flags["panel_leave"] = bool(panel.get("leave", false))
+	return flags
 
 
 # ── Rendering ────────────────────────────────────────────────────────────────
+#
+# The four selector fills live in [DomainExploreVerbs] — they are the same four rules
+# the rest of the verb layer shares — and this screen calls them from [method
+# _refresh_view].
 
 
-## Fill the domain selector from the AUTHORED catalogue. Presentation only: the screen
-## never invents a domain, and the rows carry the id beside the label because the row a
-## player reads and the row a driver aims at are the same row.
-func _fill_templates() -> void:
-	if _template_option == null:
-		return
-	var model := _read_model()
-	if model == null:
-		_fill(_template_option, [])
-		return
-	_fill(_template_option, model.template_options())
-	model.keep_template(model.template_id())
-
-
-## Fill the room selector from the AUTHORED room list, so every room in the run is
-## reachable and not only the ones the floor plan has already drawn.
-func _fill_rooms() -> void:
-	if _room_option == null:
-		return
-	var model := _read_model()
-	_fill(_room_option, model.room_options() if model != null else [])
-
-
-## Fill the fixture and node selectors from the SELECTED room. A room is the only place a
-## fixture exists — `DomainFixtures._resolve` refuses by name outside one — so the list
-## empties rather than offering buttons aimed at another room. No nodes is honest: a trap
-## and a treasure have none to strike, so the node row says so by being disabled.
-func _fill_fixtures() -> void:
-	if _fixture_option == null or _node_option == null:
-		return
-	var model := _read_model()
-	_fill(_fixture_option, model.fixture_options() if model != null else [])
-	var nodes := _puzzle_nodes()
-	var labels: Array = []
-	for node in nodes:
-		labels.append(String(node))
-	_fill(_node_option, labels)
-	_node_option.disabled = nodes.is_empty()
-
-
-## Replace an option list's rows. Every refill goes through here because the rule is the
-## same each time, and one place to keep it is one place for the four to agree.
-func _fill(option: OptionButton, labels: Array) -> void:
-	option.clear()
-	for label in labels:
-		option.add_item(String(label))
-
-
-## Push the action row's own state, and the outcome line beside it.
+## Push the action row's own state, and the outcome line beside it. The composing is
+## [DomainExploreVerbs]'s; what is here is the panel and the state this screen owns.
 func _publish_actions() -> void:
-	if _actions == null:
-		return
-	var enabled := _enabled()
-	var flags := {}
-	for action in ACTION_IDS:
-		flags[String(action)] = bool(enabled.get(String(action), false))
-	var state := {
-		"actions": ACTION_IDS,
-		"labels": ACTION_LABELS,
-		"enabled": flags,
-		"primary": &"enter" if flags["enter"] else &"visit",
-	}
-	_actions.set_state(state)
+	DomainExploreVerbs.publish(_actions, _enabled())
 
 
-## The outcome line in both places a reader can see it. `WarnLabel` on a refusal and
-## `OkLabel` on an acceptance are THEME VARIATIONS rather than per-node colours, so the
-## palette stays in the one theme (the UI standard; BL-0084).
 func _publish_message() -> void:
-	if _actions != null:
-		_actions.set_message(_message, _tone)
-	if _message_label != null:
-		_message_label.text = L.t(_message)
-		_message_label.theme_type_variation = _tone_variation()
+	DomainExploreVerbs.publish_message(_actions, _message_label, _message, _tone)
 
 
-func _tone_variation() -> StringName:
-	match _tone:
-		TONE_ERROR:
-			return &"WarnLabel"
-		TONE_OK:
-			return &"OkLabel"
-		_:
-			return &"MetaLabel"
-
-
-## Repaint the four selectors against the lists they were just filled from, without
-## re-emitting `item_selected` — so a programmatic `select()` cannot be mistaken for a
-## click and re-enter the handler that set it.
+## Repaint the four selectors against the lists they were just filled from.
 func _sync_selections() -> void:
 	var model := _read_model()
 	if model == null:
 		return
-	var at := model.selection_indices()
-	_select(_template_option, int(at[0]))
-	_select(_room_option, int(at[1]))
-	_select(_fixture_option, int(at[2]))
-	_select(_node_option, int(at[3]))
+	DomainExploreVerbs.sync_selections(
+		_template_option, _room_option, _fixture_option, _node_option, model.selection_indices()
+	)
 
 
 # ── Outcomes ─────────────────────────────────────────────────────────────────
@@ -1107,31 +913,9 @@ func _reason_text(reason: String) -> String:
 
 
 # ── Plumbing ─────────────────────────────────────────────────────────────────
-
-
-## A guarded connect. Every one of them, so a re-bound screen has one handler per press.
-## The action row carries `act_*` DIRECTLY rather than routing through `act`, because an
-## `ActionSet` button is one specific verb and the panel already knows which; a string
-## table would add a lookup to the one path a player presses most.
-func _connect_pressed(button: Button, handler: Callable) -> void:
-	if button != null and not button.pressed.is_connected(handler):
-		button.pressed.connect(handler)
-
-
-## The four selectors are wired to ONE handler each, and each handler hands its own index
-## to the model — which holds the list that index names, so the two cannot drift.
-func _connect_select(option: OptionButton, handler: Callable) -> void:
-	if option != null and not option.item_selected.is_connected(handler):
-		option.item_selected.connect(handler)
-
-
-func _select(option: OptionButton, index: int) -> void:
-	if option != null and index >= 0 and index < option.item_count:
-		option.select(index)
-
-
-func _text_of(label: Label) -> String:
-	return "" if label == null else label.text
+#
+# The guarded-connect, select and label helpers live in [DomainExploreVerbs] now
+# (they hold no screen state), together with the action table and the gates.
 
 
 func _on_action_requested(action: StringName) -> void:

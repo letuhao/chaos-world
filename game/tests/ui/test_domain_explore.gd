@@ -914,7 +914,7 @@ func test_every_action_is_refused_and_disabled_without_the_seam() -> void:
 	var screen := _screen(_hero(), false)
 	if screen == null:
 		return
-	for action in DomainExploreScreen.ACTION_IDS:
+	for action in DomainExploreVerbs.IDS:
 		assert_eq(screen.act(action), false, "'%s' is refused with no bridge" % action)
 	assert_eq(screen.summary(), {}, "and a screen with no seam publishes no view at all")
 
@@ -923,9 +923,21 @@ func test_every_action_is_refused_and_disabled_without_the_seam() -> void:
 ## one handler per call, and a screen the shell re-binds — which navigation does every
 ## time — then fires N times for one press. Read from the source rather than from a live
 ## node, because a live node cannot tell a second `_bind_nodes` apart from a first.
+##
+## BOTH files that wire a control are read: the guarded-connect helpers and the fills moved
+## to `domain_explore_verbs.gd`, so scanning the screen alone would report "no unguarded
+## connect" over a file that no longer holds most of them.
 func test_every_connect_is_guarded() -> void:
-	var source := FileAccess.get_file_as_string("res://src/ui/screens/domain_explore.gd")
-	assert_eq(source.is_empty(), false, "the screen script is readable")
+	for path in [
+		"res://src/ui/screens/domain_explore.gd",
+		"res://src/ui/screens/domain_explore_verbs.gd",
+	]:
+		_assert_every_connect_is_guarded(path)
+
+
+func _assert_every_connect_is_guarded(path: String) -> void:
+	var source := FileAccess.get_file_as_string(path)
+	assert_eq(source.is_empty(), false, "%s is readable" % path.get_file())
 	for line in source.split("\n"):
 		var code := String(line).split("#")[0]
 		if not code.contains(".connect("):
