@@ -158,6 +158,11 @@ static func defy_heavens(
 ) -> Dictionary:
 	if actor == null:
 		return _refused("no actor to defy the heavens")
+	# No realm named defaults to the WEAKEST scar, the same default every other avenue
+	# uses, so a screen can offer the rite without reading the foundation record (which is
+	# not a UI module). A call with no scar at all is still refused by name below.
+	if realm_id == &"":
+		realm_id = FoundationApi.mend_target(actor)
 	if realm_id == &"":
 		return _refused("no realm named to mend")
 	# The rite is FOR a scar: nothing below the cap means nothing to win, and a gamble

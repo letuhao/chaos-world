@@ -314,4 +314,7 @@ messages = {
 "LOC_UI_SCREENS_FDADDB9CE3": "Inheritance",
 "LOC_UI_SCREENS_FE64ADD216": "Breakthrough",
 "LOC_UI_SCREENS_REFORGE_SITE": "Reforge",
+"LOC_UI_SCREENS_DEFY_HEAVENS": "Defy the heavens",
+"LOC_UI_SCREENS_DEFY_MENDED": "The heavens were defied and the past realm was mended",
+"LOC_UI_SCREENS_DEFY_SCARRED": "The heavens were defied and the scar deepened",
 }

@@ -33,6 +33,10 @@ text = "LOC_UI_SCREENS_8C26C2CB9E"
 unique_name_in_owner = true
 text = "LOC_UI_SCREENS_47E5641946"
 
+[node name="DefyButton" type="Button" parent="Layout/Actions"]
+unique_name_in_owner = true
+text = "LOC_UI_SCREENS_DEFY_HEAVENS"
+
 [node name="MessageLabel" type="Label" parent="Layout"]
 unique_name_in_owner = true
 theme_type_variation = &"MetaLabel"

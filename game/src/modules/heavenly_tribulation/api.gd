@@ -67,6 +67,6 @@ static func withdraw(actor: Actor) -> bool:
 ## — the borrowed slot, the restored proof, the authored bounds — and this only names
 ## it, like every verb here.
 static func defy_heavens(
-	actor: Actor, realm_id: StringName, rng: RandomNumberGenerator = null
+	actor: Actor, realm_id: StringName = &"", rng: RandomNumberGenerator = null
 ) -> Dictionary:
 	return TribulationFight.defy_heavens(actor, realm_id, rng)

@@ -28,6 +28,9 @@ var _begin_button: Button = null
 var _fight_button: Button = null
 var _verdict_button: Button = null
 var _withdraw_button: Button = null
+## The heaven-defying rite (BL-0951 / ADR 0939, S8): a karmic gamble for a scarred past
+## realm, offered beside the ladder's own fight because that is where a tribulation lives.
+var _defy_button: Button = null
 var _message_label: Label = null
 
 # --- Read model ---------------------------------------------------------------
@@ -78,6 +81,10 @@ func _offered(live: Dictionary) -> Dictionary:
 		"fight": active,
 		"verdict": active,
 		"withdraw": active,
+		# The heaven-defying rite (BL-0951 / ADR 0939, S8): a SEPARATE karmic fight for a
+		# scarred past realm, so it is offered whenever no tribulation is already in flight.
+		# The module refuses by name when there is no scar to mend.
+		"defy": not active,
 	}
 
 
@@ -97,6 +104,7 @@ func _refresh_view() -> void:
 	_set_enabled(_fight_button, bool(offered["fight"]))
 	_set_enabled(_verdict_button, bool(offered["verdict"]))
 	_set_enabled(_withdraw_button, bool(offered["withdraw"]))
+	_set_enabled(_defy_button, _actor != null and bool(offered["defy"]))
 	_render_message()
 
 
@@ -134,11 +142,14 @@ func _bind_nodes() -> void:
 	_fight_button = get_node_or_null("%FightButton") as Button
 	_verdict_button = get_node_or_null("%VerdictButton") as Button
 	_withdraw_button = get_node_or_null("%WithdrawButton") as Button
+	_defy_button = get_node_or_null("%DefyButton") as Button
 	_message_label = get_node_or_null("%MessageLabel") as Label
 	_begin_button.pressed.connect(act_begin)
 	_fight_button.pressed.connect(act_fight_wave)
 	_verdict_button.pressed.connect(act_fight_to_verdict)
 	_withdraw_button.pressed.connect(act_withdraw)
+	if _defy_button != null:
+		_defy_button.pressed.connect(act_defy_heavens)
 
 
 # --- Focus --------------------------------------------------------------------
@@ -209,6 +220,28 @@ func act_withdraw() -> bool:
 	)
 	refresh()
 	return withdrawn
+
+
+## Defy the heavens for the WEAKEST scarred past realm (BL-0951 / ADR 0939, S8 + S15): one
+## press, one karmic fight to a verdict, mending on a win and scarring on a loss. The realm
+## is the module's OWN default (no argument = the weakest scar), so this screen never reads
+## the foundation record — which is not a UI module. Its own report, not [method _report]:
+## the rite carries no tribulation blessing, so the ladder's decided branch would misread it.
+func act_defy_heavens() -> bool:
+	if _actor == null:
+		return false
+	var result := HeavenlyTribulationApi.defy_heavens(_actor)
+	if not bool(result.get("ok", false)):
+		set_message(String(result.get("reason", "refused")), TONE_ERROR)
+		refresh()
+		return false
+	var survived := bool(result.get("survived", false))
+	set_message(
+		"LOC_UI_SCREENS_DEFY_MENDED" if survived else "LOC_UI_SCREENS_DEFY_SCARRED",
+		TONE_OK if survived else TONE_ERROR
+	)
+	refresh()
+	return true
 
 
 ## Say what the fight did, not merely that a button was pressed. A refused verb
