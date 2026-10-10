@@ -29,97 +29,21 @@ extends TestCase
 ## rebuild and every save/load — because a re-derivation on load is exactly how a
 ## learned investment quietly changes under a player who did nothing.
 
-const MORTAL := &"qi_refining"
-
-## Two real technique-legal options (ADR 0054's list), one stat and one capacity.
-const STAT_OPTION := &"cult_qi_control"
-const CAPACITY_OPTION := &"cult_dantian_capacity"
-const STAT_VALUE := 6.0
-const CAPACITY_VALUE := 5.0
-
-## `TechniqueCatalog` is process-wide and registration is last-wins, so a reused
-## id would have its second def silently replace the first.
-static var _serial: int = 0
-
-
-func _fresh_id(label: String) -> StringName:
-	_serial += 1
-	return StringName("marginalia_suite_%s_%d" % [label, _serial])
-
-
-## A hero with a budget big enough for every study below — the price itself is
-## asserted in `test_technique_study_cost.gd`, so this is a fixture and not a
-## balance claim.
-func _hero() -> Actor:
-	var actor := Actor.new(&"reader", {Stat.PHYSIQUE: 10.0, Stat.SPIRIT: 10.0})
-	actor.add_resource(ResourcePool.new(&"qi", 500.0))
-	actor.add_resource(ResourcePool.new(&"stamina", 100.0))
-	actor.set_path(PathState.new(PathState.QI, MORTAL))
-	actor.path(PathState.QI).progress = 100000.0
-	TechniquesApi.attach(actor)
-	return actor
-
-
-## A passive manual inscribing one stat option and one capacity option.
-##
-## `rarity` is LEGENDARY deliberately: the band's WIDTH is rarity
-## (`ItemRarity.magnitude_budget`, adopted by ADR 0204), so a def left at the
-## default COMMON carries `budget = 0.0` and therefore NO variance at all. Every
-## assertion in this file about two copies differing would then be vacuous, and
-## it would pass for the wrong reason. The `test_a_common_copy_carries_no_variance`
-## case is the one that pins the narrow end, explicitly.
-func _manual() -> TechniqueDef:
-	var def := TechniqueDef.new()
-	def.id = _fresh_id("manual")
-	def.display_name = "Marrow Circulation Primer"
-	def.grade = ItemGrade.MORTAL
-	def.rarity = ItemRarity.LEGENDARY
-	def.active = false
-	def.path = PathState.QI
-	def.magnitude = 1.6
-	def.passive_options = [
-		{"option_id": STAT_OPTION, "value": STAT_VALUE},
-		{"option_id": CAPACITY_OPTION, "value": CAPACITY_VALUE},
-	]
-	TechniqueCatalog.instance().register(def)
-	return def
-
-
-## A generator seeded to `seed_value`, which is the whole determinism contract:
-## the repo's other rollers take a seeded `RandomNumberGenerator` (see
-## `ItemGenerator.generate` and `BodyAttemptRoll.replay`).
-func _rng(seed_value: int) -> RandomNumberGenerator:
-	var generator := RandomNumberGenerator.new()
-	generator.seed = seed_value
-	return generator
-
-
-## Learn `def` with a chosen seed, so the copy under test is the one the seed
-## picked rather than the engine's entropy.
-func _study(actor: Actor, def: TechniqueDef, seed_value: int) -> Dictionary:
-	return TechniquesApi.learn(actor, def, 0, _rng(seed_value))
-
-
-## The stat contribution on the ACTOR, which is what a player experiences. Read
-## off the stat rather than off the entry, so this asserts the modifier pipeline
-## agrees with the stored annotations rather than the projection against itself.
-func _qi_control(actor: Actor) -> float:
-	return actor.stats.derived(&"qi_control")
-
-
-# --- Two copies of one manual differ, and each says what it holds --------------
+# --- The fixtures live in `technique_marginalia_fixture.gd` -------------------
+# Every helper and constant below reads `TechniqueMarginaliaFixture.<name>`; this
+# suite keeps only the claims.
 
 
 func test_two_copies_of_the_same_manual_roll_differently_and_contribute_what_they_said() -> void:
-	var first_hero := _hero()
-	var second_hero := _hero()
-	var first_def := _manual()
-	var second_def := _manual()
+	var first_hero := TechniqueMarginaliaFixture.hero()
+	var second_hero := TechniqueMarginaliaFixture.hero()
+	var first_def := TechniqueMarginaliaFixture.manual()
+	var second_def := TechniqueMarginaliaFixture.manual()
 	second_def.id = StringName("%s_second" % first_def.id)
 	TechniqueCatalog.instance().register(second_def)
 
-	var first := _study(first_hero, first_def, 11)
-	var second := _study(second_hero, second_def, 97)
+	var first := TechniqueMarginaliaFixture.study(first_hero, first_def, 11)
+	var second := TechniqueMarginaliaFixture.study(second_hero, second_def, 97)
 	assert_eq(bool(first.get("ok")), true, "the first copy was studied")
 	assert_eq(bool(second.get("ok")), true, "the second copy was studied")
 
@@ -128,11 +52,19 @@ func test_two_copies_of_the_same_manual_roll_differently_and_contribute_what_the
 	# every other case in this file passes on authored values alone.
 	var first_margin: Dictionary = first.get("margin", {})
 	var second_margin: Dictionary = second.get("margin", {})
-	assert_eq(first_margin.has(String(STAT_OPTION)), true, "the first copy annotates the stat")
-	assert_eq(second_margin.has(String(STAT_OPTION)), true, "the second copy annotates it too")
+	assert_eq(
+		first_margin.has(String(TechniqueMarginaliaFixture.STAT_OPTION)),
+		true,
+		"the first copy annotates the stat"
+	)
+	assert_eq(
+		second_margin.has(String(TechniqueMarginaliaFixture.STAT_OPTION)),
+		true,
+		"the second copy annotates it too"
+	)
 	assert_ne(
-		float(first_margin[String(STAT_OPTION)]),
-		float(second_margin[String(STAT_OPTION)]),
+		float(first_margin[String(TechniqueMarginaliaFixture.STAT_OPTION)]),
+		float(second_margin[String(TechniqueMarginaliaFixture.STAT_OPTION)]),
 		"two copies of one manual carry different numbers"
 	)
 
@@ -141,15 +73,23 @@ func test_two_copies_of_the_same_manual_roll_differently_and_contribute_what_the
 	TechniquesApi.equip(first_hero, first_def)
 	TechniquesApi.equip(second_hero, second_def)
 	assert_almost_eq(
-		_qi_control(first_hero), float(first_margin[String(STAT_OPTION)]), "first copy", 0.0001
+		TechniqueMarginaliaFixture.qi_control(first_hero),
+		float(first_margin[String(TechniqueMarginaliaFixture.STAT_OPTION)]),
+		"first copy",
+		0.0001
 	)
 	assert_almost_eq(
-		_qi_control(second_hero), float(second_margin[String(STAT_OPTION)]), "second copy", 0.0001
+		TechniqueMarginaliaFixture.qi_control(second_hero),
+		float(second_margin[String(TechniqueMarginaliaFixture.STAT_OPTION)]),
+		"second copy",
+		0.0001
 	)
 	# Not the sheet: at least one of the two landed off the authored figure, so a
 	# suite that quietly fell back to authored values could not pass this file.
 	assert_ne(
-		float(first_margin[String(STAT_OPTION)]), STAT_VALUE, "the first copy is off the sheet"
+		float(first_margin[String(TechniqueMarginaliaFixture.STAT_OPTION)]),
+		TechniqueMarginaliaFixture.STAT_VALUE,
+		"the first copy is off the sheet"
 	)
 
 
@@ -158,22 +98,25 @@ func test_the_band_is_both_sided_so_a_copy_is_on_average_the_sheet() -> void:
 	# the authored figure would be a number no player ever actually gets. Measured
 	# over 200 seeds: values land on BOTH sides of the authored value, and the
 	# worst of them is the floor, not the ceiling.
-	var def := _manual()
+	var def := TechniqueMarginaliaFixture.manual()
 	var below := 0
 	var above := 0
-	var lowest := STAT_VALUE
-	var highest := STAT_VALUE
+	var lowest := TechniqueMarginaliaFixture.STAT_VALUE
+	var highest := TechniqueMarginaliaFixture.STAT_VALUE
 	for seed_value in 200:
-		var drawn := TechniqueMarginalia.draw(def, _rng(seed_value))
+		var drawn := TechniqueMarginalia.draw(def, TechniqueMarginaliaFixture.rng(seed_value))
 		for effect in drawn:
-			if String(effect.get("option_id", "")) != String(STAT_OPTION):
+			if (
+				String(effect.get("option_id", ""))
+				!= String(TechniqueMarginaliaFixture.STAT_OPTION)
+			):
 				continue
 			var value := float(effect.get("value", 0.0))
 			lowest = minf(lowest, value)
 			highest = maxf(highest, value)
-			if value < STAT_VALUE:
+			if value < TechniqueMarginaliaFixture.STAT_VALUE:
 				below += 1
-			elif value > STAT_VALUE:
+			elif value > TechniqueMarginaliaFixture.STAT_VALUE:
 				above += 1
 	assert_eq(below > 0, true, "some copies run below the sheet (%d of 400)" % below)
 	assert_eq(above > 0, true, "some copies run above it (%d of 400)" % above)
@@ -193,18 +136,18 @@ func test_the_band_is_both_sided_so_a_copy_is_on_average_the_sheet() -> void:
 	# a generous allowance for where 200 draws happen to stop — because the claim
 	# is "inside the band", and asserting equality to the EDGE is a claim about
 	# the generator's luck that no implementation can honour.
-	var slack := STAT_VALUE * 0.01
+	var slack := TechniqueMarginaliaFixture.STAT_VALUE * 0.01
 	# The declared window for the rarity these copies carry. Read through the one
 	# published reader rather than two constants, so the assertion and the drawer
 	# cannot disagree about how wide the band is.
 	var band := TechniqueMarginalia.band_for(ItemRarity.LEGENDARY)
 	assert_eq(
-		lowest >= STAT_VALUE * band.x,
+		lowest >= TechniqueMarginaliaFixture.STAT_VALUE * band.x,
 		true,
 		"the worst of 200 copies is at or above the declared floor"
 	)
 	assert_eq(
-		highest <= STAT_VALUE * band.y,
+		highest <= TechniqueMarginaliaFixture.STAT_VALUE * band.y,
 		true,
 		"the best of 200 copies is at or below the declared ceiling"
 	)
@@ -212,12 +155,12 @@ func test_the_band_is_both_sided_so_a_copy_is_on_average_the_sheet() -> void:
 	# which is what distinguishes "sampled from this band" from "a much wider band
 	# that happens to have drawn twice in the middle".
 	assert_eq(
-		absf(lowest - STAT_VALUE * band.x) < slack,
+		absf(lowest - TechniqueMarginaliaFixture.STAT_VALUE * band.x) < slack,
 		true,
 		"the worst of 200 copies is near the declared floor"
 	)
 	assert_eq(
-		absf(highest - STAT_VALUE * band.y) < slack,
+		absf(highest - TechniqueMarginaliaFixture.STAT_VALUE * band.y) < slack,
 		true,
 		"the best of 200 copies is near the declared ceiling"
 	)
@@ -225,7 +168,7 @@ func test_the_band_is_both_sided_so_a_copy_is_on_average_the_sheet() -> void:
 	# actually SPREAD. Without this the two assertions above would also pass if the
 	# drawer returned the authored value every time.
 	assert_eq(
-		highest - lowest > STAT_VALUE * 0.2,
+		highest - lowest > TechniqueMarginaliaFixture.STAT_VALUE * 0.2,
 		true,
 		"the copies spread (%.4f .. %.4f)" % [lowest, highest]
 	)
@@ -238,9 +181,9 @@ func test_the_band_is_both_sided_so_a_copy_is_on_average_the_sheet() -> void:
 ## was dead code (one declaration, zero callers). The band is no longer a constant,
 ## so both ends are pinned by RARITY rather than by number.
 func test_rarity_decides_the_band_and_a_common_copy_carries_no_variance() -> void:
-	var common := _manual()
+	var common := TechniqueMarginaliaFixture.manual()
 	common.rarity = ItemRarity.COMMON
-	var legendary := _manual()
+	var legendary := TechniqueMarginaliaFixture.manual()
 
 	# The published edges, per rarity.
 	var c := TechniqueMarginalia.band_for(ItemRarity.COMMON)
@@ -265,13 +208,13 @@ func test_rarity_decides_the_band_and_a_common_copy_carries_no_variance() -> voi
 	# zero-width actually means.
 	var common_values: Array[float] = []
 	for seed_value in 200:
-		for effect in TechniqueMarginalia.draw(common, _rng(seed_value)):
-			if StringName(effect.get("option_id", &"")) == STAT_OPTION:
+		for effect in TechniqueMarginalia.draw(common, TechniqueMarginaliaFixture.rng(seed_value)):
+			if StringName(effect.get("option_id", &"")) == TechniqueMarginaliaFixture.STAT_OPTION:
 				common_values.append(float(effect.get("value", 0.0)))
 	assert_eq(common_values.size() > 0, true, "the common copy still annotates its option")
 	var worst := 0.0
 	for value in common_values:
-		worst = maxf(worst, absf(value - STAT_VALUE))
+		worst = maxf(worst, absf(value - TechniqueMarginaliaFixture.STAT_VALUE))
 	assert_almost_eq(worst, 0.0, "every common copy reads exactly the sheet", 0.01)
 
 
@@ -280,7 +223,7 @@ func test_rarity_decides_the_band_and_a_common_copy_carries_no_variance() -> voi
 ## would not have noticed that adopting it was optional — so this pins the
 ## adoption, which is what stops it drifting back to dead.
 func test_the_rarity_budget_is_read_rather_than_dead() -> void:
-	var def := _manual()
+	var def := TechniqueMarginaliaFixture.manual()
 	var band := TechniqueMarginalia.band_for(def.rarity)
 	assert_eq(
 		band != Vector2(1.0, 1.0), true, "a legendary def gets a real band, so the budget is read"
@@ -303,26 +246,26 @@ func test_a_roll_never_moves_the_magnitude_ladder_or_its_own_coefficient() -> vo
 	# off the SHARED catalog resource. A rolled magnitude could only reach the
 	# spine as a per-actor copy of the def, so it is refused — and refused here at
 	# the source, not by a caller remembering to skip it.
-	var hero := _hero()
-	var def := _manual()
+	var hero := TechniqueMarginaliaFixture.hero()
+	var def := TechniqueMarginaliaFixture.manual()
 	var authored_magnitude := def.magnitude
 	# Read off a REALM rather than off the actor, so the assertion cannot be
 	# satisfied by an actor whose `realm()` is empty and therefore neutral.
 	#
-	# The realm is `&"core_formation"`, NOT the fixture's own `MORTAL`. R1
+	# The realm is `&"core_formation"`, NOT the fixture's own `TechniqueMarginaliaFixture.MORTAL`. R1
 	# (`qi_refining`) is authored at exactly 1.0000000 — the ladder is DELIBERATELY
 	# neutral at its base (ADR 0055 anchors it there, and `technique_power check`
-	# walks exactly that), so asserting `factor(MORTAL) != 1.0` was asserting that
+	# walks exactly that), so asserting `factor(TechniqueMarginaliaFixture.MORTAL) != 1.0` was asserting that
 	# the shipped data is wrong. The point of this case is "the factor is a real,
 	# non-neutral number the roll could have moved", and R3 is where that is true.
 	var ladder_realm := &"core_formation"
 	var before := TechniqueMagnitudeTable.factor(ladder_realm)
 	assert_ne(before, 1.0, "the R3 rung of the ladder is not neutral")
-	var authored_r3 := TechniqueMagnitudeTable.factor(MORTAL)
+	var authored_r3 := TechniqueMagnitudeTable.factor(TechniqueMarginaliaFixture.MORTAL)
 	assert_almost_eq(
 		authored_r3, 1.0, "and the suite still documents that R1 is the neutral base", 0.0001
 	)
-	var learned := _study(hero, def, 7)
+	var learned := TechniqueMarginaliaFixture.study(hero, def, 7)
 	assert_eq(bool(learned.get("ok")), true, "studied")
 	assert_almost_eq(def.magnitude, authored_magnitude, "the def's magnitude is untouched", 0.0001)
 	assert_almost_eq(
@@ -341,15 +284,15 @@ func test_a_roll_never_moves_the_cost_block_mastery_already_multiplies() -> void
 	# `qi_cost` 0.94^n and `cooldown` 0.96^n. A band on either is a second
 	# multiplier on the same value — the shape ADR 0160 refuses for a capacity by
 	# name — so `qi_cost`, `stamina_cost` and `cooldown` are all authored.
-	var hero := _hero()
-	var def := _manual()
+	var hero := TechniqueMarginaliaFixture.hero()
+	var def := TechniqueMarginaliaFixture.manual()
 	def.qi_cost = 54.0
 	def.stamina_cost = 16.0
 	def.cooldown = 14.0
 	var qi := def.qi_cost
 	var stamina := def.stamina_cost
 	var cooldown := def.cooldown
-	assert_eq(bool(_study(hero, def, 3).get("ok")), true, "studied")
+	assert_eq(bool(TechniqueMarginaliaFixture.study(hero, def, 3).get("ok")), true, "studied")
 	assert_almost_eq(def.qi_cost, qi, "qi cost is authored", 0.0001)
 	assert_almost_eq(def.stamina_cost, stamina, "stamina cost is authored", 0.0001)
 	assert_almost_eq(def.cooldown, cooldown, "cooldown is authored", 0.0001)
@@ -360,25 +303,35 @@ func test_a_capacity_option_is_carried_at_its_authored_value_and_never_banded() 
 	# MAX_QI and MAX_STAMINA by the realm's own 1.0x-551.46x power, and the
 	# authored dantian capacity re-seals the qi pool on top — so a band here is the
 	# least-authored of three multipliers on one number.
-	var hero := _hero()
-	var def := _manual()
-	var learned := _study(hero, def, 23)
+	var hero := TechniqueMarginaliaFixture.hero()
+	var def := TechniqueMarginaliaFixture.manual()
+	var learned := TechniqueMarginaliaFixture.study(hero, def, 23)
 	var margin: Dictionary = learned.get("margin", {})
-	assert_eq(margin.has(String(CAPACITY_OPTION)), true, "the capacity option is reported")
+	assert_eq(
+		margin.has(String(TechniqueMarginaliaFixture.CAPACITY_OPTION)),
+		true,
+		"the capacity option is reported"
+	)
 	assert_almost_eq(
-		float(margin[String(CAPACITY_OPTION)]),
-		CAPACITY_VALUE,
+		float(margin[String(TechniqueMarginaliaFixture.CAPACITY_OPTION)]),
+		TechniqueMarginaliaFixture.CAPACITY_VALUE,
 		"and it carries exactly what the sheet inscribes",
 		0.0001
 	)
 	# Measured across the whole band: a capacity annotation is never once different
 	# from the sheet, so the refusal is structural rather than statistical.
 	for seed_value in 200:
-		for effect in TechniqueMarginalia.draw(def, _rng(seed_value)):
-			if String(effect.get("option_id", "")) != String(CAPACITY_OPTION):
+		for effect in TechniqueMarginalia.draw(def, TechniqueMarginaliaFixture.rng(seed_value)):
+			if (
+				String(effect.get("option_id", ""))
+				!= String(TechniqueMarginaliaFixture.CAPACITY_OPTION)
+			):
 				continue
 			assert_almost_eq(
-				float(effect.get("value", 0.0)), CAPACITY_VALUE, "seed %d" % seed_value, 0.0001
+				float(effect.get("value", 0.0)),
+				TechniqueMarginaliaFixture.CAPACITY_VALUE,
+				"seed %d" % seed_value,
+				0.0001
 			)
 
 
@@ -401,9 +354,9 @@ func test_the_capacity_predicate_agrees_with_the_one_rung_scaling_uses() -> void
 		# an entry at rung 4 whose option is a capacity must read back the AUTHORED
 		# value while a stat option reads back 1.749x it. Both refusals therefore
 		# agree about every option in the shipped pool, or this walks off it.
-		var def := _manual()
+		var def := TechniqueMarginaliaFixture.manual()
 		def.passive_options = [{"option_id": option_id, "value": 4.0}]
-		var drawn := TechniqueMarginalia.draw(def, _rng(5))
+		var drawn := TechniqueMarginalia.draw(def, TechniqueMarginaliaFixture.rng(5))
 		var value := 4.0
 		for effect in drawn:
 			if String(effect.get("option_id", "")) == String(option_id):
@@ -443,13 +396,15 @@ func test_the_capacity_predicate_agrees_with_the_one_rung_scaling_uses() -> void
 ## catalog's window is applied after the band" from "the band happens to be
 ## narrower than every window in the corpus" — and it is the claim the ADR makes.
 func test_the_catalogs_own_bounds_clamp_the_band_when_they_are_tighter_than_it() -> void:
-	var real_record := OptionCatalog.instance().option_record(STAT_OPTION)
+	var real_record := OptionCatalog.instance().option_record(
+		TechniqueMarginaliaFixture.STAT_OPTION
+	)
 	assert_ne(real_record.is_empty(), true, "the option exists so a record can be cloned from it")
-	# A ceiling INSIDE the band: `STAT_VALUE * 0.90 = 5.4`, reached by any copy whose
+	# A ceiling INSIDE the band: `TechniqueMarginaliaFixture.STAT_VALUE * 0.90 = 5.4`, reached by any copy whose
 	# span exceeds 0.90. `clamp_to_bounds` is static and takes the record as an
 	# argument, so this needs no seam into production and cannot narrow the shipped
 	# record — the clone is local to this case.
-	var ceiling := STAT_VALUE * 0.90
+	var ceiling := TechniqueMarginaliaFixture.STAT_VALUE * 0.90
 	var tight := real_record.duplicate(true)
 	tight["bounds"] = {"min": 0.0, "max": ceiling}
 	# What the drawer produces at a given span, reproduced from the two constants it
@@ -457,8 +412,8 @@ func test_the_catalogs_own_bounds_clamp_the_band_when_they_are_tighter_than_it()
 	var fired := 0
 	for seed_value in 200:
 		var band := TechniqueMarginalia.band_for(ItemRarity.LEGENDARY)
-		var span := lerpf(band.x, band.y, randf_from(seed_value))
-		var rolled := snappedf(STAT_VALUE * span, 0.01)
+		var span := lerpf(band.x, band.y, TechniqueMarginaliaFixture.randf_from(seed_value))
+		var rolled := snappedf(TechniqueMarginaliaFixture.STAT_VALUE * span, 0.01)
 		var clamped := OptionCatalog.clamp_to_bounds(tight, rolled)
 		assert_eq(
 			clamped <= ceiling + 0.0001,
@@ -480,14 +435,14 @@ func test_the_catalogs_own_bounds_clamp_the_band_when_they_are_tighter_than_it()
 	)
 	# The floor, from the other side, so neither edge of the window is assumed: a
 	# record whose floor sits INSIDE the band must hold every copy up to it.
-	var floor := STAT_VALUE * 1.10
+	var floor := TechniqueMarginaliaFixture.STAT_VALUE * 1.10
 	var floored := real_record.duplicate(true)
 	floored["bounds"] = {"min": floor, "max": 9999.0}
 	var lifted := 0
 	for seed_value in 200:
 		var band := TechniqueMarginalia.band_for(ItemRarity.LEGENDARY)
-		var span := lerpf(band.x, band.y, randf_from(seed_value))
-		var rolled := snappedf(STAT_VALUE * span, 0.01)
+		var span := lerpf(band.x, band.y, TechniqueMarginaliaFixture.randf_from(seed_value))
+		var rolled := snappedf(TechniqueMarginaliaFixture.STAT_VALUE * span, 0.01)
 		var clamped := OptionCatalog.clamp_to_bounds(floored, rolled)
 		assert_eq(
 			clamped >= floor - 0.0001,
@@ -502,24 +457,13 @@ func test_the_catalogs_own_bounds_clamp_the_band_when_they_are_tighter_than_it()
 	assert_eq(lifted > 0, true, "and the floor clamp fired too (%d of 200)" % lifted)
 
 
-## The FIRST `randf()` the drawer would take for `seed_value`, drawn from a
-## generator seeded exactly as `_rng` seeds it. Reproduced here rather than
-## imported from `draw` so this case tests the CONSTANTS and the CLAMP independently
-## — if it called `draw`, deleting the clamp inside `draw` could not be observed by
-## this case at all, which is precisely what the mutation showed.
-func randf_from(seed_value: int) -> float:
-	var generator := RandomNumberGenerator.new()
-	generator.seed = seed_value
-	return generator.randf()
-
-
 func test_a_rolled_value_stays_inside_the_options_own_bounds_at_the_extremes() -> void:
 	# `OptionCatalog.clamp_to_bounds` is applied AFTER the band, so the catalog's
 	# window is the last word. The shipped `cult_*` bounds are `{0.0, 9999.0}` — a
 	# sanity ceiling rather than a balance window — which is precisely why the band
 	# is authored in `TechniqueMarginalia` and cannot be delegated to the catalog.
 	var catalog := OptionCatalog.instance()
-	var record := catalog.option_record(STAT_OPTION)
+	var record := catalog.option_record(TechniqueMarginaliaFixture.STAT_OPTION)
 	var bounds: Dictionary = record.get("bounds", {})
 	var low := float(bounds.get("min", 0.0))
 	var high := float(bounds.get("max", 0.0))
@@ -529,11 +473,18 @@ func test_a_rolled_value_stays_inside_the_options_own_bounds_at_the_extremes() -
 	# shipped across the corpus rather than on one fixture.
 	var band := TechniqueMarginalia.band_for(ItemRarity.LEGENDARY)
 	for seed_value in [1, 2, 3, 7, 11, 97, 2147483646]:
-		for authored in _shipped_option_values(STAT_OPTION):
-			var def := _manual()
-			def.passive_options = [{"option_id": STAT_OPTION, "value": authored}]
-			for effect in TechniqueMarginalia.draw(def, _rng(seed_value)):
-				if String(effect.get("option_id", "")) != String(STAT_OPTION):
+		for authored in TechniqueMarginaliaFixture.shipped_option_values(
+			TechniqueMarginaliaFixture.STAT_OPTION
+		):
+			var def := TechniqueMarginaliaFixture.manual()
+			def.passive_options = [
+				{"option_id": TechniqueMarginaliaFixture.STAT_OPTION, "value": authored}
+			]
+			for effect in TechniqueMarginalia.draw(def, TechniqueMarginaliaFixture.rng(seed_value)):
+				if (
+					String(effect.get("option_id", ""))
+					!= String(TechniqueMarginaliaFixture.STAT_OPTION)
+				):
 					continue
 				var value := float(effect.get("value", 0.0))
 				assert_eq(value >= low, true, "%.4f is above the floor on %.2f" % [value, authored])
@@ -552,86 +503,24 @@ func test_a_rolled_value_stays_inside_the_options_own_bounds_at_the_extremes() -
 				)
 
 
-## Every authored `{option_id, value}` pair the shipped technique corpus carries
-## for `option_id`, read from the content tree rather than restated, so a retune
-## of any `.tres` widens the coverage of this suite instead of silently narrowing
-## it.
-func _shipped_option_values(option_id: StringName) -> Array:
-	var out: Array = []
-	var dir := DirAccess.open("res://data/techniques")
-	if dir == null:
-		return [STAT_VALUE]
-	dir.list_dir_begin()
-	var entry := dir.get_next()
-	# Snapshot the row count is not the bound here — `get_next` returns "" at the
-	# end of the directory, which is the terminator, and `test_no_unbounded_wait`
-	# accepts a `while` that breaks on it.
-	while not entry.is_empty():
-		if entry.ends_with(".tres"):
-			var text := FileAccess.get_file_as_string("res://data/techniques/%s" % entry)
-			for authored in _parse_passive_options(text):
-				if String(authored.get("option_id", "")) == String(option_id):
-					out.append(float(authored.get("value", 0.0)))
-		entry = dir.get_next()
-	dir.list_dir_end()
-	if out.is_empty():
-		return [STAT_VALUE]
-	return out
-
-
-## The `passive_options` block of a `.tres` read as rows. Read as TEXT rather than
-## loading each resource, so the suite walks the corpus without depending on the
-## catalog's own lazy loader — and so a `.tres` that would fail to load is a
-## finding rather than a crash here.
-func _parse_passive_options(text: String) -> Array:
-	var out: Array = []
-	var open := text.find("passive_options = Array[Dictionary]([")
-	if open < 0:
-		return out
-	var close := text.find("])", open)
-	if close < 0:
-		return out
-	var body := text.substr(open, close - open)
-	for line in body.split("\n"):
-		if not line.contains("option_id"):
-			continue
-		var id_start := line.find('&"') + 2
-		var id_end := line.find('"', id_start)
-		var value_start := line.find('"value":') + 8
-		var value_end := line.find(",", value_start)
-		if id_start < 2 or id_end < 0 or value_start < 8 or value_end < 0:
-			continue
-		(
-			out
-			. append(
-				{
-					"option_id": line.substr(id_start, id_end - id_start),
-					"value": float(line.substr(value_start, value_end - value_start)),
-				}
-			)
-		)
-	return out
-
-
-# --- The one that must not be decorative: the roll is PERSISTENT ---------------
-
-
 func test_a_roll_is_identical_across_rebuilds_and_across_a_save_and_load() -> void:
-	var hero := _hero()
-	var def := _manual()
-	var learned := _study(hero, def, 4242)
+	var hero := TechniqueMarginaliaFixture.hero()
+	var def := TechniqueMarginaliaFixture.manual()
+	var learned := TechniqueMarginaliaFixture.study(hero, def, 4242)
 	var margin: Dictionary = learned.get("margin", {})
-	assert_eq(margin.has(String(STAT_OPTION)), true, "the copy was annotated")
+	assert_eq(
+		margin.has(String(TechniqueMarginaliaFixture.STAT_OPTION)), true, "the copy was annotated"
+	)
 
 	# A rebuild re-derives the whole contribution remove-all-then-re-add
 	# (ADR 0054). If the roll were re-drawn anywhere on that path, the contribution
 	# would move under a player who did nothing.
 	TechniquesApi.equip(hero, def)
-	var after_equip := _qi_control(hero)
+	var after_equip := TechniqueMarginaliaFixture.qi_control(hero)
 	for pass_index in 4:
 		TechniquesApi.rebuild(hero)
 		assert_almost_eq(
-			_qi_control(hero),
+			TechniqueMarginaliaFixture.qi_control(hero),
 			after_equip,
 			"rebuild %d lands on the same value" % pass_index,
 			0.0001
@@ -656,17 +545,20 @@ func test_a_roll_is_identical_across_rebuilds_and_across_a_save_and_load() -> vo
 		)
 	TechniquesApi.equip(restored, def)
 	assert_almost_eq(
-		_qi_control(restored), after_equip, "the restored copy contributes the same", 0.0001
+		TechniqueMarginaliaFixture.qi_control(restored),
+		after_equip,
+		"the restored copy contributes the same",
+		0.0001
 	)
 
 
 func test_a_refused_learn_writes_no_margin() -> void:
 	# ADR 0160's all-or-nothing: a learn that failed takes no progress and leaves no
 	# row, so it must leave no annotations either.
-	var hero := _hero()
+	var hero := TechniqueMarginaliaFixture.hero()
 	hero.path(PathState.QI).progress = 0.0
-	var def := _manual()
-	var refused := _study(hero, def, 5)
+	var def := TechniqueMarginaliaFixture.manual()
+	var refused := TechniqueMarginaliaFixture.study(hero, def, 5)
 	assert_eq(bool(refused.get("ok")), false, "an unaffordable study is refused")
 	assert_eq(refused.get("margin", {}).size(), 0, "and annotates nothing")
 	assert_eq(TechniquesApi.codex(hero).knows(def.id), false, "and the codex is untouched")
@@ -676,10 +568,10 @@ func test_re_learning_keeps_the_copy_the_actor_already_holds() -> void:
 	# A duplicate manual re-teaches the technique. It must not re-draw the numbers
 	# — that would make re-reading a book a way to gamble an investment the player
 	# already paid for.
-	var hero := _hero()
-	var def := _manual()
-	var first := _study(hero, def, 31)
-	var again := _study(hero, def, 2024)
+	var hero := TechniqueMarginaliaFixture.hero()
+	var def := TechniqueMarginaliaFixture.manual()
+	var first := TechniqueMarginaliaFixture.study(hero, def, 31)
+	var again := TechniqueMarginaliaFixture.study(hero, def, 2024)
 	assert_eq(bool(again.get("ok")), true, "re-studied")
 	assert_eq(
 		again.get("margin", {}), first.get("margin", {}), "the margin is unchanged by a second copy"
@@ -717,16 +609,18 @@ func test_an_active_manual_realizes_nothing_because_it_annotates_nothing() -> vo
 	# be a number invented for a book that has none. The honest answer is empty —
 	# and it is empty for a SHAPE reason (no authored options), not because an
 	# active technique is special-cased anywhere.
-	var hero := _hero()
-	var def := _manual()
+	var hero := TechniqueMarginaliaFixture.hero()
+	var def := TechniqueMarginaliaFixture.manual()
 	def.active = true
 	def.passive_options = []
 	TechniqueCatalog.instance().register(def)
-	var learned := _study(hero, def, 17)
+	var learned := TechniqueMarginaliaFixture.study(hero, def, 17)
 	assert_eq(bool(learned.get("ok")), true, "studied")
 	assert_eq(learned.get("margin", {}).size(), 0, "an active manual carries no annotations")
 	assert_eq(
-		TechniqueMarginalia.draw(def, _rng(9)).size(), 0, "and the drawer agrees outside a codex"
+		TechniqueMarginalia.draw(def, TechniqueMarginaliaFixture.rng(9)).size(),
+		0,
+		"and the drawer agrees outside a codex"
 	)
 
 
@@ -747,9 +641,9 @@ func test_an_active_manual_realizes_nothing_because_it_annotates_nothing() -> vo
 ## `0.75 .. 1.25` would be the same hazard one layer down, and would go green after
 ## a retune that the roll had already adopted.
 func test_the_band_reaches_inspect_as_the_two_edges_band_for_declares() -> void:
-	var hero := _hero()
-	var def := _manual()
-	_study(hero, def, 21)
+	var hero := TechniqueMarginaliaFixture.hero()
+	var def := TechniqueMarginaliaFixture.manual()
+	TechniqueMarginaliaFixture.study(hero, def, 21)
 	var declared := TechniqueMarginalia.band_for(def.rarity)
 	var band: Dictionary = TechniquesApi.inspect(hero, def.id).get("marginal_band", {})
 
@@ -773,9 +667,9 @@ func test_the_band_reaches_inspect_as_the_two_edges_band_for_declares() -> void:
 ## claim, and it is the module's arithmetic — the panel formats it and never
 ## multiplies.
 func test_the_published_range_is_this_manuals_own_figures() -> void:
-	var hero := _hero()
-	var def := _manual()
-	_study(hero, def, 34)
+	var hero := TechniqueMarginaliaFixture.hero()
+	var def := TechniqueMarginaliaFixture.manual()
+	TechniqueMarginaliaFixture.study(hero, def, 34)
 	var declared := TechniqueMarginalia.band_for(def.rarity)
 	var view := TechniquesApi.inspect(hero, def.id)
 	assert_eq(bool(view.get("marginal_banded", false)), true, "this copy carries variance")
@@ -783,16 +677,28 @@ func test_the_published_range_is_this_manuals_own_figures() -> void:
 	var figures: Array = view.get("marginal_band_figures", [])
 	assert_eq(figures.size(), 1, "only the stat option may be banded — see the next case")
 	var row: Dictionary = figures[0]
-	assert_eq(String(row["option_id"]), String(STAT_OPTION), "and it is the inscribed option")
-	assert_almost_eq(float(row["authored"]), STAT_VALUE, "the sheet's own figure is quoted", 0.0001)
+	assert_eq(
+		String(row["option_id"]),
+		String(TechniqueMarginaliaFixture.STAT_OPTION),
+		"and it is the inscribed option"
+	)
+	assert_almost_eq(
+		float(row["authored"]),
+		TechniqueMarginaliaFixture.STAT_VALUE,
+		"the sheet's own figure is quoted",
+		0.0001
+	)
 	assert_almost_eq(
 		float(row["floor"]),
-		STAT_VALUE * float(declared.x),
+		TechniqueMarginaliaFixture.STAT_VALUE * float(declared.x),
 		"the low end of the range is the band applied to THAT figure",
 		0.0001
 	)
 	assert_almost_eq(
-		float(row["ceiling"]), STAT_VALUE * float(declared.y), "and the high end likewise", 0.0001
+		float(row["ceiling"]),
+		TechniqueMarginaliaFixture.STAT_VALUE * float(declared.y),
+		"and the high end likewise",
+		0.0001
 	)
 	# The range really is a range: a player told "may read" needs the two ends apart.
 	assert_eq(float(row["ceiling"]) > float(row["floor"]), true, "and it is two-sided")
@@ -813,15 +719,23 @@ func test_the_published_range_is_this_manuals_own_figures() -> void:
 ## produced. The test is over the SHIPPED catalog rather than a fixture, so a new
 ## capacity option cannot quietly join the range.
 func test_a_capacity_option_is_never_inside_the_published_range() -> void:
-	var hero := _hero()
-	var def := _manual()
-	_study(hero, def, 8)
+	var hero := TechniqueMarginaliaFixture.hero()
+	var def := TechniqueMarginaliaFixture.manual()
+	TechniqueMarginaliaFixture.study(hero, def, 8)
 	var figures: Array = TechniquesApi.inspect(hero, def.id).get("marginal_band_figures", [])
 	var ids: Array[String] = []
 	for figure in figures:
 		ids.append(String((figure as Dictionary)["option_id"]))
-	assert_eq(ids.has(String(CAPACITY_OPTION)), false, "a capacity option is carried as authored")
-	assert_eq(ids.has(String(STAT_OPTION)), true, "while the stat option is banded")
+	assert_eq(
+		ids.has(String(TechniqueMarginaliaFixture.CAPACITY_OPTION)),
+		false,
+		"a capacity option is carried as authored"
+	)
+	assert_eq(
+		ids.has(String(TechniqueMarginaliaFixture.STAT_OPTION)),
+		true,
+		"while the stat option is banded"
+	)
 
 
 ## The three rows that have nothing to vary say so with an EMPTY line rather than a
@@ -829,30 +743,35 @@ func test_a_capacity_option_is_never_inside_the_published_range() -> void:
 ## otherwise print a promise the module cannot keep.
 func test_a_manual_that_cannot_vary_publishes_no_range() -> void:
 	# (a) A COMMON copy: rarity reach `0.0`, so the two edges are the same number.
-	var common := _manual()
+	var common := TechniqueMarginaliaFixture.manual()
 	common.rarity = ItemRarity.COMMON
 	TechniqueCatalog.instance().register(common)
-	var common_view := TechniquesApi.inspect(_hero(), common.id)
+	var common_view := TechniquesApi.inspect(TechniqueMarginaliaFixture.hero(), common.id)
 	assert_eq(bool(common_view.get("marginal_banded", false)), false, "a common copy cannot vary")
 	assert_eq((common_view.get("marginal_band_figures", []) as Array).size(), 0, "and says so")
 
 	# (b) An ACTIVE manual: it authors no options at all, so there is nothing to band
 	# however wide its rarity band is.
-	var active := _manual()
+	var active := TechniqueMarginaliaFixture.manual()
 	active.active = true
 	active.passive_options = []
 	TechniqueCatalog.instance().register(active)
-	var active_view := TechniquesApi.inspect(_hero(), active.id)
+	var active_view := TechniquesApi.inspect(TechniqueMarginaliaFixture.hero(), active.id)
 	assert_eq(
 		bool(active_view.get("marginal_banded", false)), false, "an active manual has no margin"
 	)
 	assert_eq((active_view.get("marginal_band_figures", []) as Array).size(), 0, "and says so")
 
 	# (c) A capacity-only manual: every option is on the refused channel.
-	var capped := _manual()
-	capped.passive_options = [{"option_id": CAPACITY_OPTION, "value": CAPACITY_VALUE}]
+	var capped := TechniqueMarginaliaFixture.manual()
+	capped.passive_options = [
+		{
+			"option_id": TechniqueMarginaliaFixture.CAPACITY_OPTION,
+			"value": TechniqueMarginaliaFixture.CAPACITY_VALUE
+		}
+	]
 	TechniqueCatalog.instance().register(capped)
-	var capped_view := TechniquesApi.inspect(_hero(), capped.id)
+	var capped_view := TechniquesApi.inspect(TechniqueMarginaliaFixture.hero(), capped.id)
 	assert_eq(
 		bool(capped_view.get("marginal_banded", false)), false, "a capacity-only manual cannot vary"
 	)
@@ -865,22 +784,27 @@ func test_a_manual_that_cannot_vary_publishes_no_range() -> void:
 ## rarity ladder, rather than merely to exist.
 func test_every_drawn_copy_lands_inside_the_published_range() -> void:
 	for rarity in [ItemRarity.MAGIC, ItemRarity.LEGENDARY]:
-		var def := _manual()
+		var def := TechniqueMarginaliaFixture.manual()
 		def.rarity = rarity
 		TechniqueCatalog.instance().register(def)
-		var hero := _hero()
+		var hero := TechniqueMarginaliaFixture.hero()
 		var declared := TechniqueMarginalia.band_for(rarity)
 		# Twelve seeds: enough to reach both ends of the window rather than landing
 		# in the middle by luck. A single draw would pass for a broken band too.
 		for seed_value in 12:
-			var copy := _study(hero, def, seed_value * 97 + 13)
+			var copy := TechniqueMarginaliaFixture.study(hero, def, seed_value * 97 + 13)
 			var rolled: Dictionary = copy.get("margin", {})
-			var value := float(rolled[String(STAT_OPTION)])
+			var value := float(rolled[String(TechniqueMarginaliaFixture.STAT_OPTION)])
 			var figures: Array = TechniquesApi.inspect(hero, def.id).get(
 				"marginal_band_figures", []
 			)
 			var row: Dictionary = figures[0]
-			assert_almost_eq(float(row["authored"]), STAT_VALUE, "the sheet is unbanded", 0.0001)
+			assert_almost_eq(
+				float(row["authored"]),
+				TechniqueMarginaliaFixture.STAT_VALUE,
+				"the sheet is unbanded",
+				0.0001
+			)
 			assert_eq(
 				float(row["floor"]) <= value and value <= float(row["ceiling"]),
 				true,
@@ -899,55 +823,8 @@ func test_every_drawn_copy_lands_inside_the_published_range() -> void:
 			)
 
 
-func test_the_read_model_reports_the_sheet_and_the_margin_as_two_columns() -> void:
-	var hero := _hero()
-	var def := _manual()
-	var learned := _study(hero, def, 55)
-	var margin: Dictionary = learned.get("margin", {})
-	var view := TechniquesApi.inspect(hero, def)
-	var authored: Array = view.get("authored_effects", [])
-	var marginal: Array = view.get("marginal", [])
-	var effective: Array = view.get("effects", [])
-	assert_eq(authored.size(), 2, "the sheet reports both inscribed options")
-	assert_eq(marginal.size(), 2, "and so does the margin")
-	assert_eq(effective.size(), 2, "and the effective column is the margin, not both")
-	for row in marginal:
-		assert_almost_eq(
-			float(row["value"]),
-			float(margin[String(row["option_id"])]),
-			"'%s' reads at what the copy said" % String(row["option_id"]),
-			0.0001
-		)
-	# The sheet is unchanged, because a copy annotates a book and never rewrites it.
-	for row in authored:
-		var option_id := String(row["option_id"])
-		if option_id == String(CAPACITY_OPTION):
-			assert_almost_eq(float(row["value"]), CAPACITY_VALUE, "the sheet is untouched", 0.0001)
-		else:
-			assert_almost_eq(float(row["value"]), STAT_VALUE, "the sheet is untouched", 0.0001)
-
-
-func test_the_codex_list_marks_which_rows_are_annotated() -> void:
-	# A summary row must not have to project every technique's effects to say
-	# whether one is worth opening, so `annotated` is published as its own flag.
-	var hero := _hero()
-	var def := _manual()
-	var plain := _manual()
-	TechniquesApi.codex(hero).learn(def.id)
-	TechniquesApi.codex(hero).learn(plain.id)
-	TechniquesApi.attach(hero)
-	var rows: Array = TechniquesApi.summary(hero).get("entries", [])
-	var seen := {}
-	for row in rows:
-		seen[String(row["id"])] = row
-	assert_eq(bool(seen[def.id].get("annotated", false)), false, "an unstudied row is plain")
-	assert_eq(bool(seen[plain.id].get("annotated", false)), false, "and so is a direct learn")
-	_study(hero, def, 13)
-	rows = TechniquesApi.summary(hero).get("entries", [])
-	for row in rows:
-		if String(row["id"]) == String(def.id):
-			assert_eq(bool(row.get("annotated", false)), true, "a studied copy is marked")
-
+# --- The read model's two cases moved to `test_technique_marginalia_reads.gd` ----
+# (the inspect columns and the codex `annotated` flag; same fixture, same claims)
 
 # --- Mastery, and the answer to whether a passive's margin may be banded ---------
 
@@ -975,13 +852,24 @@ func test_the_codex_list_marks_which_rows_are_annotated() -> void:
 ## ground entirely (ADR 0160's triple-multiplier argument), so it does not settle
 ## this one.
 func test_a_band_and_a_rung_multiplier_compose_rather_than_double_count() -> void:
-	var hero := _hero()
-	var def := _manual()
-	var learned := _study(hero, def, 606)
-	var banded := float((learned.get("margin", {}) as Dictionary)[String(STAT_OPTION)])
-	assert_ne(banded, STAT_VALUE, "the copy is genuinely banded before any rung is claimed")
+	var hero := TechniqueMarginaliaFixture.hero()
+	var def := TechniqueMarginaliaFixture.manual()
+	var learned := TechniqueMarginaliaFixture.study(hero, def, 606)
+	var banded := float(
+		(learned.get("margin", {}) as Dictionary)[String(TechniqueMarginaliaFixture.STAT_OPTION)]
+	)
+	assert_ne(
+		banded,
+		TechniqueMarginaliaFixture.STAT_VALUE,
+		"the copy is genuinely banded before any rung is claimed"
+	)
 	TechniquesApi.equip(hero, def)
-	assert_almost_eq(_qi_control(hero), banded, "rung 0 is the band's own number", 0.0001)
+	assert_almost_eq(
+		TechniqueMarginaliaFixture.qi_control(hero),
+		banded,
+		"rung 0 is the band's own number",
+		0.0001
+	)
 	# Rung 4 is the deepest the ladder reaches: `1.15^4 = 1.749`, published by ADR
 	# 0055 and read here from `TechniqueScales` so a retune of POWER_STEP cannot
 	# silently pass by moving both sides.
@@ -989,7 +877,7 @@ func test_a_band_and_a_rung_multiplier_compose_rather_than_double_count() -> voi
 	var raised := TechniquesApi.raise_mastery(hero, def.id, 4)
 	assert_eq(bool(raised.get("ok")), true, "the rung moved")
 	assert_almost_eq(
-		_qi_control(hero),
+		TechniqueMarginaliaFixture.qi_control(hero),
 		banded * power,
 		"rung 4 is the band's number times the ladder's power",
 		0.001
@@ -998,48 +886,42 @@ func test_a_band_and_a_rung_multiplier_compose_rather_than_double_count() -> voi
 	# exactly `banded * power(rung)`, so nothing double-counts and nothing is
 	# applied twice.
 	for rung in 5:
-		var other := _hero()
-		var manual := _manual()
-		var drawn := _study(other, manual, 8181)
-		var value := float((drawn.get("margin", {}) as Dictionary)[String(STAT_OPTION)])
+		var other := TechniqueMarginaliaFixture.hero()
+		var manual := TechniqueMarginaliaFixture.manual()
+		var drawn := TechniqueMarginaliaFixture.study(other, manual, 8181)
+		var value := float(
+			(drawn.get("margin", {}) as Dictionary)[String(TechniqueMarginaliaFixture.STAT_OPTION)]
+		)
 		TechniquesApi.equip(other, manual)
 		TechniquesApi.raise_mastery(other, manual.id, rung)
 		var expected := (
 			value * float(TechniqueScales.multipliers_at(rung, manual.mastery_rungs)["power"])
 		)
 		assert_almost_eq(
-			_qi_control(other), expected, "rung %d composes the two exactly" % rung, 0.001
+			TechniqueMarginaliaFixture.qi_control(other),
+			expected,
+			"rung %d composes the two exactly" % rung,
+			0.001
 		)
 	# And the CAPACITY option in the SAME manual did not compose — it is held at its
 	# authored value through rung 4, which is ADR 0160's refusal and the reason the
 	# two channels are decided differently.
 	var capacity_value := -1.0
 	for effect in TechniquesApi.codex(hero).entry(def.id).effects_for(def):
-		if String(effect.get("option_id", "")) == String(CAPACITY_OPTION):
+		if (
+			String(effect.get("option_id", ""))
+			== String(TechniqueMarginaliaFixture.CAPACITY_OPTION)
+		):
 			capacity_value = float(effect.get("value", 0.0))
 	assert_almost_eq(
-		capacity_value, CAPACITY_VALUE, "the capacity option is unscaled by the rung", 0.0001
+		capacity_value,
+		TechniqueMarginaliaFixture.CAPACITY_VALUE,
+		"the capacity option is unscaled by the rung",
+		0.0001
 	)
 
 
 # --- The wiring is REACHABLE, and that is what this file is really about --------
-
-
-## A manual as a REAL `category = &"technique"` ITEM, so the case below can go
-## through `ItemsApi.use_item` — the same call `item_workbench.gd:166` and
-## `QuickUseApi.use_slot` make — rather than through the facade this suite would
-## otherwise be testing in isolation.
-func _manual_item(technique_id: StringName) -> ItemDef:
-	var item := ItemDef.new()
-	item.id = technique_id
-	item.display_name = "A Manual"
-	item.category = ItemCategory.TECHNIQUE
-	item.stackable = false
-	item.rarity = &"magic"
-	item.realm = MORTAL
-	item.roll_spec = {"count": 1, "contexts": ["base"]}
-	item.fixed_modifiers = [{"option_id": &"base_comprehension", "value": 4.0}]
-	return item
 
 
 ## THE REACHABILITY CASE, and the reason it exists.
@@ -1059,12 +941,12 @@ func _manual_item(technique_id: StringName) -> ItemDef:
 ## — so a roll that was drawn and then dropped would fail here.
 func test_a_margin_is_drawn_by_the_real_item_use_path_and_stored_on_the_codex_row() -> void:
 	TechniqueDelivery.install(Callable(TechniqueDelivery, "bind_learner"))
-	var hero := _hero()
+	var hero := TechniqueMarginaliaFixture.hero()
 	# The item path needs an inventory, so this hero is built the order `app/` uses.
 	ItemsApi.attach(hero)
-	var def := _manual()
+	var def := TechniqueMarginaliaFixture.manual()
 	var technique_id := def.id
-	ItemsApi.inventory(hero).add(_manual_item(technique_id), 1)
+	ItemsApi.inventory(hero).add(TechniqueMarginaliaFixture.manual_item(technique_id), 1)
 
 	var result := ItemsApi.use_item(hero, technique_id)
 	assert_eq(bool(result.get("ok")), true, "the real item path studied the manual")
@@ -1081,13 +963,13 @@ func test_a_margin_is_drawn_by_the_real_item_use_path_and_stored_on_the_codex_ro
 	# A band, not the sheet — asserted here rather than at the facade, because this
 	# is the path a player's copy actually travels.
 	assert_ne(
-		float(margin[String(STAT_OPTION)]),
-		STAT_VALUE,
+		float(margin[String(TechniqueMarginaliaFixture.STAT_OPTION)]),
+		TechniqueMarginaliaFixture.STAT_VALUE,
 		"the copy a player holds is banded, not the printed figure"
 	)
 	assert_almost_eq(
-		float(margin[String(CAPACITY_OPTION)]),
-		CAPACITY_VALUE,
+		float(margin[String(TechniqueMarginaliaFixture.CAPACITY_OPTION)]),
+		TechniqueMarginaliaFixture.CAPACITY_VALUE,
 		"and the capacity option is at the sheet",
 		0.0001
 	)
@@ -1095,8 +977,8 @@ func test_a_margin_is_drawn_by_the_real_item_use_path_and_stored_on_the_codex_ro
 	# production code rather than through this suite calling a component.
 	TechniquesApi.equip(hero, technique_id)
 	assert_almost_eq(
-		_qi_control(hero),
-		float(margin[String(STAT_OPTION)]),
+		TechniqueMarginaliaFixture.qi_control(hero),
+		float(margin[String(TechniqueMarginaliaFixture.STAT_OPTION)]),
 		"the item-path copy contributes exactly what it stored",
 		0.0001
 	)
