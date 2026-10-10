@@ -287,7 +287,7 @@ static func live_boss(actor: Actor) -> Dictionary:
 ## `rng` above is already shared with the boss's return stroke (`_answer`), so consuming
 ## from it here would re-roll the answer for the rest of the exchange — adding a status
 ## would change the damage the boss deals. Instead the seed is derived whole, through
-## `StatusApply.status_seed(rng.seed, actor, active, null, _hit_index(actor))`: ADR 0087's
+## `StatusApplyMath.status_seed(rng.seed, actor, active, null, _hit_index(actor))`: ADR 0087's
 ## exact shape, which is `LootState._encounter_seed`'s shape. `hit_index` is not the
 ## exchange number (this verb is press-driven and has no turn counter, ADR 0076) but the
 ## number of exchanges this actor has already survived, counted on the duel ledger's own
@@ -467,7 +467,7 @@ static func _element_of(actor: Actor) -> StringName:
 ##
 ## ```
 ## var stream := RandomNumberGenerator.new()
-## var seed_value := StatusApply.status_seed(rng.seed, actor, actor, active, salt)
+## var seed_value := StatusApplyMath.status_seed(rng.seed, actor, actor, active, salt)
 ## stream.seed = seed_value        # `state` is RAW PCG, never assigned
 ## if chance < 1.0 and not stream.randf() < chance:
 ##     return closed

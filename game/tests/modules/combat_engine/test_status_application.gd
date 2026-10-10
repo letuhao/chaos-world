@@ -142,8 +142,8 @@ func test_two_hits_in_one_fight_do_not_roll_the_same_status() -> void:
 	var attacker := CombatTestKit.actor(&"hero")
 	var defender := CombatTestKit.actor(&"target")
 	assert_ne(
-		StatusApply.status_seed(555, attacker, defender, null, 0),
-		StatusApply.status_seed(555, attacker, defender, null, 1),
+		StatusApplyMath.status_seed(555, attacker, defender, null, 0),
+		StatusApplyMath.status_seed(555, attacker, defender, null, 1),
 		"the hit index salts the substream, so hit 2 is not a replay of hit 1"
 	)
 

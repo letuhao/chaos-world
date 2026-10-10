@@ -467,7 +467,7 @@ func test_two_exchanges_in_one_fight_do_not_replay_the_first_answers_status() ->
 		# The boss is a Dictionary, and `status_seed`'s THIRD slot is typed `Actor`,
 		# so the actor goes there and the encounter dict goes in the `technique`
 		# Variant slot — the same shape the production call site uses.
-		var seed_value := StatusApply.status_seed(900 + index, actor, actor, boss, index)
+		var seed_value := StatusApplyMath.status_seed(900 + index, actor, actor, boss, index)
 		seen[seed_value] = true
 	assert_eq(seen.size(), 6, "every exchange in a fight gets its own substream")
 

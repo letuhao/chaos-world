@@ -144,6 +144,7 @@ const REQUEST_KEY := &"status_request"
 ## The result keys of [method apply]. Every value is a primitive, so a readout can
 ## render it and a save can carry it without naming this class (ADR 0038).
 const APPLIED := &"applied"
+
 const REFUSED := &"refused"
 
 ## The `effects[]` entry S12 appends its result to, and the kind it carries. ADR 0087:
@@ -152,18 +153,27 @@ const REFUSED := &"refused"
 ## So the outcome does not grow a field, this is the read model, and the spine stays
 ## the one place a caller looks.
 const EFFECT_KIND := &"status_application"
+
 const OUTCOME_KEY := &"status"
 
 ## Refusal reasons, as the caller sees them. Each is a claim a test can pin, which a
 ## bare `false` could not be.
 const REFUSE_NOT_CLEAN := &"not_clean"
+
 const REFUSE_NO_REQUEST := &"no_request"
+
 const REFUSE_NO_GATE := &"no_gate"
+
 const REFUSE_ALREADY_HELD := &"already_held"
+
 const REFUSE_NO_RNG := &"no_rng"
+
 const REFUSE_RESISTED := &"resisted"
+
 const REFUSE_NO_POTENCY := &"no_potency"
+
 const REFUSE_UNWRITABLE := &"unwritable"
+
 ## ADR 0885: the defender carries `status.immune.<tag>` at `>= 1.0` for a tag this status
 ## declares. A hard refusal is its own reason, like every other refusal here.
 const REFUSE_IMMUNE := &"immune"
@@ -183,25 +193,34 @@ const UNLOGGED_REFUSALS: Array[StringName] = [REFUSE_NO_REQUEST, REFUSE_NO_GATE,
 ## stated once: a def that spells a key differently is unreadable, not silently absent,
 ## and an unreadable key reads the degenerate value every one of these has.
 const KEY_ID := &"id"
+
 const KEY_CHANCE := &"chance"
+
 const KEY_ELEMENT := &"element"
+
 ## ADR 0884: the status's own `kind` (`StatusDef.kind`), read for the per-category
 ## channel. An absent key reads `&""`, which simply skips that channel.
 const KEY_KIND := &"kind"
+
 ## ADR 0885: the immunity tags the applying status declares (`StatusDef.immunity_tags`).
 ## An absent or non-array key is no tags.
 const KEY_IMMUNITY_TAGS := &"immunity_tags"
+
 ## ADR 0902 (P12): the applying status's authored grouping and categories. Both
 ## join the RESIST channels and the immunity tag set; absent keys read empty.
 const KEY_FAMILY := &"family"
+
 const KEY_CATEGORIES := &"categories"
 
 ## The application's own handle (ADR 0902, P5), carried onto the effect so a lifecycle
 ## sweep can reach every instance one grant wrote. Optional: an empty id is the
 ## shipped callers' shape.
 const KEY_GRANT := &"grant_id"
+
 const KEY_SCOPE := &"scope"
+
 const KEY_DURATION := &"duration"
+
 const KEY_POTENCY := &"potency"
 
 ## ADR 0925's discord: the member requests a chaos carrier may impose, staged INSIDE
@@ -256,7 +275,7 @@ static func apply(
 	# A closed gate consumes NO draw — the same reason `CombatBand.roll` skips its draw
 	# on a saturated band. Waste here would be doubly costly: the stream is shared, so a
 	# pointlessly consumed number would shift the NEXT hit's band and crit.
-	var gate := _finite(_number(request.get(KEY_CHANCE, 0.0)))
+	var gate := StatusApplyMath.finite(StatusApplyMath.number(request.get(KEY_CHANCE, 0.0)))
 	if gate <= 0.0:
 		return _refused(REFUSE_NO_GATE)
 	if target == null or target.has_status(status_id):
@@ -271,7 +290,7 @@ static func apply(
 			REFUSE_ALREADY_HELD,
 			{
 				&"status_id": String(status_id),
-				&"grant_id": String(_id_of(request.get(KEY_GRANT, &""))),
+				&"grant_id": String(StatusApplyMath.id_of(request.get(KEY_GRANT, &""))),
 			}
 		)
 	# Everything else — the immunity tags, the potency split, the intensity floor, the
@@ -370,7 +389,7 @@ static func resolve_roll(
 	var status_id := StringName(request.get(KEY_ID, &""))
 	if status_id == &"" or tuning == null:
 		return out
-	var gate := _finite(_number(request.get(KEY_CHANCE, 0.0)))
+	var gate := StatusApplyMath.finite(StatusApplyMath.number(request.get(KEY_CHANCE, 0.0)))
 	if gate <= 0.0:
 		out[REFUSED] = REFUSE_NO_GATE
 		return out
@@ -384,18 +403,20 @@ static func resolve_roll(
 	# refusal that consumes no draw.
 	if tuning.status_immune_prefix != "":
 		for tag in tags:
-			var immune := _stat(target, StringName(tuning.status_immune_prefix + String(tag)))
+			var immune := StatusApplyMath.stat(
+				target, StringName(tuning.status_immune_prefix + String(tag))
+			)
 			if immune >= 1.0:
 				out[REFUSED] = REFUSE_IMMUNE
 				out[&"detail"] = tag
 				return out
-	var element := _id_of(request.get(KEY_ELEMENT, &""))
-	var kind := _id_of(request.get(KEY_KIND, &""))
+	var element := StatusApplyMath.id_of(request.get(KEY_ELEMENT, &""))
+	var kind := StatusApplyMath.id_of(request.get(KEY_KIND, &""))
 	var resist := elemental_resist(attacker, target, tuning, element)
 	# ADR 0885: the potency split's two net factors, and the intensity floor BEFORE the
 	# roll (Keepverse §2.2: a status that would land at zero intensity does nothing, which
 	# is what "refused" means).
-	var intensity_net := _net_factor(
+	var intensity_net := StatusApplyMath.net_factor(
 		attacker,
 		target,
 		tuning,
@@ -405,7 +426,7 @@ static func resolve_roll(
 		tuning.status_intensity_reduction_prefix,
 		tags
 	)
-	var duration_net := _net_factor(
+	var duration_net := StatusApplyMath.net_factor(
 		attacker,
 		target,
 		tuning,
@@ -415,7 +436,7 @@ static func resolve_roll(
 		tuning.status_duration_reduction_prefix,
 		tags
 	)
-	if intensity_net <= _finite(tuning.status_min_net_factor):
+	if intensity_net <= StatusApplyMath.finite(tuning.status_min_net_factor):
 		out[REFUSED] = REFUSE_NO_POTENCY
 		return out
 	# `elem_resist` is the ELEMENTAL half and applies to every scope: it is a defender's
@@ -423,7 +444,7 @@ static func resolve_roll(
 	# happens to name an element is still answered by fire resistance. The
 	# `status_defense` half is the COMBAT dial and is read inside `apply_chance` only
 	# when the scope is COMBAT (ADR 0086).
-	var family := _id_of(request.get(KEY_FAMILY, &""))
+	var family := StatusApplyMath.id_of(request.get(KEY_FAMILY, &""))
 	var categories_raw: Variant = request.get(KEY_CATEGORIES, [])
 	var category_list: Array = categories_raw if categories_raw is Array else []
 	var chance := apply_chance(
@@ -435,7 +456,7 @@ static func resolve_roll(
 		kind,
 		element,
 		resist,
-		_id_of(request.get(KEY_SCOPE, SCOPE_COMBAT)),
+		StatusApplyMath.id_of(request.get(KEY_SCOPE, SCOPE_COMBAT)),
 		family,
 		category_list
 	)
@@ -445,7 +466,9 @@ static func resolve_roll(
 	if chance >= 1.0:
 		open = true
 	elif chance > 0.0:
-		open = _substream(rng, attacker, target, technique, hit_index).randf() < chance
+		open = (
+			StatusApplyMath.substream(rng, attacker, target, technique, hit_index).randf() < chance
+		)
 	out[&"ready"] = true
 	out[&"status_id"] = status_id
 	out[&"chance"] = chance
@@ -453,9 +476,11 @@ static func resolve_roll(
 	# ADR 0897: an AUTHORED base replaces the shared reuse; absent (0.0) keeps it. The
 	# `maxf` this used to be made the reuse a floor no def could go under, which is the
 	# reuse refusing to retire.
-	var authored := maxf(_finite(_number(request.get(KEY_POTENCY, 0.0))), 0.0)
+	var authored := maxf(
+		StatusApplyMath.finite(StatusApplyMath.number(request.get(KEY_POTENCY, 0.0))), 0.0
+	)
 	var base := authored if authored > 0.0 else potency_of(attacker, tuning, element)
-	var effective := base * maxf(0.0, _finite(intensity_net))
+	var effective := base * maxf(0.0, StatusApplyMath.finite(intensity_net))
 	# ADR 0902 (P14): Keepverse's post-roll `UselessMagnitude` — a zero factored
 	# magnitude AND a non-positive effective duration means the status would do nothing
 	# at all. A zero-magnitude TIMED status is NOT useless, and the check only fires on
@@ -479,10 +504,10 @@ static func resolve_roll(
 static func _effective_life(
 	request: Dictionary, tuning: CombatTuning, duration_net: float
 ) -> float:
-	var life := _finite(_number(request.get(KEY_DURATION, 0.0)))
+	var life := StatusApplyMath.finite(StatusApplyMath.number(request.get(KEY_DURATION, 0.0)))
 	if life <= 0.0 and tuning != null:
-		life = _finite(tuning.status_default_duration)
-	return life * maxf(0.0, _finite(duration_net))
+		life = StatusApplyMath.finite(tuning.status_default_duration)
+	return life * maxf(0.0, StatusApplyMath.finite(duration_net))
 
 
 ## Publish `result` on `outcome` by APPENDING it to the proposal's `effects[]`, which
@@ -549,7 +574,9 @@ static func elemental_resist(
 ) -> float:
 	if element == &"" or tuning == null or target == null or target.stats == null:
 		return 0.0
-	var raw := _finite(target.stats.derived(_suffixed(tuning.resist_resistance_prefix, element)))
+	var raw := StatusApplyMath.finite(
+		target.stats.derived(StatusApplyMath.suffixed(tuning.resist_resistance_prefix, element))
+	)
 	# Answered, not raw: the defender's `ABSORPTION` turns aside this much of the
 	# attacker's penetration before it ever reaches the armour value, as a flat
 	# difference through `CombatStats.pierce` (Keepverse `penDelta`). Either half
@@ -559,14 +586,14 @@ static func elemental_resist(
 		0.0,
 		(
 			CombatStats.default_of(CombatStats.PENETRATION)
-			+ _finite(_stat(attacker, CombatStats.PENETRATION))
+			+ StatusApplyMath.finite(StatusApplyMath.stat(attacker, CombatStats.PENETRATION))
 		)
 	)
 	var raw_abs := maxf(
 		0.0,
 		(
 			CombatStats.default_of(CombatStats.ABSORPTION)
-			+ _finite(_stat(target, CombatStats.ABSORPTION))
+			+ StatusApplyMath.finite(StatusApplyMath.stat(target, CombatStats.ABSORPTION))
 		)
 	)
 	var penetration := CombatStats.pierce(raw_pen, raw_abs)
@@ -574,11 +601,11 @@ static func elemental_resist(
 	# authored percent, so there is no ceiling to clamp a resistance to. Penetration now
 	# scales the DEFENSE VALUE (`pierce_scale`) rather than subtracting points off it,
 	# which is the dimensionally-wrong shape the ADR names by name.
-	var divisor := _finite(tuning.resist_divisor)
+	var divisor := StatusApplyMath.finite(tuning.resist_divisor)
 	if divisor <= 0.0:
 		return 0.0
 	var defense := maxf(0.0, raw / divisor)
-	var pierce_scale := _finite(tuning.pierce_scale)
+	var pierce_scale := StatusApplyMath.finite(tuning.pierce_scale)
 	if pierce_scale > 0.0:
 		defense *= 1.0 / (1.0 + maxf(0.0, penetration) / pierce_scale)
 	return defense
@@ -655,15 +682,19 @@ static func apply_chance(
 ) -> float:
 	if tuning == null or gate <= 0.0:
 		return 0.0
-	var power := _channel_total(attacker, tuning.status_power_prefix, status_id, kind, &"")
-	var resist := _channel_total(
+	var power := StatusApplyMath.channel_total(
+		attacker, tuning.status_power_prefix, status_id, kind, &""
+	)
+	var resist := StatusApplyMath.channel_total(
 		target, tuning.status_resist_prefix, status_id, kind, element, family, categories
 	)
-	resist += maxf(0.0, _finite(elem_resist))
+	resist += maxf(0.0, StatusApplyMath.finite(elem_resist))
 	if scope == SCOPE_COMBAT:
-		resist += clampf(_status_defense_share(target, tuning), 0.0, 1.0)
-	var scale := _category_float(
-		tuning.status_apply_scale_by_category, categories, _finite(tuning.status_rate_scale)
+		resist += clampf(StatusApplyMath.status_defense_share(target, tuning), 0.0, 1.0)
+	var scale := StatusApplyMath.category_float(
+		tuning.status_apply_scale_by_category,
+		categories,
+		StatusApplyMath.finite(tuning.status_rate_scale)
 	)
 	# ADR 0902 (P10): `shifted = delta - offset`. The shipped offset is 0.0, and
 	# `delta - 0.0` is exact in IEEE, so the shipped numbers are reproduced bit for bit.
@@ -672,111 +703,22 @@ static func apply_chance(
 	# measurement showed the raw gap (R1 -> R30 at 1 -> 551x) saturates the 0..1 delta at
 	# any live weight, so a gap term is either dead or a cliff. Realm-invariance is the
 	# design, and the knob that measured it is deleted rather than left default-off.
-	var shifted := delta - _finite(tuning.status_apply_offset)
+	var shifted := delta - StatusApplyMath.finite(tuning.status_apply_offset)
 	# A non-positive scale cannot say how much advantage is decisive, and the honest
 	# answer for a contest with no exchange rate is parity rather than a division.
 	var p_apply := 0.5
 	if scale > 0.0:
 		if tuning.status_apply_shape == &"sigmoid":
-			var steepness := _category_float(
+			var steepness := StatusApplyMath.category_float(
 				tuning.status_apply_steepness_by_category,
 				categories,
-				_finite(tuning.status_apply_steepness)
+				StatusApplyMath.finite(tuning.status_apply_steepness)
 			)
 			p_apply = 1.0 / (1.0 + exp(-steepness * shifted / (2.0 * scale)))
 		else:
 			p_apply = clampf(0.5 + shifted / (2.0 * scale), 0.0, 1.0)
-	var chance := _finite(gate) * p_apply
-	return clampf(chance, clampf(_finite(tuning.status_min_apply), 0.0, 1.0), 1.0)
-
-
-## The per-category pass-through (ADR 0902, P10): the FIRST authored category present in
-## `by_category` wins; an empty map, or none of the categories present, falls back to `base`.
-static func _category_float(by_category: Dictionary, categories: Array, base: float) -> float:
-	if by_category.is_empty():
-		return base
-	for category in categories:
-		var named := String(category)
-		if by_category.has(named):
-			return _finite(float(by_category[named]))
-		if by_category.has(StringName(named)):
-			return _finite(float(by_category[StringName(named)]))
-	return base
-
-
-## One side's authored channel total (ADR 0884): `prefix + "omni"` always, plus
-## `prefix + kind`, `prefix + status_id` and — the defender's call — `prefix + element`
-## when each is known. An unauthored or absent prefix reads `0.0` for the whole side, and
-## an unknown id reads `0.0` like every other absent stat on this path.
-static func _channel_total(
-	actor: Actor,
-	prefix: String,
-	status_id: StringName,
-	kind: StringName,
-	element: StringName,
-	family: StringName = &"",
-	categories: Array = []
-) -> float:
-	if prefix == "" or actor == null or actor.stats == null:
-		return 0.0
-	var total := _stat(actor, StringName(prefix + "omni"))
-	if kind != &"":
-		total += _stat(actor, StringName(prefix + String(kind)))
-	if status_id != &"":
-		total += _stat(actor, StringName(prefix + String(status_id)))
-	if element != &"":
-		total += _stat(actor, StringName(prefix + String(element)))
-	# ADR 0902 (P12): the grouping terms. `family` is one id; each authored
-	# category is its own id. Both absent-cheap: an unchanneled id reads 0.0.
-	if family != &"":
-		total += _stat(actor, StringName(prefix + String(family)))
-	for category in categories:
-		if category is StringName or category is String:
-			var name := StringName(category)
-			if name != &"":
-				total += _stat(actor, StringName(prefix + String(name)))
-	return maxf(0.0, _finite(total))
-
-
-## ADR 0200's ratio for the COMBAT half of the status gate:
-## `share = mitigation_ceiling * D / (K + D)` with `D` the defender's `status_defense`
-## MAGNITUDE and `K = defense_divisor_k` the attacker's own scale.
-##
-## ## Why S12 needs a ratio at all, and what it costs
-##
-## `apply_chance` takes no `attacker`, so it cannot build the same `K` the three damage
-## mechanisms build from the attacker's own offense. `defense_divisor_k` alone is what is
-## available without growing a new parameter on a function six call sites use, and it is
-## a defensible substitute: it is the same authored constant, and the gate's contest is
-## between two defensive investments rather than between an offense and a defence.
-##
-## The honest cost is that the attacker's realm NO LONGER SCALES THIS GATE. `status_defense`
-## climbs `1.00 -> 551.46` with the ladder and `K` does not, so a deep-realm defender's
-## status immunity converges on `mitigation_ceiling` while at R1 the same build resists
-## almost nothing. **That is the same class of defect ADR 0200 was written to remove, in the
-## one place the fix did not reach**, and closing it properly needs a second decision I am
-## not making silently: either `apply_chance` grows an `attacker` parameter and every call
-## site passes one, or S12 reads the caller's already-resolved elemental resist as its `K`.
-## Either is a change to `CombatExchange` and `exchange.gd`, outside this file's seam.
-##
-## What is asserted today is the part that IS sound: the share is an unbounded magnitude
-## through a ratio, so it is strictly below the ceiling for every finite defense, the two
-## resists compose rather than annihilate, and `status_min_apply` forbids a hard `0.0`.
-## `tests/modules/combat_engine/test_status_application.gd` pins exactly those three.
-static func _status_defense_share(target: Actor, tuning: CombatTuning) -> float:
-	var divisor := _finite(tuning.resist_divisor)
-	if divisor <= 0.0:
-		return 0.0
-	var raw := maxf(0.0, _finite(_stat(target, StringName(tuning.status_defense_stat))))
-	var defense := raw / divisor
-	var ceiling := clampf(_finite(tuning.mitigation_ceiling), 0.0, 1.0)
-	if ceiling <= 0.0:
-		return 0.0
-	var divisor_k := maxf(0.0, _finite(tuning.defense_divisor_k))
-	var denominator := divisor_k + defense
-	if denominator <= 0.0:
-		return 0.0
-	return _finite(ceiling * defense / denominator)
+	var chance := StatusApplyMath.finite(gate) * p_apply
+	return clampf(chance, clampf(StatusApplyMath.finite(tuning.status_min_apply), 0.0, 1.0), 1.0)
 
 
 ## The potency of an applied status: `maxf(status_potency_floor, attacker
@@ -806,47 +748,18 @@ static func _status_defense_share(target: Actor, tuning: CombatTuning) -> float:
 ## negative magnitude a later reader would take for a sign. That matters because the
 ## spine's sign discipline admits exactly ONE negation, at S9.
 static func potency_of(attacker: Actor, tuning: CombatTuning, element: StringName) -> float:
-	var floor_value := 0.0 if tuning == null else maxf(0.0, _finite(tuning.status_potency_floor))
+	var floor_value := (
+		0.0 if tuning == null else maxf(0.0, StatusApplyMath.finite(tuning.status_potency_floor))
+	)
 	if element == &"" or tuning == null or attacker == null or attacker.stats == null:
 		return floor_value
 	var power := maxf(
-		0.0, _finite(attacker.stats.derived(_suffixed(tuning.element_power_prefix, element)))
+		0.0,
+		StatusApplyMath.finite(
+			attacker.stats.derived(StatusApplyMath.suffixed(tuning.element_power_prefix, element))
+		)
 	)
-	return maxf(floor_value, power * maxf(0.0, _finite(tuning.status_potency_scale)))
-
-
-## The seed of S12's per-hit substream: `LootState._encounter_seed`'s exact shape, which
-## ADR 0087 names as the precedent (`modules/loot/loot_state.gd:607-609`).
-##
-## ```
-## (parent_seed * 2654435761 + absi(hash(attacker.id ^ defender.id ^ hit_index))) & 0x7FFFFFFF
-## ```
-##
-## ## `hit_index` is INSIDE the hash, and that is the whole point
-##
-## The salt mixes the three participants and then hashes ONCE, so `hit_index` reaches
-## the multiplier term and two identical attacks in one exchange cannot land on the same
-## child seed. Hashing the labels and XOR-ing `hit_index` AFTERWARDS would look
-## equivalent and is not: the original computed the salt and then dropped it, which made
-## the seed a pure function of `(seed, label)` and turned every hit in a fight into a
-## replay of the first one's answer -- exactly the failure `hit_index` was added to
-## prevent. A salt that is built and not multiplied in is a silent no-op, which is the
-## defect class this whole file is written against.
-##
-## The same seed still reproduces the same sequence: the term is a pure function of its
-## inputs, so `(seed, attacker, defender, technique, hit_index)` names one stream and
-## nothing is drawn off the caller's generator to get there.
-static func status_seed(
-	hit_seed: int, attacker: Actor, target: Actor, technique: Variant, hit_index: int = 0
-) -> int:
-	var label := str(hit_index)
-	if attacker != null:
-		label = "%s^%s" % [String(attacker.id), label]
-	if target != null:
-		label = "%s^%s" % [String(target.id), label]
-	if technique is Object:
-		label = "%s^%s" % [String((technique as Object).get(&"id")), label]
-	return (hit_seed * 2654435761 + absi(hash(label))) & 0x7FFFFFFF
+	return maxf(floor_value, power * maxf(0.0, StatusApplyMath.finite(tuning.status_potency_scale)))
 
 
 ## Everything after the roll succeeds: build the status and hand it to the actor.
@@ -886,7 +799,7 @@ static func _written(
 		)
 		return _refused(REFUSE_UNWRITABLE)
 	var answer: Variant = target.call(&"add_status", effect)
-	if not _accepted(answer):
+	if not StatusApplyMath.accepted(answer):
 		# ADR 0902 (P5): the actor refused a status this stage had already cleared —
 		# a state bug rather than a balance decision, and one worth logging.
 		StatusEvents.note_resisted(
@@ -911,19 +824,21 @@ static func _written(
 		target.id,
 		StringName(resolved.get(&"status_id", &"")),
 		instance_id,
-		_id_of(request.get(KEY_GRANT, &""))
+		StatusApplyMath.id_of(request.get(KEY_GRANT, &""))
 	)
 	return {
 		APPLIED: true,
 		REFUSED: &"",
 		&"status_id": String(StringName(resolved.get(&"status_id", &""))),
 		&"instance_id": instance_id,
-		&"grant_id": String(_id_of(request.get(KEY_GRANT, &""))),
+		&"grant_id": String(StatusApplyMath.id_of(request.get(KEY_GRANT, &""))),
 		&"chance": float(resolved.get(&"chance", 0.0)),
 		&"resist": float(resolved.get(&"resist", 0.0)),
 		&"potency": potency,
-		&"intensity_net": maxf(0.0, _finite(float(resolved.get(&"intensity_net", 1.0)))),
-		&"duration_net": maxf(0.0, _finite(float(resolved.get(&"duration_net", 1.0)))),
+		&"intensity_net":
+		maxf(0.0, StatusApplyMath.finite(float(resolved.get(&"intensity_net", 1.0)))),
+		&"duration_net":
+		maxf(0.0, StatusApplyMath.finite(float(resolved.get(&"duration_net", 1.0)))),
 	}
 
 
@@ -952,45 +867,6 @@ static func _tags_of(request: Dictionary) -> Array:
 	return out
 
 
-## ADR 0885's net factor for one potency axis: `clampf(1 + delta / scale, min, max)`, where
-## `delta` is the attacker's channel total minus the defender's `*Reduction` total, and
-## each declared tag's `status.immuneReduction.<tag>` multiplies `(1 - reduction)` in —
-## Keepverse's §6: a partial immunity blunts the status overall, never one axis
-## selectively. A non-positive scale reads parity, exactly like the gate's own.
-static func _net_factor(
-	attacker: Actor,
-	target: Actor,
-	tuning: CombatTuning,
-	status_id: StringName,
-	kind: StringName,
-	prefix: String,
-	reduction_prefix: String,
-	tags: Array
-) -> float:
-	if tuning == null:
-		return 1.0
-	var delta := _channel_total(attacker, prefix, status_id, kind, &"")
-	delta -= _channel_total(target, reduction_prefix, status_id, kind, &"")
-	var scale := _finite(tuning.status_net_factor_scale)
-	var net := 1.0
-	if scale > 0.0:
-		net = 1.0 + delta / scale
-	var low := _finite(tuning.status_min_net_factor)
-	var high := _finite(tuning.status_max_net_factor)
-	if high < low:
-		high = low
-	net = clampf(net, low, high)
-	if tuning.status_immune_reduction_prefix != "":
-		for tag in tags:
-			var reduction := clampf(
-				_stat(target, StringName(tuning.status_immune_reduction_prefix + String(tag))),
-				0.0,
-				1.0
-			)
-			net *= 1.0 - reduction
-	return maxf(0.0, net)
-
-
 ## The `REQUEST_KEY` dictionary off `ctx.data`, or `{}`. Read through `get()` and
 ## `is Dictionary` because the shape belongs to whoever authored the effect, and a
 ## malformed request must degrade to "applies nothing" rather than crash a hit that has
@@ -1000,29 +876,6 @@ static func _request_of(ctx: AttackContext) -> Dictionary:
 		return {}
 	var raw: Variant = ctx.data_value(REQUEST_KEY, null)
 	return raw if raw is Dictionary else {}
-
-
-## The substream for this hit. Built from [method status_seed], which is
-## `LootState._encounter_seed`'s shape verbatim — the precedent ADR 0087 names.
-##
-## `state` is set alongside `seed` because that is what `DomainRng._generator` does
-## (`modules/domain/domain_rng.gd:88-92`): seeding a Godot generator without resetting
-## its state leaves the first draw a function of whatever ran before, which would make
-## the "same seed, same outcome" claim false the moment two substreams were made from
-## one parent in the same frame.
-static func _substream(
-	rng: Variant, attacker: Actor, target: Actor, technique: Variant, hit_index: int
-) -> RandomNumberGenerator:
-	var stream := RandomNumberGenerator.new()
-	var seed_value := status_seed(rng.seed, attacker, target, technique, hit_index)
-	# `stream.seed = seed_value` ONLY. `RandomNumberGenerator.state` is the RAW PCG
-	# state, not a seed: assigning it discards the mixing `seed` performs, and the
-	# result is a stream whose first draw is the same for every seed. Measured over 40
-	# seeds: with the overwrite, 40/40 drew exactly 0.0; without it, the draws spread
-	# across 0.0098..0.9811. A stage whose entire purpose is a seeded roll was
-	# answering every hit the same way.
-	stream.seed = seed_value
-	return stream
 
 
 ## Build the `StatusEffect` to apply, or null when no constructor can make one.
@@ -1048,54 +901,25 @@ static func _status(
 	tuning: CombatTuning,
 	duration_net: float = 1.0
 ) -> RefCounted:
-	var duration := _finite(_number(request.get(KEY_DURATION, 0.0)))
+	var duration := StatusApplyMath.finite(StatusApplyMath.number(request.get(KEY_DURATION, 0.0)))
 	if duration <= 0.0 and tuning != null:
-		duration = _finite(tuning.status_default_duration)
+		duration = StatusApplyMath.finite(tuning.status_default_duration)
 	# ADR 0885: the duration factor scales the TIME; zero is still a constructible
 	# effect, because `StatusEffect` owns what a zero duration means.
-	duration *= maxf(0.0, _finite(duration_net))
+	duration *= maxf(0.0, StatusApplyMath.finite(duration_net))
 	var effect := StatusEffect.new(status_id, duration)
 	if effect == null:
 		return null
 	# The ADR 0086 fields, written only when the contract carries them, because a
 	# `set()` on an absent property pushes an engine warning and this file must not warn
 	# for a field whose contract has not landed yet. See `_assign`.
-	_assign(effect, &"magnitude", maxf(0.0, potency))
-	_assign(effect, &"element", _id_of(request.get(KEY_ELEMENT, &"")))
-	_assign(effect, &"scope", _id_of(request.get(KEY_SCOPE, SCOPE_COMBAT)))
-	_assign(effect, &"grant_id", _id_of(request.get(KEY_GRANT, &"")))
+	StatusApplyMath.assign(effect, &"magnitude", maxf(0.0, potency))
+	StatusApplyMath.assign(effect, &"element", StatusApplyMath.id_of(request.get(KEY_ELEMENT, &"")))
+	StatusApplyMath.assign(
+		effect, &"scope", StatusApplyMath.id_of(request.get(KEY_SCOPE, SCOPE_COMBAT))
+	)
+	StatusApplyMath.assign(effect, &"grant_id", StatusApplyMath.id_of(request.get(KEY_GRANT, &"")))
 	return effect
-
-
-## Write `value` on `effect` only when the property exists. `set()` on a missing
-## property pushes an engine warning, and this file must not emit warnings for a field
-## whose contract has not landed yet.
-static func _assign(effect: RefCounted, key: StringName, value: Variant) -> void:
-	if _has_property(effect, key):
-		effect.set(key, value)
-
-
-## Whether `object` exposes `key`. `get_property_list` rather than `in`-style probing,
-## because that is the one question that answers about a scripted object.
-static func _has_property(object: Object, key: StringName) -> bool:
-	for entry in object.get_property_list():
-		if StringName(entry.get("name", &"")) == key:
-			return true
-	return false
-
-
-## Whether `Actor.add_status`'s answer means ACCEPTED.
-##
-## The deliberately permissive reading, stated in full at the call site: a void answer,
-## a `null`, a `true`, and a `Dictionary` with no `ok` key are all ACCEPTED, and only an
-## explicit `ok == false` is a refusal. The reason is that the current
-## `core/actor.gd` declares `func add_status(status: StatusEffect) -> void` — a void
-## answer must not be mistaken for a refusal, or every status in the game would be
-## refused by a shape nobody chose.
-static func _accepted(answer: Variant) -> bool:
-	if answer is Dictionary:
-		return not (answer as Dictionary).has(&"ok") or bool((answer as Dictionary)[&"ok"])
-	return true
 
 
 ## A refusal reason as a `String`, for the primitives-only result. Anything that is not
@@ -1106,12 +930,6 @@ static func _reason_of(answer: Variant) -> String:
 		if reason is String or reason is StringName:
 			return String(reason)
 	return String(REFUSE_UNWRITABLE)
-
-
-## One stat id built from an authored prefix, matching `QiDamage._suffixed` exactly so
-## the two stages cannot spell the same stat two ways.
-static func _suffixed(prefix: String, element: StringName) -> StringName:
-	return StringName((prefix if prefix is String else "") + String(element))
 
 
 ## Whether a refusal is about a STATUS rather than about the caller's request
@@ -1125,28 +943,3 @@ static func _refused(reason: StringName, extra: Dictionary = {}) -> Dictionary:
 	for key in extra.keys():
 		out[key] = extra[key]
 	return out
-
-
-## The derived value of `id` on `actor`, or 0.0. Total, for `CombatSpine._stat`'s
-## reason: S12 runs on a hit that has already mutated both actors, so it must not be
-## the stage that crashes on a half-built one.
-static func _stat(actor: Actor, id: StringName) -> float:
-	if actor == null or actor.stats == null:
-		return 0.0
-	return actor.stats.derived(id)
-
-
-## A `Variant` as a finite float, or 0.0. A `bool` is deliberately not a number: `true`
-## as a chance would silently read 1.0 and apply every status.
-static func _number(value: Variant) -> float:
-	if value is float or value is int:
-		return _finite(float(value))
-	return 0.0
-
-
-static func _id_of(value: Variant) -> StringName:
-	return StringName(value) if value is StringName or value is String else &""
-
-
-static func _finite(value: float) -> float:
-	return value if is_finite(value) else 0.0
