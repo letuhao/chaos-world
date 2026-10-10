@@ -130,18 +130,9 @@ func _craft_state(recipe_id: StringName) -> StringName:
 ## the inputs are short; the recipe is never consumed on a refusal.
 func act_craft_selected() -> bool:
 	_bind_nodes()
-	if _actor == null:
-		set_message("No actor", TONE_ERROR)
-		refresh()
-		return false
-	var recipe := _recipe(_selected)
-	if recipe.is_empty():
-		set_message("Select a recipe first", TONE_ERROR)
-		refresh()
-		return false
-	var missing := _missing_of(_selected)
-	if not missing.is_empty():
-		set_message("Missing %s" % ", ".join(missing), TONE_ERROR)
+	var refusal := _craft_refusal()
+	if refusal != "":
+		set_message(refusal, TONE_ERROR)
 		refresh()
 		return false
 	# The facade takes a `RecipeDef`, which `ui/` may not name. So each entry is
@@ -150,11 +141,7 @@ func act_craft_selected() -> bool:
 	# fields gets a screen that lists and explains the recipe but refuses to
 	# craft, rather than one reaching past the facade to build a def
 	# (ADR 0043, DEF-0067).
-	var resource = recipe.get("resource")
-	if resource == null:
-		set_message("No craftable recipe resource supplied", TONE_ERROR)
-		refresh()
-		return false
+	var resource = _recipe(_selected).get("resource")
 	# A craft is an ACTION, so it pays world time (ADR 0167, BL-0815). The clock is `app/`'s
 	# and this screen may not name it, so the composition root's craft verb arrives through
 	# the bridge; the screen asks and never owns time. A screen built without a bridge (a
@@ -172,6 +159,26 @@ func act_craft_selected() -> bool:
 	set_message("Crafted %s" % _first_output(_selected), TONE_OK)
 	refresh()
 	return true
+
+
+## The refusal [method act_craft_selected] owes, or `""` when the craft may run.
+##
+## One function answers all four, in the order the press checks them, so the verb above
+## is the happy path plus the two ways the FACADE can fail — exactly the reads that need
+## a bound body and an offered recipe in hand. Nothing here mutates: a refusal is a fact
+## about the screen's own state, and the caller repaints after saying it.
+func _craft_refusal() -> String:
+	if _actor == null:
+		return "No actor"
+	var recipe := _recipe(_selected)
+	if recipe.is_empty():
+		return "Select a recipe first"
+	var missing := _missing_of(_selected)
+	if not missing.is_empty():
+		return "Missing %s" % ", ".join(missing)
+	if recipe.get("resource") == null:
+		return "No craftable recipe resource supplied"
+	return ""
 
 
 ## Craft a named recipe directly, for a caller that knows what it wants without
