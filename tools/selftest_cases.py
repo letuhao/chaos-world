@@ -4412,7 +4412,11 @@ def _boot_verdict(probe_stdout: str, engine_exit: int = 0) -> int:
 
         boot.godot.run_godot = _stub
         try:
-            return boot.run(argparse.Namespace(frames=boot.BOOT_FRAMES))
+            # The Namespace is the PARSER's output replicated by hand, so it carries
+            # every attribute `boot.run` reads: `--out` was added after this case was
+            # written, and a stale Namespace made the whole selftest step red with an
+            # AttributeError rather than a verdict (measured 2026-10-10).
+            return boot.run(argparse.Namespace(frames=boot.BOOT_FRAMES, out=""))
         finally:
             boot.GAME_DIR = original_dir
             common.GAME_DIR = original_common
