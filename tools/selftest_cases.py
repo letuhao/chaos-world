@@ -36,6 +36,7 @@ from . import (
     godot,
     godot_bypass,
     loop_guard,
+    loot_names,
     lore,
     map_theme,
     mutation_history,
@@ -5606,3 +5607,54 @@ static func reach(actor: Actor) -> Dictionary:
             "A guard that warns on every facade is a line-count proxy wearing a "
             "coupling costume.",
         )
+
+
+@case("loot names: a single-word realm id is still rewritten")
+def _single_word_realm_id_is_rewritten() -> None:
+    """`foundation` and `transcendent` carry no underscore, and 466 of the 5074
+    leaked rows were exactly those. A guard that required `_` would pass the
+    whole tree while leaving 9% of the leak in place, which is the quiet lie
+    INC-0016 is about.
+    """
+    line = (
+        '"LOC_LOOT_AMULET_IRON_SAGE_FOUNDATION_0_DISPLAY_NAME": "Iron Sage salvage (foundation)",\n'
+    )
+    rewritten, changed = loot_names.rewrite(line)
+    expect(
+        changed == 1 and "salvage (Foundation)" in rewritten,
+        f"a single-word realm id was accepted as already-clean; got {rewritten!r}. "
+        "Requiring an underscore in RAW_ID leaves 466 leaked rows unrewritten.",
+    )
+
+
+@case("loot names: the key is never rewritten, only the value")
+def _key_survives_rewrite() -> None:
+    """The key is the stable, opaque id every data file references; re-keying is
+    a gate failure. This is the only case that can tell a value edit from a whole
+    line re-emit, which is how the first draft duplicated every key.
+    """
+    key = "LOC_LOOT_AMULET_IRON_SAGE_DAO_FRUIT_0_DISPLAY_NAME"
+    line = f'"{key}": "Iron Sage salvage (dao_fruit)",\n'
+    rewritten, changed = loot_names.rewrite(line)
+    expect(
+        changed == 1
+        and rewritten.startswith(f'"{key}": ')
+        and rewritten.count(key) == 1
+        and "salvage (Dao Fruit)" in rewritten,
+        f"the rewrite did not preserve the key exactly once; got {rewritten!r}. "
+        "A duplicated or re-keyed row breaks every data file that references it.",
+    )
+
+
+@case("loot names: rewriting is idempotent")
+def _rewrite_is_idempotent() -> None:
+    """A second pass must change nothing, or `--check` can never go green and the
+    guard is indistinguishable from a rewrite that keeps churning.
+    """
+    once, first = loot_names.rewrite('"K": "Iron Sage salvage (spirit_severing)",\n')
+    twice, second = loot_names.rewrite(once)
+    expect(
+        first == 1 and second == 0 and once == twice,
+        f"a second pass changed {second} row(s); a non-idempotent rewrite never "
+        "settles and `loot names --check` can never report clean.",
+    )

@@ -91,6 +91,7 @@ i18n = _load("i18n")
 # modules below). A Python guard with no red path was never tested (INC-0016).
 i18n_selftest = _load("i18n.selftest_case")
 incident = _load("incident")
+loot_names = _load("loot_names")
 institution_family = _load("institution_family")
 item_derive = _load("item_derive")
 lint = _load("lint")
@@ -126,6 +127,7 @@ COMMANDS = {
     "godot_bypass": godot_bypass,
     "i18n": i18n,
     "lint": lint,
+    "loot": loot_names,
     "loop_guard": loop_guard,
     "lore": lore,
     "mutation_history": mutation_history,
