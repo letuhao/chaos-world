@@ -1,0 +1,118 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_15_unstable_spirit_qi_vortex.miasma_cloud_swirl",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_15_unstable_spirit_qi_vortex",
+  "asset_slug": "miasma_cloud_swirl",
+  "variant_slug": "surging_torrent",
+  "name": "Surging Concentrated Torrent",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_15_unstable_spirit_qi_vortex/miasma_cloud_swirl/surging_torrent.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.268,
+        0.17
+      ],
+      [
+        0.25,
+        0.303
+      ]
+    ],
+    "frac_zero": 0.7409,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      5
+    ],
+    "sub_fill": [
+      [
+        0.007,
+        0.297,
+        0.104,
+        0.027,
+        0.0
+      ],
+      [
+        0.181,
+        0.618,
+        0.434,
+        0.046,
+        0.007
+      ],
+      [
+        0.143,
+        0.233,
+        0.765,
+        0.135,
+        0.421
+      ],
+      [
+        0.152,
+        0.377,
+        0.711,
+        0.146,
+        0.048
+      ],
+      [
+        0.078,
+        0.18,
+        0.365,
+        0.16,
+        0.231
+      ]
+    ],
+    "crop_offset": [
+      51,
+      81
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 24,
+    "contact_reference_px": 24.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

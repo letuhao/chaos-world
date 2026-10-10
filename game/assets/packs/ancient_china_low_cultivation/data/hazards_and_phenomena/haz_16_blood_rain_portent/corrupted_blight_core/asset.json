@@ -1,0 +1,756 @@
+{
+  "id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_16_blood_rain_portent.corrupted_blight_core",
+  "archetype": "corrupted_blight_core_haz_16_blood_rain_portent",
+  "name": "Blood Rain Portent - Sinister Demonic Leyline Rupture",
+  "vietnamese_name": "Thiên Giáng Huyết Vũ - Tâm Điểm Ô Nhiễm Hắc Ma",
+  "hanzi": "天降血雨 · 魔煞污秽源核",
+  "category": "haz_16_blood_rain_portent",
+  "category_code": "HAZ-16",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_16_blood_rain_portent",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "cleanse_blight",
+  "gameplay_role": "prop_workstation entity supporting Blood Rain Portent gameplay",
+  "destructible": true,
+  "material": "authentic mortal craftsmanship materials",
+  "cultivation_element": "blood",
+  "prompt_summary": "Single isolated 2D RPG game prop of blood rain portent - sinister demonic leyline rupture, authentic blood rain portent materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Environmental Hazards & Phenomena",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of sinister demonic leyline rupture, authentic mortal craftsmanship materials, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_16_blood_rain_portent/corrupted_blight_core/pristine_dormant.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.647,
+            0.524
+          ],
+          [
+            0.601,
+            0.687
+          ]
+        ],
+        "frac_zero": 0.6117,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.164,
+            0.264,
+            0.875,
+            0.451,
+            0.057,
+            0.0
+          ],
+          [
+            0.368,
+            0.65,
+            0.874,
+            0.457,
+            0.023,
+            0.0
+          ],
+          [
+            0.461,
+            0.995,
+            1.0,
+            1.0,
+            0.698,
+            0.402
+          ],
+          [
+            0.813,
+            1.0,
+            1.0,
+            1.0,
+            0.991,
+            0.574
+          ],
+          [
+            0.163,
+            1.0,
+            1.0,
+            1.0,
+            0.692,
+            0.0
+          ],
+          [
+            0.021,
+            0.926,
+            1.0,
+            1.0,
+            0.845,
+            0.0
+          ],
+          [
+            0.0,
+            0.33,
+            0.896,
+            0.73,
+            0.225,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          41,
+          16
+        ],
+        "trunk_columns": [
+          2,
+          3
+        ],
+        "contact_px": 80,
+        "contact_reference_px": 80.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of sinister demonic leyline rupture, authentic mortal craftsmanship materials, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_16_blood_rain_portent/corrupted_blight_core/active_operating.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.59,
+            0.524
+          ],
+          [
+            0.759,
+            0.735
+          ]
+        ],
+        "frac_zero": 0.5787,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.077,
+            0.479,
+            0.997,
+            0.737,
+            0.327,
+            0.0
+          ],
+          [
+            0.302,
+            0.732,
+            1.0,
+            0.782,
+            0.351,
+            0.0
+          ],
+          [
+            0.291,
+            0.599,
+            0.988,
+            0.641,
+            0.41,
+            0.0
+          ],
+          [
+            0.388,
+            0.921,
+            1.0,
+            0.967,
+            0.679,
+            0.231
+          ],
+          [
+            0.54,
+            0.983,
+            1.0,
+            1.0,
+            0.685,
+            0.683
+          ],
+          [
+            0.775,
+            0.931,
+            1.0,
+            1.0,
+            0.757,
+            0.483
+          ],
+          [
+            0.105,
+            0.718,
+            0.981,
+            0.869,
+            0.278,
+            0.017
+          ]
+        ],
+        "crop_offset": [
+          37,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3
+        ],
+        "contact_px": 102,
+        "contact_reference_px": 102.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of sinister demonic leyline rupture, authentic mortal craftsmanship materials, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_16_blood_rain_portent/corrupted_blight_core/damaged_weathered.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.562,
+            0.544
+          ],
+          [
+            0.708,
+            0.718
+          ]
+        ],
+        "frac_zero": 0.5948,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.049,
+            0.378,
+            0.091,
+            0.035,
+            0.0
+          ],
+          [
+            0.016,
+            0.855,
+            0.955,
+            0.821,
+            0.361,
+            0.0
+          ],
+          [
+            0.546,
+            1.0,
+            1.0,
+            1.0,
+            0.951,
+            0.294
+          ],
+          [
+            0.78,
+            1.0,
+            1.0,
+            1.0,
+            0.998,
+            0.727
+          ],
+          [
+            0.337,
+            1.0,
+            1.0,
+            1.0,
+            0.928,
+            0.113
+          ],
+          [
+            0.433,
+            1.0,
+            1.0,
+            1.0,
+            0.962,
+            0.087
+          ],
+          [
+            0.033,
+            0.59,
+            0.847,
+            0.768,
+            0.317,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          38,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3
+        ],
+        "contact_px": 89,
+        "contact_reference_px": 89.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of sinister demonic leyline rupture, authentic mortal craftsmanship materials, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_16_blood_rain_portent/corrupted_blight_core/ruined_rubble.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.417,
+            0.403
+          ],
+          [
+            0.657,
+            0.528
+          ]
+        ],
+        "frac_zero": 0.6477,
+        "blocks": [
+          [
+            true,
+            true
+          ],
+          [
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 4,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.6,
+            0.65,
+            0.043,
+            0.0,
+            0.0
+          ],
+          [
+            0.002,
+            0.187,
+            0.989,
+            0.785,
+            0.229,
+            0.0,
+            0.0
+          ],
+          [
+            0.013,
+            0.668,
+            1.0,
+            0.991,
+            0.736,
+            0.0,
+            0.0
+          ],
+          [
+            0.309,
+            0.717,
+            1.0,
+            1.0,
+            0.742,
+            0.195,
+            0.0
+          ],
+          [
+            0.433,
+            0.843,
+            1.0,
+            1.0,
+            0.915,
+            0.383,
+            0.0
+          ],
+          [
+            0.603,
+            1.0,
+            0.519,
+            0.765,
+            0.83,
+            0.57,
+            0.078
+          ],
+          [
+            0.204,
+            0.577,
+            0.519,
+            0.151,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          30,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2
+        ],
+        "contact_px": 35,
+        "contact_reference_px": 35.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.0": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.15": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.35": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "1.6": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          256,
+          256
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "HAZ-16",
+    "domain": "hazards_and_phenomena",
+    "interaction": "cleanse_blight",
+    "collision_behavior": "solid",
+    "element": "blood",
+    "tier": 4
+  },
+  "category_id": "haz_16_blood_rain_portent",
+  "domain_id": "hazards_and_phenomena",
+  "pinyin": "Tiānjiàng Xuèyǔ · Sinister Demonic Leyline Rupture",
+  "archetype_name": "Sinister Demonic Leyline Rupture",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "ground"
+  },
+  "primary_material": "carved_wood",
+  "secondary_material": "polished_bronze",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Blood affinity (Nascent Soul (Nguyên Anh / 元婴))",
+  "elevation_tier": 4,
+  "mortal_realm_tier": "Nascent Soul (Nguyên Anh / 元婴)",
+  "asset_slug": "corrupted_blight_core"
+}

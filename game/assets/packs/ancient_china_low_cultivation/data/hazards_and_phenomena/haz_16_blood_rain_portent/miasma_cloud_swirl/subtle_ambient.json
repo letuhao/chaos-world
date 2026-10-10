@@ -1,0 +1,130 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_16_blood_rain_portent.miasma_cloud_swirl",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_16_blood_rain_portent",
+  "asset_slug": "miasma_cloud_swirl",
+  "variant_slug": "subtle_ambient",
+  "name": "Subtle Ambient Intensity",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_16_blood_rain_portent/miasma_cloud_swirl/subtle_ambient.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.003,
+        0.002
+      ],
+      [
+        0.204,
+        0.139
+      ]
+    ],
+    "frac_zero": 0.7817,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.017,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.018,
+        0.15,
+        0.02,
+        0.0
+      ],
+      [
+        0.115,
+        0.32,
+        0.36,
+        0.0,
+        0.0
+      ],
+      [
+        0.074,
+        0.398,
+        0.42,
+        0.143,
+        0.306
+      ],
+      [
+        0.136,
+        0.11,
+        0.04,
+        0.154,
+        0.254
+      ]
+    ],
+    "crop_offset": [
+      55,
+      17
+    ],
+    "trunk_columns": [],
+    "contact_px": 26,
+    "contact_reference_px": 26.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
