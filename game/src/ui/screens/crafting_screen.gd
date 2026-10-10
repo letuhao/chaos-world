@@ -28,6 +28,17 @@ var _status: Label = null
 ## because it is a snapshot of the actor's inventory, and a stale name or a stale
 ## held count on the crafting screen is a wrong figure.
 var _stock_cache: Dictionary = {}
+## The clock seam (ADR 0167, BL-0815): the composition root's craft verb, so a craft pays
+## world time. Null on a screen built without one (a headless driver), where the craft
+## falls back to the facade and is free — the unwired path, never the production one.
+var _bridge: CraftingBridge = null
+
+
+## Install the composition root's craft seam. A screen that never receives one still lists
+## and crafts, but does so through `ItemsApi` directly — which is the free path this bridge
+## exists to replace in production.
+func set_bridge(bridge: CraftingBridge) -> void:
+	_bridge = bridge
 
 
 ## Everything this screen displays. Primitives only; `{}` with no actor.
@@ -144,7 +155,17 @@ func act_craft_selected() -> bool:
 		set_message("No craftable recipe resource supplied", TONE_ERROR)
 		refresh()
 		return false
-	if not ItemsApi.craft(resource, ItemsApi.inventory(_actor)):
+	# A craft is an ACTION, so it pays world time (ADR 0167, BL-0815). The clock is `app/`'s
+	# and this screen may not name it, so the composition root's craft verb arrives through
+	# the bridge; the screen asks and never owns time. A screen built without a bridge (a
+	# headless driver) falls back to the facade and is free — the unwired path, which the
+	# composition root replaces on every crafting route.
+	if _bridge != null and _bridge.has(&"craft"):
+		if not bool(_bridge.call_action(&"craft", [resource]).get("ok", false)):
+			set_message("Crafting failed", TONE_ERROR)
+			refresh()
+			return false
+	elif not ItemsApi.craft(resource, ItemsApi.inventory(_actor)):
 		set_message("Crafting failed", TONE_ERROR)
 		refresh()
 		return false

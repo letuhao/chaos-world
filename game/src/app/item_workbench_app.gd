@@ -1160,6 +1160,10 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 			# (ADR 0043).
 			screen.call("setup", _actor)
 			screen.call("set_recipes", RecipeCatalog.offerable(_actor))
+			# The clock seam (ADR 0167, BL-0815): a craft is an ACTION, so it pays world
+			# time through this bridge. Wiring it here is what makes the crafting route
+			# cost a period rather than run free.
+			screen.call("set_bridge", _crafting_bridge())
 		ROUTE_BODY:
 			screen.call("setup", _actor)
 			# The body screen's World Map button is a real navigation door, so the

@@ -52,6 +52,11 @@ extends Control
 ## other one here, so it rides the same explicit count as the world fold rather than a
 ## frame delta of its own.
 
+## What one CRAFT costs, in periods (ADR 0167's period-scale class: 1..8). The avenue owns
+## its number — a craft is a short deliberate act, not a season — and this file owns the
+## clock that pays it, through the same [method advance_world] every other period cost uses.
+const CRAFT_PERIODS := 2
+
 var _actor: Actor = null
 ## What [code]NpcBoot.populate_room[/code] answered at boot: how many bodies stood up
 ## and who they are. Held so a probe can read the cast without reaching past `app/` —
@@ -142,6 +147,38 @@ func retreat(periods: int) -> Dictionary:
 			}
 		)
 	)
+
+
+## ## The craft verb: a PERIOD-SCALE action that costs world time (ADR 0167, BL-0815)
+##
+## The crafting screen calls this through `CraftingBridge` rather than `ItemsApi.craft`
+## directly, because a craft is an ACTION and every action costs time. The screen asks;
+## this file owns the clock, and the cost is paid through [method advance_world] — the same
+## one dispatcher the wait button and the retreat end in.
+##
+## **The craft runs FIRST and the time is paid only if it LANDED.** A recipe the actor
+## cannot afford is refused by the facade before any period is spent, so a short craft
+## costs nothing (ADR 0044) rather than aging the world for work that did not happen.
+##
+## **`paid` is a MEASUREMENT, not a restatement of the ask** — read from the fold's own
+## movement against the total captured before the call, exactly as [method retreat] reads
+## it, because [method advance_world] already consumed the report's running total for the
+## autosave.
+func craft_with_time(recipe: Resource) -> Dictionary:
+	if _actor == null:
+		return {"ok": false, "reason": "no_actor", "made": false, "paid": 0}
+	var made := ItemsApi.craft(recipe, ItemsApi.inventory(_actor))
+	if not made:
+		return {"ok": false, "reason": "craft_refused", "made": false, "paid": 0}
+	var before := 0 if _world == null else int(_world.summary().get("periods", 0))
+	var outcome := advance_world(CRAFT_PERIODS) as Dictionary
+	return {
+		"ok": true,
+		"reason": "",
+		"made": true,
+		"paid": _advanced_by_reading(outcome, before),
+		"periods": int(outcome.get("periods", 0)),
+	}
 
 
 ## How many whole periods `outcome` moved the fold by, measured against the total read

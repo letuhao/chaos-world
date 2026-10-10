@@ -1135,6 +1135,17 @@ func _world_bridge() -> WorldPulseBridge:
 	return bridge
 
 
+## The crafting screen's clock seam (ADR 0167, BL-0815): the ONE door by which a craft pays
+## world time. Bound beside the world bridge and for the same reason — the clock is
+## `app/`'s and a screen may not name it, so the craft arrives as a plain callable. The
+## screen falls back to a free `ItemsApi.craft` only when this slot is unwired (a headless
+## driver or an older caller); the composition root wires it on every crafting route.
+func _crafting_bridge() -> CraftingBridge:
+	var bridge := CraftingBridge.new()
+	bridge.craft = Callable(self, "craft_with_time")
+	return bridge
+
+
 # --- resolve_item --------------------------------------------------------
 ## Look a definition up by id through the items module's single resolver, so the
 ## app uses the same lookup as inventory, crafting, the generator and loot.
