@@ -1,0 +1,165 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_03_green_ghost_lantern_mist.corrupted_blight_core",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_03_green_ghost_lantern_mist",
+  "asset_slug": "corrupted_blight_core",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_03_green_ghost_lantern_mist/corrupted_blight_core/damaged_weathered.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "cleanse_blight",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.482,
+        0.431
+      ],
+      [
+        0.49,
+        0.457
+      ]
+    ],
+    "frac_zero": 0.7656,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.223,
+        0.359,
+        0.047,
+        0.0
+      ],
+      [
+        0.055,
+        0.796,
+        0.646,
+        0.004,
+        0.0
+      ],
+      [
+        0.528,
+        0.982,
+        0.994,
+        0.63,
+        0.29
+      ],
+      [
+        0.326,
+        1.0,
+        1.0,
+        0.522,
+        0.058
+      ],
+      [
+        0.245,
+        0.986,
+        1.0,
+        0.426,
+        0.103
+      ],
+      [
+        0.159,
+        0.815,
+        0.876,
+        0.293,
+        0.0
+      ],
+      [
+        0.15,
+        0.237,
+        0.277,
+        0.05,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      61,
+      16
+    ],
+    "trunk_columns": [],
+    "contact_px": 19,
+    "contact_reference_px": 19.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

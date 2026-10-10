@@ -1,0 +1,148 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_04_five_poison_valley_miasma.boiling_mud_vent",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_04_five_poison_valley_miasma",
+  "asset_slug": "boiling_mud_vent",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_04_five_poison_valley_miasma/boiling_mud_vent/pristine_dormant.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "inspect_hazard",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.445,
+        0.432
+      ],
+      [
+        0.818,
+        0.793
+      ]
+    ],
+    "frac_zero": 0.6264,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.089,
+        0.424,
+        0.079,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.359,
+        0.752,
+        0.296,
+        0.099,
+        0.0
+      ],
+      [
+        0.182,
+        0.882,
+        1.0,
+        0.996,
+        0.507,
+        0.021
+      ],
+      [
+        0.812,
+        1.0,
+        1.0,
+        1.0,
+        0.971,
+        0.34
+      ],
+      [
+        0.521,
+        1.0,
+        1.0,
+        1.0,
+        0.682,
+        0.0
+      ],
+      [
+        0.84,
+        1.0,
+        1.0,
+        1.0,
+        0.912,
+        0.448
+      ],
+      [
+        0.36,
+        0.761,
+        0.942,
+        0.851,
+        0.48,
+        0.004
+      ]
+    ],
+    "crop_offset": [
+      43,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 126,
+    "contact_reference_px": 126.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

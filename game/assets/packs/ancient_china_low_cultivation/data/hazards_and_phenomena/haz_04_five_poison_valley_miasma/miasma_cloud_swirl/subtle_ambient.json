@@ -1,0 +1,118 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_04_five_poison_valley_miasma.miasma_cloud_swirl",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_04_five_poison_valley_miasma",
+  "asset_slug": "miasma_cloud_swirl",
+  "variant_slug": "subtle_ambient",
+  "name": "Subtle Ambient Intensity",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_04_five_poison_valley_miasma/miasma_cloud_swirl/subtle_ambient.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.241,
+        0.094
+      ],
+      [
+        0.181,
+        0.213
+      ]
+    ],
+    "frac_zero": 0.7892,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      5
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.113,
+        0.129,
+        0.0,
+        0.058
+      ],
+      [
+        0.0,
+        0.466,
+        0.405,
+        0.037,
+        0.003
+      ],
+      [
+        0.021,
+        0.622,
+        0.622,
+        0.192,
+        0.0
+      ],
+      [
+        0.248,
+        0.035,
+        0.025,
+        0.216,
+        0.408
+      ],
+      [
+        0.054,
+        0.192,
+        0.105,
+        0.16,
+        0.419
+      ]
+    ],
+    "crop_offset": [
+      46,
+      88
+    ],
+    "trunk_columns": [
+      4
+    ],
+    "contact_px": 29,
+    "contact_reference_px": 29.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_03_green_ghost_lantern_mist.scorched_cinder_vent",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_03_green_ghost_lantern_mist",
+  "asset_slug": "scorched_cinder_vent",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_03_green_ghost_lantern_mist/scorched_cinder_vent/damaged_weathered.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "gather_sulfur",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.474,
+        0.495
+      ],
+      [
+        0.596,
+        0.608
+      ]
+    ],
+    "frac_zero": 0.7256,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.072,
+        0.608,
+        0.576,
+        0.526,
+        0.113
+      ],
+      [
+        0.03,
+        0.438,
+        0.608,
+        0.106,
+        0.0
+      ],
+      [
+        0.353,
+        0.891,
+        0.919,
+        0.482,
+        0.043
+      ],
+      [
+        0.438,
+        1.0,
+        1.0,
+        0.59,
+        0.102
+      ],
+      [
+        0.289,
+        0.979,
+        0.965,
+        0.448,
+        0.012
+      ],
+      [
+        0.091,
+        0.912,
+        0.914,
+        0.253,
+        0.0
+      ],
+      [
+        0.205,
+        0.818,
+        0.844,
+        0.743,
+        0.048
+      ]
+    ],
+    "crop_offset": [
+      59,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 94,
+    "contact_reference_px": 94.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

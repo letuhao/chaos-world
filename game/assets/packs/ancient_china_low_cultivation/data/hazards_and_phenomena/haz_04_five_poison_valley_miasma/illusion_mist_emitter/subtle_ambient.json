@@ -1,0 +1,129 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_04_five_poison_valley_miasma.illusion_mist_emitter",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_04_five_poison_valley_miasma",
+  "asset_slug": "illusion_mist_emitter",
+  "variant_slug": "subtle_ambient",
+  "name": "Subtle Ambient Intensity",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_04_five_poison_valley_miasma/illusion_mist_emitter/subtle_ambient.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.233,
+        0.085
+      ],
+      [
+        0.447,
+        0.256
+      ]
+    ],
+    "frac_zero": 0.7732,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.015,
+        0.0,
+        0.0,
+        0.002,
+        0.009,
+        0.0
+      ],
+      [
+        0.071,
+        0.314,
+        0.406,
+        0.331,
+        0.042,
+        0.0
+      ],
+      [
+        0.176,
+        0.655,
+        0.61,
+        0.214,
+        0.075,
+        0.0
+      ],
+      [
+        0.737,
+        0.78,
+        0.861,
+        0.234,
+        0.083,
+        0.02
+      ],
+      [
+        0.056,
+        0.379,
+        0.479,
+        0.359,
+        0.701,
+        0.189
+      ],
+      [
+        0.301,
+        0.024,
+        0.0,
+        0.142,
+        0.176,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      33,
+      57
+    ],
+    "trunk_columns": [],
+    "contact_px": 24,
+    "contact_reference_px": 24.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

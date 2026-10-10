@@ -1,0 +1,177 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_04_five_poison_valley_miasma.lightning_struck_crag",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_04_five_poison_valley_miasma",
+  "asset_slug": "lightning_struck_crag",
+  "variant_slug": "facing_east_profile",
+  "name": "East Facing Profile",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_04_five_poison_valley_miasma/lightning_struck_crag/facing_east_profile.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "gather_lightning_ash",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.353,
+        0.561
+      ],
+      [
+        0.807,
+        0.753
+      ]
+    ],
+    "frac_zero": 0.5844,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.007,
+        0.266,
+        0.749,
+        0.331,
+        0.026
+      ],
+      [
+        0.0,
+        0.093,
+        0.727,
+        0.908,
+        0.476,
+        0.035
+      ],
+      [
+        0.409,
+        0.588,
+        0.793,
+        0.967,
+        0.446,
+        0.489
+      ],
+      [
+        0.3,
+        0.938,
+        0.998,
+        1.0,
+        0.982,
+        0.415
+      ],
+      [
+        0.822,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.715
+      ],
+      [
+        0.64,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.279
+      ],
+      [
+        0.138,
+        0.763,
+        0.953,
+        0.848,
+        0.381,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      35,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 109,
+    "contact_reference_px": 109.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,309 @@
+{
+  "id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_03_green_ghost_lantern_mist.illusion_mist_emitter",
+  "archetype": "illusion_mist_emitter_haz_03_green_ghost_lantern_mist",
+  "name": "Green Ghost-Lantern Mist - Disorienting Spirit Mirage Fog",
+  "vietnamese_name": "Bích Lân Quỷ Hỏa Vụ - Làn Sương Mù Ảo Ảnh",
+  "hanzi": "碧磷鬼火雾 · 迷魂幻境晨雾",
+  "category": "haz_03_green_ghost_lantern_mist",
+  "category_code": "HAZ-03",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_03_green_ghost_lantern_mist",
+  "asset_class": "vfx_particle",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "vfx_particle entity supporting Green Ghost-Lantern Mist gameplay",
+  "destructible": false,
+  "material": "pure luminous spiritual essence and radiating energy motes",
+  "cultivation_element": "fire",
+  "prompt_summary": "Luminous magical visual effect of green ghost-lantern mist - disorienting spirit mirage fog, authentic green ghost-lantern mist materials, East Asian Xianxia craftsmanship, intense glowing spiritual energy motes and arcs, transparent ethereal aesthetic, solid pitch black background (#000000) for mathematical additive alpha unmultiplication.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Environmental Hazards & Phenomena",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "subtle_ambient",
+      "name": "Subtle Ambient Intensity",
+      "prompt_modifier": "sparse floating glowing sparks, gentle drift",
+      "variant_id": "subtle_ambient",
+      "variant_name": "Subtle Ambient Intensity",
+      "description": "sparse floating glowing sparks, gentle drift",
+      "prompt": "2D game particle VFX sprite of disorienting spirit mirage fog, sparse floating glowing sparks, gentle drift, luminous spiritual motes, soft radiant glow edges, glowing magical energy, isolated on solid pure black background (#000000) for additive alpha blending.",
+      "negative_prompt": "white background, light background, grey background, opaque solid shapes, opaque borders, ground, floor, landscape, characters, buildings, terrain, solid geometry, ui frames, decorative frames",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_03_green_ghost_lantern_mist/illusion_mist_emitter/subtle_ambient.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.128,
+            0.126
+          ],
+          [
+            0.205,
+            0.277
+          ]
+        ],
+        "frac_zero": 0.808,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          5,
+          6
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.048,
+            0.137,
+            0.003,
+            0.022
+          ],
+          [
+            0.006,
+            0.081,
+            0.338,
+            0.035,
+            0.0
+          ],
+          [
+            0.007,
+            0.274,
+            0.645,
+            0.315,
+            0.047
+          ],
+          [
+            0.0,
+            0.594,
+            0.999,
+            0.577,
+            0.144
+          ],
+          [
+            0.107,
+            0.07,
+            0.282,
+            0.157,
+            0.02
+          ],
+          [
+            0.042,
+            0.008,
+            0.005,
+            0.245,
+            0.31
+          ]
+        ],
+        "crop_offset": [
+          34,
+          48
+        ],
+        "trunk_columns": [],
+        "contact_px": 29,
+        "contact_reference_px": 29.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "surging_torrent",
+      "name": "Surging Concentrated Torrent",
+      "prompt_modifier": "dense concentrated vortex ribbon of bright spiritual energy",
+      "variant_id": "surging_torrent",
+      "variant_name": "Surging Concentrated Torrent",
+      "description": "dense concentrated vortex ribbon of bright spiritual energy",
+      "prompt": "2D game particle VFX sprite of disorienting spirit mirage fog, dense concentrated vortex ribbon of bright spiritual energy, luminous spiritual motes, soft radiant glow edges, glowing magical energy, isolated on solid pure black background (#000000) for additive alpha blending.",
+      "negative_prompt": "white background, light background, grey background, opaque solid shapes, opaque borders, ground, floor, landscape, characters, buildings, terrain, solid geometry, ui frames, decorative frames",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_03_green_ghost_lantern_mist/illusion_mist_emitter/surging_torrent.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.222,
+            0.086
+          ],
+          [
+            0.225,
+            0.354
+          ]
+        ],
+        "frac_zero": 0.7802,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          5,
+          6
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.069,
+            0.036,
+            0.011,
+            0.0
+          ],
+          [
+            0.102,
+            0.213,
+            0.233,
+            0.008,
+            0.021
+          ],
+          [
+            0.035,
+            0.648,
+            0.587,
+            0.297,
+            0.019
+          ],
+          [
+            0.026,
+            0.228,
+            0.907,
+            0.43,
+            0.124
+          ],
+          [
+            0.003,
+            0.48,
+            0.902,
+            0.552,
+            0.147
+          ],
+          [
+            0.093,
+            0.035,
+            0.139,
+            0.097,
+            0.082
+          ]
+        ],
+        "crop_offset": [
+          41,
+          48
+        ],
+        "trunk_columns": [],
+        "contact_px": 11,
+        "contact_reference_px": 11.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "HAZ-03",
+    "domain": "hazards_and_phenomena",
+    "interaction": "examine",
+    "collision_behavior": "none",
+    "element": "fire",
+    "tier": 3
+  },
+  "category_id": "haz_03_green_ghost_lantern_mist",
+  "domain_id": "hazards_and_phenomena",
+  "pinyin": "Bìlín Guǐhuǒwù · Disorienting Spirit Mirage Fog",
+  "archetype_name": "Disorienting Spirit Mirage Fog",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "none",
+    "shape": "box",
+    "solid": false,
+    "blocks_movement": false,
+    "blocks_projectiles": false,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "ethereal_spiritual_qi",
+  "secondary_material": "astral_light_motes",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Fire affinity (Core Formation (Kết Đan / 结丹))",
+  "elevation_tier": 3,
+  "mortal_realm_tier": "Core Formation (Kết Đan / 结丹)",
+  "asset_slug": "illusion_mist_emitter"
+}

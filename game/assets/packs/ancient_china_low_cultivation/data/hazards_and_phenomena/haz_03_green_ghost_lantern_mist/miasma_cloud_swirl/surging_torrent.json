@@ -1,0 +1,123 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_03_green_ghost_lantern_mist.miasma_cloud_swirl",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_03_green_ghost_lantern_mist",
+  "asset_slug": "miasma_cloud_swirl",
+  "variant_slug": "surging_torrent",
+  "name": "Surging Concentrated Torrent",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_03_green_ghost_lantern_mist/miasma_cloud_swirl/surging_torrent.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.2,
+        0.156
+      ],
+      [
+        0.232,
+        0.311
+      ]
+    ],
+    "frac_zero": 0.7849,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.008,
+        0.041,
+        0.174,
+        0.0
+      ],
+      [
+        0.204,
+        0.474,
+        0.282,
+        0.012,
+        0.0
+      ],
+      [
+        0.163,
+        0.213,
+        0.716,
+        0.277,
+        0.219
+      ],
+      [
+        0.003,
+        0.604,
+        0.774,
+        0.198,
+        0.0
+      ],
+      [
+        0.139,
+        0.064,
+        0.189,
+        0.235,
+        0.385
+      ],
+      [
+        0.0,
+        0.109,
+        0.266,
+        0.156,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      49,
+      77
+    ],
+    "trunk_columns": [],
+    "contact_px": 19,
+    "contact_reference_px": 19.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
