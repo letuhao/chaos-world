@@ -1,0 +1,184 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_05_heavenly_lightning_strike_zone.lightning_struck_crag",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_05_heavenly_lightning_strike_zone",
+  "asset_slug": "lightning_struck_crag",
+  "variant_slug": "facing_south_front",
+  "name": "South Facing View",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_05_heavenly_lightning_strike_zone/lightning_struck_crag/facing_south_front.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "gather_lightning_ash",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.504,
+        0.497
+      ],
+      [
+        0.723,
+        0.673
+      ]
+    ],
+    "frac_zero": 0.5324,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.171,
+        0.284,
+        0.568,
+        0.255,
+        0.127,
+        0.0
+      ],
+      [
+        0.097,
+        0.486,
+        0.915,
+        1.0,
+        0.598,
+        0.469,
+        0.01
+      ],
+      [
+        0.25,
+        0.565,
+        1.0,
+        1.0,
+        0.848,
+        0.479,
+        0.263
+      ],
+      [
+        0.201,
+        0.972,
+        1.0,
+        1.0,
+        1.0,
+        0.699,
+        0.143
+      ],
+      [
+        0.682,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.925,
+        0.213
+      ],
+      [
+        0.447,
+        0.981,
+        1.0,
+        1.0,
+        1.0,
+        0.749,
+        0.0
+      ],
+      [
+        0.0,
+        0.374,
+        0.701,
+        0.905,
+        0.664,
+        0.071,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      21,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 73,
+    "contact_reference_px": 73.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

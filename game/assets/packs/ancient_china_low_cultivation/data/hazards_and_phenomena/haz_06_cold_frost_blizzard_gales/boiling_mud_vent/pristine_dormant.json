@@ -1,0 +1,153 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_06_cold_frost_blizzard_gales.boiling_mud_vent",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_06_cold_frost_blizzard_gales",
+  "asset_slug": "boiling_mud_vent",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_06_cold_frost_blizzard_gales/boiling_mud_vent/pristine_dormant.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "inspect_hazard",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.52,
+        0.555
+      ],
+      [
+        0.724,
+        0.677
+      ]
+    ],
+    "frac_zero": 0.5505,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.304,
+        0.401,
+        0.548,
+        0.153,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.524,
+        0.918,
+        0.887,
+        0.691,
+        0.397,
+        0.085
+      ],
+      [
+        0.287,
+        0.759,
+        1.0,
+        1.0,
+        0.934,
+        0.54,
+        0.398
+      ],
+      [
+        0.168,
+        0.955,
+        1.0,
+        1.0,
+        1.0,
+        0.898,
+        0.043
+      ],
+      [
+        0.492,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.523,
+        0.0
+      ],
+      [
+        0.696,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.273,
+        0.0
+      ],
+      [
+        0.018,
+        0.218,
+        0.892,
+        0.887,
+        0.795,
+        0.127,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 104,
+    "contact_reference_px": 104.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

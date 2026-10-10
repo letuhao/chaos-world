@@ -1,0 +1,130 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_05_heavenly_lightning_strike_zone.miasma_cloud_swirl",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_05_heavenly_lightning_strike_zone",
+  "asset_slug": "miasma_cloud_swirl",
+  "variant_slug": "surging_torrent",
+  "name": "Surging Concentrated Torrent",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_05_heavenly_lightning_strike_zone/miasma_cloud_swirl/surging_torrent.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.123,
+        0.085
+      ],
+      [
+        0.254,
+        0.377
+      ]
+    ],
+    "frac_zero": 0.7492,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.002,
+        0.008,
+        0.0,
+        0.044,
+        0.011
+      ],
+      [
+        0.027,
+        0.051,
+        0.157,
+        0.07,
+        0.0
+      ],
+      [
+        0.015,
+        0.542,
+        0.198,
+        0.087,
+        0.0
+      ],
+      [
+        0.083,
+        0.173,
+        0.577,
+        0.205,
+        0.094
+      ],
+      [
+        0.159,
+        0.54,
+        0.877,
+        0.149,
+        0.142
+      ],
+      [
+        0.172,
+        0.442,
+        0.646,
+        0.423,
+        0.054
+      ],
+      [
+        0.068,
+        0.0,
+        0.047,
+        0.288,
+        0.005
+      ]
+    ],
+    "crop_offset": [
+      55,
+      28
+    ],
+    "trunk_columns": [],
+    "contact_px": 13,
+    "contact_reference_px": 13.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

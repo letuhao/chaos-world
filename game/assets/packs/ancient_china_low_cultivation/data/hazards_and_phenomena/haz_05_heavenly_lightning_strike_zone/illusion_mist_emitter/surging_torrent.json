@@ -1,0 +1,132 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_05_heavenly_lightning_strike_zone.illusion_mist_emitter",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_05_heavenly_lightning_strike_zone",
+  "asset_slug": "illusion_mist_emitter",
+  "variant_slug": "surging_torrent",
+  "name": "Surging Concentrated Torrent",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_05_heavenly_lightning_strike_zone/illusion_mist_emitter/surging_torrent.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.205,
+        0.227
+      ],
+      [
+        0.341,
+        0.39
+      ]
+    ],
+    "frac_zero": 0.7267,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.054,
+        0.143,
+        0.061,
+        0.0
+      ],
+      [
+        0.002,
+        0.159,
+        0.509,
+        0.245,
+        0.0
+      ],
+      [
+        0.103,
+        0.516,
+        0.816,
+        0.328,
+        0.196
+      ],
+      [
+        0.187,
+        0.332,
+        0.871,
+        0.499,
+        0.099
+      ],
+      [
+        0.073,
+        0.718,
+        1.0,
+        0.565,
+        0.161
+      ],
+      [
+        0.168,
+        0.305,
+        0.249,
+        0.354,
+        0.152
+      ],
+      [
+        0.0,
+        0.0,
+        0.027,
+        0.375,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      47,
+      40
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 15,
+    "contact_reference_px": 15.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

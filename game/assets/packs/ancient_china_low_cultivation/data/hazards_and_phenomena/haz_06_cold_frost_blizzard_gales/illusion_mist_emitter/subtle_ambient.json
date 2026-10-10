@@ -1,0 +1,144 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_06_cold_frost_blizzard_gales.illusion_mist_emitter",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_06_cold_frost_blizzard_gales",
+  "asset_slug": "illusion_mist_emitter",
+  "variant_slug": "subtle_ambient",
+  "name": "Subtle Ambient Intensity",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_06_cold_frost_blizzard_gales/illusion_mist_emitter/subtle_ambient.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.242,
+        0.216
+      ],
+      [
+        0.325,
+        0.26
+      ]
+    ],
+    "frac_zero": 0.7374,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.025,
+        0.213,
+        0.02,
+        0.022,
+        0.0
+      ],
+      [
+        0.0,
+        0.268,
+        0.607,
+        0.518,
+        0.075,
+        0.007,
+        0.0
+      ],
+      [
+        0.0,
+        0.514,
+        0.763,
+        0.375,
+        0.557,
+        0.239,
+        0.0
+      ],
+      [
+        0.271,
+        0.327,
+        0.457,
+        0.208,
+        0.475,
+        0.045,
+        0.0
+      ],
+      [
+        0.253,
+        0.828,
+        0.499,
+        0.228,
+        0.106,
+        0.609,
+        0.2
+      ],
+      [
+        0.134,
+        0.06,
+        0.141,
+        0.086,
+        0.16,
+        0.583,
+        0.138
+      ],
+      [
+        0.062,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      20,
+      37
+    ],
+    "trunk_columns": [],
+    "contact_px": 29,
+    "contact_reference_px": 29.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

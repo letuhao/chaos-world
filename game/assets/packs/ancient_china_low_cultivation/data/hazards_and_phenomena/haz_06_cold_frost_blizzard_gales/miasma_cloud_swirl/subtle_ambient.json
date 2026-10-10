@@ -1,0 +1,139 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_06_cold_frost_blizzard_gales.miasma_cloud_swirl",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_06_cold_frost_blizzard_gales",
+  "asset_slug": "miasma_cloud_swirl",
+  "variant_slug": "subtle_ambient",
+  "name": "Subtle Ambient Intensity",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_06_cold_frost_blizzard_gales/miasma_cloud_swirl/subtle_ambient.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.033,
+        0.017
+      ],
+      [
+        0.431,
+        0.277
+      ]
+    ],
+    "frac_zero": 0.7135,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.001,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.004,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.001,
+        0.049,
+        0.131,
+        0.043,
+        0.052,
+        0.028
+      ],
+      [
+        0.146,
+        0.609,
+        0.62,
+        0.208,
+        0.139,
+        0.025
+      ],
+      [
+        0.116,
+        0.727,
+        0.663,
+        0.474,
+        0.249,
+        0.263
+      ],
+      [
+        0.3,
+        0.485,
+        0.544,
+        0.157,
+        0.487,
+        0.164
+      ],
+      [
+        0.0,
+        0.0,
+        0.086,
+        0.48,
+        0.102,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      35,
+      40
+    ],
+    "trunk_columns": [
+      3
+    ],
+    "contact_px": 28,
+    "contact_reference_px": 28.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
