@@ -1,0 +1,290 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_24_core_refinement_earth_fire_vent.scripture_library_tower",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_24_core_refinement_earth_fire_vent",
+  "asset_slug": "scripture_library_tower",
+  "variant_slug": "rot_north_rear",
+  "name": "North Rear (Back Wall)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_24_core_refinement_earth_fire_vent/scripture_library_tower/rot_north_rear.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "read_scrolls",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.606,
+        0.777,
+        0.577
+      ],
+      [
+        0.757,
+        1.0,
+        0.73
+      ],
+      [
+        0.667,
+        0.952,
+        0.667
+      ]
+    ],
+    "frac_zero": 0.3794,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 9,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.295,
+        0.469,
+        0.189,
+        0.052,
+        0.115,
+        0.498,
+        0.081,
+        0.077,
+        0.197,
+        0.571,
+        0.138
+      ],
+      [
+        0.137,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.94,
+        0.008
+      ],
+      [
+        0.011,
+        0.98,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.781,
+        0.0
+      ],
+      [
+        0.0,
+        0.955,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.723,
+        0.0
+      ],
+      [
+        0.007,
+        0.986,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.789,
+        0.0
+      ],
+      [
+        0.116,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.927,
+        0.042
+      ],
+      [
+        0.256,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.129
+      ],
+      [
+        0.702,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.621
+      ],
+      [
+        0.282,
+        0.796,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.713,
+        0.326
+      ],
+      [
+        0.0,
+        0.767,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.652,
+        0.0
+      ],
+      [
+        0.0,
+        0.366,
+        0.44,
+        0.565,
+        0.829,
+        0.76,
+        0.836,
+        0.48,
+        0.48,
+        0.356,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      23
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "contact_px": 275,
+    "contact_reference_px": 275.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

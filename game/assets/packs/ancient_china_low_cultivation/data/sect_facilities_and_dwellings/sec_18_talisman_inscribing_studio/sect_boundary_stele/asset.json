@@ -1,0 +1,527 @@
+{
+  "id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_18_talisman_inscribing_studio.sect_boundary_stele",
+  "archetype": "sect_boundary_stele_sec_18_talisman_inscribing_studio",
+  "name": "Talisman Inscribing Studio - Carved Mountain Boundary Monolith",
+  "vietnamese_name": "Phù Lục Họa Ấn Hiên - Bia Đá Ranh Giới Tông Môn",
+  "hanzi": "符箓画印轩 · 界定灵山界碑",
+  "category": "sec_18_talisman_inscribing_studio",
+  "category_code": "SEC-18",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_18_talisman_inscribing_studio",
+  "asset_class": "landmark_mountain",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    1,
+    1
+  ],
+  "canvas_px": [
+    128,
+    128
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "read_stele",
+  "gameplay_role": "landmark_mountain entity supporting Talisman Inscribing Studio gameplay",
+  "destructible": false,
+  "material": "stratified pale karst limestone and loose mineral scree",
+  "cultivation_element": "earth",
+  "prompt_summary": "Single isolated 2D top-down world-map natural landmark sprite of talisman inscribing studio - carved mountain boundary monolith, authentic talisman inscribing studio materials, East Asian Xianxia craftsmanship, steep high-angle top-down RPG map perspective, rocky summit crest and stepped cliff strata dominant from overhead, natural mountain geology, zero diorama grass pedestal, fine dark #263A35 ink contours, solid pure white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Cultivation Sect Facilities & Dwellings",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "facing_south_front",
+      "name": "South Facing View",
+      "prompt_modifier": "summit crest and southern stepped cliff strata descending toward camera",
+      "variant_id": "facing_south_front",
+      "variant_name": "South Facing View",
+      "description": "summit crest and southern stepped cliff strata descending toward camera",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of carved mountain boundary monolith, stratified pale karst limestone and loose mineral scree, summit crest and southern stepped cliff strata descending toward camera, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, summit crest and upper rock terraces fully visible from above, stepped crag shelves and gnarled cliff pine seen from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_18_talisman_inscribing_studio/sect_boundary_stele/facing_south_front.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.62
+          ]
+        ],
+        "frac_zero": 0.6341,
+        "blocks": [
+          [
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false
+          ]
+        ],
+        "block_cell_count": 1,
+        "anchor_cell": [
+          0,
+          0
+        ],
+        "sub_grid": [
+          3,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.161,
+            0.834,
+            0.174
+          ],
+          [
+            0.716,
+            0.999,
+            0.556
+          ],
+          [
+            0.587,
+            0.901,
+            0.559
+          ]
+        ],
+        "crop_offset": [
+          19,
+          16
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2
+        ],
+        "contact_px": 74,
+        "contact_reference_px": 74.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.15": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.35": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          128,
+          128
+        ]
+      }
+    },
+    {
+      "variant_slug": "facing_north_back",
+      "name": "North Facing View",
+      "prompt_modifier": "sheer northern rock face and upper summit plateau surface dominant from overhead",
+      "variant_id": "facing_north_back",
+      "variant_name": "North Facing View",
+      "description": "sheer northern rock face and upper summit plateau surface dominant from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of carved mountain boundary monolith, stratified pale karst limestone and loose mineral scree, sheer northern rock face and upper summit plateau surface dominant from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, sheer northern crag face and upper summit plateau surface fully visible from above, weathered northern rock terraces descending away from summit, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_18_talisman_inscribing_studio/sect_boundary_stele/facing_north_back.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.59
+          ]
+        ],
+        "frac_zero": 0.6625,
+        "blocks": [
+          [
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false
+          ]
+        ],
+        "block_cell_count": 1,
+        "anchor_cell": [
+          0,
+          0
+        ],
+        "sub_grid": [
+          3,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.121,
+            0.855,
+            0.056
+          ],
+          [
+            0.602,
+            1.0,
+            0.623
+          ],
+          [
+            0.595,
+            0.917,
+            0.45
+          ]
+        ],
+        "crop_offset": [
+          18,
+          17
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2
+        ],
+        "contact_px": 70,
+        "contact_reference_px": 70.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.15": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.35": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          128,
+          128
+        ]
+      }
+    },
+    {
+      "variant_slug": "facing_west_left",
+      "name": "West Facing Profile",
+      "prompt_modifier": "elongated rock ridge running North-South, western cliff strata visible from overhead",
+      "variant_id": "facing_west_left",
+      "variant_name": "West Facing Profile",
+      "description": "elongated rock ridge running North-South, western cliff strata visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of carved mountain boundary monolith, stratified pale karst limestone and loose mineral scree, elongated rock ridge running North-South, western cliff strata visible from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, landmark rotated 90 degrees with elongated rock spine running North-South, western stepped cliff strata and summit crest visible from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_18_talisman_inscribing_studio/sect_boundary_stele/facing_west_left.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.566
+          ]
+        ],
+        "frac_zero": 0.7093,
+        "blocks": [
+          [
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false
+          ]
+        ],
+        "block_cell_count": 1,
+        "anchor_cell": [
+          0,
+          0
+        ],
+        "sub_grid": [
+          3,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.132,
+            0.559,
+            0.0
+          ],
+          [
+            0.583,
+            0.97,
+            0.342
+          ],
+          [
+            0.7,
+            0.896,
+            0.471
+          ]
+        ],
+        "crop_offset": [
+          23,
+          16
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2
+        ],
+        "contact_px": 62,
+        "contact_reference_px": 62.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.15": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.35": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          128,
+          128
+        ]
+      }
+    },
+    {
+      "variant_slug": "facing_east_profile",
+      "name": "East Facing Profile",
+      "prompt_modifier": "elongated rock ridge running North-South, eastern cliff strata visible from overhead",
+      "variant_id": "facing_east_profile",
+      "variant_name": "East Facing Profile",
+      "description": "elongated rock ridge running North-South, eastern cliff strata visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of carved mountain boundary monolith, stratified pale karst limestone and loose mineral scree, elongated rock ridge running North-South, eastern cliff strata visible from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, landmark rotated 90 degrees with elongated rock spine running North-South, eastern stepped cliff strata and summit crest visible from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_18_talisman_inscribing_studio/sect_boundary_stele/facing_east_profile.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.564
+          ]
+        ],
+        "frac_zero": 0.6909,
+        "blocks": [
+          [
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false
+          ]
+        ],
+        "block_cell_count": 1,
+        "anchor_cell": [
+          0,
+          0
+        ],
+        "sub_grid": [
+          3,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.043,
+            0.717,
+            0.037
+          ],
+          [
+            0.499,
+            0.986,
+            0.558
+          ],
+          [
+            0.686,
+            0.896,
+            0.481
+          ]
+        ],
+        "crop_offset": [
+          20,
+          16
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2
+        ],
+        "contact_px": 71,
+        "contact_reference_px": 71.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.0": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.15": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.35": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "1.6": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          128,
+          128
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "SEC-18",
+    "domain": "sect_facilities_and_dwellings",
+    "interaction": "read_stele",
+    "collision_behavior": "solid",
+    "element": "earth",
+    "tier": 3
+  },
+  "category_id": "sec_18_talisman_inscribing_studio",
+  "domain_id": "sect_facilities_and_dwellings",
+  "pinyin": "Fúlù Huàyìnxuān · Carved Mountain Boundary Monolith",
+  "archetype_name": "Carved Mountain Boundary Monolith",
+  "footprint_subcells": {
+    "w": 4,
+    "h": 4
+  },
+  "footprint_px": {
+    "w": 128,
+    "h": 128
+  },
+  "cell_span": {
+    "w": 1,
+    "h": 1
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "ground"
+  },
+  "primary_material": "weathered_karst_limestone",
+  "secondary_material": "crag_scree",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Earth affinity (Core Formation (Kết Đan / 结丹))",
+  "elevation_tier": 3,
+  "mortal_realm_tier": "Core Formation (Kết Đan / 结丹)",
+  "asset_slug": "sect_boundary_stele"
+}

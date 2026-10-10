@@ -1,0 +1,265 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_20_sect_cemetery_stele_forest.scripture_library_tower",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_20_sect_cemetery_stele_forest",
+  "asset_slug": "scripture_library_tower",
+  "variant_slug": "rot_west_flank",
+  "name": "West Flank (Left Profile)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_20_sect_cemetery_stele_forest/scripture_library_tower/rot_west_flank.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "read_scrolls",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.452,
+        0.709,
+        0.355
+      ],
+      [
+        0.885,
+        1.0,
+        0.76
+      ],
+      [
+        0.698,
+        0.942,
+        0.642
+      ]
+    ],
+    "frac_zero": 0.5132,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 9,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      9,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.048,
+        0.021,
+        0.0,
+        0.115,
+        0.329,
+        0.0,
+        0.0,
+        0.069,
+        0.0
+      ],
+      [
+        0.105,
+        0.88,
+        0.678,
+        0.812,
+        0.912,
+        0.643,
+        0.77,
+        0.442,
+        0.0
+      ],
+      [
+        0.0,
+        0.887,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.214,
+        0.0
+      ],
+      [
+        0.442,
+        0.903,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.567,
+        0.107
+      ],
+      [
+        0.603,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.863,
+        0.0
+      ],
+      [
+        0.604,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.872,
+        0.003
+      ],
+      [
+        0.707,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.993,
+        0.424
+      ],
+      [
+        0.828,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.874
+      ],
+      [
+        0.702,
+        0.991,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.86,
+        0.438
+      ],
+      [
+        0.039,
+        0.999,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.521,
+        0.009
+      ],
+      [
+        0.046,
+        0.484,
+        0.569,
+        0.859,
+        0.807,
+        0.626,
+        0.512,
+        0.312,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      51,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "contact_px": 91,
+    "contact_reference_px": 91.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      384
+    ]
+  }
+}

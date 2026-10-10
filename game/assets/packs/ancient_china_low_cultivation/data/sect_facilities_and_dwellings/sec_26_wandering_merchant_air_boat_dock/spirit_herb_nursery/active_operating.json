@@ -1,0 +1,155 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_26_wandering_merchant_air_boat_dock.spirit_herb_nursery",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_26_wandering_merchant_air_boat_dock",
+  "asset_slug": "spirit_herb_nursery",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_26_wandering_merchant_air_boat_dock/spirit_herb_nursery/active_operating.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "walk_surface",
+  "interactive_verb": "harvest_herbs",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.18,
+        0.484,
+        0.628
+      ],
+      [
+        0.577,
+        0.828,
+        0.465
+      ]
+    ],
+    "frac_zero": 0.7239,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.146,
+        0.126,
+        0.0,
+        0.394,
+        0.494,
+        0.0
+      ],
+      [
+        0.0,
+        0.381,
+        0.3,
+        0.59,
+        0.997,
+        0.94,
+        0.429
+      ],
+      [
+        0.002,
+        0.433,
+        0.46,
+        0.687,
+        0.824,
+        0.958,
+        0.186
+      ],
+      [
+        0.017,
+        0.396,
+        0.801,
+        0.986,
+        1.0,
+        0.971,
+        0.126
+      ],
+      [
+        0.199,
+        0.939,
+        1.0,
+        1.0,
+        0.996,
+        0.97,
+        0.398
+      ],
+      [
+        0.718,
+        1.0,
+        1.0,
+        0.973,
+        0.761,
+        0.173,
+        0.058
+      ],
+      [
+        0.155,
+        0.583,
+        0.448,
+        0.382,
+        0.489,
+        0.077,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      84,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 44,
+    "contact_reference_px": 44.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

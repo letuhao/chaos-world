@@ -1,0 +1,659 @@
+{
+  "id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_14_sect_array_pillar_boundary_stone.spirit_herb_nursery",
+  "archetype": "spirit_herb_nursery_sec_14_sect_array_pillar_boundary_stone",
+  "name": "Sect Array Pillar / Boundary Stone - Terraced Herb Plot with Irrigation",
+  "vietnamese_name": "Hộ Sơn Trận Nhãn Thạch Trụ - Vườn Linh Thảo Tông Môn",
+  "hanzi": "护山阵眼石柱 · 温玉护持灵药圃",
+  "category": "sec_14_sect_array_pillar_boundary_stone",
+  "category_code": "SEC-14",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_14_sect_array_pillar_boundary_stone",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "harvest_herbs",
+  "gameplay_role": "prop_workstation entity supporting Sect Array Pillar / Boundary Stone gameplay",
+  "destructible": true,
+  "material": "succulent spiritual herb stalk with dew-tipped leaves",
+  "cultivation_element": "wood",
+  "prompt_summary": "Single isolated 2D RPG game prop of sect array pillar / boundary stone - terraced herb plot with irrigation, authentic sect array pillar / boundary stone materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Cultivation Sect Facilities & Dwellings",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of terraced herb plot with irrigation, succulent spiritual herb stalk with dew-tipped leaves, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_14_sect_array_pillar_boundary_stone/spirit_herb_nursery/pristine_dormant.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.183,
+            0.533,
+            0.227
+          ],
+          [
+            0.694,
+            0.979,
+            0.711
+          ]
+        ],
+        "frac_zero": 0.7429,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.252,
+            0.073,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.002,
+            0.451,
+            0.222,
+            0.47,
+            0.074
+          ],
+          [
+            0.052,
+            0.584,
+            0.976,
+            0.787,
+            0.331,
+            0.316
+          ],
+          [
+            0.298,
+            0.994,
+            1.0,
+            1.0,
+            0.915,
+            0.127
+          ],
+          [
+            0.54,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.578
+          ],
+          [
+            0.843,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.869
+          ],
+          [
+            0.12,
+            0.703,
+            0.887,
+            0.96,
+            0.75,
+            0.133
+          ]
+        ],
+        "crop_offset": [
+          96,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 121,
+        "contact_reference_px": 121.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of terraced herb plot with irrigation, succulent spiritual herb stalk with dew-tipped leaves, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_14_sect_array_pillar_boundary_stone/spirit_herb_nursery/active_operating.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.227,
+            0.493,
+            0.105
+          ],
+          [
+            0.685,
+            0.975,
+            0.721
+          ]
+        ],
+        "frac_zero": 0.7504,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.168,
+            0.307,
+            0.205,
+            0.015,
+            0.0
+          ],
+          [
+            0.015,
+            0.194,
+            0.494,
+            0.207,
+            0.134,
+            0.0
+          ],
+          [
+            0.118,
+            0.664,
+            0.886,
+            0.443,
+            0.184,
+            0.103
+          ],
+          [
+            0.17,
+            0.944,
+            0.993,
+            0.899,
+            0.618,
+            0.077
+          ],
+          [
+            0.513,
+            1.0,
+            1.0,
+            1.0,
+            0.977,
+            0.45
+          ],
+          [
+            0.812,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.898
+          ],
+          [
+            0.218,
+            0.705,
+            0.901,
+            0.924,
+            0.788,
+            0.265
+          ]
+        ],
+        "crop_offset": [
+          97,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 135,
+        "contact_reference_px": 135.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of terraced herb plot with irrigation, succulent spiritual herb stalk with dew-tipped leaves, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_14_sect_array_pillar_boundary_stone/spirit_herb_nursery/damaged_weathered.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.198,
+            0.519,
+            0.197
+          ],
+          [
+            0.596,
+            0.95,
+            0.69
+          ]
+        ],
+        "frac_zero": 0.7778,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.335,
+            0.004,
+            0.0,
+            0.0
+          ],
+          [
+            0.002,
+            0.351,
+            0.45,
+            0.15,
+            0.0,
+            0.0
+          ],
+          [
+            0.033,
+            0.552,
+            0.852,
+            0.759,
+            0.412,
+            0.0
+          ],
+          [
+            0.125,
+            0.991,
+            1.0,
+            1.0,
+            0.746,
+            0.116
+          ],
+          [
+            0.411,
+            0.919,
+            1.0,
+            1.0,
+            0.82,
+            0.185
+          ],
+          [
+            0.716,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.688
+          ],
+          [
+            0.12,
+            0.682,
+            0.841,
+            0.818,
+            0.492,
+            0.002
+          ]
+        ],
+        "crop_offset": [
+          104,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 107,
+        "contact_reference_px": 107.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of terraced herb plot with irrigation, succulent spiritual herb stalk with dew-tipped leaves, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_14_sect_array_pillar_boundary_stone/spirit_herb_nursery/ruined_rubble.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.145,
+            0.476,
+            0.167
+          ],
+          [
+            0.645,
+            0.979,
+            0.658
+          ]
+        ],
+        "frac_zero": 0.7694,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.398,
+            0.005,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.283,
+            0.447,
+            0.073,
+            0.065,
+            0.0
+          ],
+          [
+            0.162,
+            0.283,
+            0.871,
+            0.571,
+            0.356,
+            0.178
+          ],
+          [
+            0.095,
+            0.816,
+            0.996,
+            0.843,
+            0.66,
+            0.176
+          ],
+          [
+            0.321,
+            1.0,
+            1.0,
+            1.0,
+            0.908,
+            0.29
+          ],
+          [
+            0.805,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.729
+          ],
+          [
+            0.161,
+            0.774,
+            0.946,
+            0.919,
+            0.689,
+            0.172
+          ]
+        ],
+        "crop_offset": [
+          99,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 125,
+        "contact_reference_px": 125.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "SEC-14",
+    "domain": "sect_facilities_and_dwellings",
+    "interaction": "harvest_herbs",
+    "collision_behavior": "walk_surface",
+    "element": "wood",
+    "tier": 2
+  },
+  "category_id": "sec_14_sect_array_pillar_boundary_stone",
+  "domain_id": "sect_facilities_and_dwellings",
+  "pinyin": "Zhènyǎn Shízhù · Terraced Herb Plot with Irrigation",
+  "archetype_name": "Terraced Herb Plot with Irrigation",
+  "footprint_subcells": {
+    "w": 12,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 384,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 3,
+    "h": 2
+  },
+  "collision": {
+    "type": "walk_surface",
+    "shape": "box",
+    "solid": false,
+    "blocks_movement": false,
+    "blocks_projectiles": false,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "spiritual_root_stalk",
+  "secondary_material": "medicinal_blossom",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Wood affinity (Foundation Establishment (Trúc Cơ / 筑基))",
+  "elevation_tier": 2,
+  "mortal_realm_tier": "Foundation Establishment (Trúc Cơ / 筑基)",
+  "asset_slug": "spirit_herb_nursery"
+}

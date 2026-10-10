@@ -1,0 +1,160 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_27_blood_sacrifice_demon_pit.spirit_herb_nursery",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_27_blood_sacrifice_demon_pit",
+  "asset_slug": "spirit_herb_nursery",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_27_blood_sacrifice_demon_pit/spirit_herb_nursery/damaged_weathered.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "walk_surface",
+  "interactive_verb": "harvest_herbs",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.275,
+        0.666,
+        0.508
+      ],
+      [
+        0.712,
+        0.985,
+        0.685
+      ]
+    ],
+    "frac_zero": 0.69,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.301,
+        0.1,
+        0.756,
+        0.448,
+        0.0
+      ],
+      [
+        0.0,
+        0.244,
+        0.721,
+        0.474,
+        0.408,
+        0.636,
+        0.273
+      ],
+      [
+        0.108,
+        0.859,
+        0.991,
+        0.997,
+        0.877,
+        0.297,
+        0.108
+      ],
+      [
+        0.367,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.677,
+        0.011
+      ],
+      [
+        0.746,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.913,
+        0.057
+      ],
+      [
+        0.674,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.9,
+        0.011
+      ],
+      [
+        0.113,
+        0.645,
+        0.931,
+        0.954,
+        0.811,
+        0.258,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      90,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 140,
+    "contact_reference_px": 140.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,258 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_21_foundation_establishment_trial_pit.array_formation_dais",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_21_foundation_establishment_trial_pit",
+  "asset_slug": "array_formation_dais",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_21_foundation_establishment_trial_pit/array_formation_dais/active_operating.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "walk_surface",
+  "interactive_verb": "activate_array",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.544,
+        0.507,
+        0.297
+      ],
+      [
+        0.83,
+        1.0,
+        0.807
+      ],
+      [
+        0.657,
+        0.967,
+        0.699
+      ]
+    ],
+    "frac_zero": 0.4165,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.115,
+        0.719,
+        0.653,
+        0.291,
+        0.184,
+        0.003,
+        0.116,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.015,
+        0.775,
+        1.0,
+        1.0,
+        0.543,
+        0.481,
+        0.132,
+        0.566,
+        0.516,
+        0.099,
+        0.0
+      ],
+      [
+        0.606,
+        0.605,
+        0.71,
+        0.804,
+        0.607,
+        0.456,
+        0.383,
+        0.397,
+        0.506,
+        0.41,
+        0.01
+      ],
+      [
+        0.015,
+        0.464,
+        0.974,
+        0.99,
+        0.998,
+        0.898,
+        0.955,
+        0.803,
+        0.559,
+        0.299,
+        0.271
+      ],
+      [
+        0.203,
+        0.809,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.975,
+        0.527,
+        0.004
+      ],
+      [
+        0.451,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.793,
+        0.123
+      ],
+      [
+        0.864,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.531
+      ],
+      [
+        0.734,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.891
+      ],
+      [
+        0.459,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.876,
+        0.246
+      ],
+      [
+        0.063,
+        0.83,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.585,
+        0.0
+      ],
+      [
+        0.0,
+        0.061,
+        0.503,
+        0.735,
+        0.91,
+        0.893,
+        0.865,
+        0.609,
+        0.426,
+        0.002,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      24,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "contact_px": 150,
+    "contact_reference_px": 150.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        2,
+        1,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,185 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_17_outer_elder_receiving_hall.elder_seclusion_pavilion",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_17_outer_elder_receiving_hall",
+  "asset_slug": "elder_seclusion_pavilion",
+  "variant_slug": "rot_north_rear",
+  "name": "North Rear (Back Wall)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_17_outer_elder_receiving_hall/elder_seclusion_pavilion/rot_north_rear.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "meditate",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.683,
+        0.673
+      ],
+      [
+        0.755,
+        0.759
+      ]
+    ],
+    "frac_zero": 0.4572,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.379,
+        0.433,
+        0.302,
+        0.283,
+        0.295,
+        0.423,
+        0.37
+      ],
+      [
+        0.383,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.349
+      ],
+      [
+        0.35,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.299
+      ],
+      [
+        0.436,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.41
+      ],
+      [
+        0.762,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.759
+      ],
+      [
+        0.122,
+        0.976,
+        1.0,
+        1.0,
+        1.0,
+        0.959,
+        0.137
+      ],
+      [
+        0.01,
+        0.52,
+        0.674,
+        0.88,
+        0.719,
+        0.56,
+        0.01
+      ]
+    ],
+    "crop_offset": [
+      16,
+      23
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 161,
+    "contact_reference_px": 161.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

@@ -1,0 +1,295 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_19_flying_beast_roost_platform.artifact_forging_hall",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_19_flying_beast_roost_platform",
+  "asset_slug": "artifact_forging_hall",
+  "variant_slug": "rot_south_facade",
+  "name": "South Facade (Front Entrance)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_19_flying_beast_roost_platform/artifact_forging_hall/rot_south_facade.png",
+  "footprint_cells": [
+    4,
+    3
+  ],
+  "canvas_px": [
+    512,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "forge_treasure",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.194,
+        0.629,
+        0.595,
+        0.162
+      ],
+      [
+        0.7,
+        1.0,
+        1.0,
+        0.884
+      ],
+      [
+        0.344,
+        0.91,
+        0.888,
+        0.326
+      ]
+    ],
+    "frac_zero": 0.6049,
+    "blocks": [
+      [
+        false,
+        true,
+        true,
+        false
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 10,
+    "anchor_cell": [
+      2,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.027,
+        0.314,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.002,
+        0.608,
+        0.805,
+        0.96,
+        0.671,
+        0.272,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.102,
+        0.232,
+        0.674,
+        0.875,
+        1.0,
+        1.0,
+        1.0,
+        0.769,
+        0.354,
+        0.239,
+        0.0
+      ],
+      [
+        0.043,
+        0.988,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.671,
+        0.124
+      ],
+      [
+        0.002,
+        0.963,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.957,
+        0.591
+      ],
+      [
+        0.193,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.991,
+        0.678
+      ],
+      [
+        0.707,
+        0.986,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.989,
+        0.734
+      ],
+      [
+        0.018,
+        0.675,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.535,
+        0.259
+      ],
+      [
+        0.038,
+        0.823,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.323,
+        0.0
+      ],
+      [
+        0.002,
+        0.456,
+        0.678,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.793,
+        0.5,
+        0.265,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.117,
+        0.533,
+        0.867,
+        0.865,
+        0.727,
+        0.425,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      85,
+      17
+    ],
+    "trunk_columns": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 161,
+    "contact_reference_px": 161.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        2
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        2
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      2
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      384
+    ]
+  }
+}

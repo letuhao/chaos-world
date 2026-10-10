@@ -1,0 +1,254 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_17_outer_elder_receiving_hall.array_formation_dais",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_17_outer_elder_receiving_hall",
+  "asset_slug": "array_formation_dais",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_17_outer_elder_receiving_hall/array_formation_dais/active_operating.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "walk_surface",
+  "interactive_verb": "activate_array",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.363,
+        0.873,
+        0.352
+      ],
+      [
+        0.799,
+        1.0,
+        0.796
+      ],
+      [
+        0.376,
+        0.917,
+        0.376
+      ]
+    ],
+    "frac_zero": 0.4733,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.302,
+        0.695,
+        0.475,
+        0.674,
+        0.247,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.02,
+        0.03,
+        0.822,
+        1.0,
+        1.0,
+        1.0,
+        0.694,
+        0.034,
+        0.01,
+        0.0
+      ],
+      [
+        0.255,
+        0.683,
+        0.919,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.936,
+        0.648,
+        0.19
+      ],
+      [
+        0.174,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.985,
+        0.037
+      ],
+      [
+        0.289,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.217
+      ],
+      [
+        0.799,
+        0.994,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.991,
+        0.8
+      ],
+      [
+        0.021,
+        0.781,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.735,
+        0.01
+      ],
+      [
+        0.0,
+        0.728,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.675,
+        0.0
+      ],
+      [
+        0.0,
+        0.698,
+        0.824,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.799,
+        0.567,
+        0.0
+      ],
+      [
+        0.0,
+        0.04,
+        0.006,
+        0.524,
+        0.997,
+        1.0,
+        0.992,
+        0.561,
+        0.012,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.008,
+        0.662,
+        0.438,
+        0.67,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      17,
+      31
+    ],
+    "trunk_columns": [
+      4,
+      5,
+      6
+    ],
+    "contact_px": 94,
+    "contact_reference_px": 94.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        2,
+        1,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

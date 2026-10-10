@@ -1,0 +1,197 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_09_hundred_herb_garden_nursery.monumental_sect_gate",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_09_hundred_herb_garden_nursery",
+  "asset_slug": "monumental_sect_gate",
+  "variant_slug": "rot_north_rear",
+  "name": "North Rear (Back Wall)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_09_hundred_herb_garden_nursery/monumental_sect_gate/rot_north_rear.png",
+  "footprint_cells": [
+    4,
+    2
+  ],
+  "canvas_px": [
+    512,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "pass_gate",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.514,
+        0.792,
+        0.79,
+        0.518
+      ],
+      [
+        0.547,
+        0.945,
+        0.945,
+        0.552
+      ]
+    ],
+    "frac_zero": 0.7369,
+    "blocks": [
+      [
+        true,
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 8,
+    "anchor_cell": [
+      2,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.175,
+        0.168,
+        0.197,
+        0.52,
+        0.157,
+        0.199,
+        0.168
+      ],
+      [
+        0.419,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.243
+      ],
+      [
+        0.367,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.15
+      ],
+      [
+        0.64,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.51
+      ],
+      [
+        0.529,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.388
+      ],
+      [
+        0.237,
+        0.941,
+        1.0,
+        1.0,
+        1.0,
+        0.785,
+        0.197
+      ],
+      [
+        0.0,
+        0.566,
+        0.823,
+        0.938,
+        0.73,
+        0.445,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      148,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "contact_px": 153,
+    "contact_reference_px": 153.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        3,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      3,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      512,
+      256
+    ]
+  }
+}

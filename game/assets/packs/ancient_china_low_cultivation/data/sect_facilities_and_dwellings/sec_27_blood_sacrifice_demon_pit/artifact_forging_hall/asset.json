@@ -1,0 +1,1227 @@
+{
+  "id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_27_blood_sacrifice_demon_pit.artifact_forging_hall",
+  "archetype": "artifact_forging_hall_sec_27_blood_sacrifice_demon_pit",
+  "name": "Blood Sacrifice Demon Pit - Great Weapon Foundry & Water Wheel",
+  "vietnamese_name": "Dưỡng Cổ Luyện Huyết Trì - Đại Luyện Khí Phòng",
+  "hanzi": "养蛊炼血池 · 地火引流铸剑阁",
+  "category": "sec_27_blood_sacrifice_demon_pit",
+  "category_code": "SEC-27",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_27_blood_sacrifice_demon_pit",
+  "asset_class": "structure_building",
+  "type": "building",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    4,
+    3
+  ],
+  "canvas_px": [
+    512,
+    384
+  ],
+  "collision_type": "solid",
+  "blocks_projectile": true,
+  "vision_mode": "solid",
+  "interactive_verb": "forge_treasure",
+  "gameplay_role": "structure_building entity supporting Blood Sacrifice Demon Pit gameplay",
+  "destructible": false,
+  "material": "seasoned camphor timber framing and glazed ceramic roof tiles",
+  "cultivation_element": "ice",
+  "prompt_summary": "Single isolated 2D top-down RPG map building sprite of blood sacrifice demon pit - great weapon foundry & water wheel, glazed dark ceramic roof tiles, steep high-angle top-down RPG map perspective (~65-70 degrees downward tilt), roof dominant overhead (75%-80% of height), foreshortened walls beneath eaves, gouache hand-painted, fine dark #263A35 ink contours, flat baseline, solid pure white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Cultivation Sect Facilities & Dwellings",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "rot_south_facade",
+      "name": "South Facade (Front Entrance)",
+      "prompt_modifier": "front entrance visible foreshortened beneath eaves, steep overhead map view",
+      "variant_id": "rot_south_facade",
+      "variant_name": "South Facade (Front Entrance)",
+      "description": "front entrance visible foreshortened beneath eaves, steep overhead map view",
+      "prompt": "Single isolated 2D top-down world-map building sprite of great weapon foundry & water wheel, seasoned camphor timber framing and glazed ceramic roof tiles, front entrance visible foreshortened beneath eaves, steep overhead map view, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, roof ridge running East-West with broad southern roof surface broad glazed ceramic roof tiles and curved dougong eaves dominant and fully visible overhead (70%-80% of height),  foreshortened front walls and entrance visible beneath eaves at bottom-center, stone courtyard steps descending at bottom, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_27_blood_sacrifice_demon_pit/artifact_forging_hall/rot_south_facade.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.266,
+            0.692,
+            0.705,
+            0.332
+          ],
+          [
+            0.794,
+            1.0,
+            1.0,
+            0.857
+          ],
+          [
+            0.384,
+            0.924,
+            0.921,
+            0.399
+          ]
+        ],
+        "frac_zero": 0.5748,
+        "blocks": [
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 12,
+        "anchor_cell": [
+          2,
+          2
+        ],
+        "sub_grid": [
+          11,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.003,
+            0.0,
+            0.043,
+            0.079,
+            0.491,
+            0.11,
+            0.004,
+            0.0,
+            0.003,
+            0.0
+          ],
+          [
+            0.0,
+            0.423,
+            0.584,
+            0.578,
+            0.953,
+            1.0,
+            0.89,
+            0.5,
+            0.669,
+            0.16,
+            0.0
+          ],
+          [
+            0.0,
+            0.407,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.084,
+            0.002
+          ],
+          [
+            0.133,
+            0.502,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.841,
+            0.284
+          ],
+          [
+            0.709,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.952,
+            0.564
+          ],
+          [
+            0.399,
+            0.973,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.956,
+            0.422
+          ],
+          [
+            0.456,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.391
+          ],
+          [
+            0.134,
+            0.684,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.946,
+            0.139
+          ],
+          [
+            0.102,
+            0.84,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.492,
+            0.016
+          ],
+          [
+            0.0,
+            0.487,
+            0.999,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.931,
+            0.562,
+            0.335,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.265,
+            0.594,
+            0.856,
+            0.833,
+            0.755,
+            0.568,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          86,
+          17
+        ],
+        "trunk_columns": [
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 167,
+        "contact_reference_px": 167.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            3,
+            2
+          ],
+          "1.0": [
+            0,
+            0,
+            3,
+            2
+          ],
+          "1.15": [
+            0,
+            0,
+            3,
+            2
+          ],
+          "1.35": [
+            0,
+            0,
+            3,
+            2
+          ],
+          "1.6": [
+            0,
+            0,
+            3,
+            2
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          3,
+          2
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          512,
+          384
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_north_rear",
+      "name": "North Rear (Back Wall)",
+      "prompt_modifier": "rear roof slope dominant overhead, solid back wall beneath eaves, zero front entrance steps",
+      "variant_id": "rot_north_rear",
+      "variant_name": "North Rear (Back Wall)",
+      "description": "rear roof slope dominant overhead, solid back wall beneath eaves, zero front entrance steps",
+      "prompt": "Single isolated 2D top-down world-map building sprite of great weapon foundry & water wheel, seasoned camphor timber framing and glazed ceramic roof tiles, rear roof slope dominant overhead, solid back wall beneath eaves, solid continuous rear wall, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, roof ridge running East-West with broad northern rear roof surface broad glazed ceramic roof tiles and curved dougong eaves dominant and fully visible overhead (70%-80% of height),  solid unbroken timber lattice back wall and stone foundation foreshortened beneath eaves at bottom, completely windowless and doorless flat rear wall flush on level ground, clean horizontal baseline, back exterior view, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, front entrance door, open doorway, entrance steps, stairs, portal, door plaque, front veranda, open portal, descending stairs, central doorway, porch, arched entryway, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_27_blood_sacrifice_demon_pit/artifact_forging_hall/rot_north_rear.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.399,
+            0.727,
+            0.712,
+            0.379
+          ],
+          [
+            0.839,
+            1.0,
+            1.0,
+            0.872
+          ],
+          [
+            0.476,
+            0.929,
+            0.925,
+            0.472
+          ]
+        ],
+        "frac_zero": 0.5463,
+        "blocks": [
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 12,
+        "anchor_cell": [
+          2,
+          2
+        ],
+        "sub_grid": [
+          11,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.006,
+            0.124,
+            0.0,
+            0.007,
+            0.071,
+            0.417,
+            0.005,
+            0.001,
+            0.002,
+            0.134,
+            0.0
+          ],
+          [
+            0.008,
+            0.896,
+            0.793,
+            0.813,
+            0.963,
+            1.0,
+            0.941,
+            0.734,
+            0.866,
+            0.454,
+            0.0
+          ],
+          [
+            0.0,
+            0.756,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.288,
+            0.0
+          ],
+          [
+            0.05,
+            0.725,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.641,
+            0.262
+          ],
+          [
+            0.642,
+            0.997,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.972,
+            0.586
+          ],
+          [
+            0.75,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.992,
+            0.698
+          ],
+          [
+            0.501,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.997,
+            0.387
+          ],
+          [
+            0.706,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.951,
+            0.549
+          ],
+          [
+            0.033,
+            0.811,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.534,
+            0.0
+          ],
+          [
+            0.0,
+            0.72,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.339,
+            0.0
+          ],
+          [
+            0.0,
+            0.102,
+            0.134,
+            0.721,
+            0.901,
+            0.906,
+            0.833,
+            0.514,
+            0.196,
+            0.099,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          84,
+          16
+        ],
+        "trunk_columns": [
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 149,
+        "contact_reference_px": 149.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            3,
+            2
+          ],
+          "1.0": [
+            0,
+            0,
+            3,
+            2
+          ],
+          "1.15": [
+            0,
+            0,
+            3,
+            2
+          ],
+          "1.35": [
+            0,
+            0,
+            3,
+            2
+          ],
+          "1.6": [
+            0,
+            0,
+            3,
+            2
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          3,
+          2
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          512,
+          384
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_west_flank",
+      "name": "West Flank (Left Profile)",
+      "prompt_modifier": "ridge oriented North-South, western roof slope and gable end visible from overhead",
+      "variant_id": "rot_west_flank",
+      "variant_name": "West Flank (Left Profile)",
+      "description": "ridge oriented North-South, western roof slope and gable end visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map building sprite of great weapon foundry & water wheel, seasoned camphor timber framing and glazed ceramic roof tiles, ridge oriented North-South, western roof slope and gable end visible from overhead, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, building rotated 90 degrees with roof ridge running North-South, western roof slope and high-angle triangular dougong timber gable end dominant and fully visible overhead, western side wall foreshortened beneath eaves at bottom, side window or railing, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center, annexed side structure, attached side pavilion, extra side gate, secondary structure, side tower, courtyard wing, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_27_blood_sacrifice_demon_pit/artifact_forging_hall/rot_west_flank.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.195,
+            0.563,
+            0.698,
+            0.221
+          ],
+          [
+            0.743,
+            1.0,
+            1.0,
+            0.784
+          ],
+          [
+            0.182,
+            0.839,
+            0.934,
+            0.346
+          ]
+        ],
+        "frac_zero": 0.6336,
+        "blocks": [
+          [
+            false,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            false,
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 10,
+        "anchor_cell": [
+          2,
+          2
+        ],
+        "sub_grid": [
+          11,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.001,
+            0.005,
+            0.0,
+            0.381,
+            0.0,
+            0.0,
+            0.004,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.039,
+            0.737,
+            0.658,
+            0.988,
+            0.603,
+            0.723,
+            0.071,
+            0.0,
+            0.0
+          ],
+          [
+            0.198,
+            0.321,
+            0.243,
+            0.956,
+            1.0,
+            1.0,
+            1.0,
+            0.97,
+            0.301,
+            0.0,
+            0.0
+          ],
+          [
+            0.281,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.807,
+            0.353,
+            0.0
+          ],
+          [
+            0.324,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.97,
+            0.625,
+            0.0
+          ],
+          [
+            0.622,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.699,
+            0.125
+          ],
+          [
+            0.396,
+            0.917,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.441,
+            0.0
+          ],
+          [
+            0.0,
+            0.906,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.326,
+            0.0
+          ],
+          [
+            0.014,
+            0.297,
+            0.786,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.771,
+            0.225,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.055,
+            0.999,
+            1.0,
+            1.0,
+            0.937,
+            0.82,
+            0.039,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.062,
+            0.585,
+            0.779,
+            0.904,
+            0.718,
+            0.556,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          94,
+          17
+        ],
+        "trunk_columns": [
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 161,
+        "contact_reference_px": 161.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            3,
+            2
+          ],
+          "1.0": [
+            0,
+            0,
+            3,
+            2
+          ],
+          "1.15": [
+            0,
+            0,
+            3,
+            2
+          ],
+          "1.35": [
+            0,
+            0,
+            3,
+            2
+          ],
+          "1.6": [
+            0,
+            0,
+            3,
+            2
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          3,
+          2
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          512,
+          384
+        ]
+      }
+    },
+    {
+      "variant_slug": "rot_east_flank",
+      "name": "East Flank (Right Profile)",
+      "prompt_modifier": "ridge oriented North-South, eastern roof slope and gable end visible from overhead",
+      "variant_id": "rot_east_flank",
+      "variant_name": "East Flank (Right Profile)",
+      "description": "ridge oriented North-South, eastern roof slope and gable end visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map building sprite of great weapon foundry & water wheel, seasoned camphor timber framing and glazed ceramic roof tiles, ridge oriented North-South, eastern roof slope and gable end visible from overhead, Ancient Chinese Tang-Song Xianxia architectural style, steep high-angle top-down RPG map perspective looking down from above, building rotated 90 degrees with roof ridge running North-South, eastern roof slope and high-angle triangular dougong timber gable end dominant and fully visible overhead, eastern side wall foreshortened beneath eaves at bottom, side window or railing, gouache hand-painted with dark #263A35 ink contours, flat grounded baseline, short attached micro contact shadow only, isolated on solid plain white background.",
+      "negative_prompt": "thatched straw roof, straw hut, hay, rustic shack, symmetrical front entrance facade, central double doors at bottom, front steps at bottom-center, annexed side structure, attached side pavilion, extra side gate, secondary structure, side tower, courtyard wing, clouds on roof, miniature mountain on roof, mountain peak on roof, puff of cloud, smoke on roof, cropped at top edge, canvas boundary cut, diorama, miniature landscape, floating rock island, cutaway foundation, courtyard boundary walls, garden lawn, surrounding trees, forest, mountains, sky, clouds, horizon, roads, cobblestone path, eye-level view, flat front elevation drawing, flat side view profile, side-scroller, human figures, isometric box frame, cutout diorama base, directional drop shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_27_blood_sacrifice_demon_pit/artifact_forging_hall/rot_east_flank.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.315,
+            0.585,
+            0.602,
+            0.313
+          ],
+          [
+            0.671,
+            1.0,
+            1.0,
+            0.876
+          ],
+          [
+            0.143,
+            0.897,
+            0.926,
+            0.272
+          ]
+        ],
+        "frac_zero": 0.6036,
+        "blocks": [
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            false,
+            true,
+            true,
+            true
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 11,
+        "anchor_cell": [
+          2,
+          2
+        ],
+        "sub_grid": [
+          11,
+          11
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.001,
+            0.381,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.089,
+            0.132,
+            0.009,
+            0.175,
+            0.627,
+            0.99,
+            0.575,
+            0.083,
+            0.07,
+            0.234,
+            0.0
+          ],
+          [
+            0.075,
+            1.0,
+            0.966,
+            0.975,
+            1.0,
+            1.0,
+            1.0,
+            0.973,
+            0.988,
+            0.739,
+            0.0
+          ],
+          [
+            0.062,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.821,
+            0.249
+          ],
+          [
+            0.488,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.75
+          ],
+          [
+            0.378,
+            0.847,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.93,
+            0.791
+          ],
+          [
+            0.0,
+            0.734,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.931,
+            0.568
+          ],
+          [
+            0.0,
+            0.603,
+            0.936,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.634,
+            0.065
+          ],
+          [
+            0.0,
+            0.145,
+            0.742,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.978,
+            0.339,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.123,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.986,
+            0.425,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.156,
+            0.633,
+            0.794,
+            0.871,
+            0.753,
+            0.656,
+            0.034,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          83,
+          16
+        ],
+        "trunk_columns": [
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "contact_px": 169,
+        "contact_reference_px": 169.0,
+        "blocked_by_scale": {
+          "0.85": [
+            0,
+            0,
+            3,
+            2
+          ],
+          "1.0": [
+            0,
+            0,
+            3,
+            2
+          ],
+          "1.15": [
+            0,
+            0,
+            3,
+            2
+          ],
+          "1.35": [
+            0,
+            0,
+            3,
+            2
+          ],
+          "1.6": [
+            0,
+            0,
+            3,
+            2
+          ]
+        },
+        "block_rect": [
+          0,
+          0,
+          3,
+          2
+        ],
+        "block_rect_px": [
+          0,
+          0,
+          512,
+          384
+        ]
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "SEC-27",
+    "domain": "sect_facilities_and_dwellings",
+    "interaction": "forge_treasure",
+    "collision_behavior": "solid",
+    "element": "ice",
+    "tier": 3
+  },
+  "category_id": "sec_27_blood_sacrifice_demon_pit",
+  "domain_id": "sect_facilities_and_dwellings",
+  "pinyin": "Yǎnggǔ Xuèchí · Great Weapon Foundry & Water Wheel",
+  "archetype_name": "Great Weapon Foundry & Water Wheel",
+  "footprint_subcells": {
+    "w": 16,
+    "h": 12
+  },
+  "footprint_px": {
+    "w": 512,
+    "h": 384
+  },
+  "cell_span": {
+    "w": 4,
+    "h": 3
+  },
+  "collision": {
+    "type": "solid",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": true,
+    "height_layer": "structure"
+  },
+  "primary_material": "timber_frame",
+  "secondary_material": "glazed_ceramic_tile",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Ice affinity (Core Formation (Kết Đan / 结丹))",
+  "elevation_tier": 3,
+  "mortal_realm_tier": "Core Formation (Kết Đan / 结丹)",
+  "asset_slug": "artifact_forging_hall"
+}

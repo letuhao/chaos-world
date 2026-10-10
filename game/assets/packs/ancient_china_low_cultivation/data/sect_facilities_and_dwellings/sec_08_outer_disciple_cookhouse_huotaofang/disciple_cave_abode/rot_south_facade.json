@@ -1,0 +1,189 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_08_outer_disciple_cookhouse_huotaofang.disciple_cave_abode",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_08_outer_disciple_cookhouse_huotaofang",
+  "asset_slug": "disciple_cave_abode",
+  "variant_slug": "rot_south_facade",
+  "name": "South Facade (Front Entrance)",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_08_outer_disciple_cookhouse_huotaofang/disciple_cave_abode/rot_south_facade.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "enter_dongfu",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.428,
+        0.783,
+        0.425
+      ],
+      [
+        0.607,
+        0.957,
+        0.606
+      ]
+    ],
+    "frac_zero": 0.672,
+    "blocks": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 6,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.005,
+        0.087,
+        0.469,
+        0.09,
+        0.0,
+        0.0
+      ],
+      [
+        0.216,
+        0.426,
+        1.0,
+        1.0,
+        0.969,
+        0.427,
+        0.196
+      ],
+      [
+        0.315,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.244
+      ],
+      [
+        0.425,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.385
+      ],
+      [
+        0.657,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.649
+      ],
+      [
+        0.231,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.147
+      ],
+      [
+        0.053,
+        0.215,
+        0.793,
+        0.902,
+        0.787,
+        0.185,
+        0.043
+      ]
+    ],
+    "crop_offset": [
+      81,
+      16
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4
+    ],
+    "contact_px": 103,
+    "contact_reference_px": 103.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      2,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      384,
+      256
+    ]
+  }
+}

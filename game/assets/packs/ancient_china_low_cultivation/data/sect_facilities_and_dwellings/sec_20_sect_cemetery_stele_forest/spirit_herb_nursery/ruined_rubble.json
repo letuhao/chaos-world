@@ -1,0 +1,160 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_20_sect_cemetery_stele_forest.spirit_herb_nursery",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_20_sect_cemetery_stele_forest",
+  "asset_slug": "spirit_herb_nursery",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_20_sect_cemetery_stele_forest/spirit_herb_nursery/ruined_rubble.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "walk_surface",
+  "interactive_verb": "harvest_herbs",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.464,
+        0.588,
+        0.246
+      ],
+      [
+        0.75,
+        0.963,
+        0.689
+      ]
+    ],
+    "frac_zero": 0.7089,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.71,
+        0.674,
+        0.084,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.798,
+        0.805,
+        0.359,
+        0.188,
+        0.036,
+        0.0
+      ],
+      [
+        0.176,
+        0.729,
+        0.977,
+        0.487,
+        0.774,
+        0.262,
+        0.0
+      ],
+      [
+        0.566,
+        0.973,
+        1.0,
+        0.987,
+        0.998,
+        0.426,
+        0.161
+      ],
+      [
+        0.796,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.934,
+        0.031
+      ],
+      [
+        0.779,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.894,
+        0.232
+      ],
+      [
+        0.146,
+        0.652,
+        0.824,
+        0.88,
+        0.66,
+        0.114,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      92,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 119,
+    "contact_reference_px": 119.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

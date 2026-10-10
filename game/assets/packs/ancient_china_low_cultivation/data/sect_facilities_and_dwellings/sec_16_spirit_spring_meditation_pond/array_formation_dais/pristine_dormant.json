@@ -1,0 +1,256 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_16_spirit_spring_meditation_pond.array_formation_dais",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_16_spirit_spring_meditation_pond",
+  "asset_slug": "array_formation_dais",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_16_spirit_spring_meditation_pond/array_formation_dais/pristine_dormant.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "walk_surface",
+  "interactive_verb": "activate_array",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.373,
+        0.766,
+        0.282
+      ],
+      [
+        0.852,
+        1.0,
+        0.827
+      ],
+      [
+        0.627,
+        0.976,
+        0.685
+      ]
+    ],
+    "frac_zero": 0.4071,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.201,
+        0.006,
+        0.429,
+        0.852,
+        0.156,
+        0.392,
+        0.013,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.018,
+        0.986,
+        0.33,
+        0.907,
+        1.0,
+        0.783,
+        0.249,
+        0.397,
+        0.033,
+        0.0
+      ],
+      [
+        0.003,
+        0.318,
+        1.0,
+        0.915,
+        1.0,
+        1.0,
+        0.897,
+        0.799,
+        0.295,
+        0.172,
+        0.0
+      ],
+      [
+        0.236,
+        0.663,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.884,
+        0.424,
+        0.124
+      ],
+      [
+        0.125,
+        0.986,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.71,
+        0.065
+      ],
+      [
+        0.73,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.996,
+        0.156
+      ],
+      [
+        0.746,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.546
+      ],
+      [
+        0.799,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.723
+      ],
+      [
+        0.312,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.991,
+        0.391
+      ],
+      [
+        0.016,
+        0.668,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.493,
+        0.022
+      ],
+      [
+        0.0,
+        0.036,
+        0.32,
+        0.641,
+        0.936,
+        0.985,
+        0.923,
+        0.696,
+        0.347,
+        0.004,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      21,
+      17
+    ],
+    "trunk_columns": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 152,
+    "contact_reference_px": 152.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        2,
+        2,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

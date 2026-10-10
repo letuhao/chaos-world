@@ -1,0 +1,1585 @@
+{
+  "id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_26_wandering_merchant_air_boat_dock.martial_sparring_arena",
+  "archetype": "martial_sparring_arena_sec_26_wandering_merchant_air_boat_dock",
+  "name": "Wandering Merchant Air-Boat Dock - Elevated Flagstone Sparring Ring",
+  "vietnamese_name": "Vân Châu Bạc Thao - Lôi Đài Tỷ Thí Đệ Tử",
+  "hanzi": "云舟泊桩 · 条石筑就演武台",
+  "category": "sec_26_wandering_merchant_air_boat_dock",
+  "category_code": "SEC-26",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_26_wandering_merchant_air_boat_dock",
+  "asset_class": "prop_workstation",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    4,
+    4
+  ],
+  "canvas_px": [
+    512,
+    512
+  ],
+  "collision_type": "walk_surface",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": "duel_challenger",
+  "gameplay_role": "prop_workstation entity supporting Wandering Merchant Air-Boat Dock gameplay",
+  "destructible": true,
+  "material": "authentic mortal craftsmanship materials",
+  "cultivation_element": "earth",
+  "prompt_summary": "Single isolated 2D RPG game prop of wandering merchant air-boat dock - elevated flagstone sparring ring, authentic wandering merchant air-boat dock materials, East Asian Xianxia craftsmanship, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese craftsmanship, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Cultivation Sect Facilities & Dwellings",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "pristine_dormant",
+      "name": "Pristine Dormant State",
+      "prompt_modifier": "cold clean polished state, unlit hearth, intact locks",
+      "variant_id": "pristine_dormant",
+      "variant_name": "Pristine Dormant State",
+      "description": "cold clean polished state, unlit hearth, intact locks",
+      "prompt": "Single isolated 2D RPG game prop of elevated flagstone sparring ring, authentic mortal craftsmanship materials, cold clean polished state, unlit hearth, intact locks, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_26_wandering_merchant_air_boat_dock/martial_sparring_arena/pristine_dormant.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.125,
+            0.824,
+            0.77,
+            0.086
+          ],
+          [
+            0.525,
+            0.96,
+            0.923,
+            0.39
+          ],
+          [
+            0.833,
+            1.0,
+            1.0,
+            0.785
+          ],
+          [
+            0.494,
+            0.938,
+            0.922,
+            0.451
+          ]
+        ],
+        "frac_zero": 0.4502,
+        "blocks": [
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true,
+            true,
+            true,
+            false
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          2,
+          3
+        ],
+        "sub_grid": [
+          14,
+          15
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.021,
+            0.548,
+            0.584,
+            0.562,
+            0.601,
+            0.566,
+            0.019,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.533,
+            0.993,
+            1.0,
+            1.0,
+            1.0,
+            0.995,
+            0.587,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.019,
+            0.0,
+            0.055,
+            0.884,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.906,
+            0.096,
+            0.0,
+            0.046,
+            0.0
+          ],
+          [
+            0.181,
+            0.576,
+            0.778,
+            0.796,
+            0.963,
+            1.0,
+            1.0,
+            1.0,
+            0.931,
+            0.58,
+            0.707,
+            0.595,
+            0.142,
+            0.0
+          ],
+          [
+            0.006,
+            0.609,
+            0.743,
+            0.738,
+            0.824,
+            1.0,
+            0.91,
+            1.0,
+            0.845,
+            0.454,
+            0.349,
+            0.476,
+            0.026,
+            0.0
+          ],
+          [
+            0.0,
+            0.406,
+            0.479,
+            0.875,
+            0.963,
+            1.0,
+            0.999,
+            1.0,
+            0.919,
+            1.0,
+            0.896,
+            0.27,
+            0.028,
+            0.0
+          ],
+          [
+            0.0,
+            0.763,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.928,
+            0.523,
+            0.0,
+            0.0
+          ],
+          [
+            0.267,
+            0.938,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.995,
+            0.385,
+            0.0
+          ],
+          [
+            0.741,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.803,
+            0.0
+          ],
+          [
+            0.449,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.52,
+            0.0
+          ],
+          [
+            0.123,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.625,
+            0.003
+          ],
+          [
+            0.853,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.988,
+            0.547
+          ],
+          [
+            0.377,
+            0.981,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.696,
+            0.133,
+            0.0
+          ],
+          [
+            0.0,
+            0.09,
+            0.413,
+            0.915,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.986,
+            0.887,
+            0.391,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.201,
+            0.879,
+            0.878,
+            0.931,
+            0.899,
+            0.933,
+            0.191,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          42,
+          17
+        ],
+        "trunk_columns": [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "contact_px": 161,
+        "contact_reference_px": 161.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            3,
+            2,
+            3
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "active_operating",
+      "name": "Active Operating State",
+      "prompt_modifier": "active glowing spiritual flames, heat haze, open functioning elements",
+      "variant_id": "active_operating",
+      "variant_name": "Active Operating State",
+      "description": "active glowing spiritual flames, heat haze, open functioning elements",
+      "prompt": "Single isolated 2D RPG game prop of elevated flagstone sparring ring, authentic mortal craftsmanship materials, active glowing spiritual flames, heat haze, open functioning elements, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_26_wandering_merchant_air_boat_dock/martial_sparring_arena/active_operating.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.142,
+            0.697,
+            0.672,
+            0.13
+          ],
+          [
+            0.377,
+            0.928,
+            0.912,
+            0.431
+          ],
+          [
+            0.772,
+            1.0,
+            1.0,
+            0.752
+          ],
+          [
+            0.496,
+            0.909,
+            0.906,
+            0.49
+          ]
+        ],
+        "frac_zero": 0.4475,
+        "blocks": [
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          2,
+          3
+        ],
+        "sub_grid": [
+          14,
+          15
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.279,
+            0.275,
+            0.581,
+            0.381,
+            0.354,
+            0.155,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.01,
+            0.709,
+            1.0,
+            1.0,
+            1.0,
+            0.987,
+            0.409,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.072,
+            0.18,
+            0.566,
+            0.995,
+            0.998,
+            0.959,
+            0.972,
+            1.0,
+            0.914,
+            0.407,
+            0.158,
+            0.079,
+            0.0
+          ],
+          [
+            0.0,
+            0.414,
+            0.961,
+            0.984,
+            0.969,
+            0.666,
+            0.747,
+            0.766,
+            0.797,
+            0.951,
+            1.0,
+            0.906,
+            0.138,
+            0.0
+          ],
+          [
+            0.0,
+            0.435,
+            0.644,
+            0.872,
+            0.76,
+            0.672,
+            1.0,
+            0.974,
+            0.576,
+            0.941,
+            0.889,
+            0.657,
+            0.168,
+            0.022
+          ],
+          [
+            0.0,
+            0.045,
+            0.341,
+            0.749,
+            0.979,
+            0.993,
+            1.0,
+            0.977,
+            0.959,
+            0.757,
+            0.658,
+            0.22,
+            0.306,
+            0.09
+          ],
+          [
+            0.0,
+            0.135,
+            0.661,
+            0.993,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.978,
+            0.909,
+            0.751,
+            0.47,
+            0.054
+          ],
+          [
+            0.0,
+            0.526,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.57,
+            0.0
+          ],
+          [
+            0.01,
+            0.733,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.589,
+            0.011
+          ],
+          [
+            0.382,
+            0.969,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.889,
+            0.099
+          ],
+          [
+            0.834,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.744
+          ],
+          [
+            0.433,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.999,
+            0.396
+          ],
+          [
+            0.176,
+            0.964,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.853,
+            0.126
+          ],
+          [
+            0.0,
+            0.19,
+            0.784,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.992,
+            0.709,
+            0.151,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.002,
+            0.214,
+            0.454,
+            0.83,
+            0.829,
+            0.781,
+            0.877,
+            0.371,
+            0.1,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          34,
+          17
+        ],
+        "trunk_columns": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "contact_px": 136,
+        "contact_reference_px": 136.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            3,
+            2,
+            3
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "damaged_weathered",
+      "name": "Damaged Weathered State",
+      "prompt_modifier": "mossy aged patina, chipped corners, cracked surfaces",
+      "variant_id": "damaged_weathered",
+      "variant_name": "Damaged Weathered State",
+      "description": "mossy aged patina, chipped corners, cracked surfaces",
+      "prompt": "Single isolated 2D RPG game prop of elevated flagstone sparring ring, authentic mortal craftsmanship materials, mossy aged patina, chipped corners, cracked surfaces, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_26_wandering_merchant_air_boat_dock/martial_sparring_arena/damaged_weathered.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.007,
+            0.607,
+            0.518,
+            0.208
+          ],
+          [
+            0.632,
+            0.99,
+            0.991,
+            0.501
+          ],
+          [
+            0.868,
+            1.0,
+            1.0,
+            0.811
+          ],
+          [
+            0.483,
+            0.937,
+            0.967,
+            0.504
+          ]
+        ],
+        "frac_zero": 0.4039,
+        "blocks": [
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          2,
+          3
+        ],
+        "sub_grid": [
+          15,
+          15
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.158,
+            0.594,
+            0.771,
+            0.784,
+            0.676,
+            0.225,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.029,
+            0.927,
+            1.0,
+            1.0,
+            0.944,
+            0.056,
+            0.053,
+            0.523,
+            0.546,
+            0.047,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.029,
+            0.289,
+            0.757,
+            1.0,
+            1.0,
+            0.841,
+            0.063,
+            0.003,
+            0.238,
+            0.678,
+            0.129,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.016,
+            0.507,
+            0.795,
+            0.706,
+            0.787,
+            0.83,
+            0.765,
+            0.922,
+            0.806,
+            0.306,
+            0.456,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.547,
+            0.602,
+            0.962,
+            1.0,
+            0.999,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.913,
+            0.2,
+            0.536,
+            0.0,
+            0.0
+          ],
+          [
+            0.009,
+            0.924,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.978,
+            0.799,
+            0.145,
+            0.0
+          ],
+          [
+            0.145,
+            0.948,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.998,
+            0.391,
+            0.0
+          ],
+          [
+            0.521,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.759,
+            0.0
+          ],
+          [
+            0.534,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.735,
+            0.088
+          ],
+          [
+            0.187,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.635,
+            0.103
+          ],
+          [
+            0.695,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.96,
+            0.081
+          ],
+          [
+            0.89,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.999,
+            0.738,
+            0.033
+          ],
+          [
+            0.091,
+            0.546,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.819,
+            0.12,
+            0.0
+          ],
+          [
+            0.0,
+            0.13,
+            0.529,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.905,
+            0.779,
+            0.308,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.014,
+            0.285,
+            0.458,
+            0.949,
+            0.954,
+            0.94,
+            0.93,
+            0.959,
+            0.628,
+            0.397,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          23,
+          17
+        ],
+        "trunk_columns": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "contact_px": 218,
+        "contact_reference_px": 218.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            3,
+            3,
+            3
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "ruined_rubble",
+      "name": "Broken Shattered Rubble",
+      "prompt_modifier": "collapsed fractured shards, scavengeable parts",
+      "variant_id": "ruined_rubble",
+      "variant_name": "Broken Shattered Rubble",
+      "description": "collapsed fractured shards, scavengeable parts",
+      "prompt": "Single isolated 2D RPG game prop of elevated flagstone sparring ring, authentic mortal craftsmanship materials, collapsed fractured shards, scavengeable parts, Ancient Chinese Xianxia cultivation aesthetic, authentic Chinese tripod ding cauldron or traditional workshop implement, gouache hand-painted with crisp dark #263A35 ink contours, flat zero-cast-shadow baseline, micro ambient contact occlusion directly under feet only, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating island, dirt chunk, grass slab, square tile pedestal, floor plane, room interior, walls, ceiling, surrounding furniture, background building, trees, outdoor scenery, multiple objects, human operator, worker, collage, frame, directional cast shadow, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_26_wandering_merchant_air_boat_dock/martial_sparring_arena/ruined_rubble.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.033,
+            0.472,
+            0.406,
+            0.218
+          ],
+          [
+            0.583,
+            0.979,
+            0.976,
+            0.616
+          ],
+          [
+            0.819,
+            1.0,
+            1.0,
+            0.839
+          ],
+          [
+            0.5,
+            0.884,
+            0.859,
+            0.443
+          ]
+        ],
+        "frac_zero": 0.4559,
+        "blocks": [
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ],
+          [
+            true,
+            true,
+            true,
+            true
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          2,
+          3
+        ],
+        "sub_grid": [
+          14,
+          15
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.058,
+            0.0,
+            0.182,
+            0.037,
+            0.096,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.363,
+            0.72,
+            0.886,
+            0.783,
+            0.482,
+            0.0,
+            0.275,
+            0.146,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.019,
+            0.175,
+            0.314,
+            1.0,
+            1.0,
+            1.0,
+            0.406,
+            0.11,
+            0.963,
+            0.637,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.126,
+            0.84,
+            0.37,
+            0.875,
+            1.0,
+            0.93,
+            0.499,
+            0.555,
+            1.0,
+            0.734,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.418,
+            0.714,
+            0.985,
+            0.998,
+            0.963,
+            0.904,
+            0.926,
+            0.983,
+            0.954,
+            1.0,
+            0.971,
+            0.066,
+            0.0
+          ],
+          [
+            0.016,
+            0.684,
+            0.989,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.308,
+            0.004
+          ],
+          [
+            0.208,
+            0.937,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.803,
+            0.012
+          ],
+          [
+            0.329,
+            0.983,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.912,
+            0.26
+          ],
+          [
+            0.102,
+            0.919,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.796,
+            0.139
+          ],
+          [
+            0.343,
+            0.95,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.78,
+            0.117
+          ],
+          [
+            0.725,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.777
+          ],
+          [
+            0.881,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.534
+          ],
+          [
+            0.069,
+            0.678,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.908,
+            0.407,
+            0.005
+          ],
+          [
+            0.0,
+            0.269,
+            0.852,
+            0.908,
+            0.848,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.947,
+            0.947,
+            0.373,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.002,
+            0.081,
+            0.335,
+            0.886,
+            0.965,
+            0.849,
+            0.424,
+            0.076,
+            0.211,
+            0.025,
+            0.0,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          36,
+          17
+        ],
+        "trunk_columns": [
+          5,
+          6,
+          7,
+          8
+        ],
+        "contact_px": 119,
+        "contact_reference_px": 119.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            3,
+            2,
+            3
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "SEC-26",
+    "domain": "sect_facilities_and_dwellings",
+    "interaction": "duel_challenger",
+    "collision_behavior": "walk_surface",
+    "element": "earth",
+    "tier": 2
+  },
+  "category_id": "sec_26_wandering_merchant_air_boat_dock",
+  "domain_id": "sect_facilities_and_dwellings",
+  "pinyin": "Yúnzhōu Bózhuāng · Elevated Flagstone Sparring Ring",
+  "archetype_name": "Elevated Flagstone Sparring Ring",
+  "footprint_subcells": {
+    "w": 16,
+    "h": 16
+  },
+  "footprint_px": {
+    "w": 512,
+    "h": 512
+  },
+  "cell_span": {
+    "w": 4,
+    "h": 4
+  },
+  "collision": {
+    "type": "walk_surface",
+    "shape": "box",
+    "solid": false,
+    "blocks_movement": false,
+    "blocks_projectiles": false,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "carved_wood",
+  "secondary_material": "polished_bronze",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Earth affinity (Foundation Establishment (Trúc Cơ / 筑基))",
+  "elevation_tier": 2,
+  "mortal_realm_tier": "Foundation Establishment (Trúc Cơ / 筑基)",
+  "asset_slug": "martial_sparring_arena"
+}

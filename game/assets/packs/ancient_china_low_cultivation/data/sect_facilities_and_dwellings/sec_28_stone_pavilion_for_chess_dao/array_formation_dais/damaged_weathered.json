@@ -1,0 +1,257 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_28_stone_pavilion_for_chess_dao.array_formation_dais",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_28_stone_pavilion_for_chess_dao",
+  "asset_slug": "array_formation_dais",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_28_stone_pavilion_for_chess_dao/array_formation_dais/damaged_weathered.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "walk_surface",
+  "interactive_verb": "activate_array",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.44,
+        0.767,
+        0.442
+      ],
+      [
+        0.664,
+        0.921,
+        0.714
+      ],
+      [
+        0.585,
+        0.968,
+        0.608
+      ]
+    ],
+    "frac_zero": 0.4239,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.354,
+        0.533,
+        0.385,
+        0.596,
+        0.271,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.354,
+        0.767,
+        0.977,
+        1.0,
+        1.0,
+        1.0,
+        0.969,
+        0.769,
+        0.354,
+        0.0
+      ],
+      [
+        0.0,
+        0.728,
+        1.0,
+        0.996,
+        0.971,
+        0.893,
+        0.973,
+        1.0,
+        1.0,
+        0.704,
+        0.0
+      ],
+      [
+        0.364,
+        0.989,
+        1.0,
+        0.476,
+        0.679,
+        0.162,
+        0.685,
+        0.466,
+        1.0,
+        0.991,
+        0.369
+      ],
+      [
+        0.569,
+        0.957,
+        0.942,
+        0.756,
+        0.946,
+        0.805,
+        0.938,
+        0.762,
+        0.986,
+        0.974,
+        0.593
+      ],
+      [
+        0.0,
+        0.498,
+        0.847,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.861,
+        0.482,
+        0.0
+      ],
+      [
+        0.0,
+        0.448,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.855,
+        0.059
+      ],
+      [
+        0.224,
+        0.988,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.996,
+        0.297
+      ],
+      [
+        0.049,
+        0.979,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.963,
+        0.236
+      ],
+      [
+        0.001,
+        0.514,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.56,
+        0.0
+      ],
+      [
+        0.0,
+        0.001,
+        0.373,
+        0.74,
+        0.845,
+        0.827,
+        0.859,
+        0.776,
+        0.321,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      16,
+      19
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 180,
+    "contact_reference_px": 180.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        2,
+        2,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

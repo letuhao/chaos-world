@@ -1,0 +1,257 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_06_scripture_sutra_pavilion.array_formation_dais",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_06_scripture_sutra_pavilion",
+  "asset_slug": "array_formation_dais",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_06_scripture_sutra_pavilion/array_formation_dais/damaged_weathered.png",
+  "footprint_cells": [
+    3,
+    3
+  ],
+  "canvas_px": [
+    384,
+    384
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "walk_surface",
+  "interactive_verb": "activate_array",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.467,
+        0.796,
+        0.45
+      ],
+      [
+        0.645,
+        0.985,
+        0.657
+      ],
+      [
+        0.672,
+        0.94,
+        0.665
+      ]
+    ],
+    "frac_zero": 0.4102,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      2
+    ],
+    "sub_grid": [
+      11,
+      11
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.132,
+        0.564,
+        0.202,
+        0.211,
+        0.273,
+        0.618,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.466,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.996,
+        0.209,
+        0.0,
+        0.0
+      ],
+      [
+        0.188,
+        0.469,
+        0.969,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.887,
+        0.359,
+        0.166
+      ],
+      [
+        0.796,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.756
+      ],
+      [
+        0.029,
+        0.766,
+        0.963,
+        1.0,
+        0.978,
+        0.905,
+        0.98,
+        1.0,
+        0.979,
+        0.638,
+        0.008
+      ],
+      [
+        0.0,
+        0.438,
+        0.768,
+        1.0,
+        0.992,
+        0.975,
+        0.973,
+        0.972,
+        0.756,
+        0.266,
+        0.0
+      ],
+      [
+        0.169,
+        0.711,
+        0.997,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.577,
+        0.073
+      ],
+      [
+        0.336,
+        0.92,
+        0.993,
+        0.996,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.938,
+        0.339
+      ],
+      [
+        0.623,
+        1.0,
+        1.0,
+        0.989,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.484
+      ],
+      [
+        0.241,
+        0.897,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.979,
+        0.839,
+        0.198
+      ],
+      [
+        0.0,
+        0.069,
+        0.436,
+        0.71,
+        0.61,
+        0.678,
+        0.947,
+        0.645,
+        0.342,
+        0.085,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      19,
+      17
+    ],
+    "trunk_columns": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "contact_px": 133,
+    "contact_reference_px": 133.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        2,
+        1,
+        2
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

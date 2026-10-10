@@ -1,0 +1,155 @@
+{
+  "asset_id": "ancient_china_low_cultivation.sect_facilities_and_dwellings.sec_26_wandering_merchant_air_boat_dock.spirit_herb_nursery",
+  "domain": "sect_facilities_and_dwellings",
+  "sub_domain": "sec_26_wandering_merchant_air_boat_dock",
+  "asset_slug": "spirit_herb_nursery",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/sect_facilities_and_dwellings/sec_26_wandering_merchant_air_boat_dock/spirit_herb_nursery/pristine_dormant.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "walk_surface",
+  "interactive_verb": "harvest_herbs",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.33,
+        0.448,
+        0.412
+      ],
+      [
+        0.702,
+        0.894,
+        0.638
+      ]
+    ],
+    "frac_zero": 0.7308,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        true,
+        true,
+        true
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.005,
+        0.237,
+        0.0,
+        0.0,
+        0.069,
+        0.0,
+        0.0
+      ],
+      [
+        0.323,
+        0.456,
+        0.187,
+        0.55,
+        0.779,
+        0.015,
+        0.0
+      ],
+      [
+        0.257,
+        0.552,
+        0.58,
+        0.891,
+        0.998,
+        0.594,
+        0.021
+      ],
+      [
+        0.101,
+        0.974,
+        0.916,
+        0.988,
+        0.988,
+        0.332,
+        0.052
+      ],
+      [
+        0.57,
+        0.998,
+        1.0,
+        1.0,
+        1.0,
+        0.644,
+        0.135
+      ],
+      [
+        0.891,
+        1.0,
+        1.0,
+        0.992,
+        0.926,
+        0.677,
+        0.156
+      ],
+      [
+        0.247,
+        0.588,
+        0.727,
+        0.492,
+        0.707,
+        0.016,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      94,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 47,
+    "contact_reference_px": 47.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
