@@ -1,0 +1,137 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_20_midnight_yin_convergence.illusion_mist_emitter",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_20_midnight_yin_convergence",
+  "asset_slug": "illusion_mist_emitter",
+  "variant_slug": "subtle_ambient",
+  "name": "Subtle Ambient Intensity",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_20_midnight_yin_convergence/illusion_mist_emitter/subtle_ambient.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.084,
+        0.033
+      ],
+      [
+        0.15,
+        0.084
+      ]
+    ],
+    "frac_zero": 0.7762,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.007,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.05,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.021,
+        0.351,
+        0.387,
+        0.124,
+        0.0,
+        0.0
+      ],
+      [
+        0.017,
+        0.523,
+        0.646,
+        0.148,
+        0.002,
+        0.0
+      ],
+      [
+        0.005,
+        0.126,
+        0.111,
+        0.024,
+        0.005,
+        0.0
+      ],
+      [
+        0.002,
+        0.038,
+        0.043,
+        0.008,
+        0.138,
+        0.145
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.062,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      35,
+      28
+    ],
+    "trunk_columns": [],
+    "contact_px": 16,
+    "contact_reference_px": 16.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

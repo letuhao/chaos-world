@@ -1,0 +1,137 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_19_crushing_mountain_gravity.miasma_cloud_swirl",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_19_crushing_mountain_gravity",
+  "asset_slug": "miasma_cloud_swirl",
+  "variant_slug": "surging_torrent",
+  "name": "Surging Concentrated Torrent",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_19_crushing_mountain_gravity/miasma_cloud_swirl/surging_torrent.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.203,
+        0.207
+      ],
+      [
+        0.23,
+        0.205
+      ]
+    ],
+    "frac_zero": 0.7016,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.01,
+        0.12,
+        0.334,
+        0.141,
+        0.0,
+        0.0
+      ],
+      [
+        0.012,
+        0.037,
+        0.497,
+        0.6,
+        0.12,
+        0.0,
+        0.0
+      ],
+      [
+        0.096,
+        0.274,
+        0.686,
+        0.611,
+        0.38,
+        0.042,
+        0.0
+      ],
+      [
+        0.0,
+        0.065,
+        0.717,
+        0.48,
+        0.031,
+        0.157,
+        0.188
+      ],
+      [
+        0.199,
+        0.188,
+        0.343,
+        0.271,
+        0.232,
+        0.002,
+        0.0
+      ],
+      [
+        0.0,
+        0.01,
+        0.24,
+        0.285,
+        0.502,
+        0.02,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      29,
+      60
+    ],
+    "trunk_columns": [
+      4
+    ],
+    "contact_px": 31,
+    "contact_reference_px": 31.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

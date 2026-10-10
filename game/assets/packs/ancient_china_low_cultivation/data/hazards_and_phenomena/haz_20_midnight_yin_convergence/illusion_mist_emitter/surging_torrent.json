@@ -1,0 +1,123 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_20_midnight_yin_convergence.illusion_mist_emitter",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_20_midnight_yin_convergence",
+  "asset_slug": "illusion_mist_emitter",
+  "variant_slug": "surging_torrent",
+  "name": "Surging Concentrated Torrent",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_20_midnight_yin_convergence/illusion_mist_emitter/surging_torrent.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.186,
+        0.259
+      ],
+      [
+        0.207,
+        0.404
+      ]
+    ],
+    "frac_zero": 0.7575,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.054,
+        0.332,
+        0.193,
+        0.001
+      ],
+      [
+        0.0,
+        0.466,
+        0.229,
+        0.067,
+        0.095
+      ],
+      [
+        0.049,
+        0.252,
+        0.859,
+        0.479,
+        0.53
+      ],
+      [
+        0.0,
+        0.231,
+        0.95,
+        0.54,
+        0.013
+      ],
+      [
+        0.326,
+        0.052,
+        0.709,
+        0.27,
+        0.18
+      ],
+      [
+        0.0,
+        0.054,
+        0.0,
+        0.227,
+        0.155
+      ]
+    ],
+    "crop_offset": [
+      38,
+      68
+    ],
+    "trunk_columns": [],
+    "contact_px": 24,
+    "contact_reference_px": 24.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
