@@ -177,7 +177,10 @@ func test_dlc_attach_hook_recorded() -> void:
 	# `res://` path (whose scheme carries its own colon) binds the real function.
 	var callable: Callable = ctx.attach_hooks[0]["hook"]
 	assert_eq(callable.is_valid(), true, "callable resolved")
-	callable.call()
+	# The ACTOR the pipeline would hand it, and a REAL one: `_resolve_callable`'s wrapper
+	# maps a null argument onto a zero-argument call, so `call(null)` would drive the
+	# other branch and the hook's missing actor would read as the hook not firing.
+	callable.call(Actor.new(&"dlc_probe", {}))
 	assert_eq(DlcExampleHook.fired, true, "and it fires")
 
 
