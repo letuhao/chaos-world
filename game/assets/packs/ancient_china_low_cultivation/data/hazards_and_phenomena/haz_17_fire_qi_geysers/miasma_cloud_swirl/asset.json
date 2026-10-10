@@ -1,0 +1,325 @@
+{
+  "id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_17_fire_qi_geysers.miasma_cloud_swirl",
+  "archetype": "miasma_cloud_swirl_haz_17_fire_qi_geysers",
+  "name": "Fire Qi Geysers - Lingering Toxic Miasma Swirl",
+  "vietnamese_name": "Địa Hỏa Mạch Phún Phát - Luồng Khí Độc Lượn Lờ",
+  "hanzi": "地火脉喷发 · 浓烈瘴气旋流",
+  "category": "haz_17_fire_qi_geysers",
+  "category_code": "HAZ-17",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_17_fire_qi_geysers",
+  "asset_class": "vfx_particle",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "vfx_particle entity supporting Fire Qi Geysers gameplay",
+  "destructible": false,
+  "material": "pure luminous spiritual essence and radiating energy motes",
+  "cultivation_element": "fire",
+  "prompt_summary": "Luminous magical visual effect of fire qi geysers - lingering toxic miasma swirl, authentic fire qi geysers materials, East Asian Xianxia craftsmanship, intense glowing spiritual energy motes and arcs, transparent ethereal aesthetic, solid pitch black background (#000000) for mathematical additive alpha unmultiplication.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Environmental Hazards & Phenomena",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "subtle_ambient",
+      "name": "Subtle Ambient Intensity",
+      "prompt_modifier": "sparse floating glowing sparks, gentle drift",
+      "variant_id": "subtle_ambient",
+      "variant_name": "Subtle Ambient Intensity",
+      "description": "sparse floating glowing sparks, gentle drift",
+      "prompt": "2D game particle VFX sprite of lingering toxic miasma swirl, sparse floating glowing sparks, gentle drift, luminous spiritual motes, soft radiant glow edges, glowing magical energy, isolated on solid pure black background (#000000) for additive alpha blending.",
+      "negative_prompt": "white background, light background, grey background, opaque solid shapes, opaque borders, ground, floor, landscape, characters, buildings, terrain, solid geometry, ui frames, decorative frames",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_17_fire_qi_geysers/miasma_cloud_swirl/subtle_ambient.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.006,
+            0.013
+          ],
+          [
+            0.373,
+            0.202
+          ]
+        ],
+        "frac_zero": 0.8384,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          5,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.002,
+            0.0,
+            0.0,
+            0.005,
+            0.0
+          ],
+          [
+            0.003,
+            0.0,
+            0.0,
+            0.027,
+            0.0
+          ],
+          [
+            0.01,
+            0.001,
+            0.022,
+            0.026,
+            0.033
+          ],
+          [
+            0.236,
+            0.297,
+            0.229,
+            0.032,
+            0.019
+          ],
+          [
+            0.085,
+            0.694,
+            0.719,
+            0.137,
+            0.0
+          ],
+          [
+            0.166,
+            0.484,
+            0.618,
+            0.094,
+            0.316
+          ],
+          [
+            0.0,
+            0.0,
+            0.109,
+            0.094,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          54,
+          44
+        ],
+        "trunk_columns": [],
+        "contact_px": 20,
+        "contact_reference_px": 20.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "surging_torrent",
+      "name": "Surging Concentrated Torrent",
+      "prompt_modifier": "dense concentrated vortex ribbon of bright spiritual energy",
+      "variant_id": "surging_torrent",
+      "variant_name": "Surging Concentrated Torrent",
+      "description": "dense concentrated vortex ribbon of bright spiritual energy",
+      "prompt": "2D game particle VFX sprite of lingering toxic miasma swirl, dense concentrated vortex ribbon of bright spiritual energy, luminous spiritual motes, soft radiant glow edges, glowing magical energy, isolated on solid pure black background (#000000) for additive alpha blending.",
+      "negative_prompt": "white background, light background, grey background, opaque solid shapes, opaque borders, ground, floor, landscape, characters, buildings, terrain, solid geometry, ui frames, decorative frames",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_17_fire_qi_geysers/miasma_cloud_swirl/surging_torrent.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.175,
+            0.043
+          ],
+          [
+            0.291,
+            0.275
+          ]
+        ],
+        "frac_zero": 0.7798,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          5,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.012,
+            0.0
+          ],
+          [
+            0.0,
+            0.097,
+            0.104,
+            0.041,
+            0.0
+          ],
+          [
+            0.038,
+            0.511,
+            0.226,
+            0.034,
+            0.0
+          ],
+          [
+            0.07,
+            0.629,
+            0.677,
+            0.16,
+            0.003
+          ],
+          [
+            0.0,
+            0.072,
+            0.812,
+            0.114,
+            0.125
+          ],
+          [
+            0.07,
+            0.48,
+            0.994,
+            0.4,
+            0.03
+          ],
+          [
+            0.287,
+            0.118,
+            0.37,
+            0.276,
+            0.119
+          ]
+        ],
+        "crop_offset": [
+          43,
+          16
+        ],
+        "trunk_columns": [
+          2
+        ],
+        "contact_px": 21,
+        "contact_reference_px": 21.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "HAZ-17",
+    "domain": "hazards_and_phenomena",
+    "interaction": "examine",
+    "collision_behavior": "none",
+    "element": "fire",
+    "tier": 2
+  },
+  "category_id": "haz_17_fire_qi_geysers",
+  "domain_id": "hazards_and_phenomena",
+  "pinyin": "Dìhuǒmài Pēnfā · Lingering Toxic Miasma Swirl",
+  "archetype_name": "Lingering Toxic Miasma Swirl",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "none",
+    "shape": "box",
+    "solid": false,
+    "blocks_movement": false,
+    "blocks_projectiles": false,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "ethereal_spiritual_qi",
+  "secondary_material": "astral_light_motes",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Fire affinity (Foundation Establishment (Trúc Cơ / 筑基))",
+  "elevation_tier": 2,
+  "mortal_realm_tier": "Foundation Establishment (Trúc Cơ / 筑基)",
+  "asset_slug": "miasma_cloud_swirl"
+}

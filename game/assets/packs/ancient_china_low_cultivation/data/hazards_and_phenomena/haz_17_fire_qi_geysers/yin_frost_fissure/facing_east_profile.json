@@ -1,0 +1,96 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_17_fire_qi_geysers.yin_frost_fissure",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_17_fire_qi_geysers",
+  "asset_slug": "yin_frost_fissure",
+  "variant_slug": "facing_east_profile",
+  "name": "East Facing Profile",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_17_fire_qi_geysers/yin_frost_fissure/facing_east_profile.png",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "endure_cold",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.323,
+        0.846,
+        0.513
+      ]
+    ],
+    "frac_zero": 0.8889,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      0
+    ],
+    "sub_grid": [
+      3,
+      3
+    ],
+    "sub_fill": [
+      [
+        0.001,
+        0.6,
+        0.151
+      ],
+      [
+        0.48,
+        0.994,
+        0.615
+      ],
+      [
+        0.521,
+        0.979,
+        0.684
+      ]
+    ],
+    "crop_offset": [
+      145,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2
+    ],
+    "contact_px": 75,
+    "contact_reference_px": 75.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

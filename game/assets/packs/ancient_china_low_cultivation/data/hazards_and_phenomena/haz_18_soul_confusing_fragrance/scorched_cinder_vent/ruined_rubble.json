@@ -1,0 +1,141 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_18_soul_confusing_fragrance.scorched_cinder_vent",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_18_soul_confusing_fragrance",
+  "asset_slug": "scorched_cinder_vent",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_18_soul_confusing_fragrance/scorched_cinder_vent/ruined_rubble.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "gather_sulfur",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.365,
+        0.26
+      ],
+      [
+        0.683,
+        0.662
+      ]
+    ],
+    "frac_zero": 0.6677,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.091,
+        0.614,
+        0.194,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.266,
+        0.657,
+        0.271,
+        0.035,
+        0.0
+      ],
+      [
+        0.009,
+        0.439,
+        0.903,
+        0.722,
+        0.271,
+        0.01
+      ],
+      [
+        0.196,
+        0.868,
+        1.0,
+        1.0,
+        0.57,
+        0.151
+      ],
+      [
+        0.482,
+        0.927,
+        1.0,
+        1.0,
+        0.783,
+        0.293
+      ],
+      [
+        0.465,
+        1.0,
+        1.0,
+        1.0,
+        0.977,
+        0.372
+      ],
+      [
+        0.139,
+        0.514,
+        0.791,
+        0.673,
+        0.274,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      36,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 56,
+    "contact_reference_px": 56.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

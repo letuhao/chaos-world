@@ -1,0 +1,130 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_17_fire_qi_geysers.miasma_cloud_swirl",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_17_fire_qi_geysers",
+  "asset_slug": "miasma_cloud_swirl",
+  "variant_slug": "subtle_ambient",
+  "name": "Subtle Ambient Intensity",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_17_fire_qi_geysers/miasma_cloud_swirl/subtle_ambient.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.006,
+        0.013
+      ],
+      [
+        0.373,
+        0.202
+      ]
+    ],
+    "frac_zero": 0.8384,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.002,
+        0.0,
+        0.0,
+        0.005,
+        0.0
+      ],
+      [
+        0.003,
+        0.0,
+        0.0,
+        0.027,
+        0.0
+      ],
+      [
+        0.01,
+        0.001,
+        0.022,
+        0.026,
+        0.033
+      ],
+      [
+        0.236,
+        0.297,
+        0.229,
+        0.032,
+        0.019
+      ],
+      [
+        0.085,
+        0.694,
+        0.719,
+        0.137,
+        0.0
+      ],
+      [
+        0.166,
+        0.484,
+        0.618,
+        0.094,
+        0.316
+      ],
+      [
+        0.0,
+        0.0,
+        0.109,
+        0.094,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      54,
+      44
+    ],
+    "trunk_columns": [],
+    "contact_px": 20,
+    "contact_reference_px": 20.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

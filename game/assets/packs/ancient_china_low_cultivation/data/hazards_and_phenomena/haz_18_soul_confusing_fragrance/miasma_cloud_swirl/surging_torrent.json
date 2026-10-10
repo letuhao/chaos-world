@@ -1,0 +1,116 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_18_soul_confusing_fragrance.miasma_cloud_swirl",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_18_soul_confusing_fragrance",
+  "asset_slug": "miasma_cloud_swirl",
+  "variant_slug": "surging_torrent",
+  "name": "Surging Concentrated Torrent",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_18_soul_confusing_fragrance/miasma_cloud_swirl/surging_torrent.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.208,
+        0.232
+      ],
+      [
+        0.338,
+        0.461
+      ]
+    ],
+    "frac_zero": 0.7638,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      5
+    ],
+    "sub_fill": [
+      [
+        0.01,
+        0.22,
+        0.156,
+        0.011,
+        0.108
+      ],
+      [
+        0.08,
+        0.445,
+        0.583,
+        0.311,
+        0.036
+      ],
+      [
+        0.085,
+        0.401,
+        0.967,
+        0.309,
+        0.373
+      ],
+      [
+        0.106,
+        0.589,
+        0.947,
+        0.544,
+        0.087
+      ],
+      [
+        0.159,
+        0.199,
+        0.102,
+        0.102,
+        0.042
+      ]
+    ],
+    "crop_offset": [
+      40,
+      88
+    ],
+    "trunk_columns": [],
+    "contact_px": 14,
+    "contact_reference_px": 14.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

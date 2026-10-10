@@ -1,0 +1,169 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_17_fire_qi_geysers.corrupted_blight_core",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_17_fire_qi_geysers",
+  "asset_slug": "corrupted_blight_core",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_17_fire_qi_geysers/corrupted_blight_core/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "cleanse_blight",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.702,
+        0.628
+      ],
+      [
+        0.738,
+        0.729
+      ]
+    ],
+    "frac_zero": 0.6096,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.651,
+        1.0,
+        1.0,
+        0.878,
+        0.28
+      ],
+      [
+        0.084,
+        0.86,
+        1.0,
+        0.667,
+        0.053
+      ],
+      [
+        0.357,
+        0.844,
+        0.969,
+        0.7,
+        0.177
+      ],
+      [
+        0.642,
+        1.0,
+        1.0,
+        1.0,
+        0.588
+      ],
+      [
+        0.44,
+        1.0,
+        1.0,
+        0.989,
+        0.429
+      ],
+      [
+        0.554,
+        1.0,
+        1.0,
+        0.999,
+        0.562
+      ],
+      [
+        0.19,
+        0.732,
+        0.811,
+        0.54,
+        0.038
+      ]
+    ],
+    "crop_offset": [
+      51,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 88,
+    "contact_reference_px": 88.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

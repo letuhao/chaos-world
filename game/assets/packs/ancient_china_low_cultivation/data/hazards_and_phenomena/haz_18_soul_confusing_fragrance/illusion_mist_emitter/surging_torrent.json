@@ -1,0 +1,130 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_18_soul_confusing_fragrance.illusion_mist_emitter",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_18_soul_confusing_fragrance",
+  "asset_slug": "illusion_mist_emitter",
+  "variant_slug": "surging_torrent",
+  "name": "Surging Concentrated Torrent",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_18_soul_confusing_fragrance/illusion_mist_emitter/surging_torrent.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.26,
+        0.223
+      ],
+      [
+        0.295,
+        0.492
+      ]
+    ],
+    "frac_zero": 0.7502,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.009,
+        0.008,
+        0.163,
+        0.12,
+        0.04
+      ],
+      [
+        0.067,
+        0.429,
+        0.281,
+        0.098,
+        0.486
+      ],
+      [
+        0.093,
+        0.696,
+        0.838,
+        0.228,
+        0.054
+      ],
+      [
+        0.042,
+        0.376,
+        0.965,
+        0.769,
+        0.042
+      ],
+      [
+        0.14,
+        0.513,
+        0.988,
+        0.842,
+        0.148
+      ],
+      [
+        0.155,
+        0.04,
+        0.136,
+        0.366,
+        0.397
+      ],
+      [
+        0.0,
+        0.0,
+        0.094,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      39,
+      47
+    ],
+    "trunk_columns": [],
+    "contact_px": 19,
+    "contact_reference_px": 19.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

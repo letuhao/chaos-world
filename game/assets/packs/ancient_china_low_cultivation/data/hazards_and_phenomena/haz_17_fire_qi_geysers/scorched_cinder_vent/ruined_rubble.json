@@ -1,0 +1,142 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_17_fire_qi_geysers.scorched_cinder_vent",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_17_fire_qi_geysers",
+  "asset_slug": "scorched_cinder_vent",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_17_fire_qi_geysers/scorched_cinder_vent/ruined_rubble.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "gather_sulfur",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.44,
+        0.486
+      ],
+      [
+        0.657,
+        0.725
+      ]
+    ],
+    "frac_zero": 0.5954,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.378,
+        1.0,
+        0.89,
+        0.569,
+        0.137
+      ],
+      [
+        0.0,
+        0.231,
+        0.911,
+        0.818,
+        0.502,
+        0.004
+      ],
+      [
+        0.0,
+        0.331,
+        1.0,
+        0.844,
+        0.482,
+        0.008
+      ],
+      [
+        0.106,
+        0.58,
+        1.0,
+        1.0,
+        0.717,
+        0.19
+      ],
+      [
+        0.229,
+        0.908,
+        1.0,
+        1.0,
+        0.936,
+        0.476
+      ],
+      [
+        0.523,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.726
+      ],
+      [
+        0.159,
+        0.51,
+        0.644,
+        0.842,
+        0.551,
+        0.029
+      ]
+    ],
+    "crop_offset": [
+      32,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 42,
+    "contact_reference_px": 42.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_18_soul_confusing_fragrance.scorched_cinder_vent",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_18_soul_confusing_fragrance",
+  "asset_slug": "scorched_cinder_vent",
+  "variant_slug": "active_operating",
+  "name": "Active Operating State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_18_soul_confusing_fragrance/scorched_cinder_vent/active_operating.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "gather_sulfur",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.456,
+        0.381
+      ],
+      [
+        0.728,
+        0.733
+      ]
+    ],
+    "frac_zero": 0.5823,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.003,
+        0.373,
+        0.298,
+        0.621,
+        0.251,
+        0.0,
+        0.0
+      ],
+      [
+        0.211,
+        0.571,
+        0.529,
+        0.418,
+        0.298,
+        0.027,
+        0.0
+      ],
+      [
+        0.551,
+        0.525,
+        0.789,
+        0.707,
+        0.688,
+        0.169,
+        0.0
+      ],
+      [
+        0.215,
+        0.762,
+        1.0,
+        1.0,
+        0.707,
+        0.398,
+        0.0
+      ],
+      [
+        0.412,
+        0.938,
+        1.0,
+        1.0,
+        0.866,
+        0.344,
+        0.0
+      ],
+      [
+        0.721,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.842,
+        0.062
+      ],
+      [
+        0.067,
+        0.656,
+        0.761,
+        0.957,
+        0.636,
+        0.184,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      30,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 116,
+    "contact_reference_px": 116.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_17_fire_qi_geysers.illusion_mist_emitter",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_17_fire_qi_geysers",
+  "asset_slug": "illusion_mist_emitter",
+  "variant_slug": "surging_torrent",
+  "name": "Surging Concentrated Torrent",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_17_fire_qi_geysers/illusion_mist_emitter/surging_torrent.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.107,
+        0.191
+      ],
+      [
+        0.199,
+        0.436
+      ]
+    ],
+    "frac_zero": 0.8178,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.064,
+        0.028,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.229,
+        0.29,
+        0.0
+      ],
+      [
+        0.0,
+        0.277,
+        0.81,
+        0.059,
+        0.0
+      ],
+      [
+        0.025,
+        0.069,
+        0.701,
+        0.578,
+        0.075
+      ],
+      [
+        0.0,
+        0.166,
+        0.946,
+        0.7,
+        0.166
+      ],
+      [
+        0.0,
+        0.244,
+        0.98,
+        0.6,
+        0.0
+      ],
+      [
+        0.306,
+        0.058,
+        0.42,
+        0.172,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      50,
+      16
+    ],
+    "trunk_columns": [
+      2
+    ],
+    "contact_px": 28,
+    "contact_reference_px": 28.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
