@@ -169,12 +169,15 @@ enum Kind {
 ## `ctx.data` key carrying this attack's kind, as a [enum Kind] ordinal or its name.
 ## Unrecognised values read `DISRUPT`, never a fourth kind nobody wrote a branch for.
 const KIND_KEY := &"mind_kind"
+
 ## `ctx.data` key carrying the authored share of `MENTAL_ATTACK` this strike carries.
 ## Non-positive means "use the tuning's default", the same rule `QiDamage._share_of`
 ## applies to `element_share`, so the two paths cannot disagree about an unauthored share.
 const SHARE_KEY := &"mind_share"
+
 ## `ctx.data` key carrying the defender's sea. A `Variant` reached only through `get()`.
 const SEA_KEY := &"sea"
+
 ## `ctx.data` key overriding the tuning for one hit. `CombatTuning` is this module's own
 ## type, so it is named here and nowhere else on the mind path.
 const TUNING_KEY := &"tuning"
@@ -183,6 +186,7 @@ const TUNING_KEY := &"tuning"
 ## turbulence and the clarity it costs are the same event: a panel that read them as two
 ## effects could show a sea that went turbulent without paying for it.
 const EFFECT_KIND := &"mind.erosion"
+
 ## The strike kind (`disrupt` / `obscure` / `attend`) as a PAYLOAD field of the erosion
 ## effect. A name rather than the enum ordinal: an ordinal in a save payload is a renumbering
 ## hazard and a name is not.
@@ -190,13 +194,17 @@ const EFFECT_KIND := &"mind.erosion"
 ## NOT `DamageProposal.KIND`, which is `"kind"` too and means the effect's OWN vocabulary --
 ## see [_effects].
 const KEY_STRIKE_KIND := &"strike_kind"
+
 ## The turbulence ADDED by this hit, before the sea clamps it into `[0, 1]`.
 const KEY_TURBULENCE := &"turbulence"
+
 ## The clarity LOST. Negative, because it is a delta.
 const KEY_CLARITY := &"clarity"
+
 ## The AWARENESS drained by an `ATTEND` strike. `0.0` for the kinds that do not touch the
 ## reserve, so the effect shape never changes with the kind.
 const KEY_AWARENESS := &"awareness"
+
 ## The share of the sea the unmitigated erosion represents, before S5's defence.
 const KEY_EROSION := &"erosion"
 
@@ -204,6 +212,7 @@ const KEY_EROSION := &"erosion"
 ## bespoke mind flag: "the loser is disarmed for a minute" is only true if the disarm is
 ## something the engine ticks.
 const DEVIATION_STATUS := &"mind_deviation"
+
 ## The sea field this module parks the collapse timer on, rather than on a
 ## `mind_cultivation` field it may not add. Written only when the sea exposes it, so a
 ## foreign object simply cannot collapse and the caller keeps the timer itself.
@@ -211,15 +220,24 @@ const HELD_FIELD := &"mind_collapse_held"
 
 ## The rupture tick's result keys, so a readout and a test read the same names.
 const KEY_HP_LOSS := &"hp_loss"
+
 const KEY_BLEEDING := &"bleeding"
+
 const KEY_STATE_TURBULENCE := &"sea_turbulence"
+
 const KEY_THRESHOLD := &"threshold"
+
 ## The collapse tick's result keys.
 const KEY_COLLAPSED := &"collapsed"
+
 const KEY_HELD := &"held"
+
 const KEY_FROM_TIER := &"from_tier"
+
 const KEY_TO_TIER := &"to_tier"
+
 const KEY_CAPACITY := &"capacity"
+
 const KEY_CLARITY_NOW := &"clarity"
 
 ## The illusion-resistance conversion, as a DOCUMENTED constant rather than a re-tuned cap.
@@ -233,8 +251,10 @@ static var _shipped: CombatTuning = null
 ## The tuning this mechanism reads, when a caller binds one. Null means "the per-attack
 ## override, then [method CombatTuning.shipped]".
 var tuning: CombatTuning = null
+
 ## The injected sea, when a caller binds one. A `Variant` reached only through `get()`.
 var sea: Variant = null
+
 ## The kind this mechanism produces when the hit authored none.
 var kind: Kind = Kind.DISRUPT
 
@@ -270,7 +290,9 @@ func mitigate(ctx: AttackContext, proposal: DamageProposal) -> DamageProposal:
 			if entry.get(DamageProposal.KIND, &"") == EFFECT_KIND:
 				var scaled := entry.duplicate(true)
 				for key in [KEY_TURBULENCE, KEY_CLARITY, KEY_AWARENESS]:
-					scaled[key] = _finite(_number(scaled.get(key, 0.0)) * defence)
+					scaled[key] = MindDamageMath.finite(
+						MindDamageMath.number(scaled.get(key, 0.0)) * defence
+					)
 				carried.append(scaled)
 	if carried.is_empty():
 		carried = _effects(parts)
@@ -292,23 +314,30 @@ func mitigate(ctx: AttackContext, proposal: DamageProposal) -> DamageProposal:
 ## they cannot disagree.
 func breakdown(ctx: AttackContext) -> Dictionary:
 	if ctx == null:
-		return _empty_parts()
+		return MindDamageMath.empty_parts()
 	var tuning := _tuning_of(ctx)
 	var resolved := _kind_of(ctx)
 	var share := _share_of(ctx, tuning)
-	var mental_attack := maxf(0.0, _finite(ctx.attacker_value(_mind_stat(tuning, "mental_attack"))))
-	var base := _finite(mental_attack * share)
-	var mental_defense := _finite(ctx.target_value(_mind_stat(tuning, "mental_defense")))
+	var mental_attack := maxf(
+		0.0,
+		MindDamageMath.finite(ctx.attacker_value(MindDamageMath.mind_stat(tuning, "mental_attack")))
+	)
+	var base := MindDamageMath.finite(mental_attack * share)
+	var mental_defense := MindDamageMath.finite(
+		ctx.target_value(MindDamageMath.mind_stat(tuning, "mental_defense"))
+	)
 	var defense := _defense_of(ctx, tuning, mental_defense, resolved)
-	var divisor_k := maxf(0.0, _finite(tuning.defense_divisor_k) * base)
-	var mitigation := _mitigation_of(defense, divisor_k, tuning)
+	var divisor_k := maxf(0.0, MindDamageMath.finite(tuning.defense_divisor_k) * base)
+	var mitigation := MindDamageMath.mitigation_of(defense, divisor_k, tuning)
 	var awareness := _awareness_ratio_of(ctx, tuning)
 	var coherence := _coherence_of(ctx, tuning, resolved, awareness)
 	var focused := _focus_of(ctx, tuning)
 	var capacity := _structural_capacity_of(ctx, tuning)
 	# Hole 2: a sea with no scale is NOT an infinite erosion. `0.0` is visibly inert, which
 	# is the whole point of `CombatTuning`'s degenerate defaults.
-	var erosion := 0.0 if capacity <= 0.0 else _finite(base * coherence * focused / capacity)
+	var erosion := (
+		0.0 if capacity <= 0.0 else MindDamageMath.finite(base * coherence * focused / capacity)
+	)
 	return {
 		"kind": kind_name(resolved),
 		"share": share,
@@ -326,37 +355,13 @@ func breakdown(ctx: AttackContext) -> Dictionary:
 		"structural_capacity": capacity,
 		"subtotal": erosion,
 		"total": erosion * clampf(1.0 - mitigation, 0.0, 1.0),
-		"turbulence": _finite(erosion),
-		"clarity_delta": _finite(-_share(tuning.turbulence_to_clarity) * erosion),
+		"turbulence": MindDamageMath.finite(erosion),
+		"clarity_delta":
+		MindDamageMath.finite(-MindDamageMath.share(tuning.turbulence_to_clarity) * erosion),
 		"awareness_delta": _awareness_delta_of(resolved, awareness, erosion),
 		"sea_bound": _sea_of(ctx, tuning) != null,
 		"rng_bound": ctx.rng != null,
 	}
-
-
-## The share of a mind strike that lands at ANY `perception` and at ANY realm:
-## `1 - mitigation_ceiling`. `0.05` at the shipped value.
-##
-## Published rather than left to every caller to re-derive, because this number IS the mind
-## analogue of the spine's `min_chip_abs` and a second copy of the arithmetic is a second
-## place for a rebalance to miss. It is what makes a mind fight's difficulty come from
-## coherence, awareness and the matchup of intent rather than from stacking `perception`.
-##
-## ## It used to be `1 - MENTAL_DEFENSE_CAP`, and the difference is the ADR
-##
-## The OLD floor was `1 - 0.6 = 0.4`, true because the mitigation was CLAMPED at `0.6`:
-## it was a WALL, and past it more `mental_defense` bought literally nothing. The new floor
-## is `1 - mitigation_ceiling = 0.05`, true because the curve is ASYMPTOTIC: `m` is
-## strictly below the ceiling for every finite `D` and strictly rising in it. So the number
-## is a much smaller bound, and what it bounds is much harder to reach -- which is the
-## point. Both halves of the immunity invariant survive; the dead-stat half does not.
-static func defense_floor(tuning: CombatTuning = null) -> float:
-	var source := tuning
-	if source == null:
-		source = CombatTuning.shipped()
-	if source == null:
-		return 0.0
-	return clampf(1.0 - _share(source.mitigation_ceiling), 0.0, 1.0)
 
 
 ## THE ONLY thing on the mind path that moves health (ADR 0071). A COMBAT TICK, not a hit:
@@ -378,30 +383,39 @@ static func defense_floor(tuning: CombatTuning = null) -> float:
 func tick_rupture(
 	sea_component: Variant, actor: Variant, delta: float, tuning: CombatTuning = null
 ) -> Dictionary:
-	var bound := _tuning_or(tuning)
+	var bound := MindDamageMath.tuning_or(tuning)
 	var result := {KEY_HP_LOSS: 0.0, KEY_BLEEDING: false, KEY_STATE_TURBULENCE: 0.0}
 	if sea_component == null or actor == null or not (delta > 0.0):
 		return result
 	# Hole 6. The clamp is `[0, 1)` and not `[0, 1]` for BOTH reasons at once: a threshold
 	# at 1.0 is unreachable by construction, and `1.0 - threshold` is this function's only
 	# divisor, so an authored `1.0` would be `0.0 / 0.0` on the one tick it must not be.
-	var threshold := clampf(_finite(bound.rupture_threshold), 0.0, 0.999999)
+	var threshold := clampf(MindDamageMath.finite(bound.rupture_threshold), 0.0, 0.999999)
 	result[KEY_THRESHOLD] = threshold
 	var turbulence: float = clampf(
-		_finite(_number(_read(sea_component, &"turbulence", 0.0))), 0.0, 1.0
+		MindDamageMath.finite(
+			MindDamageMath.number(MindDamageMath.read(sea_component, &"turbulence", 0.0))
+		),
+		0.0,
+		1.0
 	)
 	result[KEY_STATE_TURBULENCE] = turbulence
 	if turbulence <= threshold:
 		return result
-	var bleed := _share(bound.rupture_bleed)
-	var pool: Variant = _pool_of(actor, bound.health_pool_id)
+	var bleed := MindDamageMath.share(bound.rupture_bleed)
+	var pool: Variant = MindDamageMath.pool_of(actor, bound.health_pool_id)
 	if bleed <= 0.0 or pool == null:
 		return result
-	var maximum := maxf(0.0, _finite(_number(_read(pool, &"maximum", 0.0))))
+	var maximum := maxf(
+		0.0,
+		MindDamageMath.finite(MindDamageMath.number(MindDamageMath.read(pool, &"maximum", 0.0)))
+	)
 	if maximum <= 0.0:
 		return result
 	var over := clampf((turbulence - threshold) / (1.0 - threshold), 0.0, 1.0)
-	var loss := _finite(maximum * bleed * over * maxf(0.0, _finite(delta)))
+	var loss := MindDamageMath.finite(
+		maximum * bleed * over * maxf(0.0, MindDamageMath.finite(delta))
+	)
 	if loss <= 0.0:
 		return result
 	loss = minf(loss, maximum)
@@ -431,10 +445,10 @@ func tick_rupture(
 static func tick_collapse(
 	sea_component: Variant, actor: Variant, delta: float, held: float, tuning: CombatTuning = null
 ) -> Dictionary:
-	var bound := _tuning_or(tuning)
+	var bound := MindDamageMath.tuning_or(tuning)
 	var result := {
 		KEY_COLLAPSED: false,
-		KEY_HELD: maxf(0.0, _finite(held)),
+		KEY_HELD: maxf(0.0, MindDamageMath.finite(held)),
 		KEY_FROM_TIER: "",
 		KEY_TO_TIER: "",
 		KEY_CAPACITY: 0.0,
@@ -443,18 +457,24 @@ static func tick_collapse(
 	}
 	if sea_component == null or delta <= 0.0:
 		return result
-	var tier := StringName(_text(_read(sea_component, &"tier", &"")))
+	var tier := StringName(MindDamageMath.text(MindDamageMath.read(sea_component, &"tier", &"")))
 	result[KEY_FROM_TIER] = String(tier)
-	var window := maxf(0.0, _finite(bound.rupture_collapse_time))
-	var turbulence := clampf(_finite(_number(_read(sea_component, &"turbulence", 0.0))), 0.0, 1.0)
+	var window := maxf(0.0, MindDamageMath.finite(bound.rupture_collapse_time))
+	var turbulence := clampf(
+		MindDamageMath.finite(
+			MindDamageMath.number(MindDamageMath.read(sea_component, &"turbulence", 0.0))
+		),
+		0.0,
+		1.0
+	)
 	if window <= 0.0 or turbulence < 1.0:
 		result[KEY_HELD] = 0.0
 		return result
-	var held_now: float = float(result[KEY_HELD]) + maxf(0.0, _finite(delta))
+	var held_now: float = float(result[KEY_HELD]) + maxf(0.0, MindDamageMath.finite(delta))
 	result[KEY_HELD] = held_now
 	if held_now < window:
 		return result
-	var ladder := _ladder_of(bound)
+	var ladder := MindDamageMath.ladder_of(bound)
 	var index := ladder.find(tier)
 	# Hole 8: `vast` is the floor of the ladder and a tier this tuning never heard of has no
 	# successor. Neither is demoted, and the timer resets rather than accumulating into a
@@ -463,12 +483,14 @@ static func tick_collapse(
 		result[KEY_HELD] = 0.0
 		return result
 	var demoted := ladder[index + 1]
-	var capacity := _capacity_floor_of(bound, demoted)
-	_settle(sea_component, &"tier", &"set_tier", demoted)
+	var capacity := MindDamageMath.capacity_floor_of(bound, demoted)
+	MindDamageMath.settle(sea_component, &"tier", &"set_tier", demoted)
 	if capacity > 0.0:
-		_settle(sea_component, &"structural_capacity", &"set_structural_capacity", capacity)
-	var clarity := clampf(_finite(bound.collapse_clarity_floor), 0.0, 1.0)
-	_settle(sea_component, &"clarity", &"set_clarity", clarity)
+		MindDamageMath.settle(
+			sea_component, &"structural_capacity", &"set_structural_capacity", capacity
+		)
+	var clarity := clampf(MindDamageMath.finite(bound.collapse_clarity_floor), 0.0, 1.0)
+	MindDamageMath.settle(sea_component, &"clarity", &"set_clarity", clarity)
 	result[KEY_COLLAPSED] = true
 	result[KEY_HELD] = 0.0
 	result[KEY_TO_TIER] = String(demoted)
@@ -495,11 +517,13 @@ static func apply_deviation(actor: Variant, tuning: CombatTuning = null) -> Stri
 	if actor == null or not (actor is Object):
 		return &""
 	var holder := actor as Object
-	var bound := _tuning_or(tuning)
-	var zeroed := StringName(_text(bound.mind_deviation_stat))
-	var stats: Variant = _read(holder, &"stats", null)
+	var bound := MindDamageMath.tuning_or(tuning)
+	var zeroed := StringName(MindDamageMath.text(bound.mind_deviation_stat))
+	var stats: Variant = MindDamageMath.read(holder, &"stats", null)
 	if stats is Object and (stats as Object).has_method(&"derived"):
-		var current := _finite(_number((stats as Object).call(&"derived", zeroed)))
+		var current := MindDamageMath.finite(
+			MindDamageMath.number((stats as Object).call(&"derived", zeroed))
+		)
 		if (stats as Object).has_method(&"add_modifier"):
 			# `stats.as.Object` is not a CAST -- GDScript has no `.as` property, so this read
 			# a property on the object rather than narrowing the Variant and raised
@@ -512,11 +536,11 @@ static func apply_deviation(actor: Variant, tuning: CombatTuning = null) -> Stri
 	# Hole 7: `StatusEffect`'s own `-1.0` sentinel means PERMANENT, so a non-positive
 	# authored duration is floored to it. A `0.0` would build a status already expired on
 	# the frame it was applied, which is the silent-failure shape a default exists to catch.
-	var duration := _finite(bound.collapse_deviation_duration)
+	var duration := MindDamageMath.finite(bound.collapse_deviation_duration)
 	var effect := StatusEffect.new(DEVIATION_STATUS, duration if duration > 0.0 else -1.0)
 	if effect == null:
 		return &""
-	_assign(effect, &"magnitude", 0.0)
+	MindDamageMath.assign(effect, &"magnitude", 0.0)
 	if not holder.has_method(&"add_status"):
 		return DEVIATION_STATUS
 	# The registry's ANSWER is read, not discarded. `Actor.add_status` refuses an empty id or
@@ -624,16 +648,16 @@ static func kind_name(value: Kind) -> String:
 func _defense_of(
 	ctx: AttackContext, tuning: CombatTuning, defense: float, kind_value: Kind
 ) -> float:
-	var divisor := _finite(tuning.resist_divisor)
+	var divisor := MindDamageMath.finite(tuning.resist_divisor)
 	var scale := divisor if divisor > 0.0 else 1.0
-	var out := _finite(defense) / scale
+	var out := MindDamageMath.finite(defense) / scale
 	if kind_value == Kind.OBSCURE:
 		out = maxf(out, _illusion_defense_of(ctx, tuning, kind_value))
-	var pen := maxf(0.0, _finite(_penetration_of(ctx)))
-	var pierce := _finite(tuning.pierce_scale)
+	var pen := maxf(0.0, MindDamageMath.finite(MindDamageMath.penetration_of(ctx)))
+	var pierce := MindDamageMath.finite(tuning.pierce_scale)
 	if pierce > 0.0:
 		out = out / (1.0 + pen / pierce)
-	return _finite(out)
+	return MindDamageMath.finite(out)
 
 
 ## ## `ILLUSION_RESISTANCE` is NOT a `[0, 1]` percent, and treating it as one is the
@@ -693,59 +717,6 @@ func _defense_of(
 ## place ([constant ILLUSION_MAGNITUDE_SCALE]).
 
 
-## ADR 0200's mitigation curve, the same shape `QiDamage` and `BodyDamage` use:
-##
-## ```
-## m = mitigation_ceiling * D / (K + D)                 for D >= 0
-## m = mitigation_ceiling * (2 - K / (K + |D|))        for D <  0
-## ```
-##
-## `K = defense_divisor_k * base` is MIND'S OWN offense, per the owner's ruling that `K` is
-## per-mechanism: the three stay independent and a qi rebalance cannot move a mind answer.
-##
-## `m` APPROACHES `mitigation_ceiling` and never reaches it, so a defender's
-## `mental_defense` never stops paying -- the property `MENTAL_DEFENSE_CAP` destroyed, and
-## the reason the published floor fell from `0.4` to `1 - 0.95 = 0.05`.
-##
-## The mirror branch is what makes a composure-sundered sea a real glass cannon: `m` goes
-## ABOVE the ceiling and `1 - m` goes negative, so the erosion GROWS. Both branches give
-## exactly `mitigation_ceiling` at `D == 0`, so the function is CONTINUOUS there, and that
-## agreement is the assertion that catches a missing or mis-signed branch.
-##
-## Hole 1 is here: `0.0 / 0.0` is `NaN` and a `NaN` survives every `clampf`, so a
-## non-positive denominator is caught rather than passed on.
-static func _mitigation_of(defense: float, divisor_k: float, tuning: CombatTuning) -> float:
-	var ceiling := clampf(_finite(tuning.mitigation_ceiling), 0.0, 1.0)
-	if ceiling <= 0.0:
-		return 0.0
-	var k := maxf(0.0, _finite(divisor_k))
-	var magnitude := absf(_finite(defense))
-	var denominator := k + magnitude
-	if denominator <= 0.0:
-		return 0.0
-	var share := magnitude / denominator if defense >= 0.0 else 2.0 - k / denominator
-	return _finite(ceiling * share)
-
-
-## The attacker's penetration against this sea's defense, ANSWERED by the
-## defender's `ABSORPTION`, as a magnitude on `CombatTuning.pierce_scale`'s
-## scale. Zero when nothing was authored and never negative: a negative
-## penetration would be a defence BONUS wearing an attacker's name, and the
-## answered form keeps that property through `CombatStats.pierce`.
-static func _penetration_of(ctx: AttackContext) -> float:
-	var id := CombatStats.PENETRATION
-	return CombatStats.pierce(
-		maxf(0.0, CombatStats.default_of(id) + _finite(ctx.attacker_value(id))),
-		maxf(
-			0.0,
-			(
-				CombatStats.default_of(CombatStats.ABSORPTION)
-				+ _finite(ctx.target_value(CombatStats.ABSORPTION))
-			)
-		)
-	)
-
-
 ## `1 - COHERENCE_DAMP * awareness_ratio`, less whatever a `mind_veil` spend removes.
 ##
 ## The DEPLETING reserve is the mind path's first defensive lever and the only term that
@@ -763,7 +734,7 @@ static func _penetration_of(ctx: AttackContext) -> float:
 func _coherence_of(
 	ctx: AttackContext, tuning: CombatTuning, kind_value: Kind, awareness: float
 ) -> float:
-	var damp := _share(tuning.coherence_damp)
+	var damp := MindDamageMath.share(tuning.coherence_damp)
 	var coherence := clampf(1.0 - damp * clampf(awareness, 0.0, 1.0), 0.0, 1.0)
 	var refund := _avoidance_of(ctx, tuning, kind_value)
 	return clampf(maxf(coherence, refund), 0.0, 1.0)
@@ -787,10 +758,14 @@ func _coherence_of(
 func _focus_of(ctx: AttackContext, tuning: CombatTuning) -> float:
 	# Hole 5: a multiplier below 1.0 would make a crit a WEAKER strike, so the read floor is
 	# 1.0 rather than a clamp at 0.0 -- the neutral is 1.0 and the dial only ever adds.
-	var mult := maxf(1.0, _finite(tuning.focus_mult))
+	var mult := maxf(1.0, MindDamageMath.finite(tuning.focus_mult))
 	if ctx.rng == null:
 		return 1.0
-	var chance := clampf(_finite(ctx.attacker_value(_mind_stat(tuning, "mind_clarity"))), 0.0, 1.0)
+	var chance := clampf(
+		MindDamageMath.finite(ctx.attacker_value(MindDamageMath.mind_stat(tuning, "mind_clarity"))),
+		0.0,
+		1.0
+	)
 	if chance <= 0.0:
 		return 1.0
 	return mult if ctx.rng.randf() < chance else 1.0
@@ -802,16 +777,20 @@ func _focus_of(ctx: AttackContext, tuning: CombatTuning) -> float:
 ##
 ## ## ADR 0215. Same rename, same reason the clamp is a shape and not a cap
 ## `mind_avoidance` is `mind_veil`, and its `minf(0.6, …)` is deleted at the publish end.
-## `_share(tuning.coherence_damp)` — not the stat itself — is what this roll is worth, so
-## an unbounded `mind_veil` buys a MORE reliable spend of the reserve rather than a
-## bigger one; the ceiling that bounded the RELIABILITY is the thing ADR 0215 removed.
+## `MindDamageMath.share(tuning.coherence_damp)` — not the stat itself — is what this roll
+## is worth, so an unbounded `mind_veil` buys a MORE reliable spend of the reserve rather
+## than a bigger one; the ceiling that bounded the RELIABILITY is the thing ADR 0215 removed.
 func _avoidance_of(ctx: AttackContext, tuning: CombatTuning, kind_value: Kind) -> float:
 	if kind_value == Kind.ATTEND or ctx.rng == null:
 		return 0.0
-	var chance := clampf(_finite(ctx.target_value(_mind_stat(tuning, "mind_veil"))), 0.0, 1.0)
+	var chance := clampf(
+		MindDamageMath.finite(ctx.target_value(MindDamageMath.mind_stat(tuning, "mind_veil"))),
+		0.0,
+		1.0
+	)
 	if chance <= 0.0 or ctx.rng.randf() >= chance:
 		return 0.0
-	return _share(tuning.coherence_damp)
+	return MindDamageMath.share(tuning.coherence_damp)
 
 
 ## The defender's `ILLUSION_RESISTANCE`, read ONLY for `OBSCURE` -- every other kind
@@ -828,8 +807,8 @@ func _avoidance_of(ctx: AttackContext, tuning: CombatTuning, kind_value: Kind) -
 func _illusion_resistance_of(ctx: AttackContext, tuning: CombatTuning, kind_value: Kind) -> float:
 	if kind_value != Kind.OBSCURE:
 		return 0.0
-	var id := _mind_stat(tuning, "illusion_resistance")
-	return clampf(_finite(ctx.target_value(id)), 0.0, 1.0)
+	var id := MindDamageMath.mind_stat(tuning, "illusion_resistance")
+	return clampf(MindDamageMath.finite(ctx.target_value(id)), 0.0, 1.0)
 
 
 ## The `ILLUSION_RESISTANCE` term of [method _defense_of]'s `maxf`, already on `D`'s scale.
@@ -858,6 +837,10 @@ func _illusion_defense_of(ctx: AttackContext, tuning: CombatTuning, kind_value: 
 ## read as a `0..1` fraction — and clamped to what is actually held, so a strike can empty the
 ## reserve and can never invent a negative one. A target with no reserve at all answers `0.0`,
 ## which is the same degradation every other absent read on this file gives.
+##
+## It stays here rather than in [MindDamageMath] with the other readings: its subject is this
+## mechanism's own `Kind` vocabulary, and a helper that names an enum declared in the file it
+## left is a class cycle rather than a split.
 func _awareness_delta_of(kind_value: Kind, awareness: float, erosion: float) -> float:
 	if kind_value != Kind.ATTEND or erosion <= 0.0:
 		return 0.0
@@ -869,13 +852,22 @@ func _awareness_delta_of(kind_value: Kind, awareness: float, erosion: float) -> 
 ## WORST coherence — which is the honest answer for a target with no awareness at all rather
 ## than a fabricated full one.
 func _awareness_ratio_of(ctx: AttackContext, tuning: CombatTuning) -> float:
-	var pool: Variant = _pool_of(ctx.target, tuning.awareness_pool_id)
+	var pool: Variant = MindDamageMath.pool_of(ctx.target, tuning.awareness_pool_id)
 	if pool == null:
 		return 0.0
-	var maximum := _finite(_number(_read(pool, &"maximum", 0.0)))
+	var maximum := MindDamageMath.finite(
+		MindDamageMath.number(MindDamageMath.read(pool, &"maximum", 0.0))
+	)
 	if maximum <= 0.0:
 		return 0.0
-	return clampf(_finite(_number(_read(pool, &"current", 0.0))) / maximum, 0.0, 1.0)
+	return clampf(
+		(
+			MindDamageMath.finite(MindDamageMath.number(MindDamageMath.read(pool, &"current", 0.0)))
+			/ maximum
+		),
+		0.0,
+		1.0
+	)
 
 
 ## The sea's `structural_capacity` — ADR 0071's denominator, and the reason the erosion is
@@ -887,7 +879,7 @@ func _awareness_ratio_of(ctx: AttackContext, tuning: CombatTuning) -> float:
 ## module docblock for the measured `4.6457x` decay that follows from the two ladders.
 func _structural_capacity_of(ctx: AttackContext, tuning: CombatTuning) -> float:
 	var state: Variant = _sea_of(ctx, tuning)
-	return 0.0 if state == null else _capacity_of(state)
+	return 0.0 if state == null else MindDamageMath.capacity_of(state)
 
 
 ## The sea: the per-hit injection, then this mechanism's bound one, then the target's own
@@ -899,68 +891,13 @@ func _sea_of(ctx: AttackContext, tuning: CombatTuning) -> Variant:
 		return injected
 	if sea != null:
 		return sea
-	var bag: Variant = _read(ctx.target, &"components", null)
-	var key := StringName(_text(tuning.sea_component))
+	var bag: Variant = MindDamageMath.read(ctx.target, &"components", null)
+	var key := StringName(MindDamageMath.text(tuning.sea_component))
 	if bag is Dictionary and key != &"":
 		var found: Variant = (bag as Dictionary).get(key, null)
 		if found != null:
 			return found
 	return null
-
-
-## `structural_capacity`, through `get()`. `0.0` is a real answer for a sea nobody trained,
-## and the caller then refuses to divide by it rather than producing an infinity.
-static func _capacity_of(state: Variant) -> float:
-	if state == null:
-		return 0.0
-	return maxf(0.0, _finite(_number(_read(state, &"structural_capacity", 0.0))))
-
-
-## The sea tier ladder, shallowest first.
-##
-## ## Why it is NOT sorted
-##
-## This once read the `collapse_capacity_floors` keys back in SORTED order so that a tie could
-## not be broken by whatever order a `Dictionary` happens to enumerate. That is determinism,
-## and it is the wrong determinism: sorting only stands in for an ORDER, and the shipped tier
-## names defeat it outright -- `"deep" < "shallow" < "vast"` alphabetically, so a sea pinned at
-## `shallow`, the FIRST rung a real actor has and the one every collapse starts from, sorted to
-## the LAST index and had no successor. Every collapse was then refused by hole 8 as "no
-## successor", which is a correct guard firing on a ladder that was in the wrong order beneath it.
-##
-## The order now comes from the TABLE'S OWN INSERTION ORDER, which is authored, stable and the
-## one place the ladder is declared, and it is VERIFIED rather than assumed: the authored
-## capacities must be non-decreasing down the ladder, and a table that is not gets reversed
-## rather than demoted towards the floor. No second copy of the capacities is kept here — this
-## reads the same `collapse_capacity_floors` [method _capacity_floor_of] already reads.
-static func _ladder_of(tuning: CombatTuning) -> Array[StringName]:
-	var keys: Array[StringName] = []
-	if tuning.collapse_capacity_floors is Dictionary:
-		for key in (tuning.collapse_capacity_floors as Dictionary).keys():
-			keys.append(StringName(key))
-	if keys.is_empty():
-		return [&"shallow", &"deep", &"vast"]
-	var previous: float = -1.0
-	for tier in keys:
-		var capacity := _capacity_floor_of(tuning, tier)
-		if capacity < previous:
-			# Authored deepest-first: demote towards the floor rather than towards the top.
-			keys.reverse()
-			break
-		previous = capacity
-	return keys
-
-
-## The `structural_capacity` a demoted sea is reset to, or `0.0` for "leave it alone". A tier
-## missing from the authored table is never demoted further.
-static func _capacity_floor_of(tuning: CombatTuning, tier: StringName) -> float:
-	if not (tuning.collapse_capacity_floors is Dictionary):
-		return 0.0
-	var value: Variant = (tuning.collapse_capacity_floors as Dictionary).get(String(tier), 0.0)
-	return maxf(0.0, _finite(_number(value)))
-
-
-# --- internals -----------------------------------------------------------------
 
 
 ## The kind for this hit: the per-hit key, then this mechanism's bound field. An ordinal
@@ -973,7 +910,7 @@ func _kind_of(ctx: AttackContext) -> Kind:
 	if raw is int or raw is float:
 		var index := int(raw)
 		return (index if index >= 0 and index < Kind.size() else 0) as Kind
-	var spelled := _text(raw)
+	var spelled := MindDamageMath.text(raw)
 	if spelled == "obscure":
 		return Kind.OBSCURE
 	if spelled == "attend":
@@ -1001,18 +938,18 @@ func _effects(parts: Dictionary) -> Array[Dictionary]:
 		{
 			DamageProposal.KIND: EFFECT_KIND,
 			KEY_STRIKE_KIND: String(parts["kind"]),
-			KEY_TURBULENCE: _finite(float(parts["turbulence"])),
-			KEY_CLARITY: _finite(float(parts["clarity_delta"])),
-			KEY_AWARENESS: _finite(float(parts["awareness_delta"])),
+			KEY_TURBULENCE: MindDamageMath.finite(float(parts["turbulence"])),
+			KEY_CLARITY: MindDamageMath.finite(float(parts["clarity_delta"])),
+			KEY_AWARENESS: MindDamageMath.finite(float(parts["awareness_delta"])),
 		}
 	]
 
 
 ## The authored share, falling back to the tuning default when the hit authored none.
 func _share_of(ctx: AttackContext, tuning: CombatTuning) -> float:
-	var authored := _number(ctx.data_value(SHARE_KEY, 0.0))
+	var authored := MindDamageMath.number(ctx.data_value(SHARE_KEY, 0.0))
 	if authored <= 0.0:
-		authored = _finite(tuning.default_mind_share)
+		authored = MindDamageMath.finite(tuning.default_mind_share)
 	return clampf(authored, 0.0, 1.0)
 
 
@@ -1029,144 +966,3 @@ func _tuning_of(ctx: AttackContext) -> CombatTuning:
 	if _shipped == null:
 		_shipped = CombatTuning.shipped()
 	return _shipped if _shipped != null else CombatTuning.new()
-
-
-## The tuning for a static entry point, which has no context to read a per-attack override
-## off. Same three-step order, without the memoisation a per-hit read justifies.
-static func _tuning_or(source: CombatTuning) -> CombatTuning:
-	if source != null:
-		return source
-	var shipped := CombatTuning.shipped()
-	return shipped if shipped != null else CombatTuning.new()
-
-
-## One `mind_cultivation` stat id, built from the prefix authored on `CombatTuning`. DATA
-## rather than a named constant: `combat_engine` may not depend on `mind_cultivation`, and a
-## `StringName` naming `MindStats` would be exactly the compile-time edge the registry would
-## then have to declare. A prefix the tuning does not carry makes the id the bare name, which
-## no provider contributes, so the term reads `0.0` — visibly broken rather than a null
-## dereference, and the same shape `QiDamage._suffixed` has.
-static func _mind_stat(tuning: CombatTuning, suffix: String) -> StringName:
-	return StringName(_text(tuning.mind_stat_prefix) + suffix)
-
-
-## A `ResourcePool` off an `Actor`, by an id read out of DATA. `call()` rather than a typed
-## `resource()` so a `Variant` actor of another shape degrades to `null` instead of crashing
-## a combat tick.
-static func _pool_of(actor: Variant, pool_id: StringName) -> Variant:
-	if actor == null or pool_id == &"" or not (actor is Object):
-		return null
-	if not (actor as Object).has_method(&"resource"):
-		return null
-	return (actor as Object).call(&"resource", pool_id)
-
-
-## Write a field on an injected sea through its setter when it HAS one, else through the
-## field itself. The setter is preferred because a real sea clamps (`set_clarity` clamps to
-## `[0, 1]`, `set_structural_capacity` floors at 0) and this module may not depend on that
-## knowledge being true. A foreign object with neither answers without touching anything,
-## which is a collapse that reported itself rather than one that corrupted a field.
-static func _settle(state: Variant, field: StringName, setter: StringName, amount: Variant) -> void:
-	if state == null or not (state is Object):
-		return
-	var holder := state as Object
-	if holder.has_method(setter):
-		holder.call(setter, amount)
-		return
-	_assign(holder, field, amount)
-
-
-## Write a property only when the object already exposes it. A `set()` on an absent property
-## pushes an engine warning and this project treats warnings as errors, so the whole file
-## would fail to compile. This is what lets a caller hand over any object carrying the four
-## fields the sea is read through and get a graceful degradation instead of a warning storm.
-static func _assign(object: Object, key: StringName, amount: Variant) -> void:
-	for entry in object.get_property_list():
-		if StringName(entry.get("name", &"")) == key:
-			object.set(key, amount)
-			return
-
-
-## `Object.get` with a fallback, never `Object._get` — the latter is an engine hook and a
-## same-arity declaration collides with it, which fails the whole file to compile and cascades
-## into "Could not resolve class" for everything that depends on it.
-static func _read(value: Variant, key: StringName, fallback: Variant) -> Variant:
-	if value == null or not (value is Object):
-		return fallback
-	var result: Variant = (value as Object).get(key)
-	return result if result != null else fallback
-
-
-## A rate read out of DATA and clamped into `[0, 1]`. Above `1.0` a "cap" exceeds the thing
-## it caps and a defence becomes a liability — holes 3 and 4 in the module docblock.
-static func _share(value: Variant) -> float:
-	return clampf(_finite(float(value)), 0.0, 1.0) if (value is float or value is int) else 0.0
-
-
-## Every arithmetic result in this file passes through here. The spine's ONE non-finite guard
-## sits at S6's entrance and `maxf(NaN, chip) == NaN`, so a `NaN` produced here would reach
-## `ResourcePool.change`, which has no guard of its own.
-static func _finite(value: float) -> float:
-	return value if is_finite(value) else 0.0
-
-
-## A `Variant` as a finite float, or `0.0`. A `bool` is deliberately not a number here:
-## `true` as a share would silently read `1.0`.
-static func _number(value: Variant) -> float:
-	if value is float or value is int:
-		return _finite(float(value))
-	return 0.0
-
-
-## A `Variant` as text, or `""` when it is not text at all.
-##
-## `StringName` is NOT a `String` — `x is String` is FALSE for one, because a `StringName` is
-## its own interned type — so this accepted only literal `String` and silently discarded
-## EVERY `StringName` it was handed. That is invisible in prose and catastrophic in effect:
-## every `StringName`-typed field this module reads arrives empty, so
-## - `tick_collapse` read a sea's `tier` as `""`, found no successor in the ladder and
-##   REFUSED every collapse (hole 8, wrongly — the sea was demotable the whole time);
-## - `_mind_stat` built the bare name `"mental_attack"` instead of `&"mental_attack"`, which
-##   no provider contributes, so `mental_attack`, `mental_defense`, `mind_clarity`
-##   (ADR 0215's rename of `mind_focus_chance`), `mind_veil` (of `mind_avoidance`) and
-##   `illusion_resistance` ALL read `0.0` — which is why
-##   "defense 0.0 saturates at the cap" could pass with a `0.0` on BOTH sides of the
-##   assertion and the `40%` floor check beside it, and the fixture's sea silently stopped
-##   being read at all;
-## - `apply_deviation` zeroed the bare name `"mind_technique_power"` rather than the id.
-##
-## The fix is to accept both text types rather than to restate the value at each call site:
-## `String()` on either is lossless. `_number` above stays strict on purpose, because a
-## `StringName` used as a NUMBER is a genuine defect and not a spelling to paper over.
-static func _text(value: Variant) -> String:
-	if value is String or value is StringName:
-		return String(value)
-	return ""
-
-
-## What a null context answers. Every key present, so a panel rendering [method breakdown]'s
-## shape never has to ask whether a key exists.
-static func _empty_parts() -> Dictionary:
-	return {
-		"kind": "disrupt",
-		"share": 0.0,
-		"mental_attack": 0.0,
-		"base": 0.0,
-		"mental_defense": 0.0,
-		"defense": 0.0,
-		"divisor_k": 0.0,
-		"mitigation": 0.0,
-		"illusion_resistance": 0.0,
-		"awareness_ratio": 0.0,
-		"coherence": 1.0,
-		"focused": false,
-		"erosion": 0.0,
-		"structural_capacity": 0.0,
-		"subtotal": 0.0,
-		"total": 0.0,
-		"turbulence": 0.0,
-		"clarity_delta": 0.0,
-		"awareness_delta": 0.0,
-		"sea_bound": false,
-		"rng_bound": false,
-	}

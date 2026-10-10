@@ -263,7 +263,7 @@ func test_the_spine_carries_the_two_stage_proposal() -> void:
 ## constant. So the FLOOR is the lowest share any defence may push the strike to -- a bound
 ## asserted with `>=` -- not a second factor the erosion is divided by.
 func test_the_defence_floor_is_structural_at_any_defense() -> void:
-	var lands := MindDamage.defense_floor(_tuning)
+	var lands := MindDamageMath.defense_floor(_tuning)
 	# ADR 0200 deleted `MENTAL_DEFENSE_CAP`. The floor is no longer `1 - cap` (a share of
 	# a removed percent); it is `1 - mitigation_ceiling`, because the ceiling is the share
 	# of a mind strike that mitigation may ever remove and the floor is what always lands.
@@ -273,7 +273,7 @@ func test_the_defence_floor_is_structural_at_any_defense() -> void:
 		lands, 1.0 - _tuning.mitigation_ceiling, "the published floor is 1 - mitigation_ceiling"
 	)
 	assert_almost_eq(
-		MindDamage.defense_floor(), lands, "and the same when the tuning is resolved by default"
+		MindDamageMath.defense_floor(), lands, "and the same when the tuning is resolved by default"
 	)
 	assert_eq(lands > 0.0, true, "a mind strike always lands SOME share, as qi and body do")
 	var attacker := _attacker()
