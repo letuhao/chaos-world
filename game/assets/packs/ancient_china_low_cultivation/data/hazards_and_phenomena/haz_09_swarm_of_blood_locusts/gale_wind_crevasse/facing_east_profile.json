@@ -1,0 +1,153 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_09_swarm_of_blood_locusts.gale_wind_crevasse",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_09_swarm_of_blood_locusts",
+  "asset_slug": "gale_wind_crevasse",
+  "variant_slug": "facing_east_profile",
+  "name": "East Facing Profile",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_09_swarm_of_blood_locusts/gale_wind_crevasse/facing_east_profile.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.07,
+        0.611,
+        0.331
+      ],
+      [
+        0.677,
+        0.956,
+        0.639
+      ]
+    ],
+    "frac_zero": 0.748,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.0,
+        0.11,
+        0.593,
+        0.179,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.419,
+        0.916,
+        0.521,
+        0.0
+      ],
+      [
+        0.0,
+        0.316,
+        0.398,
+        1.0,
+        0.704,
+        0.323
+      ],
+      [
+        0.116,
+        0.567,
+        0.943,
+        1.0,
+        0.874,
+        0.191
+      ],
+      [
+        0.615,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.705
+      ],
+      [
+        0.624,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.616
+      ],
+      [
+        0.178,
+        0.891,
+        0.889,
+        0.78,
+        0.489,
+        0.05
+      ]
+    ],
+    "crop_offset": [
+      96,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 123,
+    "contact_reference_px": 123.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

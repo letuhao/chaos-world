@@ -1,0 +1,176 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_10_mirage_illusion_mirage.lightning_struck_crag",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_10_mirage_illusion_mirage",
+  "asset_slug": "lightning_struck_crag",
+  "variant_slug": "facing_west_left",
+  "name": "West Facing Profile",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_10_mirage_illusion_mirage/lightning_struck_crag/facing_west_left.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "solid",
+  "interactive_verb": "gather_lightning_ash",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.45,
+        0.415
+      ],
+      [
+        0.705,
+        0.734
+      ]
+    ],
+    "frac_zero": 0.6265,
+    "blocks": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 4,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.09,
+        0.688,
+        0.233,
+        0.076,
+        0.0
+      ],
+      [
+        0.079,
+        0.349,
+        1.0,
+        0.501,
+        0.43,
+        0.0
+      ],
+      [
+        0.097,
+        0.609,
+        0.99,
+        0.673,
+        0.578,
+        0.112
+      ],
+      [
+        0.532,
+        0.98,
+        0.977,
+        0.996,
+        0.792,
+        0.107
+      ],
+      [
+        0.595,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.372
+      ],
+      [
+        0.418,
+        1.0,
+        1.0,
+        1.0,
+        0.997,
+        0.174
+      ],
+      [
+        0.012,
+        0.47,
+        0.819,
+        0.849,
+        0.279,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      38,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 85,
+    "contact_reference_px": 85.0,
+    "blocked_by_scale": {
+      "0.85": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.0": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.15": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.35": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "1.6": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "block_rect": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "block_rect_px": [
+      0,
+      0,
+      256,
+      256
+    ]
+  }
+}

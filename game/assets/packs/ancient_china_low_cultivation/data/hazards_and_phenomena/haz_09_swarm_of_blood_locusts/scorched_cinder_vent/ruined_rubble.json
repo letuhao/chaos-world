@@ -1,0 +1,148 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_09_swarm_of_blood_locusts.scorched_cinder_vent",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_09_swarm_of_blood_locusts",
+  "asset_slug": "scorched_cinder_vent",
+  "variant_slug": "ruined_rubble",
+  "name": "Broken Shattered Rubble",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_09_swarm_of_blood_locusts/scorched_cinder_vent/ruined_rubble.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "gather_sulfur",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.433,
+        0.39
+      ],
+      [
+        0.712,
+        0.666
+      ]
+    ],
+    "frac_zero": 0.6061,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.091,
+        0.445,
+        0.45,
+        0.019,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.421,
+        0.833,
+        0.8,
+        0.325,
+        0.075,
+        0.0
+      ],
+      [
+        0.0,
+        0.719,
+        1.0,
+        0.943,
+        0.745,
+        0.129,
+        0.0
+      ],
+      [
+        0.306,
+        0.845,
+        1.0,
+        0.884,
+        0.869,
+        0.254,
+        0.0
+      ],
+      [
+        0.364,
+        1.0,
+        1.0,
+        1.0,
+        0.91,
+        0.509,
+        0.0
+      ],
+      [
+        0.586,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.767,
+        0.087
+      ],
+      [
+        0.169,
+        0.379,
+        0.737,
+        0.787,
+        0.329,
+        0.002,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      30,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 64,
+    "contact_reference_px": 64.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

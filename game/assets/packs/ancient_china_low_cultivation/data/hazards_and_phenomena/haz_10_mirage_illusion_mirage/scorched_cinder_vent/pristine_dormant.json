@@ -1,0 +1,139 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_10_mirage_illusion_mirage.scorched_cinder_vent",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_10_mirage_illusion_mirage",
+  "asset_slug": "scorched_cinder_vent",
+  "variant_slug": "pristine_dormant",
+  "name": "Pristine Dormant State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_10_mirage_illusion_mirage/scorched_cinder_vent/pristine_dormant.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "gather_sulfur",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.602,
+        0.592
+      ],
+      [
+        0.7,
+        0.683
+      ]
+    ],
+    "frac_zero": 0.6475,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.121,
+        0.961,
+        0.991,
+        0.587,
+        0.1
+      ],
+      [
+        0.049,
+        0.298,
+        0.815,
+        0.445,
+        0.0
+      ],
+      [
+        0.566,
+        0.821,
+        0.878,
+        0.772,
+        0.581
+      ],
+      [
+        0.703,
+        1.0,
+        1.0,
+        1.0,
+        0.552
+      ],
+      [
+        0.495,
+        1.0,
+        1.0,
+        0.99,
+        0.293
+      ],
+      [
+        0.31,
+        0.989,
+        1.0,
+        0.943,
+        0.086
+      ],
+      [
+        0.143,
+        0.731,
+        0.954,
+        0.606,
+        0.039
+      ]
+    ],
+    "crop_offset": [
+      52,
+      16
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3
+    ],
+    "contact_px": 89,
+    "contact_reference_px": 89.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

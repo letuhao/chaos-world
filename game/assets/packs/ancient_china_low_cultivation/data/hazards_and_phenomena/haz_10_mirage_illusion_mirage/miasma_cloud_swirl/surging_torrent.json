@@ -1,0 +1,118 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_10_mirage_illusion_mirage.miasma_cloud_swirl",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_10_mirage_illusion_mirage",
+  "asset_slug": "miasma_cloud_swirl",
+  "variant_slug": "surging_torrent",
+  "name": "Surging Concentrated Torrent",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_10_mirage_illusion_mirage/miasma_cloud_swirl/surging_torrent.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.236,
+        0.203
+      ],
+      [
+        0.284,
+        0.416
+      ]
+    ],
+    "frac_zero": 0.7836,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      5
+    ],
+    "sub_fill": [
+      [
+        0.067,
+        0.174,
+        0.162,
+        0.005,
+        0.0
+      ],
+      [
+        0.078,
+        0.423,
+        0.665,
+        0.087,
+        0.0
+      ],
+      [
+        0.131,
+        0.848,
+        0.943,
+        0.303,
+        0.066
+      ],
+      [
+        0.041,
+        0.318,
+        0.575,
+        0.236,
+        0.201
+      ],
+      [
+        0.107,
+        0.0,
+        0.129,
+        0.25,
+        0.556
+      ]
+    ],
+    "crop_offset": [
+      50,
+      97
+    ],
+    "trunk_columns": [
+      4
+    ],
+    "contact_px": 23,
+    "contact_reference_px": 23.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

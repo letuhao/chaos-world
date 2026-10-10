@@ -1,0 +1,154 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_10_mirage_illusion_mirage.boiling_mud_vent",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_10_mirage_illusion_mirage",
+  "asset_slug": "boiling_mud_vent",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_10_mirage_illusion_mirage/boiling_mud_vent/damaged_weathered.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "inspect_hazard",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.694,
+        0.676
+      ],
+      [
+        0.756,
+        0.824
+      ]
+    ],
+    "frac_zero": 0.4751,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      7,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.387,
+        0.738,
+        0.577,
+        0.365,
+        0.002,
+        0.0
+      ],
+      [
+        0.108,
+        0.975,
+        1.0,
+        1.0,
+        1.0,
+        0.508,
+        0.0
+      ],
+      [
+        0.628,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.931,
+        0.443
+      ],
+      [
+        0.499,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.854,
+        0.375
+      ],
+      [
+        0.713,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.986,
+        0.547
+      ],
+      [
+        0.562,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.991,
+        0.367
+      ],
+      [
+        0.046,
+        0.484,
+        0.802,
+        0.915,
+        0.823,
+        0.34,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 116,
+    "contact_reference_px": 116.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}
