@@ -340,16 +340,9 @@ static func stand_in_the_tree(
 	if parent == null:
 		return {"ok": false, "reason": "no_tree"}
 	# Idempotent, the `place_player` way: a body already standing is returned, not doubled.
-	#
-	# TWO checks, because a mount has a synchronous half and a deferred one. The entry check
-	# catches a body that IS standing; the `_mounted_player` check catches one whose
-	# `add_child` is still QUEUED — two mounts inside one frame both saw a parentless body,
-	# both queued their add, and the flush then refused the second with
-	# "Can't add child 'WorldStagePlayer' to '@Node2D@…', already has a parent '@Node2D@…'".
-	#
-	# And the entry lookup goes through the ENTRY, which is the body's actual parent
-	# (`entry.add_child(body)` below): looking for the body under `parent` never matched, so
-	# every mount minted a fresh entry and queued a second add for one body.
+	# Two checks: the ENTRY (the body's real parent, so a lookup under `parent` never matched
+	# and every mount minted a fresh one) and the published body, which covers the window
+	# before the deferred add flushes — two queued adds for one body are refused at the flush.
 	var standing := _standing_body(parent)
 	if standing == null and _mounted_player == body and is_instance_valid(body):
 		standing = body
@@ -379,34 +372,19 @@ static func stand_in_the_tree(
 	# The deferral costs ONE frame of TREE order, not the references: `entry`, `body` and
 	# every answer below are live either way, `_mounted_player` and `_current` are written
 	# synchronously as before, and a caller holding the returned `player` can use it
-	# immediately. What it buys is a boot that survives its own restore.
-	#
-	# Order is preserved because deferred calls run in the order they were queued: the
-	# entry is in the tree before the body is added to it.
-	# A body that is ALREADY parented cannot be added again: Godot refuses with "already has
-	# a parent", and that is precisely the state a stage re-mount leaves behind - a save and
-	# restore, or two suites sharing one process. Detach from wherever it stands first, so
-	# the body the caller is handed back is the one standing in the tree it just asked for.
+	# immediately. What it buys is a boot that survives its own restore. Order is preserved:
+	# deferred calls run in the order they were queued, so the entry is in the tree first.
 	var previous := body.get_parent()
 	if previous != null:
 		previous.remove_child(body)
 	parent.add_child.call_deferred(entry)
 	_add_body_deferred.call_deferred(entry, body)
 	body.name = STAGE_BODY_NODE
-	# PUBLISH, or the body is standing in the tree and the stage still says it has
-	# none. `_mounted_player` is what `player()` returns and what `summary()` reports,
-	# and this function handed the body back in its answer without recording it — so
-	# a committed arrival produced a body that existed, was parented, and was
-	# invisible to every reader. Assigning here is the one line that makes the whole
-	# arrival reachable: the interact list, the stage summary and the release path
-	# all read this field.
+	# PUBLISH, or the body stands in the tree while the stage still says it has none:
+	# `_mounted_player` is what `player()` and `summary()` read, and `_player` is what
+	# `_register_nodes`, `_world_entry`, `interactables` and `interact` read — the second
+	# field is the one that made a parented, published body invisible to every verb.
 	_mounted_player = body
-	# And hand it to the LIVE stage, which is a second field. `_player` is what
-	# `_register_nodes`, `_world_entry`, `interactables` and `interact` read, and
-	# `stand_in_the_tree` is a STATIC that ran without the instance being told —
-	# so the body was parented, published, and still invisible to the code that
-	# turns a playfield into something pressable. Two fields holding one fact is
-	# the shape that made this look fixed while nothing was.
 	if _current != null:
 		_current.adopt_body(body)
 	return {"ok": true, "reason": "", "entry": entry, "player": body, "reused": false}
@@ -422,14 +400,8 @@ static func _entry_parent() -> Node:
 	return loop.root
 
 
-## The body standing under `parent`, or null. The lookup goes through the ENTRY because the
-## body is a child of the entry (`entry.add_child(body)`), never a child of the playfield —
-## so the direct lookup this replaces never matched a standing body, which is why every
-## mount minted a fresh entry and queued a second `add_child` for one body.
-##
-## A body that is still standing but whose entry was released is NOT returned: the caller is
-## handed back the node its body actually sits on, and a body under a released node is not
-## a playfield's.
+## The body standing under `parent`, or null — looked up through the ENTRY, where the body
+## actually lives. A body whose entry was released is not returned.
 static func _standing_body(parent: Node) -> PlayerAdapter:
 	var entry := parent.get_node_or_null(NodePath(STAGE_ENTRY_NODE))
 	if entry == null:
@@ -438,15 +410,9 @@ static func _standing_body(parent: Node) -> PlayerAdapter:
 
 
 ## Add `body` to `entry` at the deferred flush, detaching it from whatever parent it has BY
-## THEN. The detach at queue time is necessary but not sufficient: a second mount inside the
-## same frame sees a body whose first add is still queued (so it is parentless), queues its
-## own, and the flush refuses the second with
-## "Can't add child 'WorldStagePlayer' to '@Node2D@…', already has a parent '@Node2D@…'"
-## — the measured error this closes. Detaching at the moment of the add makes the class
-## impossible rather than the one path that produced it.
+## THEN — a second mount in one frame queues against a body whose add has not flushed yet,
+## and the flush would refuse it with "already has a parent".
 static func _add_body_deferred(entry: Node, body: Node) -> void:
-	if entry == null or body == null:
-		return
 	if not is_instance_valid(entry) or not is_instance_valid(body):
 		return
 	var previous := body.get_parent()
