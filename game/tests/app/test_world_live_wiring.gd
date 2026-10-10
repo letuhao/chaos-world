@@ -78,6 +78,12 @@ func test_the_composition_root_installs_the_interaction_seam() -> void:
 
 ## A press with nothing mounted is still refused BY NAME, not by crashing: the handler
 ## reads the stage's actor and the seam is what turns a bare name into a decision.
+##
+## And the refusal is FILED: `interact`'s own contract is "every exit is recorded,
+## including the refusals", because a press whose answer nobody can read is the inert
+## body the audit found. This case used to assert the opposite (`last_interaction()`
+## empty after a refusal), which contradicted the two assertions above it — a refusal
+## was returned AND nothing was allegedly filed.
 func test_a_press_on_an_unmounted_stage_names_its_refusal() -> void:
 	var stage := WorldStage.new()
 	var answer := stage.interact("quest_board")
@@ -85,8 +91,8 @@ func test_a_press_on_an_unmounted_stage_names_its_refusal() -> void:
 	assert_eq(String(answer["reason"]), "no_actor", "and the refusal is named")
 	assert_eq(
 		stage.last_interaction(),
-		{},
-		"and nothing was filed, because no press was ROUTED without an actor"
+		{"ok": false, "reason": "no_actor", "target": "quest_board", "location_id": ""},
+		"and the refusal is the row that was filed, place stamped from the stage's ledger"
 	)
 
 
