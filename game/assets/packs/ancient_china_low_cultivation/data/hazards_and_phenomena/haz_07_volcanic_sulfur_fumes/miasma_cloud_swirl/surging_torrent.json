@@ -1,0 +1,109 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_07_volcanic_sulfur_fumes.miasma_cloud_swirl",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_07_volcanic_sulfur_fumes",
+  "asset_slug": "miasma_cloud_swirl",
+  "variant_slug": "surging_torrent",
+  "name": "Surging Concentrated Torrent",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_07_volcanic_sulfur_fumes/miasma_cloud_swirl/surging_torrent.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.144,
+        0.306
+      ],
+      [
+        0.192,
+        0.355
+      ]
+    ],
+    "frac_zero": 0.8199,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      5,
+      4
+    ],
+    "sub_fill": [
+      [
+        0.233,
+        0.309,
+        0.087,
+        0.384,
+        0.008
+      ],
+      [
+        0.0,
+        0.006,
+        0.452,
+        0.537,
+        0.033
+      ],
+      [
+        0.011,
+        0.354,
+        0.994,
+        0.345,
+        0.02
+      ],
+      [
+        0.177,
+        0.017,
+        0.324,
+        0.181,
+        0.031
+      ]
+    ],
+    "crop_offset": [
+      60,
+      113
+    ],
+    "trunk_columns": [],
+    "contact_px": 16,
+    "contact_reference_px": 16.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

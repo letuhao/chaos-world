@@ -1,0 +1,129 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_08_yin_wind_soul_piercing.illusion_mist_emitter",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_08_yin_wind_soul_piercing",
+  "asset_slug": "illusion_mist_emitter",
+  "variant_slug": "subtle_ambient",
+  "name": "Subtle Ambient Intensity",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_08_yin_wind_soul_piercing/illusion_mist_emitter/subtle_ambient.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "transparent",
+  "pivot": "center",
+  "collision_type": "none",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.242,
+        0.04
+      ],
+      [
+        0.518,
+        0.259
+      ]
+    ],
+    "frac_zero": 0.754,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      6
+    ],
+    "sub_fill": [
+      [
+        0.064,
+        0.033,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.55,
+        0.181,
+        0.01,
+        0.001,
+        0.0
+      ],
+      [
+        0.38,
+        0.729,
+        0.814,
+        0.194,
+        0.025,
+        0.0
+      ],
+      [
+        0.532,
+        0.808,
+        0.722,
+        0.215,
+        0.262,
+        0.0
+      ],
+      [
+        0.068,
+        0.454,
+        0.319,
+        0.078,
+        0.331,
+        0.094
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.062,
+        0.0,
+        0.0
+      ]
+    ],
+    "crop_offset": [
+      26,
+      75
+    ],
+    "trunk_columns": [],
+    "contact_px": 28,
+    "contact_reference_px": 28.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": null
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

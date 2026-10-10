@@ -1,0 +1,305 @@
+{
+  "id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_07_volcanic_sulfur_fumes.illusion_mist_emitter",
+  "archetype": "illusion_mist_emitter_haz_07_volcanic_sulfur_fumes",
+  "name": "Volcanic Sulfur Fumes - Disorienting Spirit Mirage Fog",
+  "vietnamese_name": "Thứ Tỷ Lưu Hoàng Yên - Làn Sương Mù Ảo Ảnh",
+  "hanzi": "刺鼻硫磺烟 · 迷魂幻境晨雾",
+  "category": "haz_07_volcanic_sulfur_fumes",
+  "category_code": "HAZ-07",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_07_volcanic_sulfur_fumes",
+  "asset_class": "vfx_particle",
+  "type": "prop",
+  "alpha": "transparent",
+  "pivot": "center",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "collision_type": "none",
+  "blocks_projectile": false,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "vfx_particle entity supporting Volcanic Sulfur Fumes gameplay",
+  "destructible": false,
+  "material": "pure luminous spiritual essence and radiating energy motes",
+  "cultivation_element": "earth",
+  "prompt_summary": "Luminous magical visual effect of volcanic sulfur fumes - disorienting spirit mirage fog, authentic volcanic sulfur fumes materials, East Asian Xianxia craftsmanship, intense glowing spiritual energy motes and arcs, transparent ethereal aesthetic, solid pitch black background (#000000) for mathematical additive alpha unmultiplication.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Environmental Hazards & Phenomena",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "subtle_ambient",
+      "name": "Subtle Ambient Intensity",
+      "prompt_modifier": "sparse floating glowing sparks, gentle drift",
+      "variant_id": "subtle_ambient",
+      "variant_name": "Subtle Ambient Intensity",
+      "description": "sparse floating glowing sparks, gentle drift",
+      "prompt": "2D game particle VFX sprite of disorienting spirit mirage fog, sparse floating glowing sparks, gentle drift, luminous spiritual motes, soft radiant glow edges, glowing magical energy, isolated on solid pure black background (#000000) for additive alpha blending.",
+      "negative_prompt": "white background, light background, grey background, opaque solid shapes, opaque borders, ground, floor, landscape, characters, buildings, terrain, solid geometry, ui frames, decorative frames",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_07_volcanic_sulfur_fumes/illusion_mist_emitter/subtle_ambient.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.147,
+            0.051
+          ],
+          [
+            0.582,
+            0.236
+          ]
+        ],
+        "frac_zero": 0.7494,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          5
+        ],
+        "sub_fill": [
+          [
+            0.038,
+            0.043,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.061,
+            0.258,
+            0.093,
+            0.11,
+            0.027,
+            0.045
+          ],
+          [
+            0.198,
+            0.935,
+            0.646,
+            0.283,
+            0.003,
+            0.129
+          ],
+          [
+            0.513,
+            0.896,
+            0.75,
+            0.257,
+            0.366,
+            0.496
+          ],
+          [
+            0.029,
+            0.354,
+            0.375,
+            0.072,
+            0.038,
+            0.024
+          ]
+        ],
+        "crop_offset": [
+          24,
+          86
+        ],
+        "trunk_columns": [
+          1,
+          2
+        ],
+        "contact_px": 18,
+        "contact_reference_px": 18.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "surging_torrent",
+      "name": "Surging Concentrated Torrent",
+      "prompt_modifier": "dense concentrated vortex ribbon of bright spiritual energy",
+      "variant_id": "surging_torrent",
+      "variant_name": "Surging Concentrated Torrent",
+      "description": "dense concentrated vortex ribbon of bright spiritual energy",
+      "prompt": "2D game particle VFX sprite of disorienting spirit mirage fog, dense concentrated vortex ribbon of bright spiritual energy, luminous spiritual motes, soft radiant glow edges, glowing magical energy, isolated on solid pure black background (#000000) for additive alpha blending.",
+      "negative_prompt": "white background, light background, grey background, opaque solid shapes, opaque borders, ground, floor, landscape, characters, buildings, terrain, solid geometry, ui frames, decorative frames",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_07_volcanic_sulfur_fumes/illusion_mist_emitter/surging_torrent.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.26,
+            0.217
+          ],
+          [
+            0.335,
+            0.372
+          ]
+        ],
+        "frac_zero": 0.7812,
+        "blocks": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false
+          ],
+          [
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          5,
+          5
+        ],
+        "sub_fill": [
+          [
+            0.024,
+            0.492,
+            0.095,
+            0.0,
+            0.0
+          ],
+          [
+            0.02,
+            0.658,
+            0.656,
+            0.249,
+            0.001
+          ],
+          [
+            0.001,
+            0.162,
+            0.739,
+            0.63,
+            0.045
+          ],
+          [
+            0.06,
+            0.8,
+            0.934,
+            0.428,
+            0.035
+          ],
+          [
+            0.017,
+            0.339,
+            0.373,
+            0.216,
+            0.398
+          ]
+        ],
+        "crop_offset": [
+          29,
+          80
+        ],
+        "trunk_columns": [
+          2
+        ],
+        "contact_px": 24,
+        "contact_reference_px": 24.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": null
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "HAZ-07",
+    "domain": "hazards_and_phenomena",
+    "interaction": "examine",
+    "collision_behavior": "none",
+    "element": "earth",
+    "tier": 3
+  },
+  "category_id": "haz_07_volcanic_sulfur_fumes",
+  "domain_id": "hazards_and_phenomena",
+  "pinyin": "Cìbí Liúhuángyān · Disorienting Spirit Mirage Fog",
+  "archetype_name": "Disorienting Spirit Mirage Fog",
+  "footprint_subcells": {
+    "w": 8,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 256,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 2,
+    "h": 2
+  },
+  "collision": {
+    "type": "none",
+    "shape": "box",
+    "solid": false,
+    "blocks_movement": false,
+    "blocks_projectiles": false,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "ethereal_spiritual_qi",
+  "secondary_material": "astral_light_motes",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Earth affinity (Core Formation (Kết Đan / 结丹))",
+  "elevation_tier": 3,
+  "mortal_realm_tier": "Core Formation (Kết Đan / 结丹)",
+  "asset_slug": "illusion_mist_emitter"
+}

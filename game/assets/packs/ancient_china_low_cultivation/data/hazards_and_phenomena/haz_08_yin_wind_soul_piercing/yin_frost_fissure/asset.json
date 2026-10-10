@@ -1,0 +1,431 @@
+{
+  "id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_08_yin_wind_soul_piercing.yin_frost_fissure",
+  "archetype": "yin_frost_fissure_haz_08_yin_wind_soul_piercing",
+  "name": "Yin Wind (Soul Piercing) - Baleful Yin Frost Ground Fissure",
+  "vietnamese_name": "Thấu Cốt Cửu U Phong - Rãnh Nứt Tỏa Băng Hàn Khí",
+  "hanzi": "透骨九幽风 · 极阴冷煞地缝",
+  "category": "haz_08_yin_wind_soul_piercing",
+  "category_code": "HAZ-08",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_08_yin_wind_soul_piercing",
+  "asset_class": "landmark_mountain",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    1
+  ],
+  "canvas_px": [
+    384,
+    128
+  ],
+  "collision_type": "obstacle",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": "endure_cold",
+  "gameplay_role": "landmark_mountain entity supporting Yin Wind (Soul Piercing) gameplay",
+  "destructible": false,
+  "material": "stratified pale karst limestone and loose mineral scree",
+  "cultivation_element": "ice",
+  "prompt_summary": "Single isolated 2D top-down world-map natural landmark sprite of yin wind (soul piercing) - baleful yin frost ground fissure, authentic yin wind (soul piercing) materials, East Asian Xianxia craftsmanship, steep high-angle top-down RPG map perspective, rocky summit crest and stepped cliff strata dominant from overhead, natural mountain geology, zero diorama grass pedestal, fine dark #263A35 ink contours, solid pure white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Environmental Hazards & Phenomena",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "facing_south_front",
+      "name": "South Facing View",
+      "prompt_modifier": "summit crest and southern stepped cliff strata descending toward camera",
+      "variant_id": "facing_south_front",
+      "variant_name": "South Facing View",
+      "description": "summit crest and southern stepped cliff strata descending toward camera",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of baleful yin frost ground fissure, stratified pale karst limestone and loose mineral scree, summit crest and southern stepped cliff strata descending toward camera, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, summit crest and upper rock terraces fully visible from above, stepped crag shelves and gnarled cliff pine seen from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_08_yin_wind_soul_piercing/yin_frost_fissure/facing_south_front.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.499,
+            0.858,
+            0.509
+          ]
+        ],
+        "frac_zero": 0.886,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          0
+        ],
+        "sub_grid": [
+          3,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.265,
+            0.593,
+            0.122
+          ],
+          [
+            0.7,
+            0.983,
+            0.555
+          ],
+          [
+            0.648,
+            0.917,
+            0.603
+          ]
+        ],
+        "crop_offset": [
+          149,
+          16
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2
+        ],
+        "contact_px": 70,
+        "contact_reference_px": 70.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            0,
+            1,
+            0
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "facing_north_back",
+      "name": "North Facing View",
+      "prompt_modifier": "sheer northern rock face and upper summit plateau surface dominant from overhead",
+      "variant_id": "facing_north_back",
+      "variant_name": "North Facing View",
+      "description": "sheer northern rock face and upper summit plateau surface dominant from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of baleful yin frost ground fissure, stratified pale karst limestone and loose mineral scree, sheer northern rock face and upper summit plateau surface dominant from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, sheer northern crag face and upper summit plateau surface fully visible from above, weathered northern rock terraces descending away from summit, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_08_yin_wind_soul_piercing/yin_frost_fissure/facing_north_back.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.473,
+            0.943,
+            0.514
+          ]
+        ],
+        "frac_zero": 0.8819,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          0
+        ],
+        "sub_grid": [
+          3,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.211,
+            0.801,
+            0.068
+          ],
+          [
+            0.762,
+            1.0,
+            0.743
+          ],
+          [
+            0.55,
+            0.93,
+            0.576
+          ]
+        ],
+        "crop_offset": [
+          144,
+          16
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2
+        ],
+        "contact_px": 67,
+        "contact_reference_px": 67.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            0,
+            1,
+            0
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "facing_west_left",
+      "name": "West Facing Profile",
+      "prompt_modifier": "elongated rock ridge running North-South, western cliff strata visible from overhead",
+      "variant_id": "facing_west_left",
+      "variant_name": "West Facing Profile",
+      "description": "elongated rock ridge running North-South, western cliff strata visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of baleful yin frost ground fissure, stratified pale karst limestone and loose mineral scree, elongated rock ridge running North-South, western cliff strata visible from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, landmark rotated 90 degrees with elongated rock spine running North-South, western stepped cliff strata and summit crest visible from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_08_yin_wind_soul_piercing/yin_frost_fissure/facing_west_left.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.476,
+            0.876,
+            0.409
+          ]
+        ],
+        "frac_zero": 0.8942,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          0
+        ],
+        "sub_grid": [
+          3,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.159,
+            0.504,
+            0.001
+          ],
+          [
+            0.721,
+            0.959,
+            0.487
+          ],
+          [
+            0.707,
+            0.939,
+            0.537
+          ]
+        ],
+        "crop_offset": [
+          152,
+          16
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2
+        ],
+        "contact_px": 69,
+        "contact_reference_px": 69.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            0,
+            1,
+            0
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "facing_east_profile",
+      "name": "East Facing Profile",
+      "prompt_modifier": "elongated rock ridge running North-South, eastern cliff strata visible from overhead",
+      "variant_id": "facing_east_profile",
+      "variant_name": "East Facing Profile",
+      "description": "elongated rock ridge running North-South, eastern cliff strata visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of baleful yin frost ground fissure, stratified pale karst limestone and loose mineral scree, elongated rock ridge running North-South, eastern cliff strata visible from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, landmark rotated 90 degrees with elongated rock spine running North-South, eastern stepped cliff strata and summit crest visible from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_08_yin_wind_soul_piercing/yin_frost_fissure/facing_east_profile.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.417,
+            0.805,
+            0.461
+          ]
+        ],
+        "frac_zero": 0.8914,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          0
+        ],
+        "sub_grid": [
+          3,
+          3
+        ],
+        "sub_fill": [
+          [
+            0.003,
+            0.566,
+            0.148
+          ],
+          [
+            0.607,
+            0.981,
+            0.576
+          ],
+          [
+            0.689,
+            0.933,
+            0.5
+          ]
+        ],
+        "crop_offset": [
+          146,
+          16
+        ],
+        "trunk_columns": [
+          0,
+          1,
+          2
+        ],
+        "contact_px": 76,
+        "contact_reference_px": 76.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            0,
+            1,
+            0
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "HAZ-08",
+    "domain": "hazards_and_phenomena",
+    "interaction": "endure_cold",
+    "collision_behavior": "obstacle",
+    "element": "ice",
+    "tier": 3
+  },
+  "category_id": "haz_08_yin_wind_soul_piercing",
+  "domain_id": "hazards_and_phenomena",
+  "pinyin": "Tòugǔ Jiǔyōufēng · Baleful Yin Frost Ground Fissure",
+  "archetype_name": "Baleful Yin Frost Ground Fissure",
+  "footprint_subcells": {
+    "w": 12,
+    "h": 4
+  },
+  "footprint_px": {
+    "w": 384,
+    "h": 128
+  },
+  "cell_span": {
+    "w": 3,
+    "h": 1
+  },
+  "collision": {
+    "type": "obstacle",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "weathered_karst_limestone",
+  "secondary_material": "crag_scree",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Ice affinity (Core Formation (Kết Đan / 结丹))",
+  "elevation_tier": 3,
+  "mortal_realm_tier": "Core Formation (Kết Đan / 结丹)",
+  "asset_slug": "yin_frost_fissure"
+}

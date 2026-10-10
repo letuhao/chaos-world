@@ -1,0 +1,153 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_08_yin_wind_soul_piercing.gale_wind_crevasse",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_08_yin_wind_soul_piercing",
+  "asset_slug": "gale_wind_crevasse",
+  "variant_slug": "facing_west_left",
+  "name": "West Facing Profile",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_08_yin_wind_soul_piercing/gale_wind_crevasse/facing_west_left.png",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": null,
+  "matrix_data": {
+    "coverage": [
+      [
+        0.144,
+        0.793,
+        0.201
+      ],
+      [
+        0.652,
+        0.937,
+        0.614
+      ]
+    ],
+    "frac_zero": 0.748,
+    "blocks": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.0,
+        0.005,
+        0.362,
+        0.705,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.09,
+        0.729,
+        0.943,
+        0.143,
+        0.001
+      ],
+      [
+        0.104,
+        0.426,
+        0.852,
+        0.998,
+        0.546,
+        0.238
+      ],
+      [
+        0.158,
+        0.745,
+        1.0,
+        1.0,
+        0.746,
+        0.07
+      ],
+      [
+        0.725,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.629
+      ],
+      [
+        0.748,
+        1.0,
+        1.0,
+        1.0,
+        0.96,
+        0.603
+      ],
+      [
+        0.094,
+        0.575,
+        0.882,
+        0.66,
+        0.395,
+        0.003
+      ]
+    ],
+    "crop_offset": [
+      98,
+      17
+    ],
+    "trunk_columns": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "contact_px": 73,
+    "contact_reference_px": 73.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

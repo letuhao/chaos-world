@@ -1,0 +1,147 @@
+{
+  "asset_id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_07_volcanic_sulfur_fumes.scorched_cinder_vent",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_07_volcanic_sulfur_fumes",
+  "asset_slug": "scorched_cinder_vent",
+  "variant_slug": "damaged_weathered",
+  "name": "Damaged Weathered State",
+  "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_07_volcanic_sulfur_fumes/scorched_cinder_vent/damaged_weathered.png",
+  "footprint_cells": [
+    2,
+    2
+  ],
+  "canvas_px": [
+    256,
+    256
+  ],
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "collision_type": "obstacle",
+  "interactive_verb": "gather_sulfur",
+  "matrix_data": {
+    "coverage": [
+      [
+        0.532,
+        0.542
+      ],
+      [
+        0.694,
+        0.667
+      ]
+    ],
+    "frac_zero": 0.6327,
+    "blocks": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "walk_surface": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "block_cell_count": 0,
+    "anchor_cell": [
+      1,
+      1
+    ],
+    "sub_grid": [
+      6,
+      7
+    ],
+    "sub_fill": [
+      [
+        0.319,
+        0.921,
+        0.997,
+        0.806,
+        0.389,
+        0.005
+      ],
+      [
+        0.0,
+        0.195,
+        0.806,
+        0.524,
+        0.198,
+        0.0
+      ],
+      [
+        0.048,
+        0.863,
+        0.881,
+        0.651,
+        0.3,
+        0.0
+      ],
+      [
+        0.197,
+        1.0,
+        1.0,
+        1.0,
+        0.435,
+        0.0
+      ],
+      [
+        0.074,
+        0.937,
+        1.0,
+        0.998,
+        0.258,
+        0.0
+      ],
+      [
+        0.445,
+        0.958,
+        1.0,
+        0.987,
+        0.631,
+        0.182
+      ],
+      [
+        0.438,
+        0.919,
+        0.811,
+        0.729,
+        0.334,
+        0.141
+      ]
+    ],
+    "crop_offset": [
+      45,
+      16
+    ],
+    "trunk_columns": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "contact_px": 99,
+    "contact_reference_px": 99.0,
+    "blocked_by_scale": {
+      "0.85": null,
+      "1.0": null,
+      "1.15": null,
+      "1.35": null,
+      "1.6": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    "block_rect": null,
+    "block_rect_px": null
+  }
+}

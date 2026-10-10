@@ -1,0 +1,673 @@
+{
+  "id": "ancient_china_low_cultivation.hazards_and_phenomena.haz_08_yin_wind_soul_piercing.gale_wind_crevasse",
+  "archetype": "gale_wind_crevasse_haz_08_yin_wind_soul_piercing",
+  "name": "Yin Wind (Soul Piercing) - Razor Gangfeng Wind Funnel",
+  "vietnamese_name": "Thấu Cốt Cửu U Phong - Họng Gió Cương Phong Sắc Bén",
+  "hanzi": "透骨九幽风 · 裂风如刃罡风口",
+  "category": "haz_08_yin_wind_soul_piercing",
+  "category_code": "HAZ-08",
+  "domain": "hazards_and_phenomena",
+  "sub_domain": "haz_08_yin_wind_soul_piercing",
+  "asset_class": "landmark_mountain",
+  "type": "prop",
+  "alpha": "cutout",
+  "pivot": "bottom_center",
+  "footprint_cells": [
+    3,
+    2
+  ],
+  "canvas_px": [
+    384,
+    256
+  ],
+  "collision_type": "obstacle",
+  "blocks_projectile": true,
+  "vision_mode": "transparent",
+  "interactive_verb": null,
+  "gameplay_role": "landmark_mountain entity supporting Yin Wind (Soul Piercing) gameplay",
+  "destructible": false,
+  "material": "stratified pale karst limestone and loose mineral scree",
+  "cultivation_element": "wind",
+  "prompt_summary": "Single isolated 2D top-down world-map natural landmark sprite of yin wind (soul piercing) - razor gangfeng wind funnel, authentic yin wind (soul piercing) materials, East Asian Xianxia craftsmanship, steep high-angle top-down RPG map perspective, rocky summit crest and stepped cliff strata dominant from overhead, natural mountain geology, zero diorama grass pedestal, fine dark #263A35 ink contours, solid pure white background.",
+  "racial_faction": "mortal_dynasty",
+  "environment_name": "Cultivation Mortal Realm - Environmental Hazards & Phenomena",
+  "environment_theme": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "world_tier": "Mortal World (Phàm Nhân Giới / Cửu Châu)",
+  "status": "planned",
+  "variants": [
+    {
+      "variant_slug": "facing_south_front",
+      "name": "South Facing View",
+      "prompt_modifier": "summit crest and southern stepped cliff strata descending toward camera",
+      "variant_id": "facing_south_front",
+      "variant_name": "South Facing View",
+      "description": "summit crest and southern stepped cliff strata descending toward camera",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of razor gangfeng wind funnel, stratified pale karst limestone and loose mineral scree, summit crest and southern stepped cliff strata descending toward camera, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, summit crest and upper rock terraces fully visible from above, stepped crag shelves and gnarled cliff pine seen from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_08_yin_wind_soul_piercing/gale_wind_crevasse/facing_south_front.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.325,
+            0.795,
+            0.315
+          ],
+          [
+            0.668,
+            0.955,
+            0.686
+          ]
+        ],
+        "frac_zero": 0.7001,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.14,
+            0.222,
+            0.399,
+            0.558,
+            0.017,
+            0.0
+          ],
+          [
+            0.114,
+            0.389,
+            0.985,
+            0.97,
+            0.456,
+            0.296,
+            0.0
+          ],
+          [
+            0.247,
+            0.691,
+            1.0,
+            1.0,
+            0.603,
+            0.116,
+            0.0
+          ],
+          [
+            0.286,
+            0.955,
+            1.0,
+            1.0,
+            0.974,
+            0.657,
+            0.021
+          ],
+          [
+            0.665,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.929,
+            0.389
+          ],
+          [
+            0.613,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.924,
+            0.062
+          ],
+          [
+            0.116,
+            0.485,
+            0.814,
+            0.886,
+            0.63,
+            0.116,
+            0.0
+          ]
+        ],
+        "crop_offset": [
+          97,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 74,
+        "contact_reference_px": 74.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "facing_north_back",
+      "name": "North Facing View",
+      "prompt_modifier": "sheer northern rock face and upper summit plateau surface dominant from overhead",
+      "variant_id": "facing_north_back",
+      "variant_name": "North Facing View",
+      "description": "sheer northern rock face and upper summit plateau surface dominant from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of razor gangfeng wind funnel, stratified pale karst limestone and loose mineral scree, sheer northern rock face and upper summit plateau surface dominant from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, sheer northern crag face and upper summit plateau surface fully visible from above, weathered northern rock terraces descending away from summit, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_08_yin_wind_soul_piercing/gale_wind_crevasse/facing_north_back.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.304,
+            0.846,
+            0.294
+          ],
+          [
+            0.685,
+            0.959,
+            0.701
+          ]
+        ],
+        "frac_zero": 0.6846,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          7,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.248,
+            0.561,
+            0.419,
+            0.296,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.339,
+            0.952,
+            1.0,
+            0.688,
+            0.012,
+            0.0
+          ],
+          [
+            0.101,
+            0.58,
+            1.0,
+            1.0,
+            0.854,
+            0.596,
+            0.097
+          ],
+          [
+            0.229,
+            0.932,
+            1.0,
+            1.0,
+            0.991,
+            0.674,
+            0.161
+          ],
+          [
+            0.806,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.592
+          ],
+          [
+            0.626,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.547
+          ],
+          [
+            0.071,
+            0.525,
+            0.822,
+            0.831,
+            0.759,
+            0.319,
+            0.02
+          ]
+        ],
+        "crop_offset": [
+          87,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 107,
+        "contact_reference_px": 107.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "facing_west_left",
+      "name": "West Facing Profile",
+      "prompt_modifier": "elongated rock ridge running North-South, western cliff strata visible from overhead",
+      "variant_id": "facing_west_left",
+      "variant_name": "West Facing Profile",
+      "description": "elongated rock ridge running North-South, western cliff strata visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of razor gangfeng wind funnel, stratified pale karst limestone and loose mineral scree, elongated rock ridge running North-South, western cliff strata visible from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, landmark rotated 90 degrees with elongated rock spine running North-South, western stepped cliff strata and summit crest visible from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_08_yin_wind_soul_piercing/gale_wind_crevasse/facing_west_left.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.144,
+            0.793,
+            0.201
+          ],
+          [
+            0.652,
+            0.937,
+            0.614
+          ]
+        ],
+        "frac_zero": 0.748,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.005,
+            0.362,
+            0.705,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.09,
+            0.729,
+            0.943,
+            0.143,
+            0.001
+          ],
+          [
+            0.104,
+            0.426,
+            0.852,
+            0.998,
+            0.546,
+            0.238
+          ],
+          [
+            0.158,
+            0.745,
+            1.0,
+            1.0,
+            0.746,
+            0.07
+          ],
+          [
+            0.725,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.629
+          ],
+          [
+            0.748,
+            1.0,
+            1.0,
+            1.0,
+            0.96,
+            0.603
+          ],
+          [
+            0.094,
+            0.575,
+            0.882,
+            0.66,
+            0.395,
+            0.003
+          ]
+        ],
+        "crop_offset": [
+          98,
+          17
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 73,
+        "contact_reference_px": 73.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    },
+    {
+      "variant_slug": "facing_east_profile",
+      "name": "East Facing Profile",
+      "prompt_modifier": "elongated rock ridge running North-South, eastern cliff strata visible from overhead",
+      "variant_id": "facing_east_profile",
+      "variant_name": "East Facing Profile",
+      "description": "elongated rock ridge running North-South, eastern cliff strata visible from overhead",
+      "prompt": "Single isolated 2D top-down world-map natural landmark sprite of razor gangfeng wind funnel, stratified pale karst limestone and loose mineral scree, elongated rock ridge running North-South, eastern cliff strata visible from overhead, Ancient Chinese Xianxia landscape style, steep high-angle top-down RPG map perspective looking down from above, landmark rotated 90 degrees with elongated rock spine running North-South, eastern stepped cliff strata and summit crest visible from overhead, sheer vertical natural rock base ending abruptly in clean rock perimeter resting directly on ground, crisp isolated rock contour base without turf or soil skirts, micro contact shadow directly under stone base only, gouache hand-painted with dark #263A35 ink contours, isolated on solid plain white background.",
+      "negative_prompt": "diorama, miniature base, floating rock island, sky, clouds, horizon, distant mountains, landscape vista, eye-level view, side-view portrait, flat elevation, landscape painting, grass patch, turf, lawn, meadow, green ground plane, soil patch, path, cobblestone, road, grass rim, turf skirt, dirt mound base, green turf, moss ring around base, diorama base plate, dirt path in front, frame, border, UI, watermark, human figures, birds in sky, Japanese style, torii gate, shinto shrine, katana, samurai armor, tatami, ninja, western gothic castle, medieval stone fortress, European church, witch cauldron, laboratory glassware, modern objects, anime mech, sci-fi wires",
+      "status": "generated",
+      "path": "res://assets/packs/ancient_china_low_cultivation/runtime/hazards_and_phenomena/haz_08_yin_wind_soul_piercing/gale_wind_crevasse/facing_east_profile.png",
+      "generated_on": "2026-10-10",
+      "matrix_data": {
+        "coverage": [
+          [
+            0.092,
+            0.659,
+            0.282
+          ],
+          [
+            0.678,
+            0.956,
+            0.662
+          ]
+        ],
+        "frac_zero": 0.7437,
+        "blocks": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "walk_surface": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ],
+        "block_cell_count": 0,
+        "anchor_cell": [
+          1,
+          1
+        ],
+        "sub_grid": [
+          6,
+          7
+        ],
+        "sub_fill": [
+          [
+            0.0,
+            0.0,
+            0.256,
+            0.562,
+            0.074,
+            0.0
+          ],
+          [
+            0.0,
+            0.021,
+            0.491,
+            0.912,
+            0.478,
+            0.0
+          ],
+          [
+            0.0,
+            0.322,
+            0.443,
+            1.0,
+            0.702,
+            0.252
+          ],
+          [
+            0.063,
+            0.743,
+            0.946,
+            1.0,
+            0.854,
+            0.161
+          ],
+          [
+            0.637,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.732
+          ],
+          [
+            0.641,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.743
+          ],
+          [
+            0.209,
+            0.753,
+            0.907,
+            0.784,
+            0.535,
+            0.07
+          ]
+        ],
+        "crop_offset": [
+          95,
+          16
+        ],
+        "trunk_columns": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "contact_px": 111,
+        "contact_reference_px": 111.0,
+        "blocked_by_scale": {
+          "0.85": null,
+          "1.0": null,
+          "1.15": null,
+          "1.35": null,
+          "1.6": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "block_rect": null,
+        "block_rect_px": null
+      }
+    }
+  ],
+  "gameplay_gap_hooks": {
+    "category_code": "HAZ-08",
+    "domain": "hazards_and_phenomena",
+    "interaction": "examine",
+    "collision_behavior": "obstacle",
+    "element": "wind",
+    "tier": 4
+  },
+  "category_id": "haz_08_yin_wind_soul_piercing",
+  "domain_id": "hazards_and_phenomena",
+  "pinyin": "Tòugǔ Jiǔyōufēng · Razor Gangfeng Wind Funnel",
+  "archetype_name": "Razor Gangfeng Wind Funnel",
+  "footprint_subcells": {
+    "w": 12,
+    "h": 8
+  },
+  "footprint_px": {
+    "w": 384,
+    "h": 256
+  },
+  "cell_span": {
+    "w": 3,
+    "h": 2
+  },
+  "collision": {
+    "type": "obstacle",
+    "shape": "box",
+    "solid": true,
+    "blocks_movement": true,
+    "blocks_projectiles": true,
+    "vision_block": false,
+    "height_layer": "ground"
+  },
+  "primary_material": "weathered_karst_limestone",
+  "secondary_material": "crag_scree",
+  "visual_style": "2D Orthographic top-down, gouache hand-painted, ink contour lines (#263A35), spiritual misty palette.",
+  "element_alignment": "Wind affinity (Nascent Soul (Nguyên Anh / 元婴))",
+  "elevation_tier": 4,
+  "mortal_realm_tier": "Nascent Soul (Nguyên Anh / 元婴)",
+  "asset_slug": "gale_wind_crevasse"
+}
